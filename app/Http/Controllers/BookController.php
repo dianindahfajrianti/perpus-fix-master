@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class BookController extends Controller
 {
@@ -14,10 +15,19 @@ class BookController extends Controller
      */
     public function index()
     {
-        $book = Book::all();
-        return view('book.index',compact('book'));
+        return view('book.index');
     }
 
+    public function data()
+    {
+        $rel = ['getEdu','getGrade'];
+        $model = Book::with($rel)
+                    ->select('title','desc','clicked_time','published_year','publisher','author')
+                    ->get();
+        return DataTables::eloquent(Book::query())
+                ->addIndexColumn()
+                ->toJson();
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +35,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        return 
+
     }
 
     /**
