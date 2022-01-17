@@ -14,7 +14,7 @@ class CreateEducationTable extends Migration
     public function up()
     {
         Schema::create('education', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('edu_name',3);
             $table->timestamps();
             $table->softDeletes();

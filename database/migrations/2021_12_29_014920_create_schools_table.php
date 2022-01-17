@@ -14,7 +14,7 @@ class CreateSchoolsTable extends Migration
     public function up()
     {
         Schema::create('schools', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->integer('edu_id');
             $table->string('sch_name',100);
             $table->text('address');
