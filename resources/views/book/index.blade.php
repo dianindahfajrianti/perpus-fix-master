@@ -73,7 +73,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="sekolah" aria-selected="false">Sekolah</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="upload-file" aria-selected="false">Buku</a>
+                                <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="buku" aria-selected="false">Buku</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -91,7 +91,31 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Judul Buku</label>
+                                            <label class="form-label" for="txttile">Jenjang</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Kelas</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Jurusan</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Mata Pelajaran</label>
                                             <input type="text" name="title" id="txttitle" class="form-control">
                                         </div>
                                     </div>
@@ -101,14 +125,53 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="filebook">Tab 3</label>
-                                            <input type="file" name="filebook" id="filebook" class="form-control">
+                                            <label class="form-label" for="txttile">Judul Buku</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Deskripsi</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Jml Dilihat</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Tahun Terbit</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Penerbit</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Pengarang</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- <div class="form-group">
                             <label for="book_name">Nama buku</label>

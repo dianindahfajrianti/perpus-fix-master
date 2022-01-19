@@ -36,7 +36,7 @@
                         <table id="tb-major" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Jenjang</th>
+                                <th>Kelas</th>
                                 <th>Jurusan</th>
                             </thead>
                             <tbody>
@@ -53,11 +53,17 @@
             <div class="modal-content">
                 <form id="fdata" action="{{route('jurusan.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah Jurusan</h1></div>
+                    <div class="modal-header">
+                        <h1>Tambah Jurusan</h1>
+                    </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label class="form-label" for="txttile">Kelas</label>
+                            <input type="text" name="title" id="txttitle" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label for="major_name">Nama Jurusan</label>
-                            <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('major_name')}}">
+                            <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" value="{{old('major_name')}}">
                             @error('major_name')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -98,7 +104,6 @@
 
 <!-- Page specific script -->
 <script>
-
     $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
@@ -107,36 +112,64 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-major').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": true
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            // , "processing": true
-            // , "serverSide":true
-            , "columns" : [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: "title",name:"title"},
-                {data: "desc",name:"desc"},
-                {data: "clicked_time",name:"clicked_time"},
-                {data: "published_year",name:"published_year"},
-                {data: "publisher",name:"publisher"},
-                {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+                // , "processing": true
+                // , "serverSide":true
+                ,
+            "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "title",
+                    name: "title"
+                },
+                {
+                    data: "desc",
+                    name: "desc"
+                },
+                {
+                    data: "clicked_time",
+                    name: "clicked_time"
+                },
+                {
+                    data: "published_year",
+                    name: "published_year"
+                },
+                {
+                    data: "publisher",
+                    name: "publisher"
+                },
+                {
+                    data: "author",
+                    name: "author"
+                },
+                {
+                    defaultContent: '<a type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></a>',
+                    orderable: false,
+                    searchable: false
+                }
             ]
             // ,"ajax" : "/Jurusan/all"
         });
 
         $.ajax({
-            type:"get",
-            url:"/Jurusan/all",
-            dataType:"json",
-            success:function(d){
+            type: "get",
+            url: "/Jurusan/all",
+            dataType: "json",
+            success: function(d) {
                 console.log(d);
                 // alert(d);
-            },error:function(d){
+            },
+            error: function(d) {
                 console.log(d);
                 // alert(d);
             }
@@ -179,9 +212,9 @@
 </script>
 @error('major_name')
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#modal-add').modal('show');
-});
+    $(document).ready(function() {
+        $('#modal-add').modal('show');
+    });
 </script>
 @enderror
 @if (session('success'))
@@ -189,13 +222,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
-            , timer: 1700
+            icon: 'success',
+            title: 'Done',
+            text: "{{session('success')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @if (session('error'))
@@ -203,13 +235,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
-            , timer: 1700
+            icon: 'error',
+            title: 'Failed',
+            text: "{{session('error')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @endsection

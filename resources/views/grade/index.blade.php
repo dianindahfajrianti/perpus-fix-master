@@ -35,6 +35,7 @@
                     <div class="card-body">
                         <table id="tb-grade" class="table table-bordered table-striped">
                             <thead>
+                                <th>No</th>
                                 <th>Jenjang</th>
                                 <th>Kelas</th>
                             </thead>
@@ -48,15 +49,19 @@
         </div>
     </div>
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form id="fdata" action="{{route('buku.store')}}" method="POST">
                     @csrf
                     <div class="modal-header"><h1>Tambah Kelas</h1></div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label class="form-label" for="txttile">Jenjang</label>
+                            <input type="text" name="title" id="txttitle" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label for="grade_name">Kelas</label>
-                            <input type="text" name="grade_name" id="grade_name" class="form-control @error('grade_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('grade_name')}}">
+                            <input type="text" name="grade_name" id="grade_name" class="form-control @error('grade_name'){{'is-invalid'}}@enderror" value="{{old('grade_name')}}">
                             @error('grade_name')
                             <div class="invalid-feedback">
                                 {{$message}}
