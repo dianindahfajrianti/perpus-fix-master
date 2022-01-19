@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Sekolah - Admin Perpus')
+@section('title', 'Buku - Admin Perpus')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -12,12 +12,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar sekolah</h3>
+                <h3 class="display-4">Kelas</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">Sekolah</li>
+                    <li class="breadcrumb-item active">Kelas</li>
                 </ol>
             </div>
         </div>
@@ -30,16 +30,13 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah sekolah</button>
+                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Kelas</button>
                     </div>
                     <div class="card-body">
-                        <table id="tb-school" class="table table-bordered table-striped">
+                        <table id="tb-grade" class="table table-bordered table-striped">
                             <thead>
-                                <th>No</th>
-                                <th>Nama Sekolah</th>
                                 <th>Jenjang</th>
-                                <th>Alamat</th>
-                                <th>Nomor Telephone</th>
+                                <th>Kelas</th>
                             </thead>
                             <tbody>
 
@@ -53,14 +50,14 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <form id="fdata" action="{{route('sekolah.store')}}" method="POST">
+                <form id="fdata" action="{{route('buku.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah sekolah</h1></div>
+                    <div class="modal-header"><h1>Tambah Kelas</h1></div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="school_name">Nama Sekolah</label>
-                            <input type="text" name="school_name" id="school_name" class="form-control @error('school_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('school_name')}}">
-                            @error('school_name')
+                            <label for="grade_name">Kelas</label>
+                            <input type="text" name="grade_name" id="grade_name" class="form-control @error('grade_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('grade_name')}}">
+                            @error('grade_name')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -69,7 +66,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button id="save-school" class="btn btn-secondary">Tambah</button>
+                        <button id="save-grade" class="btn btn-secondary">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -108,7 +105,7 @@
         })
         bsCustomFileInput.init();
 
-        var table = $('#tb-school').DataTable({
+        var table = $('#tb-grade').DataTable({
             "paging": true
             , "lengthChange": false
             , "searching": true
@@ -118,7 +115,6 @@
             , "responsive": true
             // , "processing": true
             // , "serverSide":true
-            // ,"ajax" : "/sekolah/all"
             , "columns" : [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: "title",name:"title"},
@@ -127,13 +123,14 @@
                 {data: "published_year",name:"published_year"},
                 {data: "publisher",name:"publisher"},
                 {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
+                {defaultContent: '<a type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
             ]
+            // ,"ajax" : "/buku/all"
         });
 
         $.ajax({
             type:"get",
-            url:"/sekolah/all",
+            url:"/buku/all",
             dataType:"json",
             success:function(d){
                 console.log(d);
@@ -144,13 +141,13 @@
             }
         });
 
-        // $('#save-school').click(function(e){
+        // $('#save-grade').click(function(e){
         //     e.preventDefault;
         //     var fData = $('#fdata').serialize();
         //     console.log(fData);
         //     $.ajax({
         //         type : "post",
-        //         url : "/admin/sekolah",
+        //         url : "/admin/buku",
         //         dataType : "json",
         //         data : fData
         //         ,success:function(d){
@@ -179,7 +176,7 @@
 
     });
 </script>
-@error('school_name')
+@error('grade_name')
 <script type="text/javascript">
 $(document).ready(function(){
     $('#modal-add').modal('show');

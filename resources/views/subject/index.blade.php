@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Sekolah - Admin Perpus')
+@section('title', 'Mata Pelajaran - Admin Perpus')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -12,12 +12,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar sekolah</h3>
+                <h3 class="display-4">Daftar Mata Pelajaran</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">Sekolah</li>
+                    <li class="breadcrumb-item active">Mata Pelajaran</li>
                 </ol>
             </div>
         </div>
@@ -30,16 +30,19 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah sekolah</button>
+                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Mata Pelajaran</button>
                     </div>
                     <div class="card-body">
-                        <table id="tb-school" class="table table-bordered table-striped">
+                        <table id="tb-subject" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Nama Sekolah</th>
-                                <th>Jenjang</th>
-                                <th>Alamat</th>
-                                <th>Nomor Telephone</th>
+                                <th>Judul Mata Pelajaran</th>
+                                <th>Deskripsi</th>
+                                <th>Jml Dilihat</th>
+                                <th>Tahun Terbit</th>
+                                <th>Penerbit</th>
+                                <th>Pengarang</th>
+                                <th>Aksi</th>
                             </thead>
                             <tbody>
 
@@ -53,14 +56,14 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <form id="fdata" action="{{route('sekolah.store')}}" method="POST">
+                <form id="fdata" action="{{route('mapel.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah sekolah</h1></div>
+                    <div class="modal-header"><h1>Tambah Mata Pelajaran</h1></div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="school_name">Nama Sekolah</label>
-                            <input type="text" name="school_name" id="school_name" class="form-control @error('school_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('school_name')}}">
-                            @error('school_name')
+                            <label for="subject_name">Nama Mata Pelajaran</label>
+                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('subject_name')}}">
+                            @error('subject_name')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -69,7 +72,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button id="save-school" class="btn btn-secondary">Tambah</button>
+                        <button id="save-subject" class="btn btn-secondary">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -108,7 +111,7 @@
         })
         bsCustomFileInput.init();
 
-        var table = $('#tb-school').DataTable({
+        var table = $('#tb-subject').DataTable({
             "paging": true
             , "lengthChange": false
             , "searching": true
@@ -118,7 +121,6 @@
             , "responsive": true
             // , "processing": true
             // , "serverSide":true
-            // ,"ajax" : "/sekolah/all"
             , "columns" : [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: "title",name:"title"},
@@ -127,13 +129,14 @@
                 {data: "published_year",name:"published_year"},
                 {data: "publisher",name:"publisher"},
                 {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
+                {defaultContent: '<a type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
             ]
+            // ,"ajax" : "/Mata Pelajaran/all"
         });
 
         $.ajax({
             type:"get",
-            url:"/sekolah/all",
+            url:"/mapel/all",
             dataType:"json",
             success:function(d){
                 console.log(d);
@@ -144,13 +147,13 @@
             }
         });
 
-        // $('#save-school').click(function(e){
+        // $('#save-subject').click(function(e){
         //     e.preventDefault;
         //     var fData = $('#fdata').serialize();
         //     console.log(fData);
         //     $.ajax({
         //         type : "post",
-        //         url : "/admin/sekolah",
+        //         url : "/admin/Mata Pelajaran",
         //         dataType : "json",
         //         data : fData
         //         ,success:function(d){
@@ -179,7 +182,7 @@
 
     });
 </script>
-@error('school_name')
+@error('subject_name')
 <script type="text/javascript">
 $(document).ready(function(){
     $('#modal-add').modal('show');

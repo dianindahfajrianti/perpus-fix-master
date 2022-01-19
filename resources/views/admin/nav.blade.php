@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/sekolah" class="nav-link @if (Request::segment(2) == 'sekolah') {{'active'}} @endif">
+                    <a href="/admin/kelas" class="nav-link @if (Request::segment(2) == 'kelas') {{'active'}} @endif">
                         <i class="nav-icon fas fa-medal"></i>
                         <p>
                             Kelas
@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/sekolah" class="nav-link @if (Request::segment(2) == 'sekolah') {{'active'}} @endif">
+                    <a href="/admin/jurusan" class="nav-link @if (Request::segment(2) == 'jurusan') {{'active'}} @endif">
                         <i class="nav-icon fas fa-flask"></i>
                         <p>
                             Jurusan

@@ -12,13 +12,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Tambah Sekolah</h3>
+                <h3 class="display-4">Tambah Jurusan</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/sekolah">Sekolah</a></li>
-                    <li class="breadcrumb-item">Tambah Sekolah</li>
+                    <li class="breadcrumb-item"><a href="/admin/jurusan">Jurusan</a></li>
+                    <li class="breadcrumb-item">Tambah Jurusan</li>
                 </ol>
             </div>
         </div>
@@ -31,18 +31,17 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Sekolah</h3>
+                        <h3 class="card-title">Tambah Jurusan</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("sekolah.update",$education->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="/admin/book" enctype="multipart/form-data">
                         @csrf
-                        @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="school_name">Nama Sekolah</label>
-                                <input type="text" name="school_name" id="school_name" class="form-control @error('school_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$schoolcation->school_name}}">
-                                @error('school_name')
+                                <label for="major_name">Nama Jurusan</label>
+                                <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('major_name')}}">
+                                @error('major_name')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>

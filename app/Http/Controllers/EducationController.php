@@ -65,7 +65,7 @@ class EducationController extends Controller
                 'data' => $request->edu_name,
                 'message' => $msg
             ];
-            return redirect()->route('adm-edu')->with($stat,$res);
+            return redirect()->route('pendidikan.index')->with($stat,$res);
 
         } catch (\Exception $ex) {
             $msg = $ex;
@@ -75,7 +75,7 @@ class EducationController extends Controller
                 'data' => $request->edu_name,
                 'message' => $msg
             ];
-            return redirect()->route('adm-edu')->with($stat,$res);
+            return redirect()->route('pendidikan.index')->with($stat,$res);
         }
     }
 

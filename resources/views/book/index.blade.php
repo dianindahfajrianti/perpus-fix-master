@@ -5,6 +5,8 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="/assets/css/admin.css">
+
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -54,13 +56,61 @@
         </div>
     </div>
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form id="fdata" action="{{route('buku.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah buku</h1></div>
+                    <div class="modal-header">
+                        <h1>Tambah buku</h1>
+                    </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <p class="text-red">*) Pastikan seluruh data terisi</p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="file" aria-selected="true">File</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="sekolah" aria-selected="false">Sekolah</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="upload-file" aria-selected="false">Buku</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="filebook">Upload File</label>
+                                            <input type="file" name="filebook" id="filebook" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="txttile">Judul Buku</label>
+                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="filebook">Tab 3</label>
+                                            <input type="file" name="filebook" id="filebook" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="form-group">
                             <label for="book_name">Nama buku</label>
                             <input type="text" name="book_name" id="book_name" class="form-control @error('book_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('book_name')}}">
                             @error('book_name')
@@ -68,7 +118,7 @@
                                 {{$message}}
                             </div>
                             @enderror
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -101,9 +151,11 @@
 <!-- SweetAlert2 -->
 <script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 
+<!--Javascript Admin -->
+<script src="/assets/js/admin.js"></script>
+
 <!-- Page specific script -->
 <script>
-
     $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
@@ -112,49 +164,63 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-book').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": true
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            ,"processing": true
-            , "serverSide":true
-            // ,"columnDefs":[
-            //     {targets: 0, render: function ( data, type, full, meta ) {
-            //         return  meta.row+1;
-            //     }},
-            //     {targets:1,
-            //     render: function(data, type, full, meta) {
-            //         return full.book_name;
-            //      },
-            //     searchable:true},
-            //     {targets: 2, render: function (data, type, full, meta) {
-            //         return '<a type="button" class="btn btn-success" href="/admin/buku/'+full.id+'/edit"><i class="fas fa-edit"></i></a>';
-            //     }}
-            // ]
-            , "columns" : [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: "title",name:"title"},
-                {data: "desc",name:"desc"},
-                {data: "clicked_time",name:"clicked_time"},
-                {data: "published_year",name:"published_year"},
-                {data: "publisher",name:"publisher"},
-                {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
-            ]
-            ,"ajax" : "/buku/all"
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "title",
+                    name: "title"
+                },
+                {
+                    data: "desc",
+                    name: "desc"
+                },
+                {
+                    data: "clicked_time",
+                    name: "clicked_time"
+                },
+                {
+                    data: "published_year",
+                    name: "published_year"
+                },
+                {
+                    data: "publisher",
+                    name: "publisher"
+                },
+                {
+                    data: "author",
+                    name: "author"
+                },
+                {
+                    defaultContent: '<a type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></a>',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+            "ajax": "/buku/all"
         });
 
         $.ajax({
-            type:"get",
-            url:"/buku/all",
-            dataType:"json",
-            success:function(d){
+            type: "get",
+            url: "/buku/all",
+            dataType: "json",
+            success: function(d) {
                 console.log(d);
                 // alert(d);
-            },error:function(d){
+            },
+            error: function(d) {
                 console.log(d);
                 // alert(d);
             }
@@ -197,9 +263,9 @@
 </script>
 @error('book_name')
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#modal-add').modal('show');
-});
+    $(document).ready(function() {
+        $('#modal-add').modal('show');
+    });
 </script>
 @enderror
 @if (session('success'))
@@ -207,13 +273,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
-            , timer: 1700
+            icon: 'success',
+            title: 'Done',
+            text: "{{session('success')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @if (session('error'))
@@ -221,13 +286,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
-            , timer: 1700
+            icon: 'error',
+            title: 'Failed',
+            text: "{{session('error')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @endsection
