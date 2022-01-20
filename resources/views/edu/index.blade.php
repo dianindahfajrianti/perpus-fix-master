@@ -43,10 +43,10 @@
                             </thead>
                             <tbody>
                                 @foreach($edu as $e)
-                                    <tr>
+                                    <tr id="{{ $e->id }}">
                                         <td>{{$loop->iteration}}</td>
                                         <td>{{$e->edu_name}}</td>
-                                        <td><a type="button" class="btn btn-success" href="{{route('pendidikan.edit',$e->id)}}"><i class="fas fa-edit"></i></a></td>
+                                        <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" id="del-edu" class="d-inline btn btn-danger"><i class="fas fa-trash"></i></a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -188,6 +188,36 @@
         //         }
         //     });
         // });
+        $('#del-edu').click(function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "delete",
+                    url: "/admin/pendidikan/".id,
+                    data: {
+                        token: "{{ csrf_token() }}"
+                    },
+                    success:function(data){
+                        console.log(data);
+                        
+                    },error:function(data){
+                        console.log(data);
+                    }
+
+                });
+            }
+            });
+        });
         
     });
 </script>
@@ -199,31 +229,34 @@ $(document).ready(function(){
 </script>
 @enderror
 @if (session('success'))
-<script>
+<script type="text/javascript">
     $(document).ready(function(e) {
         e.preventDefault;
+        var data = '<?= session("success") ?>';
+        var js = JSON.parse(data);
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
+           icon: 'success'
+            , title: 'Berhasil'
+            , text: js.message
             , timer: 1700
         });
-    })
-
+    });
 </script>
 @endif
 @if (session('error'))
-<script>
+<script type="text/javascript">
     $(document).ready(function(e) {
         e.preventDefault;
+        var data = "<?= session('error'); ?>";
+        var js = JSON.parse(data);
+        console.log(data);
         Swal.fire({
             icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
+            , title: 'Gagal'
+            , text: js.message
             , timer: 1700
         });
-    })
-
+    });
 </script>
 @endif
 @endsection

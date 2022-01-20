@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 use Yajra\DataTables\DataTables as DTB;
 
 class EducationController extends Controller
@@ -53,6 +54,7 @@ class EducationController extends Controller
         $request->validate([
             'edu_name' => 'required|max:3'
         ]);
+        $res = new stdClass();
         try {
             $edu = new Education;
             $edu->edu_name =  $request->edu_name;
@@ -60,22 +62,22 @@ class EducationController extends Controller
 
             $stat = "success";
             $msg = "Tingkat pendidikan $request->edu_name berhasil ditambahkan!";
-            $res = [
-                'status' => $stat,
-                'data' => $request->edu_name,
-                'message' => $msg
-            ];
-            return redirect()->route('pendidikan.index')->with($stat,$res);
+            
+            $res->status = $stat;
+            $res->data = $request->edu_name;
+            $res->message = $msg;
+            
+            return redirect()->route('pendidikan.index')->with($stat,json_encode($res));
 
         } catch (\Exception $ex) {
             $msg = $ex;
             $stat = "success";
-            $res = [
-                'status' => $stat,
-                'data' => $request->edu_name,
-                'message' => $msg
-            ];
-            return redirect()->route('pendidikan.index')->with($stat,$res);
+
+            $res->status = $stat;
+            $res->data = $request->edu_name;
+            $res->message = $msg;
+            
+            return redirect()->route('pendidikan.index')->with($stat,json_encode($res));
         }
     }
 
@@ -86,8 +88,9 @@ class EducationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function show(Education $education)
+    public function show(Education $pendidikan)
     {
+        $education = $pendidikan;
         return compact('education');
     }
 
@@ -97,9 +100,10 @@ class EducationController extends Controller
      * @param  \App\Education  $education
      * @return \Illuminate\Http\Response
      */
-    public function edit(Education $education)
+    public function edit(Education $pendidikan)
     {
-        // return compact('education');
+        $education = $pendidikan->find($pendidikan->id);
+        // return compact('edu');
         return view('edu.edit',compact('education'));
     }
 
@@ -110,30 +114,28 @@ class EducationController extends Controller
      * @param  \App\Education  $education
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Education $education)
+    public function update(Request $request, Education $pendidikan)
     {
         $request->validate([
-            'name' => 'required|max:3'
+            'edu_name' => 'required|max:3'
         ]);
+        $education = $pendidikan;
+        $oldname = $pendidikan->edu_name;
+        $education->edu_name =  $request->edu_name;
+        $res = new stdClass();
         try {
-            $education = new Education;
-            $education->edu_name =  $request->name;
             $education->save();
 
             $stat = "success";
-            $msg = "Tingkat pendidikan $request->name berhasil di edit!";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
-            return redirect()->route('adm-edu')->with($stat,$res);
+            $msg = "Tingkat pendidikan berhasil di edit! Dari $oldname jadi $request->edu_name !";
+            $res->status = $stat;
+            $res->message = $msg;
+            return redirect()->route('pendidikan.index')->with($stat,json_encode($res));
         } catch (\Exception $th) {
             $stat = "error";
-            $res = [
-                'status' => $stat,
-                'message' => $th
-            ];
-            return redirect()->route('adm-edu')->with($stat,$res);
+            $res->status = $stat;
+            $res->message = $msg;
+            return redirect()->route('pendidikan.index')->with($stat,json_encode($res));
         }
     }
 
@@ -143,31 +145,28 @@ class EducationController extends Controller
      * @param  \App\Education  $education
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Education $education)
+    public function destroy(Education $pendidikan)
     {
-        $exist1 = School::where('edu_id','=',$education->id)->get();
-        $exist2 = Book::where('edu_id','=',$education->id)->get();
-        $exist3 = User::where('edu_id','=',$education->id)->get();
-
+        $exist1 = School::where('edu_id','=',$pendidikan->id)->get();
+        $exist2 = Book::where('edu_id','=',$pendidikan->id)->get();
+        $exist3 = User::where('edu_id','=',$pendidikan->id)->get();
+        
+        $res = new stdClass();
         if ($exist1||$exist2||$exist3) {
             $stat = "error";
-            $msg = "Tingkat pendidikan $education->name Tidak Boleh Dihapus!";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
+            $msg = "Tingkat pendidikan $pendidikan->name Tidak Boleh Dihapus!";
+            $res->status = $stat;
+            $res->message = $msg;
 
             return response()->json($res);
         }else {
-            $nama = $education->name;
-            $education->delete();
+            $nama = $pendidikan->name;
+            $pendidikan->delete();
 
             $stat = "success";
             $msg = "Tingkat pendidikan $nama berhasil ditambahkan!";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
+            $res->status = $stat;
+            $res->message = $msg;
             return response()->json($res);
         }
     }
