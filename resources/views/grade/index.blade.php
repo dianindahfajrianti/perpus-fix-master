@@ -53,9 +53,43 @@
             <div class="modal-content">
                 <form id="fdata" action="{{route('buku.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah Kelas</h1></div>
+                    <div class="modal-header">
+                        <h1>Tambah Kelas</h1>
+                    </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                    <div class="form-group">
+                            <label class="form-label" for="txttile">Jenjang</label>
+                            <div class="input-group">
+                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                    <option selected>-- Pilih Jenjang --</option>
+                                    <option value="1">SD</option>
+                                    <option value="2">SMP</option>
+                                    <option value="3">SMA</option>
+                                    <option value="3">SMK</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label" for="kelas">Kelas</label>
+                            <div class="input-group">
+                                <select class="form-control select2bs4" id="kelas" aria-label="Example select with button addon">
+                                    <option selected>-- Pilih Kelas --</option>
+                                    <option value="1">I</option>
+                                    <option value="2">II</option>
+                                    <option value="3">III</option>
+                                    <option value="4">IV</option>
+                                    <option value="5">V</option>
+                                    <option value="6">VI</option>
+                                    <option value="7">VII</option>
+                                    <option value="8">VIII</option>
+                                    <option value="9">IX</option>
+                                    <option value="10">X</option>
+                                    <option value="11">XI</option>
+                                    <option value="12">XII</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
                             <label class="form-label" for="txttile">Jenjang</label>
                             <input type="text" name="title" id="txttitle" class="form-control">
                         </div>
@@ -67,7 +101,7 @@
                                 {{$message}}
                             </div>
                             @enderror
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -102,7 +136,6 @@
 
 <!-- Page specific script -->
 <script>
-
     $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
@@ -111,36 +144,64 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-grade').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": true
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            // , "processing": true
-            // , "serverSide":true
-            , "columns" : [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: "title",name:"title"},
-                {data: "desc",name:"desc"},
-                {data: "clicked_time",name:"clicked_time"},
-                {data: "published_year",name:"published_year"},
-                {data: "publisher",name:"publisher"},
-                {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+                // , "processing": true
+                // , "serverSide":true
+                ,
+            "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "title",
+                    name: "title"
+                },
+                {
+                    data: "desc",
+                    name: "desc"
+                },
+                {
+                    data: "clicked_time",
+                    name: "clicked_time"
+                },
+                {
+                    data: "published_year",
+                    name: "published_year"
+                },
+                {
+                    data: "publisher",
+                    name: "publisher"
+                },
+                {
+                    data: "author",
+                    name: "author"
+                },
+                {
+                    defaultContent: '<a type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></a>',
+                    orderable: false,
+                    searchable: false
+                }
             ]
             // ,"ajax" : "/buku/all"
         });
 
         $.ajax({
-            type:"get",
-            url:"/buku/all",
-            dataType:"json",
-            success:function(d){
+            type: "get",
+            url: "/buku/all",
+            dataType: "json",
+            success: function(d) {
                 console.log(d);
                 // alert(d);
-            },error:function(d){
+            },
+            error: function(d) {
                 console.log(d);
                 // alert(d);
             }
@@ -183,9 +244,9 @@
 </script>
 @error('grade_name')
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#modal-add').modal('show');
-});
+    $(document).ready(function() {
+        $('#modal-add').modal('show');
+    });
 </script>
 @enderror
 @if (session('success'))
@@ -193,13 +254,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
-            , timer: 1700
+            icon: 'success',
+            title: 'Done',
+            text: "{{session('success')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @if (session('error'))
@@ -207,13 +267,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
-            , timer: 1700
+            icon: 'error',
+            title: 'Failed',
+            text: "{{session('error')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @endsection

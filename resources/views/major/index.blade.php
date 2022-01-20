@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form id="fdata" action="{{route('jurusan.store')}}" method="POST">
                     @csrf
@@ -57,9 +57,25 @@
                         <h1>Tambah Jurusan</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                    <div class="form-group mt-3">
                             <label class="form-label" for="txttile">Kelas</label>
-                            <input type="text" name="title" id="txttitle" class="form-control">
+                            <div class="input-group">
+                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                    <option selected>-- Pilih Kelas --</option>
+                                    <option value="1">I</option>
+                                    <option value="2">II</option>
+                                    <option value="3">III</option>
+                                    <option value="4">IV</option>
+                                    <option value="5">V</option>
+                                    <option value="6">VI</option>
+                                    <option value="7">VII</option>
+                                    <option value="8">VIII</option>
+                                    <option value="9">IX</option>
+                                    <option value="10">X</option>
+                                    <option value="11">XI</option>
+                                    <option value="12">XII</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="major_name">Nama Jurusan</label>

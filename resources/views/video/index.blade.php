@@ -88,32 +88,83 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Jenjang</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                            <label class="form-label" for="jenjang">Jenjang</label>
+                                            <div class="input-group">
+                                                <select class="form-control select2bs4" id="jenjang" aria-label="Example select with button addon">
+                                                    <option selected>-- Pilih Jenjang --</option>
+                                                    <option value="1">SD</option>
+                                                    <option value="2">SMP</option>
+                                                    <option value="3">SMA</option>
+                                                    <option value="3">SMK</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="txttile">Kelas</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                        <div class="form-group mt-3">
+                                            <label class="form-label" for="kelas">Kelas</label>
+                                            <div class="input-group">
+                                                <select class="form-control select2bs4" id="kelas" aria-label="Example select with button addon">
+                                                    <option selected>-- Pilih Kelas --</option>
+                                                    <option value="1">I</option>
+                                                    <option value="2">II</option>
+                                                    <option value="3">III</option>
+                                                    <option value="4">IV</option>
+                                                    <option value="5">V</option>
+                                                    <option value="6">VI</option>
+                                                    <option value="7">VII</option>
+                                                    <option value="8">VIII</option>
+                                                    <option value="9">IX</option>
+                                                    <option value="10">X</option>
+                                                    <option value="11">XI</option>
+                                                    <option value="12">XII</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="txttile">Jurusan</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                    <div class="form-group mt-3">
+                                            <label class="form-label" for="jurusan">Jurusan</label>
+                                            <div class="input-group">
+                                                <select class="form-control select2bs4" id="jurusan" aria-label="Example select with button addon">
+                                                    <option selected>-- Pilih Jurusan --</option>
+                                                    <option value="1">IPA</option>
+                                                    <option value="2">IPS</option>
+                                                    <option value="3">TKJ</option>
+                                                    <option value="4">Tata Boga</option>
+                                                    <option value="5">Perhotelan</option>
+                                                    <option value="6">Akuntansi</option>
+                                                    <option value="7">Hukum</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="txttile">Mata Pelajaran</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                    <div class="form-group mt-3">
+                                            <label class="form-label" for="mapel">Mata Pelajaran</label>
+                                            <div class="input-group">
+                                                <select class="form-control select2bs4" id="mapel" aria-label="Example select with button addon">
+                                                    <option selected>-- Pilih Mata Pelajaran --</option>
+                                                    <option value="1">Bahasa Indonesia</option>
+                                                    <option value="2">Bahasa Inggris</option>
+                                                    <option value="3">Matematika</option>
+                                                    <option value="4">Seni Budaya</option>
+                                                    <option value="5">PJOK</option>
+                                                    <option value="6">Agama</option>
+                                                    <option value="7">Fisika</option>
+                                                    <option value="8">Kimia</option>
+                                                    <option value="9">Ekonomi</option>
+                                                    <option value="10">Sejarah</option>
+                                                    <option value="11">Astronomi</option>
+                                                    <option value="12">Biologi</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -122,32 +173,32 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Judul Video</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                            <label class="form-label" for="judul">Judul Video</label>
+                                            <input type="text" name="title" id="judul" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Deskripsi</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                            <label class="form-label" for="desc">Deskripsi</label>
+                                            <input type="text" name="title" id="desc" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Jml Dilihat</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                            <label class="form-label" for="jml">Jml Dilihat</label>
+                                            <input type="text" name="title" id="jml" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="txttile">Creator</label>
-                                            <input type="text" name="title" id="txttitle" class="form-control">
+                                            <label class="form-label" for="creator">Creator</label>
+                                            <input type="text" name="title" id="creator" class="form-control">
                                         </div>
                                     </div>
                                 </div>

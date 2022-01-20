@@ -69,16 +69,24 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="txttile">Jenjang</label>
-                            <input type="text" name="title" id="txttitle" class="form-control">
+                            <label class="form-label" for="jenjang">Jenjang</label>
+                            <div class="input-group">
+                                <select class="form-control select2bs4" id="jenjang" aria-label="Example select with button addon">
+                                    <option selected>-- Pilih Jenjang --</option>
+                                    <option value="1">SD</option>
+                                    <option value="2">SMP</option>
+                                    <option value="3">SMA</option>
+                                    <option value="3">SMK</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="txttile">Alamat</label>
-                            <input type="text" name="title" id="txttitle" class="form-control">
+                            <label class="form-label" for="alamat">Alamat</label>
+                            <input type="text" name="title" id="alamat" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="txttile">Nomor Telephone</label>
-                            <input type="text" name="title" id="txttitle" class="form-control">
+                            <label class="form-label" for="notelp">Nomor Telephone</label>
+                            <input type="text" name="title" id="notelp" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">

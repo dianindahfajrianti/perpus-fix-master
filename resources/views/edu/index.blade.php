@@ -57,7 +57,7 @@
         </div>
     </div>
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form id="fdata" action="{{route('pendidikan.store')}}" method="POST">
                     @csrf
