@@ -25,8 +25,8 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
@@ -148,28 +148,20 @@
                     searchable: false
                 },
                 {
-                    data: "title",
-                    name: "title"
+                    data: "sch_name",
+                    name: "sch_name"
                 },
                 {
-                    data: "desc",
-                    name: "desc"
+                    data: "edu_name",
+                    name: "edu_name"
                 },
                 {
-                    data: "clicked_time",
-                    name: "clicked_time"
+                    data: "address",
+                    name: "address"
                 },
                 {
-                    data: "published_year",
-                    name: "published_year"
-                },
-                {
-                    data: "publisher",
-                    name: "publisher"
-                },
-                {
-                    data: "author",
-                    name: "author"
+                    data: "phone",
+                    name: "phone"
                 },
                 {
                     defaultContent: '<a type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></a>',

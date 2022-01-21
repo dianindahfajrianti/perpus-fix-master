@@ -27,8 +27,8 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
@@ -41,7 +41,6 @@
                                 <th>Judul Video</th>
                                 <th>Deskripsi</th>
                                 <th>Creator</th>
-                                <th>Jml Dilihat</th>
                             </thead>
                             <tbody>
 
@@ -189,14 +188,6 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="jml">Jml Dilihat</label>
-                                            <input type="text" name="jml" id="jml" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
                                             <label class="form-label" for="creator">Creator</label>
                                             <input type="text" name="creator" id="creator" class="form-control">
                                         </div>
@@ -284,20 +275,8 @@
                     name: "desc"
                 },
                 {
-                    data: "clicked_time",
-                    name: "clicked_time"
-                },
-                {
-                    data: "published_year",
-                    name: "published_year"
-                },
-                {
-                    data: "publisher",
-                    name: "publisher"
-                },
-                {
-                    data: "author",
-                    name: "author"
+                    data: "creator",
+                    name: "creator"
                 },
                 {
                     defaultContent: '<a type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></a>',

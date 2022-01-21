@@ -11,10 +11,10 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-8">
                 <h3 class="display-4">Daftar Mata Pelajaran</h3>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item active">Mata Pelajaran</li>
@@ -25,8 +25,8 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
@@ -58,7 +58,9 @@
             <div class="modal-content">
                 <form id="fdata" action="{{route('mapel.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah Mata Pelajaran</h1></div>
+                    <div class="modal-header">
+                        <h1>Tambah Mata Pelajaran</h1>
+                    </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="subject_name">Nama Mata Pelajaran</label>
@@ -103,7 +105,6 @@
 
 <!-- Page specific script -->
 <script>
-
     $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
@@ -112,36 +113,44 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-subject').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": true
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            // , "processing": true
-            // , "serverSide":true
-            , "columns" : [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: "title",name:"title"},
-                {data: "desc",name:"desc"},
-                {data: "clicked_time",name:"clicked_time"},
-                {data: "published_year",name:"published_year"},
-                {data: "publisher",name:"publisher"},
-                {data: "author",name:"author"},
-                {defaultContent: '<a type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></a>' , orderable: false, searchable: false }
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+                // , "processing": true
+                // , "serverSide":true
+                ,
+            "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "sbj_name",
+                    name: "sbj_name"
+                },
+                {
+                    defaultContent: '<a type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></a>',
+                    orderable: false,
+                    searchable: false
+                }
             ]
             // ,"ajax" : "/Mata Pelajaran/all"
         });
 
         $.ajax({
-            type:"get",
-            url:"/mapel/all",
-            dataType:"json",
-            success:function(d){
+            type: "get",
+            url: "/mapel/all",
+            dataType: "json",
+            success: function(d) {
                 console.log(d);
                 // alert(d);
-            },error:function(d){
+            },
+            error: function(d) {
                 console.log(d);
                 // alert(d);
             }
@@ -184,9 +193,9 @@
 </script>
 @error('subject_name')
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#modal-add').modal('show');
-});
+    $(document).ready(function() {
+        $('#modal-add').modal('show');
+    });
 </script>
 @enderror
 @if (session('success'))
@@ -194,13 +203,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
-            , timer: 1700
+            icon: 'success',
+            title: 'Done',
+            text: "{{session('success')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @if (session('error'))
@@ -208,13 +216,12 @@ $(document).ready(function(){
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
-            , timer: 1700
+            icon: 'error',
+            title: 'Failed',
+            text: "{{session('error')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @endsection

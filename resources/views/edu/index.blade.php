@@ -25,8 +25,8 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
@@ -43,11 +43,11 @@
                             </thead>
                             <tbody>
                                 @foreach($edu as $e)
-                                    <tr id="{{ $e->id }}">
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{$e->edu_name}}</td>
-                                        <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></a></td>
-                                    </tr>
+                                <tr id="{{ $e->id }}">
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$e->edu_name}}</td>
+                                    <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></a></td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -61,7 +61,9 @@
             <div class="modal-content">
                 <form id="fdata" action="{{route('pendidikan.store')}}" method="POST">
                     @csrf
-                    <div class="modal-header"><h1>Tambah Jenjang</h1></div>
+                    <div class="modal-header">
+                        <h1>Tambah Jenjang</h1>
+                    </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="edu_name">Nama Jenjang</label>
@@ -106,7 +108,6 @@
 
 <!-- Page specific script -->
 <script>
-
     $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
@@ -115,34 +116,34 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-edu').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": false
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            // ,"processing": true
-            // , "serverSide":true
-            // ,"columnDefs":[
-            //     {targets: 0, render: function ( data, type, full, meta ) {
-            //         return  meta.row+1;
-            //     }},
-            //     {targets:1,
-            //     render: function(data, type, full, meta) {
-            //         return full.edu_name;
-            //      },
-            //     searchable:true},
-            //     {targets: 2, render: function (data, type, full, meta) {
-            //         return '<a type="button" class="btn btn-success" href="/admin/pendidikan/'+full.id+'/edit"><i class="fas fa-edit"></i></a>';
-            //     }}
-            // ], "columns" : [
-            //     {"data": "id","name":"id"},
-            //     {"data": "edu_name","name":"edu_name"}
-            // ]
-            // ,"ajax" : "/pendidikan/all"
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "edu_name",
+                    name: "edu_name"
+                },
+                {
+                    defaultContent: '<a type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></a>',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+            "ajax": "/pendidikan/all"
         });
-        
+
         // $.ajax({
         //     type:"get",
         //     url:"/pendidikan/all",
@@ -200,48 +201,49 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, hapus!'
             }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "delete",
-                    url: "/admin/pendidikan/"+id,
-                    dataType: "json",
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success:function(data){
-                        // var js = data.responseJSON;
-                        Swal.fire({
-                            icon: data.status,
-                            title: "Berhasil",
-                            text: data.message,
-                            timer: 1200
-                        }).then(function(){
-                            document.location.reload(true);
-                        });
-                        console.log(data);
-                    },error:function(data){
-                        var js = data.responseJSON;
-                        Swal.fire({
-                            icon: 'error',
-                            title: js.exception,
-                            text: js.message,
-                            timer: 1200
-                        });
-                        console.log(data);
-                    }
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "delete",
+                        url: "/admin/pendidikan/" + id,
+                        dataType: "json",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(data) {
+                            // var js = data.responseJSON;
+                            Swal.fire({
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            }).then(function() {
+                                document.location.reload(true);
+                            });
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                            console.log(data);
+                        }
 
-                });
-            }
+                    });
+                }
             });
         });
-        
+
     });
 </script>
 @error('edu_name')
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#modal-add').modal('show');
-});
+    $(document).ready(function() {
+        $('#modal-add').modal('show');
+    });
 </script>
 @enderror
 @if (session('success'))
@@ -251,10 +253,10 @@ $(document).ready(function(){
         var data = '<?= session("success") ?>';
         var js = JSON.parse(data);
         Swal.fire({
-           icon: 'success'
-            , title: 'Berhasil'
-            , text: js.message
-            , timer: 1700
+            icon: 'success',
+            title: 'Berhasil',
+            text: js.message,
+            timer: 1700
         });
     });
 </script>
@@ -267,10 +269,10 @@ $(document).ready(function(){
         var js = JSON.parse(data);
         console.log(data);
         Swal.fire({
-            icon: 'error'
-            , title: 'Gagal'
-            , text: js.message
-            , timer: 1700
+            icon: 'error',
+            title: 'Gagal',
+            text: js.message,
+            timer: 1700
         });
     });
 </script>

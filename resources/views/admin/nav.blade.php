@@ -88,6 +88,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/admin/mapel" class="nav-link @if (Request::segment(2) == 'mapel') {{'active'}} @endif">
+                        <i class="nav-icon fas fa-flask"></i>
+                        <p>
+                            Mata Pelajaran
+                        </p>
+                    </a>
+                </li>
                 @endif
                 <li class="nav-header">CMS Pembukuan</li>
                 <li class="nav-item">

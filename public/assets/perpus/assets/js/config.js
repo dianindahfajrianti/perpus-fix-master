@@ -7,14 +7,16 @@ $(document).ready(function () {
     // } else {
     //   x.style.display = "none";
     // }
-    alert("check");
     var sidebar = $('.sidebar');
-    if(sidebar.is(":visible")){
-        sidebar.hide();
-        sidebar.addClass("d-none");
-        sidebar.removeClass("d-lg-block");
+    if(sidebar.is(":hidden")){  
+      sidebar.show();
+      sidebar.addClass("d-block");
+      sidebar.removeClass("d-none");
     } else{
-        sidebar.show();
+      sidebar.hide();
+      sidebar.addClass("d-none");
+      sidebar.addClass("d-lg-block");
+      sidebar.removeClass("d-block");
     }
   });
 //   $(".btn-filter").click(function () {

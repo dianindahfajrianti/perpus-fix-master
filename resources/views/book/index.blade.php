@@ -27,8 +27,8 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
