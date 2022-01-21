@@ -22,9 +22,8 @@ class BookController extends Controller
     {
         $rel = ['getEdu','getGrade'];
         $model = Book::with($rel)
-                    ->select('title','desc','clicked_time','published_year','publisher','author')
-                    ->get();
-        return DataTables::eloquent(Book::query())
+                    ->select('title','desc','clicked_time','published_year','publisher','author');
+        return DataTables::of($model)
                 ->addIndexColumn()
                 ->toJson();
     }
@@ -35,7 +34,7 @@ class BookController extends Controller
      */
     public function create()
     {
-
+        
     }
 
     /**
@@ -46,7 +45,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

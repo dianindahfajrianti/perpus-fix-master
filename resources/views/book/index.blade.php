@@ -275,19 +275,19 @@
             "ajax": "/buku/all"
         });
 
-        $.ajax({
-            type: "get",
-            url: "/buku/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
-        });
+        // $.ajax({
+        //     type: "get",
+        //     url: "/buku/all",
+        //     dataType: "json",
+        //     success: function(d) {
+        //         console.log(d);
+        //         // alert(d);
+        //     },
+        //     error: function(d) {
+        //         console.log(d);
+        //         // alert(d);
+        //     }
+        // });
 
         // $('#save-book').click(function(e){
         //     e.preventDefault;

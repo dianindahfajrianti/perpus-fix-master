@@ -46,7 +46,7 @@
                                     <tr id="{{ $e->id }}">
                                         <td>{{$loop->iteration}}</td>
                                         <td>{{$e->edu_name}}</td>
-                                        <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" id="del-edu" class="d-inline btn btn-danger"><i class="fas fa-trash"></i></a></td>
+                                        <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -188,7 +188,7 @@
         //         }
         //     });
         // });
-        $('#del-edu').click(function(e) {
+        $('.del-edu').click(function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
             Swal.fire({
@@ -203,14 +203,28 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: "delete",
-                    url: "/admin/pendidikan/".id,
+                    url: "/admin/pendidikan/"+id,
+                    dataType: "json",
                     data: {
-                        token: "{{ csrf_token() }}"
+                        _token: "{{ csrf_token() }}"
                     },
                     success:function(data){
+                        // var js = data.responseJSON;
+                        Swal.fire({
+                            icon: data.status,
+                            title: "Berhasil",
+                            text: data.message,
+                            timer: 1200
+                        })
                         console.log(data);
-                        
                     },error:function(data){
+                        var js = data.responseJSON;
+                        Swal.fire({
+                            icon: 'error',
+                            title: js.exception,
+                            text: js.message,
+                            timer: 1200
+                        });
                         console.log(data);
                     }
 
