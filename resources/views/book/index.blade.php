@@ -329,7 +329,8 @@
                 {
                     data: "author",
                     name: "author"
-                },{
+                },
+                {
                     defaultContent:'<button type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ],

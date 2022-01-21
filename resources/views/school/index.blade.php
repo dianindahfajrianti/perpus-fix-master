@@ -164,9 +164,7 @@
                     name: "phone"
                 },
                 {
-                    defaultContent: '<a type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></a>',
-                    orderable: false,
-                    searchable: false
+                    defaultContent:'<button type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
         });

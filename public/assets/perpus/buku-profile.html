@@ -80,70 +80,76 @@
           <div class="row">
 
             <!-- Search Sidebar -->
-            <div class="col-lg-3">
-              <div class="sidebar">
+            <aside class="col-lg-3">
+              <button type="button" class="btn-lg btn-filter d-lg-none d-block" id="filterbtn">
+                <center>
+                  <i class="ri-filter-fill"></i>
+                  <span>Filter</span>
+                </center>
+              </button>
+
+              <!-- <div class="filter d-lg-none d-block">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="btn-filter" onclick="myFunction()">
+                      <i class="ri-filter-fill"></i>
+                      <span>Filter</span>
+                    </div>
+                  </div>
+                </div>
+               
+                <div style="display: none;" id="myDIV">
+                  This is my DIV element.
+                </div>
+              </div> -->
+              <div class="sidebar d-lg-block d-none mh-75% overflow-auto">
                 <h3 class="sidebar-title">Search</h3>
                 <div class="sidebar-item search-form">
                   <form action="">
                     <input type="text">
-                    <button type="submit"><i class="bi bi-search"></i></button>
+                    <button type="submit">
+                      <i class="bi bi-search"></i>
+                    </button>
                   </form>
-                </div><!-- End sidebar search formn-->
-
-                <a class="btn-filter scrollto" href="#about">
-                  <i class="ri-filter-fill"></i>
-                  <span>Filter</span>
-                </a>
-
+                </div>
+                <!-- End sidebar search formn-->
+                
                 <h3 class="sidebar-title">Mata Pelajaran</h3>
                 <div class="sidebar-item filter">
                   <div class="row">
-
                     <div class="col-6">
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
                         <label class="form-check-label" for="flexRadioDefault1">
                           IPA
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           IPS
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           Bahasa Indonesia
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Bahasa Inggris
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           PJOK
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           PPKN
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Matematika
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           TIK
                         </label>
@@ -152,61 +158,59 @@
 
                     <div class="col-6">
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
                         <label class="form-check-label" for="flexRadioDefault1">
                           Prakarya
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
                           Seni Budaya
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
                         <label class="form-check-label" for="flexRadioDefault1">
                           Sejarah
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
-                          Agama Islam
+                          Agama
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
-                          Agama Kristen
+                          Matematika
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
                         <label class="form-check-label" for="flexRadioDefault2">
-                          Agama Katolik
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Agama Hindu
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Agama Khonghucu
+                          Inggris
                         </label>
                       </div>
                     </div>
-
                   </div>
+                </div>
+                <!-- End sidebar filter-->
+                <div class="row justify-content-center">
+                  <div class="col-10">
+                    <a class="btn-hapus" href="#filterbtn">
+                      <span>Terapkan</span>
+                    </a>
+                    <a class="btn-hapus" href="#filterbtn">
+                      <span>Reset</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- End sidebar -->
+            </aside>
 
-                </div><!-- End sidebar filter-->
-
-              </div><!-- End sidebar -->
-            </div>
             <div class="col-lg-9 entries">
               <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">

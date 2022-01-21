@@ -169,9 +169,7 @@
                     name: "grade_name"
                 },
                 {
-                    defaultContent: '<a type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></a>',
-                    orderable: false,
-                    searchable: false
+                    defaultContent:'<button type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
             // ,"ajax" : "/buku/all"

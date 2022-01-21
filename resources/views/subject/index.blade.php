@@ -134,9 +134,7 @@
                     name: "sbj_name"
                 },
                 {
-                    defaultContent: '<a type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></a>',
-                    orderable: false,
-                    searchable: false
+                    defaultContent:'<button type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
             // ,"ajax" : "/Mata Pelajaran/all"

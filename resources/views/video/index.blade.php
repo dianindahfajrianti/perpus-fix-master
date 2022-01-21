@@ -35,7 +35,7 @@
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Video</button>
                     </div>
                     <div class="card-body">
-                        <table id="tb-book" class="table table-bordered table-striped">
+                        <table id="tb-video" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
                                 <th>Judul Video</th>
@@ -78,7 +78,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="upload">Upload File</label>
-                                            <input type="file" name="upload" id="filebook" class="form-control">
+                                            <input type="file" name="upload" id="filevideo" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -197,9 +197,9 @@
                         </div>
 
                         <!-- <div class="form-group">
-                            <label for="book_name">Nama video</label>
-                            <input type="text" name="book_name" id="book_name" class="form-control @error('book_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('book_name')}}">
-                            @error('book_name')
+                            <label for="video_name">Nama video</label>
+                            <input type="text" name="video_name" id="video_name" class="form-control @error('video_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('video_name')}}">
+                            @error('video_name')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -208,7 +208,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button id="save-book" class="btn btn-secondary">Tambah</button>
+                        <button id="save-video" class="btn btn-secondary">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -249,7 +249,7 @@
         })
         bsCustomFileInput.init();
 
-        var table = $('#tb-book').DataTable({
+        var table = $('#tb-video').DataTable({
             "paging": true,
             "lengthChange": false,
             "searching": true,
@@ -279,9 +279,7 @@
                     name: "creator"
                 },
                 {
-                    defaultContent: '<a type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></a>',
-                    orderable: false,
-                    searchable: false
+                    defaultContent:'<button type="button" class="edit-video btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
         });
@@ -300,7 +298,7 @@
             }
         });
 
-        // $('#save-book').click(function(e){
+        // $('#save-video').click(function(e){
         //     e.preventDefault;
         //     var fData = $('#fdata').serialize();
         //     console.log(fData);
@@ -335,7 +333,7 @@
 
     });
 </script>
-@error('book_name')
+@error('video_name')
 <script type="text/javascript">
     $(document).ready(function() {
         $('#modal-add').modal('show');
