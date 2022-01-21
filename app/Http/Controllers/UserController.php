@@ -8,6 +8,8 @@ use App\School;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -21,25 +23,25 @@ class UserController extends Controller
     {
         if (Auth::user()->role < 1) {
             $user = User::all();
-        }else {
-            $user = User::where('role','>=',1)->get();
+        } else {
+            $user = User::where('role', '>=', 1)->get();
         }
-        return view('user.index',compact('user'));
+        return view('user.index', compact('user'));
     }
 
     public function data(Request $request)
     {
         if ($request != null) {
-            $model = User::select('id','title','desc','clicked_time','published_year','publisher','author','id');
-        }else{
-            $rel = ['getEdu','getGrade'];
+            $model = User::select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author', 'id');
+        } else {
+            $rel = ['getEdu', 'getGrade'];
             $model = User::with($rel)
-                        ->select('id','title','desc','clicked_time','published_year','publisher','author','id');
+                ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author', 'id');
         }
         return DataTables::of($model)
-                ->addIndexColumn()
-                ->setRowId('id')
-                ->toJson();
+            ->addIndexColumn()
+            ->setRowId('id')
+            ->toJson();
     }
     /**
      * Show the form for creating a new resource.
@@ -52,7 +54,7 @@ class UserController extends Controller
         $sch = School::all();
         $grade = Grade::all();
         $mjr = Major::all();
-        return view('user.add',compact('sch','grade','mjr'));
+        return view('user.add', compact('sch', 'grade', 'mjr'));
     }
 
     /**
@@ -63,18 +65,46 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
     }
     public function storeOne(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|min:3',
-            'username' => 'required|min:3|max:16|unique:users',
-            'email'=> 'required|unique:users',
-            'school' => 'required',
-            'school' => 'required',
-            'school' => 'required'
+        $this->validate($request, [
+            'select_file'  => 'required|mimes:xls,xlsx'
         ]);
+        $path = $request->file('select_file')->getRealPath();
+
+        $data = Excel::load($path)->get();
+
+        if ($data->count() > 0) {
+            foreach ($data->toArray() as $key => $value) {
+                foreach ($value as $row) {
+                    $fromDB = DB::table('users')->value('id');
+                    $wordID = "A";
+                    if ($fromDB == null) {
+                        $last = (int) "00001";
+                    } else {
+                        if ($row['role'] < 2) {
+                            # code...
+                        }
+                        $last = substr($fromDB, 1, 5) + 1;
+                    }
+                    $id = $wordID . sprintf('%05s', $last);
+                    $insert_data[] = array(
+                        'CustomerName'  => $row['customer_name'],
+                        'Gender'   => $row['gender'],
+                        'Address'   => $row['address'],
+                        'City'    => $row['city'],
+                        'PostalCode'  => $row['postal_code'],
+                        'Country'   => $row['country']
+                    );
+                }
+            }
+
+            if (!empty($insert_data)) {
+                DB::table('tbl_customer')->insert($insert_data);
+            }
+        }
+        return back()->with('success', 'Excel Data Imported successfully.');
     }
 
     /**
@@ -124,6 +154,5 @@ class UserController extends Controller
 
     public function profile()
     {
-
     }
 }

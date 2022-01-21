@@ -27,7 +27,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-2 col-6">
-                <a href="admin/buku" class="small-box bg-gradient-navy">
+                <a href="/admin/buku" class="small-box bg-gradient-navy">
                     <div class="inner">
                         <h3>@foreach($book as $b){{$b->totidb}}@endforeach</h3>
                         <p>Buku</p>
@@ -36,7 +36,7 @@
                 </a>
             </div>
             <div class="col-lg-2 col-6">
-                <a href="admin/video" class="small-box bg-gradient-lightblue">
+                <a href="/admin/video" class="small-box bg-gradient-lightblue">
                 <div class="inner">
                     <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3>
                     <p>Video</p>
@@ -46,7 +46,7 @@
             </div>
             @if(Auth::user()->role < 1)
             <div class="col-lg-2 col-6">
-                <a href="admin/sekolah" class="small-box bg-gradient-olive">
+                <a href="/admin/sekolah" class="small-box bg-gradient-olive">
                     <div class="inner">
                         <h3>@foreach($school as $b){{$b->totids}}@endforeach</h3>
                         <p>Sekolah</p>
@@ -57,7 +57,7 @@
             @endif
             @if(Auth::user()->role < 2)
             <div class="col-lg-2 col-6">
-                <a href="admin/user" class="small-box bg-gradient-secondary">
+                <a href="/admin/user" class="small-box bg-gradient-secondary">
                     <div class="inner">
                         <h3>@foreach($user as $b){{$b->totidu}}@endforeach</h3>
                         <p>User</p>
