@@ -147,12 +147,11 @@ class EducationController extends Controller
      */
     public function destroy(Education $pendidikan)
     {
-        $exist1 = School::where('edu_id','=',$pendidikan->id)->get();
-        $exist2 = Book::where('edu_id','=',$pendidikan->id)->get();
-        $exist3 = User::where('edu_id','=',$pendidikan->id)->get();
+        $exist1 = School::where('edu_id','=',$pendidikan->id)->first();
+        $exist2 = Book::where('edu_id','=',$pendidikan->id)->first();
         
         $res = new stdClass();
-        if ($exist1||$exist2||$exist3) {
+        if (($exist1||$exist2) != null) {
             $stat = "error";
             $msg = "Tingkat pendidikan $pendidikan->name Tidak Boleh Dihapus!";
             $res->status = $stat;
@@ -164,11 +163,22 @@ class EducationController extends Controller
             $pendidikan->delete();
 
             $stat = "success";
-            $msg = "Tingkat pendidikan $nama berhasil ditambahkan!";
+            $msg = "Tingkat pendidikan $nama berhasil dihapus!";
             $res->status = $stat;
+            $res->url = route('pendidikan.index');
             $res->message = $msg;
             return response()->json($res);
         }
     }
-
+    public function check(Education $edu)
+    {
+        $exist1 = School::where('edu_id','=',$edu->id)->first();
+        $exist2 = Book::where('edu_id','=',$edu->id)->first();
+        $ex = [$exist1,$exist2];
+        if (($exist1||$exist2) != null) {
+            return json_encode($ex,false);
+        }else {
+           return 'delete available';
+        }
+    }
 }

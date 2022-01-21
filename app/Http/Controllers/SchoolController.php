@@ -15,11 +15,13 @@ class SchoolController extends Controller
      *
      */
 
-    public function index(Request $request)
+    public function index()
     {
-        $sch = School::paginate(10);
-        // return compact('sch');
-        return view('school.index',compact('sch'));
+        return view('school.index');
+    }
+    public function getAll(Request $request)
+    {
+        
     }
 
     /**
