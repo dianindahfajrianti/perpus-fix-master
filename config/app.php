@@ -165,7 +165,10 @@ return [
         /*
          * Package Service Providers...
          */
+        //DataTables
         Yajra\DataTables\DataTablesServiceProvider::class,
+        //Excel Services
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -231,6 +234,7 @@ return [
          * App Package Use
          */
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];
