@@ -58,7 +58,7 @@
                     </div>
                     <div class="modal-body">
                     <div class="form-group">
-                            <label class="form-label" for="txttile">Jenjang</label>
+                            <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
                                 <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
                                     <option selected>-- Pilih Jenjang --</option>

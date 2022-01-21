@@ -78,8 +78,8 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="filebook">Upload File</label>
-                                            <input type="file" name="filebook" id="filebook" class="form-control">
+                                            <label class="form-label" for="upload">Upload File</label>
+                                            <input type="file" name="upload" id="filebook" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="judul">Judul Video</label>
-                                            <input type="text" name="title" id="judul" class="form-control">
+                                            <input type="text" name="judul" id="judul" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="title" id="desc" class="form-control">
+                                            <input type="text" name="desc" id="desc" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="jml">Jml Dilihat</label>
-                                            <input type="text" name="title" id="jml" class="form-control">
+                                            <input type="text" name="jml" id="jml" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="creator">Creator</label>
-                                            <input type="text" name="title" id="creator" class="form-control">
+                                            <input type="text" name="creator" id="creator" class="form-control">
                                         </div>
                                     </div>
                                 </div>

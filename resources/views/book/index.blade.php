@@ -177,7 +177,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="judul">Judul Buku</label>
-                                            <input type="text" name="title" id="judul" class="form-control">
+                                            <input type="text" name="judul" id="judul" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="title" id="desc" class="form-control">
+                                            <input type="text" name="desc" id="desc" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="jml">Jml Dilihat</label>
-                                            <input type="text" name="title" id="jml" class="form-control">
+                                            <input type="text" name="jml" id="jml" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="tahun">Tahun Terbit</label>
-                                            <input type="text" name="title" id="tahun" class="form-control">
+                                            <input type="text" name="tahun" id="tahun" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +209,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="penerbit">Penerbit</label>
-                                            <input type="text" name="title" id="penerbit" class="form-control">
+                                            <input type="text" name="penerbit" id="penerbit" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="pengarang">Pengarang</label>
-                                            <input type="text" name="title" id="pengarang" class="form-control">
+                                            <input type="text" name="pengarang" id="pengarang" class="form-control">
                                         </div>
                                     </div>
                                 </div>
