@@ -24,6 +24,18 @@ class Book extends Model
         return $this->hasOne(Subject::class,'id','subject_id');
     }
     protected $fillable = [
-        'title','desc','filename','filetype','clicked_time','school_id','edu_id','grade_id','major_id','sub_id','published_year','publisher','author',
+        'title',
+        'desc',
+        'filename',
+        'filetype',
+        'clicked_time',
+        'school_id',
+        'edu_id',
+        'grade_id',
+        'major_id',
+        'sub_id',
+        'published_year',
+        'publisher',
+        'author'
     ];
 }

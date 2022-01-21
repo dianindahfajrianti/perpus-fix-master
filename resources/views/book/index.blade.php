@@ -35,21 +35,24 @@
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah buku</button>
                     </div>
                     <div class="card-body">
-                        <table id="tb-book" class="table table-bordered table-striped">
-                            <thead>
-                                <th>No</th>
-                                <th>Judul Buku</th>
-                                <th>Deskripsi</th>
-                                <th>Jml Dilihat</th>
-                                <th>Tahun Terbit</th>
-                                <th>Penerbit</th>
-                                <th>Pengarang</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
+                        {{-- <div class="table-responsive"> --}}
+                            <table id="tb-book" class="table table-bordered table-striped">
+                                <thead>
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>Judul Buku</th>
+                                    <th>Deskripsi</th>
+                                    <th>Jml Dilihat</th>
+                                    <th>Tahun Terbit</th>
+                                    <th>Penerbit</th>
+                                    <th>Pengarang</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+    
+                                </tbody>
+                            </table>
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -64,7 +67,7 @@
                         <h1>Tambah buku</h1>
                     </div>
                     <div class="modal-body">
-                        <p class="text-red">*) Pastikan seluruh data terisi</p>
+                        <p class="text-red">*) Pastikan seluruh input terisi</p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="file" aria-selected="true">File</a>
@@ -279,7 +282,7 @@
 
         var table = $('#tb-book').DataTable({
             "paging": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "searching": true,
             "ordering": true,
             "info": true,
@@ -287,11 +290,21 @@
             "responsive": true,
             "processing": true,
             "serverSide": true,
+            "columnDefs":[
+                {targets: [1],visible:false,searchable:false}
+            ],
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
-                    searchable: false
+                    searchable: false,
+                    className: 'details-control',
+                    responsivePriority: 1
+                },
+                {
+                    data: "id",
+                    name: "id",
+                    orderable: false
                 },
                 {
                     data: "title",
@@ -316,11 +329,8 @@
                 {
                     data: "author",
                     name: "author"
-                },
-                {
-                    defaultContent: '<a type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></a>',
-                    orderable: false,
-                    searchable: false
+                },{
+                    defaultContent:'<button type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ],
             "ajax": "/buku/all"
@@ -331,11 +341,11 @@
         //     url: "/buku/all",
         //     dataType: "json",
         //     success: function(d) {
-        //         console.log(d);
+        //         // console.log(d);
         //         // alert(d);
         //     },
         //     error: function(d) {
-        //         console.log(d);
+        //         // console.log(d);
         //         // alert(d);
         //     }
         // });
@@ -372,7 +382,39 @@
         //         }
         //     });
         // });
-
+        $('#tb-book tbody').on('click','.edit-book',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "buku/"+id+"/edit";
+        });
+        $('#tb-book tbody').on('click','.del-book',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"delete",
+                        url:"/admin/buku/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success:function(data){
+                            console.log(data);
+                        },error:function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 @error('book_name')

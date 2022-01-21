@@ -8,6 +8,7 @@ use App\School;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -26,6 +27,20 @@ class UserController extends Controller
         return view('user.index',compact('user'));
     }
 
+    public function data(Request $request)
+    {
+        if ($request != null) {
+            $model = User::select('id','title','desc','clicked_time','published_year','publisher','author','id');
+        }else{
+            $rel = ['getEdu','getGrade'];
+            $model = User::with($rel)
+                        ->select('id','title','desc','clicked_time','published_year','publisher','author','id');
+        }
+        return DataTables::of($model)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->toJson();
+    }
     /**
      * Show the form for creating a new resource.
      *

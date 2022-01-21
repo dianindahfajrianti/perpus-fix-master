@@ -18,13 +18,18 @@ class BookController extends Controller
         return view('book.index');
     }
 
-    public function data()
+    public function data(Request $request)
     {
-        $rel = ['getEdu','getGrade'];
-        $model = Book::with($rel)
-                    ->select('title','desc','clicked_time','published_year','publisher','author');
+        if ($request != null) {
+            $model = Book::select('id','title','desc','clicked_time','published_year','publisher','author','id');
+        }else{
+            $rel = ['getEdu','getGrade'];
+            $model = Book::with($rel)
+                        ->select('id','title','desc','clicked_time','published_year','publisher','author','id');
+        }
         return DataTables::of($model)
                 ->addIndexColumn()
+                ->setRowId('id')
                 ->toJson();
     }
     /**

@@ -28,10 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
         Route::post('user/storeOne', 'UserController@storeOne');
-        //DataTables get
-        Route::get('/buku/all','BookController@data');
-        Route::get('pendidikan/all', 'EducationController@getjson');
-        Route::get('sekolah/all', 'SchoolController@getAll');
+        
     });
     Route::get('riwayat/{user}', 'HistoryController@show');
     Route::get('profile/{user}', 'UserController@profile');
@@ -41,3 +38,10 @@ Auth::routes([
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
+//DataTables get
+Route::get('/buku/all','BookController@data');
+Route::get('/user/all', 'UserController@data');
+Route::get('/sekolah/all', 'SchoolController@data');
+Route::get('/buku/all','BookController@data');
+Route::get('/pendidikan/all', 'EducationController@data');
+Route::get('/sekolah/all', 'SchoolController@data');
