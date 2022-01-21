@@ -71,7 +71,7 @@
                         <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="jenjang" aria-label="Example select with button addon">
+                                <select class="form-control select2bs4" name="jenjang" id="jenjang" aria-label="Example select with button addon">
                                     <option selected>-- Pilih Jenjang --</option>
                                     <option value="1">SD</option>
                                     <option value="2">SMP</option>
@@ -82,11 +82,11 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="alamat">Alamat</label>
-                            <input type="text" name="title" id="alamat" class="form-control">
+                            <input type="text" name="alamat" id="alamat" class="form-control">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="notelp">Nomor Telephone</label>
-                            <input type="text" name="title" id="notelp" class="form-control">
+                            <input type="text" name="notelp" id="notelp" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
