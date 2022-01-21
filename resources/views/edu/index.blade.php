@@ -215,7 +215,9 @@
                             title: "Berhasil",
                             text: data.message,
                             timer: 1200
-                        })
+                        }).then(function(){
+                            document.location.reload(true);
+                        });
                         console.log(data);
                     },error:function(data){
                         var js = data.responseJSON;
