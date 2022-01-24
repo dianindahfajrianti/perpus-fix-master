@@ -95,19 +95,6 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                            <label class="form-label" for="txttile">Jenjang</label>
-                            <input type="text" name="title" id="txttitle" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="grade_name">Kelas</label>
-                            <input type="text" name="grade_name" id="grade_name" class="form-control @error('grade_name'){{'is-invalid'}}@enderror" value="{{old('grade_name')}}">
-                            @error('grade_name')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                            @enderror
-                        </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>

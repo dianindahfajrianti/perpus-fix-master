@@ -35,13 +35,12 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("jurusan.update",$education->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="/admin/book" enctype="multipart/form-data">
                         @csrf
-                        @method('put')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="user_name">Nama Jurusan</label>
-                                <input type="text" name="user_name" id="user_name" class="form-control @error('user_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$usercation->user_name}}">
+                                <input type="text" name="user_name" id="user_name" class="form-control @error('user_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('user_name')}}">
                                 @error('user_name')
                                 <div class="invalid-feedback">
                                     {{$message}}

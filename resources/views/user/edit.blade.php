@@ -40,9 +40,9 @@
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="user_name">Nama Jurusan</label>
-                                <input type="text" name="user_name" id="user_name" class="form-control @error('user_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$usercation->user_name}}">
-                                @error('user_name')
+                                <label for="major_name">Nama Jurusan</label>
+                                <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$majorcation->major_name}}">
+                                @error('major_name')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
