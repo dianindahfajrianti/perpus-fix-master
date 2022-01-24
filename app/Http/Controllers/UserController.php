@@ -23,12 +23,15 @@ class UserController extends Controller
     public function index()
     {
         $edu = Education::all();
+        $sch = School::all();
+        $grade = Grade::all();
+        $mjr = Major::all();
         if (Auth::user()->role < 1) {
             $user = User::all();
         } else {
             $user = User::where('role', '>=', 1)->get();
         }
-        return view('user.index', compact('user','edu'));
+        return view('user.index', compact('user','edu','sch','grade','mjr'));
     }
 
     public function data()
@@ -46,10 +49,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
-        $sch = School::all();
-        $grade = Grade::all();
-        $mjr = Major::all();
         return view('user.add', compact('sch', 'grade', 'mjr'));
     }
 
@@ -60,9 +59,6 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-    }
-    public function storeOne(Request $request)
     {
         $this->validate($request, [
             'select_file'  => 'required|mimes:xls,xlsx'
@@ -101,6 +97,18 @@ class UserController extends Controller
             }
         }
         return back()->with('success', 'Excel Data Imported successfully.');
+    }
+    public function storeOne(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'username' => 'required|max:10|numeric',
+            'email' => 'required|email',
+            'sekolah' => 'required',
+            'jenjang' => 'required',
+            'kelas' => 'required',
+            'role' => 'required'
+        ]);
     }
 
     /**

@@ -52,18 +52,18 @@
     </div>
     @php
     function numberToRomanRepresentation($number) {
-        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-        $returnValue = '';
-        while ($number > 0) {
-            foreach ($map as $roman => $int) {
-                if($number >= $int) {
-                    $number -= $int;
-                    $returnValue .= $roman;
-                    break;
-                }
-            }
-        }
-        return $returnValue;
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
     }
     @endphp
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
@@ -75,46 +75,46 @@
                         <h1>Tambah User</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="desc">Nama</label>
-                                    <input type="text" name="desc" id="desc" class="form-control">
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
-                            <label for="user_name">username</label>
-                            <input type="text" name="user_name" id="user_name" class="form-control @error('user_name'){{'is-invalid'}}@enderror" value="{{old('user_name')}}">
-                            @error('user_name')
+                            <label for="nama">Nama</label>
+                            <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" value="{{old('nama')}}">
+                            @error('nama')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
                             @enderror
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="desc">Email</label>
-                                    <input type="text" name="desc" id="desc" class="form-control">
-                                </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username')}}">
+                            @error('username')
+                            <div class="invalid-feedback">
+                                {{$message}}
                             </div>
+                            @enderror
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="desc">Sekolah</label>
-                                    <input type="text" name="desc" id="desc" class="form-control">
-                                </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="text" name="email" id="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sekolah">Sekolah</label>
+                            <div class="input-group">
+                                <select name="sekolah" class="form-control select2bs4" id="sekolah" aria-label="">
+                                    <option value="">-- Pilih Sekolah --</option>
+                                    @foreach ($sch as $s )
+                                    <option value="{{ $s->id }}">{{ $s->sch_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select name="jenjang" class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <select name="jenjang" class="form-control select2bs4" id="jenjang" aria-label="">
                                     <option value="">-- Pilih Jenjang --</option>
                                     @foreach ($edu as $e )
-                                        <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <label class="form-label" for="kelas">Kelas</label>
                             <div class="input-group">
-                                <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="Example select with button addon">
+                                <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                     <option value="">-- Pilih Kelas --</option>
                                     @for ($i = 1; $i < 13; $i++) <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
                                         @endfor
@@ -130,12 +130,21 @@
                             </div>
                         </div>
                         <div class="form-group mt-3">
-                            <label class="form-label" for="role">role</label>
+                            <label class="form-label" for="role">Role</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="">
                                     <option selected>-- Pilih Role --</option>
-                                    <option value="1">Guru</option>
-                                    <option value="2">Siswa</option>
+                                    @php
+                                        $rl = [
+                                            'Super Admin',
+                                            'Admin Sekolah',
+                                            'Guru',
+                                            'Murid'
+                                        ];
+                                    @endphp
+                                    @for($i = 0; $i < count($rl); $i++)
+                                    <option value="{{ $i }}">{{ $rl[$i] }}</option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -181,104 +190,115 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-user').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true
-                // , "processing": true
-                // , "serverSide":true
-                ,
-            "columns": [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: "name",
-                    name: "name"
-                },
-                {
-                    data: "username",
-                    name: "username"
-                },
-                {
-                    defaultContent: '<button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'
+            "paging": true
+            , "lengthChange": false
+            , "searching": true
+            , "ordering": true
+            , "info": true
+            , "autoWidth": false
+            , "responsive": true
+            , "processing": true
+            , "serverSide": true
+            , "columns": [{
+                    data: 'DT_RowIndex'
+                    , name: 'DT_RowIndex'
+                    , orderable: false
+                    , searchable: false
+                }
+                , {
+                    data: "name"
+                    , name: "name"
+                }
+                , {
+                    data: "username"
+                    , name: "username"
+                }
+                , {
+                    data: "role"
+                    , name: "role"
+                    , render: function(data, type, full, mime) {
+                        var rl = "";
+                        if (data == 0) {
+                            rl = "Super Admin";
+                        } else if (data == 1) {
+                            rl = "Admin Sekolah";
+                        } else if (data == 2) {
+                            rl = "Admin Guru";
+                        } else {
+                            rl = "Murid";
+                        }
+                        return rl;
+                    }
+                }
+                , {
+                    defaultContent: '<button type="button" class="d-inline v-user btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
-            // ,"ajax" : "/user/all"
+            , "ajax": "/user/all"
         });
-
-        $.ajax({
-            type: "get",
-            url: "/user/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
+        $('#tb-user tbody').on('click', '.edit-user', function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "user/" + id + "/edit";
         });
-
-        // $('#save-user').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/user",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
+        $('#tb-user tbody').on('click', '.v-user', function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "user/" + id;
+        });
+        $('#tb-user tbody').on('click', '.del-user', function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?'
+                , text: "Anda tidak bisa kembalikan data!"
+                , icon: 'warning'
+                , showCancelButton: true
+                , confirmButtonColor: '#3085d6'
+                , cancelButtonColor: '#d33'
+                , confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "delete"
+                        , url: "/admin/user/" + id
+                        , data: {
+                            _token: "{{ csrf_token() }}"
+                        , }
+                        , success: function(data) {
+                            console.log(data);
+                        }
+                        , error: function(data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        });
 
     });
+
 </script>
-@error('user_name')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#modal-add').modal('show');
+        @if (count($errors)>0) {
+            $('#modal-add').modal('show');
+        }
+        @endif
     });
 </script>
-@enderror
 @if (session('success'))
 <script>
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success',
-            title: 'Done',
-            text: "{{session('success')}}",
-            timer: 1700
+            icon: 'success'
+            , title: 'Done'
+            , text: "{{session('success')}}"
+            , timer: 1700
         });
     })
+
 </script>
 @endif
 @if (session('error'))
@@ -286,12 +306,13 @@
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error',
-            title: 'Failed',
-            text: "{{session('error')}}",
-            timer: 1700
+            icon: 'error'
+            , title: 'Failed'
+            , text: "{{session('error')}}"
+            , timer: 1700
         });
     })
+
 </script>
 @endif
 @endsection
