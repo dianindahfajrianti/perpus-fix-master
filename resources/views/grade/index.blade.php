@@ -48,10 +48,26 @@
             </div>
         </div>
     </div>
+    @php
+    function numberToRomanRepresentation($number) {
+        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+        $returnValue = '';
+        while ($number > 0) {
+            foreach ($map as $roman => $int) {
+                if($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                }
+            }
+        }
+        return $returnValue;
+    }
+    @endphp
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{route('buku.store')}}" method="POST">
+                <form id="fdata" action="{{route('kelas.store')}}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h1>Tambah Kelas</h1>
@@ -60,32 +76,22 @@
                     <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                    <option selected>-- Pilih Jenjang --</option>
-                                    <option value="1">SD</option>
-                                    <option value="2">SMP</option>
-                                    <option value="3">SMA</option>
-                                    <option value="3">SMK</option>
+                                <select name="jenjang" class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                    <option value="">-- Pilih Jenjang --</option>
+                                    @foreach ($edu as $e )
+                                        <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label" for="kelas">Kelas</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="kelas" aria-label="Example select with button addon">
-                                    <option selected>-- Pilih Kelas --</option>
-                                    <option value="1">I</option>
-                                    <option value="2">II</option>
-                                    <option value="3">III</option>
-                                    <option value="4">IV</option>
-                                    <option value="5">V</option>
-                                    <option value="6">VI</option>
-                                    <option value="7">VII</option>
-                                    <option value="8">VIII</option>
-                                    <option value="9">IX</option>
-                                    <option value="10">X</option>
-                                    <option value="11">XI</option>
-                                    <option value="12">XII</option>
+                                <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="Example select with button addon">
+                                    <option value="">-- Pilih Kelas --</option>
+                                    @for ($i = 1; $i < 13; $i++)
+                                    <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -151,18 +157,17 @@
             "info": true,
             "autoWidth": false,
             "responsive": true
-                // , "processing": true
-                // , "serverSide":true
-                ,
-            "columns": [{
+            , "processing": true
+            , "serverSide":true
+            ,"columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: "edu_name",
-                    name: "edu_name"
+                    data: "get_edu.edu_name",
+                    name: "get_edu.edu_name"
                 },
                 {
                     data: "grade_name",
@@ -172,56 +177,41 @@
                     defaultContent:'<button type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
-            // ,"ajax" : "/buku/all"
+            ,"ajax" : "/kelas/all"
         });
-
-        $.ajax({
-            type: "get",
-            url: "/buku/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
+        $('#tb-grade tbody').on('click','.edit-grade',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "kelas/"+id+"/edit";
         });
-
-        // $('#save-grade').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/buku",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
-
+        $('#tb-grade tbody').on('click','.del-grade',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"delete",
+                        url:"/admin/kelas/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success:function(data){
+                            console.log(data);
+                        },error:function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 @error('grade_name')

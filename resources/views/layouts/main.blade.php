@@ -48,8 +48,11 @@
                     <li><a href="/file">Buku</a></li>
                     <li><a href="/file">Multimedia</a></li>
                     <li><a href="/panduan">Panduan</a></li>
-                    <li><a class="getstarted scrollto" href="/login">Masuk</a></li>
+                    @if(Auth::user())
                     <a href="profile.html"><i class="bi bi-person-circle"></i></a></li>
+                    @else
+                    <li><a class="getstarted scrollto" href="/login">Masuk</a></li>
+                    @endif
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->

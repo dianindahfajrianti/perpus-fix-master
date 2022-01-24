@@ -90,7 +90,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="/admin/mapel" class="nav-link @if (Request::segment(2) == 'mapel') {{'active'}} @endif">
-                        <i class="nav-icon fas fa-book-medical"></i>
+                        <i class="nav-icon fas fa-atlas"></i>
                         <p>
                             Mata Pelajaran
                         </p>

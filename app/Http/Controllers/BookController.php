@@ -18,19 +18,15 @@ class BookController extends Controller
         return view('book.index');
     }
 
-    public function data(Request $request)
+    public function data()
     {
-        if ($request != null) {
-            $model = Book::select('id','title','desc','clicked_time','published_year','publisher','author','id');
-        }else{
-            $rel = ['getEdu','getGrade'];
-            $model = Book::with($rel)
-                        ->select('id','title','desc','clicked_time','published_year','publisher','author','id');
-        }
+        $rel = ['getEdu', 'getGrade'];
+        $model = Book::with($rel)
+            ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author');
         return DataTables::of($model)
-                ->addIndexColumn()
-                ->setRowId('id')
-                ->toJson();
+            ->addIndexColumn()
+            ->setRowId('id')
+            ->toJson();
     }
     /**
      * Show the form for creating a new resource.
@@ -39,7 +35,6 @@ class BookController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -50,7 +45,6 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**

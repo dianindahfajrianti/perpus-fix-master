@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Grade;
 use App\School;
 use App\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SchoolController extends Controller
 {
@@ -19,9 +21,15 @@ class SchoolController extends Controller
     {
         return view('school.index');
     }
-    public function getAll(Request $request)
+    public function data()
     {
-        
+        $rel = ['getEdu'];
+        $model = Grade::with($rel)
+            ->select('*');
+        return DataTables::of($model)
+            ->addIndexColumn()
+            ->setRowId('id')
+            ->toJson();
     }
 
     /**

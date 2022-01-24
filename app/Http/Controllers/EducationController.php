@@ -23,13 +23,14 @@ class EducationController extends Controller
 
     public function index()
     {
-        $edu = Education::all();
-        return view('edu.index',compact('edu'));
+        return view('edu.index');
     }
-    public function getjson()
+    public function data()
     {
-        return DTB::of(Education::select("id","edu_name"))
+        $model = Education::select("id","edu_name");
+        return DTB::of($model)
                ->addIndexColumn()
+               ->setRowId('id')
                ->make(true);
     }
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Education;
 use App\Grade;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class GradeController extends Controller
 {
@@ -27,10 +29,19 @@ class GradeController extends Controller
 
     public function index()
     {
-        $gr = Grade::all();
-        return view('grade.index',compact('gr'));
+        $edu = Education::all();
+        return view('grade.index',compact('edu'));
     }
-
+    public function data()
+    {
+        $rel = ['getEdu'];
+        $model = Grade::with($rel)
+            ->select('*');
+        return DataTables::of($model)
+            ->addIndexColumn()
+            ->setRowId('id')
+            ->toJson();
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -71,7 +82,7 @@ class GradeController extends Controller
             'message' => $this->msg,
             'url' => $this->url
         ];
-        return response()->json($res);
+        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
     }
 
     /**
@@ -126,7 +137,7 @@ class GradeController extends Controller
             'message' => $this->msg,
             'url' => $this->url
         ];
-        return response()->json($res);
+        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
     }
 
     /**
@@ -153,6 +164,6 @@ class GradeController extends Controller
             'message' => $this->msg,
             'url' => $this->url
         ];
-        return response()->json($res);
+        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
     }
 }

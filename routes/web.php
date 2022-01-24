@@ -40,10 +40,12 @@ Auth::routes([
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
-//DataTables get
-Route::get('/buku/all','BookController@data');
+//DataTable Needs
 Route::get('/user/all', 'UserController@data');
-Route::get('/sekolah/all', 'SchoolController@data');
-Route::get('/buku/all','BookController@data');
+Route::get('/sekolah/all', 'SchoolController@da ta');
 Route::get('/pendidikan/all', 'EducationController@data');
-Route::get('/sekolah/all', 'SchoolController@data');
+Route::get('/kelas/all','GradeController@data');
+Route::get('/jurusan/all','MajorController@data');
+Route::get('/mapel/all','SubjectController@data');
+Route::get('/buku/all', 'BookController@data');
+Route::get('/video/all', 'VideoController@data');

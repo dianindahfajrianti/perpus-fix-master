@@ -42,13 +42,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($edu as $e)
-                                <tr id="{{ $e->id }}">
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>{{$e->edu_name}}</td>
-                                    <td><a type="button" class="btn btn-success" href="{{ route('pendidikan.edit',$e->id) }}"><i class="fas fa-edit"></i></a> <a type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></a></td>
-                                </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -141,53 +134,12 @@
             ],
             "ajax": "/pendidikan/all"
         });
-
-        // $.ajax({
-        //     type:"get",
-        //     url:"/pendidikan/all",
-        //     dataType:"json",
-        //     success:function(d){
-        //         console.log(d);
-        //         // alert(d);
-        //     },error:function(d){
-        //         console.log(d);
-        //         // alert(d);
-        //     }
-        // });
-
-        // $('#save-edu').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/pendidikan",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
-        $('.del-edu').click(function(e) {
+        $('#tb-edu tbody').on('click','.edit-edu',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "pendidikan/"+id+"/edit";
+        });
+        $('#tb-edu tbody').on('click','.del-edu',function(e){
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
             Swal.fire({
@@ -201,35 +153,16 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: "delete",
-                        url: "/admin/pendidikan/" + id,
-                        dataType: "json",
-                        data: {
-                            _token: "{{ csrf_token() }}"
+                        type:"delete",
+                        url:"/admin/pendidikan/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
                         },
-                        success: function(data) {
-                            // var js = data.responseJSON;
-                            Swal.fire({
-                                icon: data.status,
-                                title: "Berhasil",
-                                text: data.message,
-                                timer: 1200
-                            }).then(function() {
-                                document.location.reload(true);
-                            });
+                        success:function(data){
                             console.log(data);
-                        },
-                        error: function(data) {
-                            var js = data.responseJSON;
-                            Swal.fire({
-                                icon: 'error',
-                                title: js.exception,
-                                text: js.message,
-                                timer: 1200
-                            });
+                        },error:function(data){
                             console.log(data);
                         }
-
                     });
                 }
             });

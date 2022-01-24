@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
+    public function onGrade()
+    {
+        return $this->belongsToMany(Grade::class,'parent_id','id');
+    }
     public function onBook()
     {
-        return $this->belongsToMany(Education::class);
+        return $this->belongsTo(Education::class,'edu_id','id');
     }
     public function onMedia()
     {
-        return $this->belongsToMany(Video::class);
+        return $this->belongsTo(Video::class,'edu_id','id');
     }
     public function onSchool()
     {
-        return $this->belongsToMany(School::class);
+        return $this->belongsTo(School::class,'edu_id','id');
     }
 }
