@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'user - Admin Perpus')
+@section('title', 'User - Admin Perpus')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -36,6 +36,7 @@
                         <table id="tb-user" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
+                                <th>Nama</th>
                                 <th>Username</th>
                                 <th>Role</th>
                                 <th>Aksi</th>
@@ -49,6 +50,22 @@
             </div>
         </div>
     </div>
+    @php
+    function numberToRomanRepresentation($number) {
+        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+        $returnValue = '';
+        while ($number > 0) {
+            foreach ($map as $roman => $int) {
+                if($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                }
+            }
+        }
+        return $returnValue;
+    }
+    @endphp
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -181,12 +198,12 @@
                     searchable: false
                 },
                 {
-                    data: "grade_name",
-                    name: "grade_name"
+                    data: "name",
+                    name: "name"
                 },
                 {
-                    data: "maj_name",
-                    name: "maj_name"
+                    data: "username",
+                    name: "username"
                 },
                 {
                     defaultContent: '<button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'

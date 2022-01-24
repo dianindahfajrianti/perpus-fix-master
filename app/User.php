@@ -46,4 +46,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getSchool()
+    {
+        return $this->hasOne(School::class,'id','school_id');
+    }
+    public function getGrade()
+    {
+        return $this->hasOne(Grade::class,'id','grade_id');
+    }
+    public function getMajor()
+    {
+        return $this->hasOne(Major::class,'id','major_id');
+    }
 }

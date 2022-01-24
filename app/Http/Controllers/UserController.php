@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Education;
 use App\Grade;
 use App\Major;
 use App\School;
@@ -21,23 +22,18 @@ class UserController extends Controller
      */
     public function index()
     {
+        $edu = Education::all();
         if (Auth::user()->role < 1) {
             $user = User::all();
         } else {
             $user = User::where('role', '>=', 1)->get();
         }
-        return view('user.index', compact('user'));
+        return view('user.index', compact('user','edu'));
     }
 
-    public function data(Request $request)
+    public function data()
     {
-        if ($request != null) {
-            $model = User::select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author', 'id');
-        } else {
-            $rel = ['getEdu', 'getGrade'];
-            $model = User::with($rel)
-                ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author', 'id');
-        }
+        $model = User::all();
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
