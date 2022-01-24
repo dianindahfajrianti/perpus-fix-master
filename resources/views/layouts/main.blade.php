@@ -49,7 +49,12 @@
                     <li><a href="/file">Multimedia</a></li>
                     <li><a href="/panduan">Panduan</a></li>
                     <li><a class="getstarted scrollto" href="/login">Masuk</a></li>
-                    <a href="profile.html"><i class="bi bi-person-circle"></i></a></li>
+                    <li class="dropdown"><a href="#"><i class="bi bi-person-circle"></i></a>
+                        <ul>
+                            <li><a href="/profile"><span><i class="ri-user-line"></i> Akun</span></a></li>
+                            <li><a href="/logout"><span><i class="ri-logout-box-line"></i> Keluar</span></a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->

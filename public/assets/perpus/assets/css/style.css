@@ -157,6 +157,12 @@ section {
 .navbar {
   padding: 0;
 }
+.navbar span {
+  color: #1f1f1f;
+}
+.navbar span:hover {
+  color: #bb4430;
+}
 .navbar ul {
   margin: 0;
   padding: 0;

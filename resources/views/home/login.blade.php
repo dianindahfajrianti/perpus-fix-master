@@ -11,8 +11,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/perpus.png" rel="icon">
-    <link href="assets/img/perpus.png" rel="apple-touch-icon">
+    <link href="/assets/perpus/assets/img/perpus.png" rel="icon">
+    <link href="/assets/perpus/assets/img/perpus.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link
@@ -20,26 +20,28 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href=/assets/perpus/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/perpus/assets/css/style.css" rel="stylesheet">
+    @yield('ext-css')
 
 </head>
 
 <body>
 
+@section('container')
     <!-- ======= Header ======= -->
     <header id="headerLogin" class="headerLogin">
         <div class="container d-flex">
 
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="assets/img/logo-perpus.png" class="img-fluid animated" alt="">
+                <img src="/assets/perpus/assets/img/logo-perpus.png" class="img-fluid animated" alt="">
             </a>
             <p>Masuk</p>
 
@@ -77,13 +79,13 @@
                                   <label class="form-check-label" for="exampleCheck1">Ingatkan Saya</label>
                                 </div>
                                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-                                <a href="index-profile.html" class="btn-login scrollto">Masuk</a>
+                                <a href="index.html" class="btn-login scrollto">Masuk</a>
                               </form>
                         </div>
                     </div>
 
                     <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="assets/img/login-img.png" class="img-fluid" alt="">
+                        <img src="/assets/perpus/assets/img/login-img.png" class="img-fluid" alt="">
                     </div>
 
                 </div>
@@ -92,6 +94,7 @@
         </section><!-- End About Section -->
 
     </main><!-- End #main -->
+@endsection
 
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
@@ -109,16 +112,17 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/purecounter/purecounter.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/perpus/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="/assets/perpus/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/perpus/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/perpus/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/perpus/assets/vendor/purecounter/purecounter.js"></script>
+    <script src="/assets/perpus/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/perpus/assets/vendor/glightbox/js/glightbox.min.js"></script>
 
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/perpus/assets/js/main.js"></script>
+    @yield('ext-js')
 
 </body>
 
