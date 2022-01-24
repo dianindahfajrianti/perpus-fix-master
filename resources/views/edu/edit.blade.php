@@ -12,13 +12,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Tambah Jenjang</h3>
+                <h3 class="display-4">Edit Jenjang</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/pendidikan">Pendidikan</a></li>
-                    <li class="breadcrumb-item">Tambah Pendidikan</li>
+                    <li class="breadcrumb-item">Edit Pendidikan</li>
                 </ol>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Pendidikan</h3>
+                        <h3 class="card-title">Edit Pendidikan</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->

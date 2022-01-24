@@ -21,7 +21,7 @@
         <div class="content-list" id="file-terbaru">
           <div class="row">
             <!-- Search Sidebar -->
-            <aside class="col-lg-3">
+            <aside class="col-lg-3 mb-1">
               <button type="button" class="btn-lg btn-filter d-lg-none d-block" id="filterbtn">
                 <center>
                   <i class="ri-filter-fill"></i>
