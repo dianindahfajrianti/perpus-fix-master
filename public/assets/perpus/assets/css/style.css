@@ -355,9 +355,6 @@ section {
   height: 80vh;
   background: #03AE24;
 }
-#hero .container {
-  padding-top: 72px;
-}
 #hero h1 {
   margin: 0 0 10px 0;
   font-size: 48px;

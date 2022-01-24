@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Singlepage;
 
 
 class HomeController extends Controller
@@ -24,10 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        return view('home.index');
     }
     public function info()
     {
         return phpinfo();
+    }
+    public function showfile()
+    {
+        return view('home.file');
     }
 }
