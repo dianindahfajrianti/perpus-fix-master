@@ -14,6 +14,7 @@
 //Perpus Front - End
 Route::get('/', 'HomeController@index');
 Route::get('/file', 'HomeController@showfile')->name('file');
+Route::get('/profile', 'HomeController@showprofile')->name('profile');
 
 //Admin Back-End
 Route::get('admin', 'Admin@index');
