@@ -35,19 +35,53 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("sekolah.update",$sch->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('sekolah.update',$sch->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nama">Nama Sekolah</label>
-                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$sch->sch_name}}">
+                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" value="{{ old('nama',$sch->sch_name) }}">
                                 @error('nama')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                            <label class="form-label" for="jenjang">Jenjang</label>
+                            <div class="input-group">
+                                <select class="form-control select2bs4 @error('jenjang'){{'is-invalid'}}@enderror" name="jenjang" id="jenjang" aria-label="Example select with button addon">
+                                    <option value="">-- Pilih Jenjang --</option>
+                                    @foreach ($edu as $e)
+                                    <option @if( old('jenjang', $sch->edu_id) ==$e->id){{ 'selected' }} @endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="alamat">Alamat</label>
+                            <textarea type="text" name="alamat" id="alamat" class="form-control @error('alamat') {{'is-invalid'}} @enderror" placeholder="Alamat Lengkap Sekolah">{{ old('alamat', $sch->address) }}</textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="notelp">Nomor Telephone</label>
+                            <input type="tel" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp', $sch->phone) }}">
+                            @error('notelp')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
+                        </div>
 
                         </div>
                         <!-- /.card-body -->
@@ -56,7 +90,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
