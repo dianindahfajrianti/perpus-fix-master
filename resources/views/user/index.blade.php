@@ -105,7 +105,7 @@
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
                             <div class="input-group">
-                                <select name="sekolah" class="form-control select2bs4" id="sekolah" aria-label="">
+                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id="sekolah" aria-label="">
                                     <option value="">-- Pilih Sekolah --</option>
                                     @foreach ($sch as $s )
                                     <option value="{{ $s->id }}">{{ $s->sch_name }}</option>
@@ -121,7 +121,7 @@
                         <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select name="jenjang" class="form-control select2bs4" id="jenjang" aria-label="">
+                                <select name="jenjang" class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="">
                                     <option value="">-- Pilih Jenjang --</option>
                                     @foreach ($edu as $e )
                                     <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
@@ -152,7 +152,7 @@
                         <div class="form-group mt-3">
                             <label class="form-label" for="role">Role</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="">
+                                <select class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror"" id="role" aria-label="">
                                     <option selected>-- Pilih Role --</option>
                                     @php
                                     $rl = [

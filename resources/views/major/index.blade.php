@@ -60,7 +60,7 @@
                         <div class="form-group mt-3">
                             <label class="form-label" for="kelas">Kelas</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <select class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror"" id="kelas" aria-label="Example select with button addon">
                                     <option selected>-- Pilih Kelas --</option>
                                     <option value="1">I</option>
                                     <option value="2">II</option>

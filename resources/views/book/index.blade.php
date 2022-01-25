@@ -101,7 +101,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="jenjang">Jenjang</label>
                                             <div class="input-group">
-                                                <select class="form-control select2bs4" id="jenjang" aria-label="Example select with button addon">
+                                                <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="Example select with button addon">
                                                     <option selected>-- Pilih Jenjang --</option>
                                                     <option value="1">SD</option>
                                                     <option value="2">SMP</option>

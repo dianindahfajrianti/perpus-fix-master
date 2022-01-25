@@ -76,7 +76,7 @@
                         <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select name="jenjang" class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <select name="jenjang" class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="Example select with button addon">
                                     <option value="">-- Pilih Jenjang --</option>
                                     @foreach ($edu as $e )
                                     <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
