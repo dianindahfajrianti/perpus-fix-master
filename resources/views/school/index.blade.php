@@ -78,15 +78,30 @@
                                     <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="alamat">Alamat</label>
-                            <textarea type="text" name="alamat" id="alamat" class="form-control" placeholder="Alamat Lengkap Sekolah">{{ old('alamat') }}</textarea>
+                            <textarea type="text" name="alamat" id="alamat" class="form-control @error('alamat') {{'is-invalid'}} @enderror" placeholder="Alamat Lengkap Sekolah">{{ old('alamat') }}</textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="notelp">Nomor Telephone</label>
-                            <input type="tel" name="notelp" id="notelp" class="form-control" value="{{ old('notelp') }}">
+                            <input type="tel" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp') }}">
+                            @error('notelp')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
