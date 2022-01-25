@@ -166,8 +166,8 @@
                     name: "sch_name"
                 },
                 {
-                    data: "edu_name",
-                    name: "edu_name"
+                    data: "has_edu.edu_name",
+                    name: "has_edu.edu_name"
                 },
                 {
                     data: "address",

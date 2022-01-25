@@ -266,10 +266,21 @@
                             _token: "{{ csrf_token() }}"
                         , }
                         , success: function(data) {
-                            console.log(data);
+                            Swal.fire({
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            })
                         }
                         , error: function(data) {
-                            console.log(data);
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
                         }
                     });
                 }

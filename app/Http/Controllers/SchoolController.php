@@ -61,12 +61,13 @@ class SchoolController extends Controller
         try {
             $sch = new School;
             $sch->edu_id = $request->jenjang;
-            $sch->address = $request->name;
-            $sch->phone = $request->telp;
+            $sch->sch_name = $request->nama;
+            $sch->address = $request->alamat;
+            $sch->phone = $request->notelp;
 
             $sch->save();
             $stat = "success";
-            $msg = "Sekolah $request->name berhasil ditambahkan!";
+            $msg = "$request->nama berhasil ditambahkan!";
         } catch (\Exception $th) {
             $stat = "error";
             $msg = $th;
@@ -76,6 +77,7 @@ class SchoolController extends Controller
             'message' => $msg
         ];
         return redirect()->route('sekolah.index')->with($stat,json_encode($res));
+        
     }
 
     /**
@@ -96,9 +98,10 @@ class SchoolController extends Controller
      * @param  \App\School  $school
      * @return \Illuminate\Http\Response
      */
-    public function edit(School $school)
+    public function edit(School $sekolah)
     {
-        return view('school.edit',compact('school'));
+        $sch = $sekolah;
+        return view('school.edit',compact('sch'));
     }
 
     /**
@@ -108,31 +111,34 @@ class SchoolController extends Controller
      * @param  \App\School  $school
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, School $school)
+    public function update(Request $request, School $sekolah)
     {
         $request->validate([
-            'jenjang' => 'required',
             'nama' => 'required|max:100',
-            'alamat' => 'required',
-            'telp' => 'required'
+            // 'jenjang' => 'required',
+            // 'alamat' => 'required|min:10',
+            // 'notelp' => 'required'
         ]);
         try {
-            $sch = $school;
-            $sch->edu_id = $request->jenjang;
-            $sch->address = $request->name;
-            $sch->phone = $request->telp;
+            $sch = new School;
+            // $sch->edu_id = $request->jenjang;
+            $sch->sch_name = $request->nama;
+            // $sch->address = $request->alamat;
+            // $sch->phone = $request->notelp;
 
             $sch->save();
             $stat = "success";
             $msg = "Sekolah $request->name berhasil dirubah!";
-            $res = [
+            
+        } catch (\Exception $th) {
+            $stat = "error";
+            $msg = $th;
+        }
+        $res = [
                 'status' => $stat,
                 'message' => $msg
             ];
-            return response()->json($res);
-        } catch (\Exception $th) {
-            return response()->json($th);
-        }
+        return redirect()->route('sekolah.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -141,27 +147,22 @@ class SchoolController extends Controller
      * @param  \App\School  $school
      * @return \Illuminate\Http\Response
      */
-    public function destroy(School $school)
+    public function destroy(School $sekolah)
     {
+        $school = $sekolah;
         $exist = User::where('school_id','=',$school->id)->first();
-
         if ($exist) {
             $stat = "error";
-            $msg = "$school->name tidak boleh dihapus! Karena ada user di $school->name";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
-            return response()->json($res);
+            $msg = "$school->name tidak boleh dihapus! Karena ada user di $school->name !";
         }else {
             $school->delete();
             $stat = "success";
             $msg = "$school->name berhasil dihapus!";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
-            return response()->json($res);
         }
+        $res = [
+            'status' => $stat,
+            'message' => $msg
+        ];
+        return redirect()->route('sekolah.index')->with($stat,json_encode($res));
     }
 }
