@@ -94,7 +94,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="jenjang">Jenjang</label>
                                             <div class="input-group">
-                                                <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="Example select with button addon">
+                                                <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="Example select with button addon">
                                                     <option selected>-- Pilih Jenjang --</option>
                                                     <option value="1">SD</option>
                                                     <option value="2">SMP</option>
@@ -115,7 +115,7 @@
                                         <div class="form-group mt-3">
                                             <label class="form-label" for="kelas">Kelas</label>
                                             <div class="input-group">
-                                                <select class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror"" id="kelas" aria-label="Example select with button addon">
+                                                <select class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="Example select with button addon">
                                                     <option selected>-- Pilih Kelas --</option>
                                                     <option value="1">I</option>
                                                     <option value="2">II</option>
@@ -144,7 +144,7 @@
                                         <div class="form-group mt-3">
                                             <label class="form-label" for="jurusan">Jurusan</label>
                                             <div class="input-group">
-                                                <select class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="Example select with button addon">
+                                                <select class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="Example select with button addon">
                                                     <option selected>-- Pilih Jurusan --</option>
                                                     <option value="1">IPA</option>
                                                     <option value="2">IPS</option>
@@ -168,7 +168,7 @@
                                         <div class="form-group mt-3">
                                             <label class="form-label" for="mapel">Mata Pelajaran</label>
                                             <div class="input-group">
-                                                <select class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="Example select with button addon">
+                                                <select class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="Example select with button addon">
                                                     <option selected>-- Pilih Mata Pelajaran --</option>
                                                     <option value="1">Bahasa Indonesia</option>
                                                     <option value="2">Bahasa Inggris</option>

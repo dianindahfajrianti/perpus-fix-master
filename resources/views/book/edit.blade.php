@@ -12,13 +12,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Tambah Jenjang</h3>
+                <h3 class="display-4">Edit Buku</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/pendidikan">Pendidikan</a></li>
-                    <li class="breadcrumb-item">Tambah Pendidikan</li>
+                    <li class="breadcrumb-item"><a href="/admin/buku">Buku</a></li>
+                    <li class="breadcrumb-item">Edit Buku</li>
                 </ol>
             </div>
         </div>
@@ -31,17 +31,17 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Pendidikan</h3>
+                        <h3 class="card-title">Edit Buku</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("pendidikan.update",$education->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{route("buku.update",$book->id)}}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="book_name">Nama Jenjang</label>
-                                <input type="text" name="book_name" id="book_name" class="form-control @error('book_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$bookcation->book_name}}">
+                                <input type="text" name="book_name" id="book_name" class="form-control @error('book_name'){{'is-invalid'}}@enderror" value="{{$book->book_name}}">
                                 @error('book_name')
                                 <div class="invalid-feedback">
                                     {{$message}}

@@ -100,8 +100,10 @@ class SchoolController extends Controller
      */
     public function edit(School $sekolah)
     {
-        $sch = $sekolah;
-        return view('school.edit',compact('sch'));
+        $edu = Education::all();
+        $sch = $sekolah->first();
+        // return compact('school');
+        return view('school.edit',compact('sch','edu'));
     }
 
     /**

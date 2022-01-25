@@ -36,12 +36,8 @@
                         <table id="tb-subject" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Judul Mata Pelajaran</th>
-                                <th>Deskripsi</th>
-                                <th>Jml Dilihat</th>
-                                <th>Tahun Terbit</th>
-                                <th>Penerbit</th>
-                                <th>Pengarang</th>
+                                <th>Jurusan</th>
+                                <th>Mata Pelajaran</th>
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
@@ -63,9 +59,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="subject_name">Nama Mata Pelajaran</label>
+                            <label for="subject_name">Mata Pelajaran</label>
                             <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{old('subject_name')}}">
                             @error('subject_name')
+                            <div class="invalid-feedback">
+                                {{$message}}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="major_name">Nama Jurusan</label>
+                            <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" value="{{old('major_name')}}">
+                            @error('major_name')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
