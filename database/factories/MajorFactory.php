@@ -6,8 +6,10 @@ use App\Model;
 use Faker\Generator as Faker;
 
 $factory->define(Model::class, function (Faker $faker) {
+    $jur = [
+        'Umum','Bahasa','IPA','IPS','Komputer Jaringan','Tata Boga','Kendaraan Ringan','Otomotif','Perhotelan','Tata Rias'
+    ];
     return [
-        'parent_id' => rand(1,4),
-        'major_name' => 
+        'major_name' => shuffle($jur)
     ];
 });

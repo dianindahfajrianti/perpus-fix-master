@@ -27,8 +27,7 @@ class GradeController extends Controller
     public function data()
     {
         $rel = ['getEdu'];
-        $model = Grade::with($rel)
-            ->select('*');
+        $model = Grade::all();
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
