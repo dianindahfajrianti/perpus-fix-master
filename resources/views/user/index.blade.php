@@ -279,7 +279,6 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-<<<<<<< Updated upstream
                         type: "delete"
                         , url: "/admin/user/" + id
                         , data: {
@@ -301,18 +300,6 @@
                                 text: js.message,
                                 timer: 1200
                             });
-=======
-                        type: "delete",
-                        url: "/admin/user/" + id,
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                        },
-                        success: function(data) {
-                            console.log(data);
-                        },
-                        error: function(data) {
-                            console.log(data);
->>>>>>> Stashed changes
                         }
                     });
                 }

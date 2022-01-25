@@ -59,4 +59,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Major::class,'id','major_id');
     }
+    public function onHistory()
+    {
+        return $this->belongsTo(History::class,'userid','id');
+    }
 }

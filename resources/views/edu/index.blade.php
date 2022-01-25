@@ -134,6 +134,7 @@
             ],
             "ajax": "/pendidikan/all"
         });
+        
         $('#tb-edu tbody').on('click','.edit-edu',function(e){
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
@@ -160,11 +161,12 @@
                         },
                         success:function(data){
                             Swal.fire({
-                            icon: data.status,
-                            title: "Berhasil",
-                            text: data.message,
-                            timer: 1200
-                        })
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            });
+                            table.draw();
                         },error:function(data){
                             var js = data.responseJSON;
                             Swal.fire({
@@ -181,6 +183,7 @@
 
     });
 </script>
+
 @error('edu_name')
 <script type="text/javascript">
     $(document).ready(function() {
@@ -188,6 +191,7 @@
     });
 </script>
 @enderror
+
 @if (session('success'))
 <script type="text/javascript">
     $(document).ready(function(e) {

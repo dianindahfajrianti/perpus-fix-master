@@ -12,13 +12,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Tambah Sekolah</h3>
+                <h3 class="display-4">Edit Sekolah</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/sekolah">Sekolah</a></li>
-                    <li class="breadcrumb-item">Tambah Sekolah</li>
+                    <li class="breadcrumb-item">Edit Sekolah</li>
                 </ol>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Sekolah</h3>
+                        <h3 class="card-title">Edit Sekolah</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -40,9 +40,9 @@
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="school_name">Nama Sekolah</label>
-                                <input type="text" name="school_name" id="school_name" class="form-control @error('school_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$sch->sch_name}}">
-                                @error('school_name')
+                                <label for="nama">Nama Sekolah</label>
+                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$sch->sch_name}}">
+                                @error('nama')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -51,7 +51,6 @@
 
                         </div>
                         <!-- /.card-body -->
-
                         <div class="card-footer">
                             <button type="submit" class="btn btn-dark">Save</button>
                         </div>

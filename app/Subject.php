@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+    public function hasMajor()
+    {
+        return $this->hasOne(Major::class,'id','major_id');
+    }
     public function onBook()
     {
-        return $this->belongsToMany(Book::class);
+        return $this->belongsTo(Book::class,'sub_id','id');
     }
     public function onVideo()
     {
-        return $this->belongsToMany(Video::class);
-    }
-    public function onUser()
-    {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(Video::class,'sub_id','id');
     }
 }

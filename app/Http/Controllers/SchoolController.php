@@ -7,6 +7,7 @@ use App\Grade;
 use App\School;
 use App\User;
 use Illuminate\Http\Request;
+use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
 class SchoolController extends Controller
@@ -58,6 +59,7 @@ class SchoolController extends Controller
             'alamat' => 'required|min:10',
             'notelp' => 'required'
         ]);
+        $res = new stdClass();
         try {
             $sch = new School;
             $sch->edu_id = $request->jenjang;
@@ -72,10 +74,8 @@ class SchoolController extends Controller
             $stat = "error";
             $msg = $th;
         }
-        $res = [
-            'status' => $stat,
-            'message' => $msg
-        ];
+        $res->stat = $stat;
+        $res->message = $msg;
         return redirect()->route('sekolah.index')->with($stat,json_encode($res));
         
     }
@@ -115,16 +115,17 @@ class SchoolController extends Controller
     {
         $request->validate([
             'nama' => 'required|max:100',
-            // 'jenjang' => 'required',
-            // 'alamat' => 'required|min:10',
-            // 'notelp' => 'required'
+            'jenjang' => 'required',
+            'alamat' => 'required|min:10',
+            'notelp' => 'required'
         ]);
+        $res = new stdClass();
         try {
-            $sch = new School;
-            // $sch->edu_id = $request->jenjang;
+            $sch = $sekolah;
+            $sch->edu_id = $request->jenjang;
             $sch->sch_name = $request->nama;
-            // $sch->address = $request->alamat;
-            // $sch->phone = $request->notelp;
+            $sch->address = $request->alamat;
+            $sch->phone = $request->notelp;
 
             $sch->save();
             $stat = "success";
@@ -134,10 +135,8 @@ class SchoolController extends Controller
             $stat = "error";
             $msg = $th;
         }
-        $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
+        $res->stat = $stat;
+        $res->message = $msg;
         return redirect()->route('sekolah.index')->with($stat,json_encode($res));
     }
 
@@ -149,20 +148,18 @@ class SchoolController extends Controller
      */
     public function destroy(School $sekolah)
     {
-        $school = $sekolah;
-        $exist = User::where('school_id','=',$school->id)->first();
+        $exist = User::where('school_id','=',$sekolah->id)->first();
+        $res= new stdClass();
         if ($exist) {
             $stat = "error";
-            $msg = "$school->name tidak boleh dihapus! Karena ada user di $school->name !";
+            $msg = "$sekolah->name tidak boleh dihapus! Karena ada user di $sekolah->name !";
         }else {
-            $school->delete();
+            $sekolah->delete();
             $stat = "success";
-            $msg = "$school->name berhasil dihapus!";
+            $msg = "$sekolah->name berhasil dihapus!";
         }
-        $res = [
-            'status' => $stat,
-            'message' => $msg
-        ];
-        return redirect()->route('sekolah.index')->with($stat,json_encode($res));
+        $res->status = $stat;
+        $res->message = $msg;
+        return response()->json($res);
     }
 }

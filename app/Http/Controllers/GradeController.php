@@ -8,6 +8,7 @@ use App\Grade;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
+use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
 class GradeController extends Controller
@@ -17,15 +18,6 @@ class GradeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
-     public function __construct()
-     {
-         //Do your magic here
-         $this->stat = "";
-         $this->msg = "";
-         $this->url = "admin/kelas";
-     }
 
     public function index()
     {
@@ -61,6 +53,8 @@ class GradeController extends Controller
     public function store(Request $request)
     {
         $gr = new Grade;
+        $res = new stdClass();
+
         $request->validate([
             'jenjang' => 'required',
             'kelas' => 'required',
@@ -70,19 +64,16 @@ class GradeController extends Controller
             $gr->grade_name = $request->kelas;
             $gr->save();
 
-            $this->stat = "success";
-            $this->msg = "Kelas $gr->grade_name berhasil ditambah!";
+            $stat = "success";
+            $msg = "Kelas $gr->grade_name berhasil ditambah!";
 
         } catch (\Exception $ex) {
-            $this->stat = "error";
-            $this->msg = $ex;
+            $stat = "error";
+            $msg = $ex;
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
-        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
+        $res->stat = $stat;
+        $res->message = $msg;
+        return redirect()->route('kelas.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -120,24 +111,22 @@ class GradeController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
         ]);
+        $res = new stdClass();
         try {
             $grade->parent_id = $request->jenjang;
             $grade->grade_name = $request->kelas;
             $grade->save();
 
-            $this->stat = "success";
-            $this->msg = "Kelas $grade->grade_name berhasil diubah!";
+            $stat = "success";
+            $msg = "Kelas $grade->grade_name berhasil diubah!";
 
         } catch (\Exception $ex) {
-            $this->stat = "error";
-            $this->msg = $ex;
+            $stat = "error";
+            $msg = $ex;
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
-        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
+        $res->stat = $stat;
+        $res->message = $msg;
+        return redirect()->route('kelas.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -148,22 +137,20 @@ class GradeController extends Controller
      */
     public function destroy(Grade $grade)
     {
-        $e1 = Book::where('grade_id','=',$grade->id)->get();
-        $e2 = Video::where('grade_id','=',$grade->id)->get();
-        $e3 = User::where('grade_id','=',$grade->id)->get();
+        $e1 = Book::where('grade_id','=',$grade->id)->first();
+        $e2 = Video::where('grade_id','=',$grade->id)->first();
+        $e3 = User::where('grade_id','=',$grade->id)->first();
 
-        if ($e1||$e2||$e3) {
-            $this->stat = "error";
-            $this->msg = "Gagal hapus! Ada File di kelas $grade->grade_name! ";
+        if (($e1||$e2||$e3) != null) {
+            $stat = "error";
+            $msg = "Gagal hapus! Ada File di kelas $grade->grade_name! ";
         }else {
-            $this->stat = "success";
-            $this->msg = "Kelas $grade->grade_name berhasil dihapus!";
+            $stat = "success";
+            $msg = "Kelas $grade->grade_name berhasil dihapus!";
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
-        return redirect()->route('kelas.index')->with($this->stat,json_encode($res));
+        $res = new stdClass();
+        $res->stat = $stat;
+        $res->message = $msg;
+        return response()->json($res);
     }
 }

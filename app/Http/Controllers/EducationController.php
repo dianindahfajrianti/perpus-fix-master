@@ -52,10 +52,10 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
+        $res = new stdClass();
         $request->validate([
             'edu_name' => 'required|max:3'
         ]);
-        $res = new stdClass();
         try {
             $edu = new Education;
             $edu->edu_name =  $request->edu_name;
@@ -72,7 +72,7 @@ class EducationController extends Controller
 
         } catch (\Exception $ex) {
             $msg = $ex;
-            $stat = "success";
+            $stat = "error";
 
             $res->status = $stat;
             $res->data = $request->edu_name;

@@ -36,8 +36,8 @@
                         <table id="tb-grade" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Jenjang</th>
                                 <th>Kelas</th>
+                                <th>Aksi</th>
                             </thead>
                             <tbody>
 
@@ -162,10 +162,6 @@
                     searchable: false
                 },
                 {
-                    data: "get_edu.edu_name",
-                    name: "get_edu.edu_name"
-                },
-                {
                     data: "grade_name",
                     name: "grade_name"
                 },
@@ -199,15 +195,17 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                         },
-<<<<<<< Updated upstream
                         success:function(data){
+                            console.log(data);
                             Swal.fire({
                                 icon: data.status,
                                 title: "Berhasil",
                                 text: data.message,
                                 timer: 1200
-                            })
+                            });
+                            table.draw();
                         },error:function(data){
+                            console.log(data);
                             var js = data.responseJSON;
                             Swal.fire({
                                 icon: 'error',
@@ -215,13 +213,6 @@
                                 text: js.message,
                                 timer: 1200
                             });
-=======
-                        success: function(data) {
-                            console.log(data);
-                        },
-                        error: function(data) {
-                            console.log(data);
->>>>>>> Stashed changes
                         }
                     });
                 }
@@ -237,29 +228,34 @@
 </script>
 @enderror
 @if (session('success'))
-<script>
+<script type="text/javascript">
     $(document).ready(function(e) {
         e.preventDefault;
+        var data = '<?= session("success") ?>';
+        var js = JSON.parse(data);
         Swal.fire({
             icon: 'success',
-            title: 'Done',
-            text: "{{session('success')}}",
+            title: 'Berhasil',
+            text: js.message,
             timer: 1700
         });
-    })
+    });
 </script>
 @endif
 @if (session('error'))
-<script>
+<script type="text/javascript">
     $(document).ready(function(e) {
         e.preventDefault;
+        var data = "<?= session('error'); ?>";
+        var js = JSON.parse(data);
+        console.log(data);
         Swal.fire({
             icon: 'error',
-            title: 'Failed',
-            text: "{{session('error')}}",
+            title: 'Gagal',
+            text: js.message,
             timer: 1700
         });
-    })
+    });
 </script>
 @endif
 @endsection
