@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Education;
 use App\Grade;
 use App\School;
 use App\User;
@@ -19,12 +20,13 @@ class SchoolController extends Controller
 
     public function index()
     {
-        return view('school.index');
+        $edu = Education::all();
+        return view('school.index',compact('edu'));
     }
     public function data()
     {
-        $rel = ['getEdu'];
-        $model = Grade::with($rel)
+        $rel = ['hasEdu'];
+        $model = School::with($rel)
             ->select('*');
         return DataTables::of($model)
             ->addIndexColumn()
@@ -51,10 +53,10 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jenjang' => 'required',
             'nama' => 'required|max:100',
-            'alamat' => 'required',
-            'telp' => 'required'
+            'jenjang' => 'required',
+            'alamat' => 'required|min:10',
+            'notelp' => 'required'
         ]);
         try {
             $sch = new School;
@@ -65,16 +67,15 @@ class SchoolController extends Controller
             $sch->save();
             $stat = "success";
             $msg = "Sekolah $request->name berhasil ditambahkan!";
-            $res = [
-                'status' => $stat,
-                'message' => $msg
-            ];
-
-            return response()->json($res);
         } catch (\Exception $th) {
-
-            return response()->json($th);
+            $stat = "error";
+            $msg = $th;
         }
+        $res = [
+            'status' => $stat,
+            'message' => $msg
+        ];
+        return redirect()->route('sekolah.index')->with($stat,json_encode($res));
     }
 
     /**

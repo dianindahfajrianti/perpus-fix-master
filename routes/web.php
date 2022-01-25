@@ -43,7 +43,7 @@ Auth::routes([
 ]);
 //DataTable Needs
 Route::get('/user/all', 'UserController@data');
-Route::get('/sekolah/all', 'SchoolController@da ta');
+Route::get('/sekolah/all', 'SchoolController@data');
 Route::get('/pendidikan/all', 'EducationController@data');
 Route::get('/kelas/all','GradeController@data');
 Route::get('/jurusan/all','MajorController@data');

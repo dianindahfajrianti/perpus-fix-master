@@ -40,6 +40,7 @@
                                 <th>Jenjang</th>
                                 <th>Alamat</th>
                                 <th>Nomor Telephone</th>
+                                <th>Aksi</th>
                             </thead>
                             <tbody>
 
@@ -60,9 +61,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="school_name">Nama Sekolah</label>
-                            <input type="text" name="school_name" id="school_name" class="form-control @error('school_name'){{'is-invalid'}}@enderror" value="{{old('school_name')}}">
-                            @error('school_name')
+                            <label for="nama">Nama Sekolah</label>
+                            <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" value="{{old('nama')}}">
+                            @error('nama')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -71,22 +72,21 @@
                         <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4" name="jenjang" id="jenjang" aria-label="Example select with button addon">
-                                    <option selected>-- Pilih Jenjang --</option>
-                                    <option value="1">SD</option>
-                                    <option value="2">SMP</option>
-                                    <option value="3">SMA</option>
-                                    <option value="3">SMK</option>
+                                <select class="form-control select2bs4 @error('jenjang'){{'is-invalid'}}@enderror" name="jenjang" id="jenjang" aria-label="Example select with button addon">
+                                    <option value="">-- Pilih Jenjang --</option>
+                                    @foreach ($edu as $e)
+                                    <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="alamat">Alamat</label>
-                            <input type="text" name="alamat" id="alamat" class="form-control">
+                            <textarea type="text" name="alamat" id="alamat" class="form-control" placeholder="Alamat Lengkap Sekolah">{{ old('alamat') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="notelp">Nomor Telephone</label>
-                            <input type="text" name="notelp" id="notelp" class="form-control">
+                            <input type="tel" name="notelp" id="notelp" class="form-control" value="{{ old('notelp') }}">
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -136,11 +136,10 @@
             "ordering": true,
             "info": true,
             "autoWidth": false,
-            "responsive": true
-                // , "processing": true
-                // , "serverSide":true
-                // ,"ajax" : "/sekolah/all"
-                ,
+            "responsive": true,
+            "processing": true,
+            "serverSide":true,
+            "ajax" : "/sekolah/all",
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -168,63 +167,51 @@
                 }
             ]
         });
-
-        $.ajax({
-            type: "get",
-            url: "/sekolah/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
+        $('#tb-school tbody').on('click','.edit-school',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "sekolah/"+id+"/edit";
         });
-
-        // $('#save-school').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/sekolah",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
+        $('#tb-school tbody').on('click','.del-school',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"delete",
+                        url:"/admin/sekolah/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success:function(data){
+                            console.log(data);
+                        },error:function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        });
 
     });
 </script>
-@error('school_name')
+
 <script type="text/javascript">
+    @if (count($errors) > 0)
     $(document).ready(function() {
         $('#modal-add').modal('show');
     });
+    @endif
 </script>
-@enderror
+
 @if (session('success'))
 <script>
     $(document).ready(function(e) {
