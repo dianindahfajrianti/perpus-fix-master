@@ -115,14 +115,14 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="/admin/riwayat" class="nav-link @if (Request::segment(2) == 'riwayat') {{'active'}} @endif">
                         <i class="nav-icon fas fa-book-open"></i>
                         <p>
                             Riwayat Baca Murid
                         </p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

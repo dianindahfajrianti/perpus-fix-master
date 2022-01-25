@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('jurusan', 'MajorController');
         Route::resource('mapel', 'SubjectController');
         Route::resource('sekolah', 'SchoolController');
-        Route::resource('riwayat', 'HistoryController');
+        // Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
         Route::post('user/storeOne', 'UserController@storeOne');
         
