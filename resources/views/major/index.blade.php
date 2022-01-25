@@ -57,7 +57,7 @@
                         <h1>Tambah Jurusan</h1>
                     </div>
                     <div class="modal-body">
-                    <div class="form-group mt-3">
+                        <div class="form-group mt-3">
                             <label class="form-label" for="kelas">Kelas</label>
                             <div class="input-group">
                                 <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
@@ -75,6 +75,11 @@
                                     <option value="11">XI</option>
                                     <option value="12">XII</option>
                                 </select>
+                                @error('kelas')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group">
@@ -153,7 +158,7 @@
                     name: "maj_name"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    defaultContent: '<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
             // ,"ajax" : "/Jurusan/all"

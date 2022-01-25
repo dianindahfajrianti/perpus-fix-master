@@ -64,7 +64,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="subject_name">Nama Mata Pelajaran</label>
-                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('subject_name')}}">
+                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{old('subject_name')}}">
                             @error('subject_name')
                             <div class="invalid-feedback">
                                 {{$message}}

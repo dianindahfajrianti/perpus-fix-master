@@ -95,7 +95,12 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="email">Email</label>
-                            <input type="text" name="email" id="email" class="form-control">
+                            <input type="text" name="email" id="email" class="form-control @error('email'){{'is-invalid'}}@enderror" value="{{old('email')}}">
+                            @error('email')
+                            <div class="invalid-feedback">
+                                {{$message}}
+                            </div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
@@ -106,6 +111,11 @@
                                     <option value="{{ $s->id }}">{{ $s->sch_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('sekolah')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group">
@@ -117,6 +127,11 @@
                                     <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group">
@@ -127,6 +142,11 @@
                                     @for ($i = 1; $i < 13; $i++) <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
                                         @endfor
                                 </select>
+                                @error('kelas')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group mt-3">
@@ -135,17 +155,21 @@
                                 <select class="form-control select2bs4" id="inputGroupSelect04" aria-label="">
                                     <option selected>-- Pilih Role --</option>
                                     @php
-                                        $rl = [
-                                            'Super Admin',
-                                            'Admin Sekolah',
-                                            'Guru',
-                                            'Murid'
-                                        ];
+                                    $rl = [
+                                    'Super Admin',
+                                    'Admin Sekolah',
+                                    'Guru',
+                                    'Murid'
+                                    ];
                                     @endphp
-                                    @for($i = 0; $i < count($rl); $i++)
-                                    <option value="{{ $i }}">{{ $rl[$i] }}</option>
-                                    @endfor
+                                    @for($i = 0; $i < count($rl); $i++) <option value="{{ $i }}">{{ $rl[$i] }}</option>
+                                        @endfor
                                 </select>
+                                @error('role')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -190,51 +214,46 @@
         bsCustomFileInput.init();
 
         var table = $('#tb-user').DataTable({
-            "paging": true
-            , "lengthChange": false
-            , "searching": true
-            , "ordering": true
-            , "info": true
-            , "autoWidth": false
-            , "responsive": true
-            , "processing": true
-            , "serverSide": true
-            , "columns": [{
-                    data: 'DT_RowIndex'
-                    , name: 'DT_RowIndex'
-                    , orderable: false
-                    , searchable: false
-                }
-                , {
-                    data: "name"
-                    , name: "name"
-                }
-                , {
-                    data: "username"
-                    , name: "username"
-                }
-                , {
-                    data: "role"
-                    , name: "role"
-                    , render: function(data, type, full, mime) {
-                        var rl = "";
-                        if (data == 0) {
-                            rl = "Super Admin";
-                        } else if (data == 1) {
-                            rl = "Admin Sekolah";
-                        } else if (data == 2) {
-                            rl = "Admin Guru";
-                        } else {
-                            rl = "Murid";
-                        }
-                        return rl;
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false,
+                searchable: false
+            }, {
+                data: "name",
+                name: "name"
+            }, {
+                data: "username",
+                name: "username"
+            }, {
+                data: "role",
+                name: "role",
+                render: function(data, type, full, mime) {
+                    var rl = "";
+                    if (data == 0) {
+                        rl = "Super Admin";
+                    } else if (data == 1) {
+                        rl = "Admin Sekolah";
+                    } else if (data == 2) {
+                        rl = "Admin Guru";
+                    } else {
+                        rl = "Murid";
                     }
+                    return rl;
                 }
-                , {
-                    defaultContent: '<button type="button" class="d-inline v-user btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'
-                }
-            ]
-            , "ajax": "/user/all"
+            }, {
+                defaultContent: '<button type="button" class="d-inline v-user btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'
+            }],
+            "ajax": "/user/all"
         });
         $('#tb-user tbody').on('click', '.edit-user', function(e) {
             e.preventDefault;
@@ -250,16 +269,17 @@
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
             Swal.fire({
-                title: 'Yakin hapus?'
-                , text: "Anda tidak bisa kembalikan data!"
-                , icon: 'warning'
-                , showCancelButton: true
-                , confirmButtonColor: '#3085d6'
-                , cancelButtonColor: '#d33'
-                , confirmButtonText: 'Ya, hapus!'
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
+<<<<<<< Updated upstream
                         type: "delete"
                         , url: "/admin/user/" + id
                         , data: {
@@ -281,6 +301,18 @@
                                 text: js.message,
                                 timer: 1200
                             });
+=======
+                        type: "delete",
+                        url: "/admin/user/" + id,
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            console.log(data);
+>>>>>>> Stashed changes
                         }
                     });
                 }
@@ -288,11 +320,10 @@
         });
 
     });
-
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-        @if (count($errors)>0) {
+        @if(count($errors) > 0) {
             $('#modal-add').modal('show');
         }
         @endif
@@ -303,13 +334,12 @@
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'success'
-            , title: 'Done'
-            , text: "{{session('success')}}"
-            , timer: 1700
+            icon: 'success',
+            title: 'Done',
+            text: "{{session('success')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @if (session('error'))
@@ -317,13 +347,12 @@
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
-            icon: 'error'
-            , title: 'Failed'
-            , text: "{{session('error')}}"
-            , timer: 1700
+            icon: 'error',
+            title: 'Failed',
+            text: "{{session('error')}}",
+            timer: 1700
         });
     })
-
 </script>
 @endif
 @endsection

@@ -36,22 +36,22 @@
                     </div>
                     <div class="card-body">
                         {{-- <div class="table-responsive"> --}}
-                            <table id="tb-book" class="table table-bordered table-striped">
-                                <thead>
-                                    <th>No</th>
-                                    <th>ID</th>
-                                    <th>Judul Buku</th>
-                                    <th>Deskripsi</th>
-                                    <th>Jml Dilihat</th>
-                                    <th>Tahun Terbit</th>
-                                    <th>Penerbit</th>
-                                    <th>Pengarang</th>
-                                    <th>Aksi</th>
-                                </thead>
-                                <tbody>
-    
-                                </tbody>
-                            </table>
+                        <table id="tb-book" class="table table-bordered table-striped">
+                            <thead>
+                                <th>No</th>
+                                <th>ID</th>
+                                <th>Judul Buku</th>
+                                <th>Deskripsi</th>
+                                <th>Jml Dilihat</th>
+                                <th>Tahun Terbit</th>
+                                <th>Penerbit</th>
+                                <th>Pengarang</th>
+                                <th>Aksi</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                         {{-- </div> --}}
                     </div>
                 </div>
@@ -85,7 +85,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="filebook">Upload File</label>
-                                            <input type="file" name="filebook" id="filebook" class="form-control">
+                                            <input type="file" name="filebook" id="filebook" class="form-control @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}">
+                                            @error('filebook')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +108,11 @@
                                                     <option value="3">SMA</option>
                                                     <option value="3">SMK</option>
                                                 </select>
+                                                @error('jenjang')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -127,13 +137,18 @@
                                                     <option value="11">XI</option>
                                                     <option value="12">XII</option>
                                                 </select>
+                                                @error('kelas')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                    <div class="form-group mt-3">
+                                        <div class="form-group mt-3">
                                             <label class="form-label" for="jurusan">Jurusan</label>
                                             <div class="input-group">
                                                 <select class="form-control select2bs4" id="jurusan" aria-label="Example select with button addon">
@@ -146,13 +161,18 @@
                                                     <option value="6">Akuntansi</option>
                                                     <option value="7">Hukum</option>
                                                 </select>
+                                                @error('jurusan')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                    <div class="form-group mt-3">
+                                        <div class="form-group mt-3">
                                             <label class="form-label" for="mapel">Mata Pelajaran</label>
                                             <div class="input-group">
                                                 <select class="form-control select2bs4" id="mapel" aria-label="Example select with button addon">
@@ -170,6 +190,11 @@
                                                     <option value="11">Astronomi</option>
                                                     <option value="12">Biologi</option>
                                                 </select>
+                                                @error('mapel')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -180,7 +205,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="judul">Judul Buku</label>
-                                            <input type="text" name="judul" id="judul" class="form-control">
+                                            <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{old('judul')}}">
+                                            @error('judul')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +218,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="desc" id="desc" class="form-control">
+                                            <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{old('desc')}}">
+                                            @error('desc')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +231,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="jml">Jml Dilihat</label>
-                                            <input type="text" name="jml" id="jml" class="form-control">
+                                            <input type="text" name="jml" id="jml" class="form-control @error('jml'){{'is-invalid'}}@enderror" value="{{old('jml')}}">
+                                            @error('jml')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -204,7 +244,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="tahun">Tahun Terbit</label>
-                                            <input type="text" name="tahun" id="tahun" class="form-control">
+                                            <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
+                                            @error('tahun')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +257,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="penerbit">Penerbit</label>
-                                            <input type="text" name="penerbit" id="penerbit" class="form-control">
+                                            <input type="text" name="penerbit" id="penerbit" class="form-control @error('penerbit'){{'is-invalid'}}@enderror" value="{{old('penerbit')}}">
+                                            @error('penerbit')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -220,22 +270,17 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="pengarang">Pengarang</label>
-                                            <input type="text" name="pengarang" id="pengarang" class="form-control">
+                                            <input type="text" name="pengarang" id="pengarang" class="form-control @error('pengarang'){{'is-invalid'}}@enderror" value="{{old('pengarang')}}">
+                                            @error('pengarang')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <div class="form-group">
-                            <label for="book_name">Nama buku</label>
-                            <input type="text" name="book_name" id="book_name" class="form-control @error('book_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('book_name')}}">
-                            @error('book_name')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                            @enderror
-                        </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -290,9 +335,11 @@
             "responsive": true,
             "processing": true,
             "serverSide": true,
-            "columnDefs":[
-                {targets: [1],visible:false,searchable:false}
-            ],
+            "columnDefs": [{
+                targets: [1],
+                visible: false,
+                searchable: false
+            }],
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -331,17 +378,17 @@
                     name: "author"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    defaultContent: '<button type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ],
             "ajax": "/buku/all"
         });
-        $('#tb-book tbody').on('click','.edit-book',function(e){
+        $('#tb-book tbody').on('click', '.edit-book', function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
-            window.location.href = "buku/"+id+"/edit";
+            window.location.href = "buku/" + id + "/edit";
         });
-        $('#tb-book tbody').on('click','.del-book',function(e){
+        $('#tb-book tbody').on('click', '.del-book', function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
             Swal.fire({
@@ -355,14 +402,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type:"delete",
-                        url:"/admin/buku/"+id,
-                        data:{
+                        type: "delete",
+                        url: "/admin/buku/" + id,
+                        data: {
                             _token: "{{ csrf_token() }}",
                         },
-                        success:function(data){
+                        success: function(data) {
                             console.log(data);
-                        },error:function(data){
+                        },
+                        error: function(data) {
                             console.log(data);
                         }
                     });

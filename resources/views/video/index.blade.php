@@ -78,7 +78,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="upload">Upload File</label>
-                                            <input type="file" name="upload" id="filevideo" class="form-control">
+                                            <input type="file" name="upload" id="filevideo" class="form-control @error('filevideo'){{'is-invalid'}}@enderror" value="{{old('filevideo')}}">
+                                            @error('upload')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +101,11 @@
                                                     <option value="3">SMA</option>
                                                     <option value="3">SMK</option>
                                                 </select>
+                                                @error('jenjang')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -120,13 +130,18 @@
                                                     <option value="11">XI</option>
                                                     <option value="12">XII</option>
                                                 </select>
+                                                @error('kelas')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                    <div class="form-group mt-3">
+                                        <div class="form-group mt-3">
                                             <label class="form-label" for="jurusan">Jurusan</label>
                                             <div class="input-group">
                                                 <select class="form-control select2bs4" id="jurusan" aria-label="Example select with button addon">
@@ -139,13 +154,18 @@
                                                     <option value="6">Akuntansi</option>
                                                     <option value="7">Hukum</option>
                                                 </select>
+                                                @error('jurusan')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                    <div class="form-group mt-3">
+                                        <div class="form-group mt-3">
                                             <label class="form-label" for="mapel">Mata Pelajaran</label>
                                             <div class="input-group">
                                                 <select class="form-control select2bs4" id="mapel" aria-label="Example select with button addon">
@@ -163,6 +183,11 @@
                                                     <option value="11">Astronomi</option>
                                                     <option value="12">Biologi</option>
                                                 </select>
+                                                @error('mapel')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +198,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="judul">Judul Video</label>
-                                            <input type="text" name="judul" id="judul" class="form-control">
+                                            <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{old('judul')}}">
+                                            @error('judul')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +211,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="desc" id="desc" class="form-control">
+                                            <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{old('desc')}}">
+                                            @error('desc')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -189,22 +224,17 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="creator">Creator</label>
-                                            <input type="text" name="creator" id="creator" class="form-control">
+                                            <input type="text" name="creator" id="creator" class="form-control @error('creator'){{'is-invalid'}}@enderror" value="{{old('creator')}}">
+                                            @error('creator')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <div class="form-group">
-                            <label for="video_name">Nama video</label>
-                            <input type="text" name="video_name" id="video_name" class="form-control @error('video_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('video_name')}}">
-                            @error('video_name')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                            @enderror
-                        </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -279,7 +309,7 @@
                     name: "creator"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-video btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    defaultContent: '<button type="button" class="edit-video btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
         });

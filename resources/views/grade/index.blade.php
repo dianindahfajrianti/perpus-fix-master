@@ -50,18 +50,18 @@
     </div>
     @php
     function numberToRomanRepresentation($number) {
-        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-        $returnValue = '';
-        while ($number > 0) {
-            foreach ($map as $roman => $int) {
-                if($number >= $int) {
-                    $number -= $int;
-                    $returnValue .= $roman;
-                    break;
-                }
-            }
-        }
-        return $returnValue;
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
     }
     @endphp
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
@@ -73,15 +73,20 @@
                         <h1>Tambah Kelas</h1>
                     </div>
                     <div class="modal-body">
-                    <div class="form-group">
+                        <div class="form-group">
                             <label class="form-label" for="jenjang">Jenjang</label>
                             <div class="input-group">
                                 <select name="jenjang" class="form-control select2bs4" id="inputGroupSelect04" aria-label="Example select with button addon">
                                     <option value="">-- Pilih Jenjang --</option>
                                     @foreach ($edu as $e )
-                                        <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group mt-3">
@@ -89,10 +94,14 @@
                             <div class="input-group">
                                 <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="Example select with button addon">
                                     <option value="">-- Pilih Kelas --</option>
-                                    @for ($i = 1; $i < 13; $i++)
-                                    <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                    @endfor
+                                    @for ($i = 1; $i < 13; $i++) <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                        @endfor
                                 </select>
+                                @error('kelas')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -143,10 +152,10 @@
             "ordering": true,
             "info": true,
             "autoWidth": false,
-            "responsive": true
-            , "processing": true
-            , "serverSide":true
-            ,"columns": [{
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -161,17 +170,17 @@
                     name: "grade_name"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    defaultContent: '<button type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
-            ]
-            ,"ajax" : "/kelas/all"
+            ],
+            "ajax": "/kelas/all"
         });
-        $('#tb-grade tbody').on('click','.edit-grade',function(e){
+        $('#tb-grade tbody').on('click', '.edit-grade', function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
-            window.location.href = "kelas/"+id+"/edit";
+            window.location.href = "kelas/" + id + "/edit";
         });
-        $('#tb-grade tbody').on('click','.del-grade',function(e){
+        $('#tb-grade tbody').on('click', '.del-grade', function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
             Swal.fire({
@@ -185,11 +194,12 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type:"delete",
-                        url:"/admin/kelas/"+id,
-                        data:{
+                        type: "delete",
+                        url: "/admin/kelas/" + id,
+                        data: {
                             _token: "{{ csrf_token() }}",
                         },
+<<<<<<< Updated upstream
                         success:function(data){
                             Swal.fire({
                                 icon: data.status,
@@ -205,6 +215,13 @@
                                 text: js.message,
                                 timer: 1200
                             });
+=======
+                        success: function(data) {
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            console.log(data);
+>>>>>>> Stashed changes
                         }
                     });
                 }
