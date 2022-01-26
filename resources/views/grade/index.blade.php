@@ -182,8 +182,8 @@
                         success:function(data){
                             console.log(data);
                             Swal.fire({
-                                icon: data.stat,
-                                title: "Berhasil",
+                                icon: data.status,
+                                title: data.title,
                                 text: data.message,
                                 timer: 1200
                             });

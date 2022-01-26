@@ -18,15 +18,6 @@ class MajorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-    public function __construct()
-    {
-        //Do your magic here
-        $this->stat = "";
-        $this->msg = "";
-        $this->url = "/admin/jurusan";
-    }
-
     public function index()
     {
         return view('major.index');
@@ -70,16 +61,16 @@ class MajorController extends Controller
             $mj->maj_name = $request->jurusan;
             $mj->save();
 
-            $this->stat = "success";
-            $this->msg = "Jurusan $request->jurusan berhasil ditambahkan!";
+            $stat = "success";
+            $msg = "Jurusan $request->jurusan berhasil ditambahkan!";
         } catch (\Exception $ex) {
-            $this->stat = "error";
-            $this->msg = $ex;
+            $stat = "error";
+            $msg = $ex;
         }
-        $res->status = $this->stat;
+        $res->status = $stat;
         $res->data = $request->jurusan;
-        $res->message = $this->msg;
-        return redirect()->route('jurusan.index')->with($this->stat,json_encode($res));
+        $res->message = $msg;
+        return redirect()->route('jurusan.index')->with($stat,json_encode($res));
 
     }
 
@@ -123,16 +114,16 @@ class MajorController extends Controller
             $jurusan->maj_name = $request->jurusan;
             $jurusan->save();
 
-            $this->stat = "success";
-            $this->msg = "Jurusan $request->jurusan berhasil ditambahkan!";
+            $stat = "success";
+            $msg = "Jurusan $request->jurusan berhasil ditambahkan!";
         } catch (\Exception $ex) {
-            $this->stat = "error";
-            $this->msg = $ex;
+            $stat = "error";
+            $msg = $ex;
         }
-        $res->status = $this->stat;
+        $res->status = $stat;
         $res->data = $request->jurusan;
-        $res->message = $this->msg;
-        return redirect()->route('jurusan.index')->with($this->stat,json_encode($res));
+        $res->message = $msg;
+        return redirect()->route('jurusan.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -149,16 +140,32 @@ class MajorController extends Controller
         $e3 = User::where('major_id','=',$jurusan->id)->get();
 
         if (($e1||$e2||$e3) != null) {
-            $this->stat = "error";
-            $this->msg = "Gagal hapus! Ada File di jurusan $jurusan->maj_name! ";
+            $stat = "error";
+            $title= "Gagal";
+            $msg = "Gagal hapus! Ada File di jurusan $jurusan->maj_name! ";
         }else {
             $jurusan->delete();
-            $this->stat = "success";
-            $this->msg = "Jurusan $jurusan->maj_name berhasil dihapus!";
+            $stat = "success";
+            $title = "Berhasil";
+            $msg = "Jurusan $jurusan->maj_name berhasil dihapus!";
         }
-        $res->status = $this->stat;
-        $res->url = $this->url;
-        $res->message = $this->msg;
-        return response()->json($res);
+            $res->status = $stat;
+            $res->title = $title;
+            $res->message = $msg;
+            return response()->json($res);
+    }
+
+    public function check(Major $jurusan)
+    {
+        $e1 = Book::where('grade_id','=',$jurusan->id)->first();
+        $e2 = Video::where('grade_id','=',$jurusan->id)->first();
+        $e3 = User::where('grade_id','=',$jurusan->id)->first();
+        $ex = [$e1,$e2,$e3];
+
+        if (($e1||$e2||$e3) != null) {
+            return json_encode($ex,false);
+        }else {
+           return 'delete available';
+        }
     }
 }

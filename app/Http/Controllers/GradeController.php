@@ -140,16 +140,16 @@ class GradeController extends Controller
         if (($e1||$e2||$e3) != null) {
             $stat = "error";
             $msg = "Gagal hapus! Ada File di kelas $grade->grade_name ! ";
-            $res->stat = $stat;
+            $res->status = $stat;
             $res->message = $msg;
             return response()->json($res);
         }else {
             $nama = $grade->name;
             $grade->delete();
-            
+
             $stat = "success";
             $msg = "Kelas $grade->grade_name berhasil dihapus!";
-            $res->stat = $stat;
+            $res->status = $stat;
             $res->message = $msg;
             return response()->json($res);
         }

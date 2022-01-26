@@ -158,14 +158,17 @@
                             _token: "{{ csrf_token() }}",
                         },
                         success:function(data){
+                            console.log(data);
                             Swal.fire({
                                 icon: data.status,
-                                title: "Berhasil",
+                                title: data.title,
                                 text: data.message,
                                 timer: 1200
                             });
                             table.draw();
-                        },error:function(data){
+                        },
+                        error:function(data){
+                            console.log(data);
                             var js = data.responseJSON;
                             Swal.fire({
                                 icon: 'error',
