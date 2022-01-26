@@ -90,9 +90,9 @@ class GradeController extends Controller
      * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function edit(Grade $grade)
+    public function edit(Grade $kelas)
     {
-        return view('grade.edit',compact('grade'));
+        return view('grade.edit',compact('kelas'));
     }
 
     /**
@@ -102,18 +102,18 @@ class GradeController extends Controller
      * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Grade $grade)
+    public function update(Request $request, Grade $kelas)
     {
         $request->validate([
             'kelas' => 'required',
         ]);
         $res = new stdClass();
         try {
-            $grade->grade_name = $request->kelas;
-            $grade->save();
+            $kelas->grade_name = $request->kelas;
+            $kelas->save();
 
             $stat = "success";
-            $msg = "Kelas $grade->grade_name berhasil diubah!";
+            $msg = "Kelas $request->grade_name berhasil diubah!";
 
         } catch (\Exception $ex) {
             $stat = "error";

@@ -121,14 +121,13 @@ class EducationController extends Controller
             'edu_name' => 'required|max:3'
         ]);
         $education = $pendidikan;
-        $oldname = $pendidikan->edu_name;
         $education->edu_name =  $request->edu_name;
         $res = new stdClass();
         try {
             $education->save();
 
             $stat = "success";
-            $msg = "Tingkat pendidikan berhasil di edit! Dari $oldname jadi $request->edu_name !";
+            $msg = "Tingkat pendidikan berhasil di edit!";
             $res->status = $stat;
             $res->message = $msg;
             return redirect()->route('pendidikan.index')->with($stat,json_encode($res));
