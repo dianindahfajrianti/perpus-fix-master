@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('template/admin/body')
 @section('title')
-@foreach($prod as $p)
+@foreach($user as $p)
 {{'Detail '.$p->name.' - Admin Rainer'}}
 @endforeach
 @endsection
@@ -19,13 +19,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Product Detail</h1>
+                <h1>user Detail</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/products">Products</a></li>
-                    <li class="breadcrumb-item active">@foreach($prod as $p){{$p->name}}@endforeach</li>
+                    <li class="breadcrumb-item"><a href="/admin/user">user</a></li>
+                    <li class="breadcrumb-item active">@foreach($user as $p){{$p->name}}@endforeach</li>
                 </ol>
             </div>
         </div>
@@ -36,23 +36,23 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    @foreach ($prod as $p)
+                    @foreach ($user as $p)
                     <div class="card-header">
                         <h3 class="card-title">Detail <b>{{$p->name}}</b></h3>
                         <div class="float-right">
-                            <a href="/admin/products/{{$p->p_id}}/edit" class="btn btn-success">Edit</a>
-                            <form class="ml-3 d-inline" action="/admin/products/{{$p->p_id}}" method="post">@method('delete')@csrf <button id="delprod" class="btn btn-danger" type="submit">Hapus</button></form>
+                            <a href="/admin/user/{{$p->p_id}}/edit" class="btn btn-success">Edit</a>
+                            <form class="ml-3 d-inline" action="/admin/user/{{$p->p_id}}" method="post">@method('delete')@csrf <button id="deluser" class="btn btn-danger" type="submit">Hapus</button></form>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>Product Name : {{$p->name}}</h3>
-                                <h3>Product Image : </h3>
+                                <h3>Nama User : {{$p->name}}</h3>
+                                <h3>Foto User : </h3>
                                 @php
                                 $arrImg = explode(",",$p->img);
                                 @endphp
-                                @for($i = 0; $i < count($arrImg); $i++) <img src="/assets/uploads/products/{{$arrImg[$i]}}" alt="" class="img-fluid">
+                                @for($i = 0; $i < count($arrImg); $i++) <img src="/assets/uploads/user/{{$arrImg[$i]}}" alt="" class="img-fluid">
                                     <b>Image {{$i+1}}</b>
                                     @if($i != array_key_last($arrImg))
                                     <hr>
@@ -60,98 +60,43 @@
                                     @endfor
                             </div>
                             <div class="col-lg-6">
-                                <h3>Product's Selling Point :</h3>
-                                <p>
-                                    {{$p->desc1}}
-                                </p>
-                                <hr>
-                                <h3>Product's Description :</h3>
-                                <p>
-                                    {{$p->desc}}
-                                </p>
-                                <hr>
-                                <h3>Product's Key Feature :</h3>
-                                @php
-                                $arrKey = explode("\n",$p->feature);
-                                @endphp
-                                @for($i = 0; $i < count($arrKey); $i++) <p>
-                                    {{$arrKey[$i]}}
-                                    </p>
-                                    @endfor
-                                    <hr>
-                                    <h3>Common Use :</h3>
-                                    <p>
-                                        {{$p->comuse}}
-                                    </p>
-                                    <hr>
-                                    <h3>Product Specification : <a href="/admin/specs/{{$p->id}}/edit" type="button" class="float-right btn btn-success">Edit</a></h3>
-                                    <table class="table table-borderless">
-                                        <tr>
-                                            <th>Part Type</th>
-                                            <th></th>
-                                            <th>Part Name</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Processor</td>
-                                            <td>:</td>
-                                            <td>{{$p->proc}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Chipset</td>
-                                            <td>:</td>
-                                            <td>{{$p->chip}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Memory</td>
-                                            <td>:</td>
-                                            <td>{{$p->memo}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>PCIe Support</td>
-                                            <td>:</td>
-                                            <td>{{$p->pcie}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Storage</td>
-                                            <td>:</td>
-                                            <td>{{$p->storage}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Networking</td>
-                                            <td>:</td>
-                                            <td>{{$p->net}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>I/O Ports</td>
-                                            <td>:</td>
-                                            <td>{{$p->io}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Advanced Technology</td>
-                                            <td>:</td>
-                                            <td>{{$p->advanced}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Security & Reliability</td>
-                                            <td>:</td>
-                                            <td>{{$p->security}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Form Factor</td>
-                                            <td>:</td>
-                                            <td>{{$p->ffactor}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Drive Bay</td>
-                                            <td>:</td>
-                                            <td>{{$p->dbay}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Front Panel</td>
-                                            <td>:</td>
-                                            <td>{{$p->fpanel}}</td>
-                                        </tr>
-                                    </table>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th>Part Type</th>
+                                        <th></th>
+                                        <th>Part Name</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td>:</td>
+                                        <td>{{$p->username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>:</td>
+                                        <td>{{$p->email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sekolah</td>
+                                        <td>:</td>
+                                        <td>{{$p->school}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kelas</td>
+                                        <td>:</td>
+                                        <td>{{$p->grade}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jurusan</td>
+                                        <td>:</td>
+                                        <td>{{$p->major}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Role</td>
+                                        <td>:</td>
+                                        <td>{{$p->role}}</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
