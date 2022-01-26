@@ -36,8 +36,8 @@
                         <table id="tb-subject" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Jurusan</th>
                                 <th>Mata Pelajaran</th>
+                                <th>Jurusan</th>
                                 <th>Aksi</th>
                             </thead>
                             <tbody>

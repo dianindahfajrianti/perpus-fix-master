@@ -55,9 +55,9 @@ class SubjectController extends Controller
      * @param  \App\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subject $subject)
+    public function edit(Subject $mapel)
     {
-        //
+        return view('subject.edit');
     }
 
     /**

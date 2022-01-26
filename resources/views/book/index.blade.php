@@ -43,7 +43,6 @@
                                 <th>ID</th>
                                 <th>Judul Buku</th>
                                 <th>Deskripsi</th>
-                                <th>Jml Dilihat</th>
                                 <th>Tahun Terbit</th>
                                 <th>Penerbit</th>
                                 <th>Pengarang</th>
