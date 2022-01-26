@@ -90,9 +90,9 @@ class GradeController extends Controller
      * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function edit(Grade $kelas)
+    public function edit(Grade $kela)
     {
-        return view('grade.edit',compact('kelas'));
+        return view('grade.edit',compact('kela'));
     }
 
     /**

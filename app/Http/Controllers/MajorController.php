@@ -79,7 +79,7 @@ class MajorController extends Controller
         $res->status = $this->stat;
         $res->data = $request->jurusan;
         $res->message = $this->msg;
-        return redirect()->route('pendidikan.index')->with($this->stat,json_encode($res));
+        return redirect()->route('jurusan.index')->with($this->stat,json_encode($res));
 
     }
 
@@ -133,7 +133,7 @@ class MajorController extends Controller
         $res->status = $this->stat;
         $res->data = $request->jurusan;
         $res->message = $this->msg;
-        return redirect()->route('pendidikan.index')->with($this->stat,json_encode($res));
+        return redirect()->route('jurusan.index')->with($this->stat,json_encode($res));
     }
 
     /**
