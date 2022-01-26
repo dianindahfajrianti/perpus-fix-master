@@ -85,4 +85,5 @@
     });
 
 </script>
+@include('admin.validator')
 @endsection

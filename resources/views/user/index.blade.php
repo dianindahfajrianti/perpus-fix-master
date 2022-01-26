@@ -308,38 +308,5 @@
 
     });
 </script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        @if(count($errors) > 0) {
-            $('#modal-add').modal('show');
-        }
-        @endif
-    });
-</script>
-@if (session('success'))
-<script>
-    $(document).ready(function(e) {
-        e.preventDefault;
-        Swal.fire({
-            icon: 'success',
-            title: 'Done',
-            text: "{{session('success')}}",
-            timer: 1700
-        });
-    })
-</script>
-@endif
-@if (session('error'))
-<script>
-    $(document).ready(function(e) {
-        e.preventDefault;
-        Swal.fire({
-            icon: 'error',
-            title: 'Failed',
-            text: "{{session('error')}}",
-            timer: 1700
-        });
-    })
-</script>
-@endif
+@include('admin.validator')
 @endsection

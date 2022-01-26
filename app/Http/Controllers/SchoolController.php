@@ -31,7 +31,7 @@ class SchoolController extends Controller
         } else {
             $rel = ['hasEdu'];
             $model = School::with($rel)
-                ->select('*');
+                ->select('id','edu_id','sch_name','address','phone');
         }
         return DataTables::of($model)
             ->addIndexColumn()

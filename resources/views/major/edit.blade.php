@@ -35,14 +35,14 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("jurusan.update",$major->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route("jurusan.update",$jurusan->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="user_name">Nama Jurusan</label>
-                                <input type="text" name="user_name" id="user_name" class="form-control @error('user_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$usercation->user_name}}">
-                                @error('user_name')
+                                <label for="jurusan">Nama Jurusan</label>
+                                <input type="text" name="jurusan" id="jurusan" class="form-control @error('jurusan'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('jurusan',$jurusan->maj_name) }}">
+                                @error('jurusan')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
