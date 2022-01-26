@@ -148,13 +148,11 @@ class MajorController extends Controller
         $e2 = Video::where('major_id','=',$jurusan->id)->get();
         $e3 = User::where('major_id','=',$jurusan->id)->get();
 
-        if ($e1||$e2||$e3) {
+        if (($e1||$e2||$e3) != null) {
             $this->stat = "error";
             $this->msg = "Gagal hapus! Ada File di jurusan $jurusan->maj_name! ";
         }else {
-            $nama = $jurusan->name;
             $jurusan->delete();
-            
             $this->stat = "success";
             $this->msg = "Jurusan $jurusan->maj_name berhasil dihapus!";
         }
