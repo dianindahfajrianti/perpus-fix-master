@@ -2,7 +2,7 @@
 @extends('template/admin/body')
 @section('title')
 @foreach($user as $p)
-{{'Detail '.$p->name.' - Admin Rainer'}}
+{{'Detail user - Admin Rainer'}}
 @endforeach
 @endsection
 @section('ext-css')
@@ -25,7 +25,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/user">user</a></li>
-                    <li class="breadcrumb-item active">@foreach($user as $p){{$p->name}}@endforeach</li>
+                    <li class="breadcrumb-item active">@foreach($user as $p){{ $p->name }}@endforeach</li>
                 </ol>
             </div>
         </div>

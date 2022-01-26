@@ -119,7 +119,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.showuser',compact('user'));
+        $rel = ['getGrade','getMajor','getSchool'];
+        $user = $user->with($rel)
+                ->where('id','=',$user->id)
+                ->first();
+        return compact('user');
+        // return view('user.showuser',compact('user'));
     }
 
     /**
