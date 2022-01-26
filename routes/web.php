@@ -50,3 +50,5 @@ Route::get('/jurusan/all','MajorController@data');
 Route::get('/mapel/all','SubjectController@data');
 Route::get('/buku/all', 'BookController@data');
 Route::get('/video/all', 'VideoController@data');
+
+Route::get('/cek/{grade}','GradeController@check');

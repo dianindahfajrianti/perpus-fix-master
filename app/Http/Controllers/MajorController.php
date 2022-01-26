@@ -152,6 +152,9 @@ class MajorController extends Controller
             $this->stat = "error";
             $this->msg = "Gagal hapus! Ada File di jurusan $jurusan->maj_name! ";
         }else {
+            $nama = $jurusan->name;
+            $jurusan->delete();
+            
             $this->stat = "success";
             $this->msg = "Jurusan $jurusan->maj_name berhasil dihapus!";
         }

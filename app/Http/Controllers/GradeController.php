@@ -132,20 +132,39 @@ class GradeController extends Controller
      */
     public function destroy(Grade $grade)
     {
+        $res = new stdClass();
         $e1 = Book::where('grade_id','=',$grade->id)->first();
         $e2 = Video::where('grade_id','=',$grade->id)->first();
         $e3 = User::where('grade_id','=',$grade->id)->first();
 
         if (($e1||$e2||$e3) != null) {
             $stat = "error";
-            $msg = "Gagal hapus! Ada File di kelas $grade->grade_name! ";
+            $msg = "Gagal hapus! Ada File di kelas $grade->grade_name ! ";
+            $res->stat = $stat;
+            $res->message = $msg;
+            return response()->json($res);
         }else {
+            $nama = $grade->name;
+            $grade->delete();
+            
             $stat = "success";
             $msg = "Kelas $grade->grade_name berhasil dihapus!";
+            $res->stat = $stat;
+            $res->message = $msg;
+            return response()->json($res);
         }
-        $res = new stdClass();
-        $res->stat = $stat;
-        $res->message = $msg;
-        return response()->json($res);
+    }
+    public function check(Grade $grade)
+    {
+        $e1 = Book::where('grade_id','=',$grade->id)->first();
+        $e2 = Video::where('grade_id','=',$grade->id)->first();
+        $e3 = User::where('grade_id','=',$grade->id)->first();
+        $ex = [$e1,$e2,$e3];
+
+        if (($e1||$e2||$e3) != null) {
+            return json_encode($ex,false);
+        }else {
+           return 'delete available';
+        }
     }
 }
