@@ -105,7 +105,7 @@ class UserController extends Controller
         $res = new stdClass();
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|max:10|numeric',
+            'username' => 'required|max:10|min:5|numeric',
             'email' => 'required|email',
             'sekolah' => 'required',
             'jenjang' => 'required',
