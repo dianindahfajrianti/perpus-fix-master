@@ -105,29 +105,13 @@
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
                             <div class="input-group">
-                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id="sekolah" aria-label="">
+                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id=" sekolah" aria-label="">
                                     <option value="">-- Pilih Sekolah --</option>
                                     @foreach ($sch as $s )
-                                    <option value="{{ $s->id }}">{{ $s->sch_name }}</option>
+                                    <option @if(old('sekolah')==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('sekolah')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="jenjang">Jenjang</label>
-                            <div class="input-group">
-                                <select name="jenjang" class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="">
-                                    <option value="">-- Pilih Jenjang --</option>
-                                    @foreach ($edu as $e )
-                                    <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jenjang')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -139,7 +123,7 @@
                             <div class="input-group">
                                 <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                     <option value="">-- Pilih Kelas --</option>
-                                    @for ($i = 1; $i < 13; $i++) <option value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                    @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
                                         @endfor
                                 </select>
                                 @error('kelas')
@@ -149,10 +133,26 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sekolah">Jurusan</label>
+                            <div class="input-group">
+                                <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="">
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    @foreach ($maj as $m )
+                                    <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('jurusan')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="form-group mt-3">
                             <label class="form-label" for="role">Role</label>
                             <div class="input-group">
-                                <select class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror"" id="role" aria-label="">
+                                <select name="role" class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror"" id=" role" aria-label="">
                                     <option selected>-- Pilih Role --</option>
                                     @php
                                     $rl = [
@@ -162,7 +162,7 @@
                                     'Murid'
                                     ];
                                     @endphp
-                                    @for($i = 0; $i < count($rl); $i++) <option value="{{ $i }}">{{ $rl[$i] }}</option>
+                                    @for($i = 0; $i < count($rl); $i++) <option @if(old('role')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ $rl[$i] }}</option>
                                         @endfor
                                 </select>
                                 @error('role')
@@ -279,20 +279,20 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: "delete"
-                        , url: "/admin/user/" + id
-                        , data: {
-                            _token: "{{ csrf_token() }}"
-                        , }
-                        , success: function(data) {
+                        type: "delete",
+                        url: "/admin/user/" + id,
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(data) {
                             Swal.fire({
                                 icon: data.status,
                                 title: "Berhasil",
                                 text: data.message,
                                 timer: 1200
                             })
-                        }
-                        , error: function(data) {
+                        },
+                        error: function(data) {
                             var js = data.responseJSON;
                             Swal.fire({
                                 icon: 'error',

@@ -64,7 +64,7 @@
                                         <td>:</td>
                                         <td>
                                             @if(empty($user->getSchool->sch_name))
-                                            ''
+                                            -
                                             @else
                                             {{ $user->getSchool->sch_name }}
                                             @endif
@@ -73,12 +73,24 @@
                                     <tr>
                                         <td>Kelas</td>
                                         <td>:</td>
-                                        <td>{{ $user->getGrade->grade_name }}</td>
+                                        <td>
+                                            @if(empty($user->getGrade->grade_name))
+                                            -
+                                            @else
+                                            {{ $user->getGrade->grade_name }}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Jurusan</td>
                                         <td>:</td>
-                                        <td>{{ $user->getMajor->maj_name }}</td>
+                                        <td>
+                                            @if(empty($user->getMajor->maj_name))
+                                            -
+                                            @else
+                                            {{ $user->getMajor->maj_name }}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Role</td>
