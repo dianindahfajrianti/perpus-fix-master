@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/kelas" class="nav-link @if (Request::segment(2) == 'kelas') {{'active'}} @endif">
+                    <a href="/admin/grade" class="nav-link @if (Request::segment(2) == 'grade') {{'active'}} @endif">
                         <i class="nav-icon fas fa-medal"></i>
                         <p>
                             Kelas

@@ -70,7 +70,7 @@ class GradeController extends Controller
         }
         $res->stat = $stat;
         $res->message = $msg;
-        return redirect()->route('kelas.index')->with($stat,json_encode($res));
+        return redirect()->route('grade.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -90,9 +90,9 @@ class GradeController extends Controller
      * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function edit(Grade $kela)
+    public function edit(Grade $grade)
     {
-        return view('grade.edit',compact('kela'));
+        return view('grade.edit',compact('grade'));
     }
 
     /**
@@ -102,15 +102,15 @@ class GradeController extends Controller
      * @param  \App\Grade  $grade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Grade $kelas)
+    public function update(Request $request, Grade $grade)
     {
         $request->validate([
             'kelas' => 'required',
         ]);
         $res = new stdClass();
         try {
-            $kelas->grade_name = $request->kelas;
-            $kelas->save();
+            $grade->grade_name = $request->kelas;
+            $grade->save();
 
             $stat = "success";
             $msg = "Kelas $request->grade_name berhasil diubah!";
@@ -121,7 +121,7 @@ class GradeController extends Controller
         }
         $res->stat = $stat;
         $res->message = $msg;
-        return redirect()->route('kelas.index')->with($stat,json_encode($res));
+        return redirect()->route('grade.index')->with($stat,json_encode($res));
     }
 
     /**

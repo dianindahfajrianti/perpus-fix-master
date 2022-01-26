@@ -67,7 +67,7 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{route('kelas.store')}}" method="POST">
+                <form id="fdata" action="{{route('grade.store')}}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h1>Tambah Kelas</h1>
@@ -174,7 +174,7 @@
         $('#tb-grade tbody').on('click', '.edit-grade', function(e) {
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');
-            window.location.href = "kelas/" + id + "/edit";
+            window.location.href = "/admin/grade/" + id + "/edit";
         });
         $('#tb-grade tbody').on('click', '.del-grade', function(e) {
             e.preventDefault;
@@ -191,7 +191,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "delete",
-                        url: "/admin/kelas/" + id,
+                        url: "/admin/grade/" + id,
                         data: {
                             _token: "{{ csrf_token() }}",
                         },

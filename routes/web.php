@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
         // CMS
         Route::resource('buku', 'BookController');
         Route::resource('user', 'UserController');
-        Route::resource('kelas', 'GradeController');
+        Route::resource('grade', 'GradeController');
         Route::resource('video', 'VideoController');
         Route::resource('jurusan', 'MajorController');
         Route::resource('mapel', 'SubjectController');

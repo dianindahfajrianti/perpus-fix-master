@@ -31,7 +31,7 @@
             icon: 'error',
             title: 'Gagal',
             text: js.message,
-            timer: 2500
+            timer: 3000
         });
     });
 </script>
