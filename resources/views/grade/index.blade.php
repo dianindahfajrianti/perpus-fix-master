@@ -220,13 +220,13 @@
         });
     });
 </script>
-@error('grade_name')
 <script type="text/javascript">
+    @if (count($errors) > 0)
     $(document).ready(function() {
         $('#modal-add').modal('show');
     });
+    @endif
 </script>
-@enderror
 @if (session('success'))
 <script type="text/javascript">
     $(document).ready(function(e) {

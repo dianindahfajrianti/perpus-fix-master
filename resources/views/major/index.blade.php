@@ -36,8 +36,8 @@
                         <table id="tb-major" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
-                                <th>Kelas</th>
                                 <th>Jurusan</th>
+                                <th>Aksi</th>
                             </thead>
                             <tbody>
 
@@ -58,34 +58,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group mt-3">
-                            <label class="form-label" for="kelas">Kelas</label>
-                            <div class="input-group">
-                                <select class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror"" id="kelas" aria-label="Example select with button addon">
-                                    <option selected>-- Pilih Kelas --</option>
-                                    <option value="1">I</option>
-                                    <option value="2">II</option>
-                                    <option value="3">III</option>
-                                    <option value="4">IV</option>
-                                    <option value="5">V</option>
-                                    <option value="6">VI</option>
-                                    <option value="7">VII</option>
-                                    <option value="8">VIII</option>
-                                    <option value="9">IX</option>
-                                    <option value="10">X</option>
-                                    <option value="11">XI</option>
-                                    <option value="12">XII</option>
-                                </select>
-                                @error('kelas')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="major_name">Nama Jurusan</label>
-                            <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" value="{{old('major_name')}}">
-                            @error('major_name')
+                            <label for="jurusan">Nama Jurusan</label>
+                            <input type="text" name="jurusan" id="jurusan" class="form-control @error('jurusan'){{'is-invalid'}}@enderror" value="{{old('jurusan')}}">
+                            @error('jurusan')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -140,86 +115,78 @@
             "info": true,
             "autoWidth": false,
             "responsive": true
-                // , "processing": true
-                // , "serverSide":true
-                ,
-            "columns": [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
+            , "processing": true
+            , "serverSide":true
+            ,"columns": [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false,
+                searchable: false
                 },
                 {
-                    data: "grade_name",
-                    name: "grade_name"
+                data: "maj_name",
+                name: "maj_name"
                 },
                 {
-                    data: "maj_name",
-                    name: "maj_name"
-                },
-                {
-                    defaultContent: '<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
+                defaultContent: '<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
-            // ,"ajax" : "/Jurusan/all"
+            ,"ajax" : "/jurusan/all"
         });
-
-        $.ajax({
-            type: "get",
-            url: "/Jurusan/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
+        $('#tb-major tbody').on('click','.edit-major',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "jurusan/"+id+"/edit";
         });
-
-        // $('#save-major').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/Jurusan",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
-
+        $('#tb-major tbody').on('click','.del-major',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"delete",
+                        url:"/admin/jurusan/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success:function(data){
+                            Swal.fire({
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            });
+                            table.draw();
+                        },error:function(data){
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
-@error('major_name')
 <script type="text/javascript">
+    @if (count($errors) > 0)
     $(document).ready(function() {
         $('#modal-add').modal('show');
     });
+    @endif
 </script>
-@enderror
 @if (session('success'))
 <script>
     $(document).ready(function(e) {

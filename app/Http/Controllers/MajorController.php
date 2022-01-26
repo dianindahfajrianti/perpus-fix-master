@@ -7,6 +7,8 @@ use App\Major;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
+use stdClass;
+use Yajra\DataTables\Facades\DataTables;
 
 class MajorController extends Controller
 {
@@ -22,13 +24,20 @@ class MajorController extends Controller
         //Do your magic here
         $this->stat = "";
         $this->msg = "";
-        $this->url = "admin/jurusan";
+        $this->url = "/admin/jurusan";
     }
 
     public function index()
     {
-        $mj = Major::all();
-        return view('major.index',compact('mj'));
+        return view('major.index');
+    }
+    public function data()
+    {
+        $model = Major::all();
+        return DataTables::of($model)
+               ->addIndexColumn()
+               ->setRowId('id')
+               ->make(true);
     }
 
     /**
@@ -50,14 +59,14 @@ class MajorController extends Controller
     public function store(Request $request)
     {
         $mj = new Major;
+        $res = new stdClass();
+
         $request->validate([
-            'kelas' => 'required',
             'jurusan' => 'required'
         ]);
 
 
         try {
-            $mj->parent_id = $request->kelas;
             $mj->maj_name = $request->jurusan;
             $mj->save();
 
@@ -67,12 +76,11 @@ class MajorController extends Controller
             $this->stat = "error";
             $this->msg = $ex;
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
-        return response()->json($res);
+        $res->status = $this->stat;
+        $res->data = $request->jurusan;
+        $res->message = $this->msg;
+        return redirect()->route('pendidikan.index')->with($this->stat,json_encode($res));
+
     }
 
     /**
@@ -104,18 +112,17 @@ class MajorController extends Controller
      * @param  \App\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Major $major)
+    public function update(Request $request, Major $jurusan)
     {
+        $res = new stdClass();
         $request->validate([
-            'kelas' => 'required',
             'jurusan' => 'required'
         ]);
 
 
         try {
-            $major->parent_id = $request->kelas;
-            $major->maj_name = $request->jurusan;
-            $major->save();
+            $jurusan->maj_name = $request->jurusan;
+            $jurusan->save();
 
             $this->stat = "success";
             $this->msg = "Jurusan $request->jurusan berhasil ditambahkan!";
@@ -123,12 +130,10 @@ class MajorController extends Controller
             $this->stat = "error";
             $this->msg = $ex;
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
-        return response()->json($res);
+        $res->status = $this->stat;
+        $res->data = $request->jurusan;
+        $res->message = $this->msg;
+        return redirect()->route('pendidikan.index')->with($this->stat,json_encode($res));
     }
 
     /**
@@ -137,24 +142,23 @@ class MajorController extends Controller
      * @param  \App\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Major $major)
+    public function destroy(Major $jurusan)
     {
-        $e1 = Book::where('major_id','=',$major->id)->get();
-        $e2 = Video::where('major_id','=',$major->id)->get();
-        $e3 = User::where('major_id','=',$major->id)->get();
+        $res = new stdClass();
+        $e1 = Book::where('major_id','=',$jurusan->id)->get();
+        $e2 = Video::where('major_id','=',$jurusan->id)->get();
+        $e3 = User::where('major_id','=',$jurusan->id)->get();
 
         if ($e1||$e2||$e3) {
             $this->stat = "error";
-            $this->msg = "Gagal hapus! Ada File di jurusan $major->maj_name! ";
+            $this->msg = "Gagal hapus! Ada File di jurusan $jurusan->maj_name! ";
         }else {
             $this->stat = "success";
-            $this->msg = "Jurusan $major->maj_name berhasil dihapus!";
+            $this->msg = "Jurusan $jurusan->maj_name berhasil dihapus!";
         }
-        $res = [
-            'status' => $this->stat,
-            'message' => $this->msg,
-            'url' => $this->url
-        ];
+        $res->status = $this->stat;
+        $res->url = $this->url;
+        $res->message = $this->msg;
         return response()->json($res);
     }
 }

@@ -55,11 +55,9 @@ class GradeController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'jenjang' => 'required',
             'kelas' => 'required',
         ]);
         try {
-            $gr->parent_id = $request->jenjang;
             $gr->grade_name = $request->kelas;
             $gr->save();
 
@@ -107,12 +105,10 @@ class GradeController extends Controller
     public function update(Request $request, Grade $grade)
     {
         $request->validate([
-            'jenjang' => 'required',
             'kelas' => 'required',
         ]);
         $res = new stdClass();
         try {
-            $grade->parent_id = $request->jenjang;
             $grade->grade_name = $request->kelas;
             $grade->save();
 
