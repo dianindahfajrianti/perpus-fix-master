@@ -73,22 +73,6 @@
                         <h1>Tambah Kelas</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label class="form-label" for="jenjang">Jenjang</label>
-                            <div class="input-group">
-                                <select name="jenjang" class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id="jenjang" aria-label="Example select with button addon">
-                                    <option value="">-- Pilih Jenjang --</option>
-                                    @foreach ($edu as $e )
-                                    <option value="{{ $e->id }}">{{ $e->edu_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jenjang')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="form-group mt-3">
                             <label class="form-label" for="kelas">Kelas</label>
                             <div class="input-group">
