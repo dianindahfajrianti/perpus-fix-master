@@ -167,7 +167,8 @@
                 },
                 {
                     data: "has_edu.edu_name",
-                    name: "has_edu.edu_name"
+                    name: "has_edu.edu_name",
+                    searchable: false
                 },
                 {
                     data: "address",

@@ -100,9 +100,9 @@ class MajorController extends Controller
      * @param  \App\Major  $major
      * @return \Illuminate\Http\Response
      */
-    public function edit(Major $major)
+    public function edit(Major $jurusan)
     {
-        //
+        return view('major.edit',compact('jurusan'));
     }
 
     /**
@@ -118,7 +118,6 @@ class MajorController extends Controller
         $request->validate([
             'jurusan' => 'required'
         ]);
-
 
         try {
             $jurusan->maj_name = $request->jurusan;

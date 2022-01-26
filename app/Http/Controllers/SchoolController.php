@@ -24,11 +24,15 @@ class SchoolController extends Controller
         $edu = Education::all();
         return view('school.index',compact('edu'));
     }
-    public function data()
+    public function data(Request $request)
     {
-        $rel = ['hasEdu'];
-        $model = School::with($rel)
-            ->select('*');
+        if (empty($request->ajax())) {
+            $model = School::all();
+        } else {
+            $rel = ['hasEdu'];
+            $model = School::with($rel)
+                ->select('*');
+        }
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
