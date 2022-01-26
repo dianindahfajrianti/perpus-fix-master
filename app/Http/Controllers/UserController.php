@@ -123,8 +123,8 @@ class UserController extends Controller
         $user = $user->with($rel)
                 ->where('id','=',$user->id)
                 ->first();
-        return compact('user');
-        // return view('user.showuser',compact('user'));
+        // return compact('user');
+        return view('user.showuser',compact('user'));
     }
 
     /**

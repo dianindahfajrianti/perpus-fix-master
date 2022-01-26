@@ -2,7 +2,7 @@
 @extends('template/admin/body')
 @section('title')
 @foreach($user as $p)
-{{'Detail user - Admin Rainer'}}
+{{'Detail '.$user->name.' - Admin Rainer'}}
 @endforeach
 @endsection
 @section('ext-css')
@@ -25,7 +25,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/user">user</a></li>
-                    <li class="breadcrumb-item active">@foreach($user as $p){{ $p->name }}@endforeach</li>
+                    <li class="breadcrumb-item active">{{$user->name}}</li>
                 </ol>
             </div>
         </div>
@@ -36,65 +36,50 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    @foreach ($user as $p)
                     <div class="card-header">
-                        <h3 class="card-title">Detail <b>{{$p->name}}</b></h3>
+                        <h3 class="card-title">Detail <b>{{$user->name}}</b></h3>
                         <div class="float-right">
-                            <a href="/admin/user/{{$p->p_id}}/edit" class="btn btn-success">Edit</a>
-                            <form class="ml-3 d-inline" action="/admin/user/{{$p->p_id}}" method="post">@method('delete')@csrf <button id="deluser" class="btn btn-danger" type="submit">Hapus</button></form>
+                            <a href="/admin/user/{{$user->p_id}}/edit" class="btn btn-success">Edit</a>
+                            <form class="ml-3 d-inline" action="/admin/user/{{$user->id}}" method="post">@method('delete')@csrf <button id="deluser" class="btn btn-danger" type="submit">Hapus</button></form>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>Nama User : {{$p->name}}</h3>
+                                <h3>Nama User : {{$user->name}}</h3>
                                 <h3>Foto User : </h3>
-                                @php
-                                $arrImg = explode(",",$p->img);
-                                @endphp
-                                @for($i = 0; $i < count($arrImg); $i++) <img src="/assets/uploads/user/{{$arrImg[$i]}}" alt="" class="img-fluid">
-                                    <b>Image {{$i+1}}</b>
-                                    @if($i != array_key_last($arrImg))
-                                    <hr>
-                                    @endif
-                                    @endfor
                             </div>
                             <div class="col-lg-6">
                                 <table class="table table-borderless">
                                     <tr>
-                                        <th>Part Type</th>
-                                        <th></th>
-                                        <th>Part Name</th>
-                                    </tr>
-                                    <tr>
                                         <td>Username</td>
                                         <td>:</td>
-                                        <td>{{$p->username}}</td>
+                                        <td>{{$user->username}}</td>
                                     </tr>
                                     <tr>
                                         <td>Email</td>
                                         <td>:</td>
-                                        <td>{{$p->email}}</td>
+                                        <td>{{$user->email}}</td>
                                     </tr>
                                     <tr>
                                         <td>Sekolah</td>
                                         <td>:</td>
-                                        <td>{{$p->school}}</td>
+                                        <td>{{$user->school_id}}</td>
                                     </tr>
                                     <tr>
                                         <td>Kelas</td>
                                         <td>:</td>
-                                        <td>{{$p->grade}}</td>
+                                        <td>{{$user->grade_id}}</td>
                                     </tr>
                                     <tr>
                                         <td>Jurusan</td>
                                         <td>:</td>
-                                        <td>{{$p->major}}</td>
+                                        <td>{{$user->major_id}}</td>
                                     </tr>
                                     <tr>
                                         <td>Role</td>
                                         <td>:</td>
-                                        <td>{{$p->role}}</td>
+                                        <td>{{$user->role}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -102,9 +87,7 @@
                     </div>
                     <!-- card body -->
                     <div class="card-footer">
-
                     </div>
-                    @endforeach
                 </div>
             </div>
         </div>
