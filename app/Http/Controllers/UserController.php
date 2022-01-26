@@ -26,13 +26,13 @@ class UserController extends Controller
         $edu = Education::all();
         $sch = School::all();
         $grade = Grade::all();
-        $mjr = Major::all();
+        $jur = Major::all();
         if (Auth::user()->role < 1) {
             $user = User::all();
         } else {
             $user = User::where('role', '>=', 1)->get();
         }
-        return view('user.index', compact('user','edu','sch','grade','mjr'));
+        return view('user.index', compact('user','edu','sch','grade','jur'));
     }
 
     public function data()
