@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-@extends('template/admin/body')
+@extends('admin.body')
 @section('title')
-@foreach($user as $p)
-{{'Detail '.$user->name.' - Admin Rainer'}}
-@endforeach
+{{ 'Detail '.$user->name.' - Admin Rainer' }}
 @endsection
 @section('ext-css')
 <!-- DataTables -->
@@ -19,13 +17,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>user Detail</h1>
+                <h1>User Detail</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/user">user</a></li>
-                    <li class="breadcrumb-item active">{{$user->name}}</li>
+                    <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
+                    <li class="breadcrumb-item active">{{ $user->name }}</li>
                 </ol>
             </div>
         </div>
@@ -37,16 +35,16 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Detail <b>{{$user->name}}</b></h3>
+                        <h3 class="card-title">Detail <b>{{ $user->name }}</b></h3>
                         <div class="float-right">
-                            <a href="/admin/user/{{$user->p_id}}/edit" class="btn btn-success">Edit</a>
-                            <form class="ml-3 d-inline" action="/admin/user/{{$user->id}}" method="post">@method('delete')@csrf <button id="deluser" class="btn btn-danger" type="submit">Hapus</button></form>
+                            <a href="/admin/user/{{ $user->id }}/edit" class="btn btn-success">Edit</a>
+                            <form class="ml-3 d-inline" action="/admin/user/{{ $user->id }}" method="post">@method('delete')@csrf <button id="deluser" class="btn btn-danger" type="submit">Hapus</button></form>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>Nama User : {{$user->name}}</h3>
+                                <h3>Nama User : {{ $user->name }}</h3>
                                 <h3>Foto User : </h3>
                             </div>
                             <div class="col-lg-6">
@@ -54,32 +52,38 @@
                                     <tr>
                                         <td>Username</td>
                                         <td>:</td>
-                                        <td>{{$user->username}}</td>
+                                        <td>{{ $user->username }}</td>
                                     </tr>
                                     <tr>
                                         <td>Email</td>
                                         <td>:</td>
-                                        <td>{{$user->email}}</td>
+                                        <td>{{ $user->email }}</td>
                                     </tr>
                                     <tr>
                                         <td>Sekolah</td>
                                         <td>:</td>
-                                        <td>{{$user->school_id}}</td>
+                                        <td>
+                                            @if(empty($user->getSchool->sch_name))
+                                            ''
+                                            @else
+                                            {{ $user->getSchool->sch_name }}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Kelas</td>
                                         <td>:</td>
-                                        <td>{{$user->grade_id}}</td>
+                                        <td>{{ $user->getGrade->grade_name }}</td>
                                     </tr>
                                     <tr>
                                         <td>Jurusan</td>
                                         <td>:</td>
-                                        <td>{{$user->major_id}}</td>
+                                        <td>{{ $user->getMajor->maj_name }}</td>
                                     </tr>
                                     <tr>
                                         <td>Role</td>
                                         <td>:</td>
-                                        <td>{{$user->role}}</td>
+                                        <td>{{ $user->role }}</td>
                                     </tr>
                                 </table>
                             </div>

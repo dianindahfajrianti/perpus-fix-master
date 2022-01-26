@@ -42,7 +42,6 @@
                                 <th>No</th>
                                 <th>ID</th>
                                 <th>Judul Buku</th>
-                                <th>Deskripsi</th>
                                 <th>Tahun Terbit</th>
                                 <th>Penerbit</th>
                                 <th>Pengarang</th>
@@ -356,14 +355,6 @@
                 {
                     data: "title",
                     name: "title"
-                },
-                {
-                    data: "desc",
-                    name: "desc"
-                },
-                {
-                    data: "clicked_time",
-                    name: "clicked_time"
                 },
                 {
                     data: "published_year",
