@@ -135,9 +135,9 @@ class MajorController extends Controller
     public function destroy(Major $jurusan)
     {
         $res = new stdClass();
-        $e1 = Book::where('major_id','=',$jurusan->id)->get();
-        $e2 = Video::where('major_id','=',$jurusan->id)->get();
-        $e3 = User::where('major_id','=',$jurusan->id)->get();
+        $e1 = Book::where('major_id','=',$jurusan->id)->first();
+        $e2 = Video::where('major_id','=',$jurusan->id)->first();
+        $e3 = User::where('major_id','=',$jurusan->id)->first();
 
         if (($e1||$e2||$e3) != null) {
             $stat = "error";

@@ -152,9 +152,9 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type:"delete",
-                        url:"/admin/jurusan/"+id,
-                        data:{
+                        type: "delete",
+                        url: "/admin/jurusan/"+id,
+                        data: {
                             _token: "{{ csrf_token() }}",
                         },
                         success:function(data){
