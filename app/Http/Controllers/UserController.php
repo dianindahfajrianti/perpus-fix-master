@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -100,6 +101,8 @@ class UserController extends Controller
     }
     public function storeOne(Request $request)
     {
+        $user = new User;
+        $res = new stdClass();
         $request->validate([
             'nama' => 'required',
             'username' => 'required|max:10|numeric',
@@ -109,6 +112,25 @@ class UserController extends Controller
             'kelas' => 'required',
             'role' => 'required'
         ]);
+        try {
+            $user->nama = $request->nama ;
+            $user->username = $request->username ;
+            $user->email = $request->email ;
+            $user->sekolah = $request->sekolah ;
+            $user->jenjang = $request->jenjang ;
+            $user->kelas = $request->kelas ;
+            $user->role = $request->role ;
+            $user->save();
+            $stat = "success";
+            $msg = "User $request->nama berhasil ditambahkan!";
+
+        } catch (\Exception $th) {
+            $stat = "error";
+            $msg = $th;
+        }
+        $res->status = $stat;
+        $res->message= $msg;
+        return redirect()->route('user.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -135,7 +157,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('user.edit',compact('user'));
     }
 
     /**
@@ -147,7 +169,35 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $res = new stdClass();
+        $request->validate([
+            'nama' => 'required',
+            'username' => 'required|max:10|numeric',
+            'email' => 'required|email',
+            'sekolah' => 'required',
+            'jenjang' => 'required',
+            'kelas' => 'required',
+            'role' => 'required'
+        ]);
+        try {
+            $user->nama = $request->nama ;
+            $user->username = $request->username ;
+            $user->email = $request->email ;
+            $user->sekolah = $request->sekolah ;
+            $user->jenjang = $request->jenjang ;
+            $user->kelas = $request->kelas ;
+            $user->role = $request->role ;
+            $user->save();
+            $stat = "success";
+            $msg = "User $request->nama berhasil ditambahkan!";
+
+        } catch (\Exception $th) {
+            $stat = "error";
+            $msg = $th;
+        }
+        $res->status = $stat;
+        $res->message= $msg;
+        return redirect()->route('user.index')->with($stat,json_encode($res));
     }
 
     /**
