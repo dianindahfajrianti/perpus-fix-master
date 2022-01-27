@@ -14,7 +14,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        return view('subject.index');
+        $maj = Major::all();
+        return view('subject.index',compact('maj'));
     }
 
     /**
