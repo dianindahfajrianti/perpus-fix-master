@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Admin - Menu')
+@section('title', 'Edit User - Admin Perpus')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">

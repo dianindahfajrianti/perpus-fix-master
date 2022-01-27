@@ -69,7 +69,7 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{route('user.storeOne')}}" method="POST">
+                <form id="fdata" action="{{ route('user.storeOne' )}}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h1>Tambah User</h1>
@@ -105,7 +105,7 @@
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
                             <div class="input-group">
-                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id=" sekolah" aria-label="">
+                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id="sekolah" aria-label="">
                                     <option value="">-- Pilih Sekolah --</option>
                                     @foreach ($sch as $s )
                                     <option @if(old('sekolah')==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>

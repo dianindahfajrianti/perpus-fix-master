@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Education;
+use App\Grade;
+use App\Major;
+use App\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,14 +19,19 @@ class BookController extends Controller
      */
     public function index()
     {
-        return view('book.index');
+        $edu = Education::all();
+        $grade = Grade::all();
+        $maj = Major::all();
+        $sub = Subject::all();
+        return view('book.index',compact('grade','maj','sub'));
     }
 
     public function data()
     {
         $rel = ['getEdu', 'getGrade'];
         $model = Book::with($rel)
-            ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author');
+            ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author')
+            ->orderBy('updated_at');
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
@@ -35,6 +44,7 @@ class BookController extends Controller
      */
     public function create()
     {
+
     }
 
     /**

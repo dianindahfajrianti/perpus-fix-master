@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Permission;
+use App\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class PermissionController extends Controller
 {
@@ -15,6 +19,20 @@ class PermissionController extends Controller
     public function index()
     {
         //
+    }
+
+    public function data(School $school)
+    {
+        $book = DB::table('permissions')
+                ->where('school_id','=',$school->id)
+                ->value('idfile');
+        $collect = explode(",",$book);
+        $books = new stdClass;
+        $bks = Book::where('id','=',$collect)->get();
+        foreach ($collect as $c => $val) {
+            $books->$c = Book::where('id','=',$val)->get();
+        }
+        return view('',compact('books'));
     }
 
     /**
@@ -35,7 +53,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

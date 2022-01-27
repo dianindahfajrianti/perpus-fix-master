@@ -105,17 +105,18 @@ class UserController extends Controller
         $res = new stdClass();
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|max:10|min:5|numeric',
+            'username' => 'required|unique:users,username',
             'email' => 'required|email',
             'sekolah' => 'required',
-            'jenjang' => 'required',
+            'jurusan' => 'required',
             'kelas' => 'required',
             'role' => 'required'
         ]);
         try {
-            $user->nama = $request->nama ;
+            $user->nama = $request->name ;
             $user->username = $request->username ;
             $user->email = $request->email ;
+            $user->password = 123456;
             $user->sekolah = $request->sekolah ;
             $user->jenjang = $request->jenjang ;
             $user->kelas = $request->kelas ;
