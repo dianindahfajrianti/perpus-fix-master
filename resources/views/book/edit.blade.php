@@ -64,23 +64,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group mt-3">
+                            <div class="form-group">
                                 <label class="form-label" for="kelas">Kelas</label>
                                 <div class="input-group">
-                                    <select class="form-control select2bs4" id="kelas" aria-label="Example select with button addon">
-                                        <option selected>-- Pilih Kelas --</option>
-                                        <option value="1">I</option>
-                                        <option value="2">II</option>
-                                        <option value="3">III</option>
-                                        <option value="4">IV</option>
-                                        <option value="5">V</option>
-                                        <option value="6">VI</option>
-                                        <option value="7">VII</option>
-                                        <option value="8">VIII</option>
-                                        <option value="9">IX</option>
-                                        <option value="10">X</option>
-                                        <option value="11">XI</option>
-                                        <option value="12">XII</option>
+                                    <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                            @endfor
                                     </select>
                                     @error('kelas')
                                     <div class="invalid-feedback">
@@ -89,18 +79,14 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label" for="jurusan">Jurusan</label>
+                            <div class="form-group">
+                                <label class="form-label" for="sekolah">Jurusan</label>
                                 <div class="input-group">
-                                    <select class="form-control select2bs4" id="jurusan" aria-label="Example select with button addon">
-                                        <option selected>-- Pilih Jurusan --</option>
-                                        <option value="1">IPA</option>
-                                        <option value="2">IPS</option>
-                                        <option value="3">TKJ</option>
-                                        <option value="4">Tata Boga</option>
-                                        <option value="5">Perhotelan</option>
-                                        <option value="6">Akuntansi</option>
-                                        <option value="7">Hukum</option>
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                        <option value="">-- Pilih Jurusan --</option>
+                                        @foreach ($maj as $m )
+                                        <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        @endforeach
                                     </select>
                                     @error('jurusan')
                                     <div class="invalid-feedback">
@@ -109,23 +95,14 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group mt-3">
+                            <div class="form-group">
                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                 <div class="input-group">
-                                    <select class="form-control select2bs4" id="mapel" aria-label="Example select with button addon">
-                                        <option selected>-- Pilih Mata Pelajaran --</option>
-                                        <option value="1">Bahasa Indonesia</option>
-                                        <option value="2">Bahasa Inggris</option>
-                                        <option value="3">Matematika</option>
-                                        <option value="4">Seni Budaya</option>
-                                        <option value="5">PJOK</option>
-                                        <option value="6">Agama</option>
-                                        <option value="7">Fisika</option>
-                                        <option value="8">Kimia</option>
-                                        <option value="9">Ekonomi</option>
-                                        <option value="10">Sejarah</option>
-                                        <option value="11">Astronomi</option>
-                                        <option value="12">Biologi</option>
+                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                        <option value="">-- Pilih Mata Pelajaran --</option>
+                                        @foreach ($sub as $sbj )
+                                        <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
+                                        @endforeach
                                     </select>
                                     @error('mapel')
                                     <div class="invalid-feedback">

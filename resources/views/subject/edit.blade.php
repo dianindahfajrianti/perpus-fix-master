@@ -49,14 +49,21 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                            <label for="major_name">Nama Jurusan</label>
-                            <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" value="{{ old('major_name', $mapel->parent_id) }}">
-                            @error('major_name')
-                            <div class="invalid-feedback">
-                                {{$message}}
+                                <label class="form-label" for="sekolah">Jurusan</label>
+                                <div class="input-group">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                        <option value="">-- Pilih Jurusan --</option>
+                                        @foreach ($maj as $m )
+                                        <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('jurusan')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
                             </div>
-                            @enderror
-                        </div>
                         </div>
                         <!-- /.card-body -->
 
@@ -84,6 +91,5 @@
         })
         bsCustomFileInput.init();
     });
-
 </script>
 @endsection
