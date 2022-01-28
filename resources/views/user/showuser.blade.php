@@ -95,7 +95,15 @@
                                     <tr>
                                         <td>Role</td>
                                         <td>:</td>
-                                        <td>{{ $user->role }}</td>
+                                        @if($user->role == 0 )
+                                        <td>{{ 'Super Admin' }}</td>
+                                        @elseif($user->role == 1)
+                                        <td>{{ 'Admin Sekolah' }}</td>
+                                        @elseif($user->role == 2)
+                                        <td>{{ 'Admin Guru' }}</td>
+                                        @else
+                                        <td>{{ 'Murid' }}</td>
+                                        @endif
                                     </tr>
                                 </table>
                             </div>

@@ -31,6 +31,7 @@ class Admin extends Controller
             // $view = compact('book','vid','user','school');
             $view = view('admin.index',compact('book','vid','user','school'));
         }else {
+
             $book = Book::select(DB::raw('COUNT(id) as totidb'))->where('school_id','=',env('SCHOOL_ID'))->get();
             $vid = Video::select(DB::raw('COUNT(id) as totidv'))->where('school_id','=',env('SCHOOL_ID'))->get();
             $user = User::select(DB::raw('COUNT(id) as totidu'))->where('school_id','=',env('SCHOOL_ID'))->get();
