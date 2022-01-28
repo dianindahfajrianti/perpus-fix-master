@@ -24,21 +24,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $edu = Education::all();
         $sch = School::all();
         $grade = Grade::all();
         $maj = Major::all();
-        if (Auth::user()->role < 1) {
-            $user = User::all();
-        } else {
-            $user = User::where('role', '>=', 1)->get();
-        }
-        return view('user.index', compact('user','edu','sch','grade','maj'));
+        return view('user.index', compact('sch','grade','maj'));
     }
 
     public function data()
     {
-        $model = User::all();
+        if (Auth::user()->role < 1) {
+            $model = User::all();
+        } else {
+            $model = User::where('role', '>=', 1);
+        }
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
@@ -183,8 +181,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        // return ;
-        return view('user.edit',compact('user'));
+        $sch = School::all();
+        $grade = Grade::all();
+        $maj = Major::all();
+
+        return view('user.edit',compact('user','sch','grade','maj'));
     }
 
     /**

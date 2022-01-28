@@ -58,17 +58,8 @@
                         <h1>Tambah Mata Pelajaran</h1>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="subject_name">Mata Pelajaran</label>
-                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{old('subject_name')}}">
-                            @error('subject_name')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="sekolah">Jurusan</label>
+                        <div class="form-group mt-3">
+                            <label class="form-label" for="jurusan">Jurusan</label>
                             <div class="input-group">
                                 <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="">
                                     <option value="">-- Pilih Jurusan --</option>
@@ -83,6 +74,16 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="subject_name">Mata Pelajaran</label>
+                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{old('subject_name')}}">
+                            @error('subject_name')
+                            <div class="invalid-feedback">
+                                {{$message}}
+                            </div>
+                            @enderror
+                        </div>
+                        
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -132,10 +133,9 @@
             "info": true,
             "autoWidth": false,
             "responsive": true
-                // , "processing": true
-                // , "serverSide":true
-                ,
-            "columns": [{
+            , "processing": true
+            , "serverSide":true
+            ,"columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -149,55 +149,9 @@
                     defaultContent:'<button type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
-            // ,"ajax" : "/Mata Pelajaran/all"
+            ,"ajax" : "/mapel/all"
         });
 
-        $.ajax({
-            type: "get",
-            url: "/mapel/all",
-            dataType: "json",
-            success: function(d) {
-                console.log(d);
-                // alert(d);
-            },
-            error: function(d) {
-                console.log(d);
-                // alert(d);
-            }
-        });
-
-        // $('#save-subject').click(function(e){
-        //     e.preventDefault;
-        //     var fData = $('#fdata').serialize();
-        //     console.log(fData);
-        //     $.ajax({
-        //         type : "post",
-        //         url : "/admin/Mata Pelajaran",
-        //         dataType : "json",
-        //         data : fData
-        //         ,success:function(d){
-        //             var uc = d.status;
-        //             $('#modal-add').modal('hide');
-        //             console.log(d);
-        //             Swal.fire({
-        //                 icon : d.status,
-        //                 title : d.data,
-        //                 text : d.message,
-        //                 timer : 1650
-        //             });
-        //             table.draw();
-        //         },error:function(d){
-        //             var uc = d.responseJSON;
-        //             console.log(uc);
-        //             Swal.fire({
-        //                 icon : 'error',
-        //                 title : uc.exception,
-        //                 text : uc.message,
-        //                 timer : 1650
-        //             });
-        //         }
-        //     });
-        // });
 
     });
 </script>

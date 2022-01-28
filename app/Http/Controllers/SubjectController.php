@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Major;
 use App\Subject;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SubjectController extends Controller
 {
@@ -17,6 +18,14 @@ class SubjectController extends Controller
     {
         $maj = Major::all();
         return view('subject.index',compact('maj'));
+    }
+    public function data()
+    {
+        $model = Subject::all();
+        return DataTables::of($model)
+               ->addIndexColumn()
+               ->setRowId('id')
+               ->make(true);
     }
 
     /**

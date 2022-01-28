@@ -41,7 +41,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nama">Nama user</label>
-                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('nama', $user->nama) }}">
+                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('nama', $user->name) }}">
                                 @error('nama')
                                 <div class="invalid-feedback">
                                     {{$message}}
