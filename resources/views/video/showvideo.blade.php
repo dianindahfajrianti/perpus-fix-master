@@ -17,12 +17,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Buku Detail</h1>
+                <h1>Video Detail</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/video">Buku</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/video">Video</a></li>
                     <li class="breadcrumb-item active">{{ $video->name }}</li>
                 </ol>
             </div>
@@ -44,24 +44,29 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>Judul Buku : {{ $video->name }}</h3>
-                                <h3>Cover Buku : </h3>
+                                <h3>Judul Video : {{ $video->name }}</h3>
+                                <h3>Thumbnail Video : </h3>
                             </div>
                             <div class="col-lg-6">
                                 <table class="table table-borderless">
                                     <tr>
-                                        <td>Email</td>
+                                        <td>Deskripsi</td>
                                         <td>:</td>
-                                        <td>{{ $video->email }}</td>
+                                        <td>{{ $video->desc }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Sekolah</td>
+                                        <td>Creator</td>
+                                        <td>:</td>
+                                        <td>{{ $video->creator }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenjang</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($video->getSchool->sch_name))
+                                            @if(empty($video->getEdu->edu_name))
                                             -
                                             @else
-                                            {{ $video->getSchool->sch_name }}
+                                            {{ $video->getEdu->edu_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -88,9 +93,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Role</td>
+                                        <td>Mata Pelajaran</td>
                                         <td>:</td>
-                                        <td>{{ $video->role }}</td>
+                                        <td>
+                                            @if(empty($video->getSubject->sbj_name))
+                                            -
+                                            @else
+                                            {{ $video->getSubject->sbj_name }}
+                                            @endif
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
