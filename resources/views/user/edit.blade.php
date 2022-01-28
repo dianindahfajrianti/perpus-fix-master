@@ -12,13 +12,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Edit Jurusan</h3>
+                <h3 class="display-4">Edit User</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/jurusan">Jurusan</a></li>
-                    <li class="breadcrumb-item">Edit Jurusan</li>
+                    <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
+                    <li class="breadcrumb-item">Edit User</li>
                 </ol>
             </div>
         </div>
@@ -31,18 +31,18 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Edit Jurusan</h3>
+                        <h3 class="card-title">Edit User</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("jurusan.update",$user->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route("user.update",$user->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="major_name">Nama Jurusan</label>
-                                <input type="text" name="major_name" id="major_name" class="form-control @error('major_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{$majorcation->major_name}}">
-                                @error('major_name')
+                                <label for="nama">Nama user</label>
+                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('nama', $user->nama) }}">
+                                @error('nama')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -77,5 +77,5 @@
         bsCustomFileInput.init();
     });
 
-</script>
+</script> 
 @endsection
