@@ -24,6 +24,22 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+@php
+    function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
+    }
+    @endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -41,12 +57,101 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nama">Nama user</label>
-                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('nama', $user->name) }}">
+                                <input type="text" name="nama" id="nama" class="form-control @error('nama'){{'is-invalid'}}@enderror" value="{{ old('nama', $user->name) }}">
                                 @error('nama')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
                                 @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username', $user->username)}}">
+                                @error('username')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="text" name="email" id="email" class="form-control @error('email'){{'is-invalid'}}@enderror" value="{{old('email', $user->email)}}">
+                                @error('email')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="sekolah">Sekolah</label>
+                                <div class="input-group">
+                                    <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id=" sekolah" aria-label="">
+                                        <option value="">-- Pilih Sekolah --</option>
+                                        @foreach ($sch as $s )
+                                        <option @if(old('sekolah', $user->school_id)==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('sekolah')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="kelas">Kelas</label>
+                                <div class="input-group">
+                                    <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        @for ($i = 1; $i < 13; $i++) 
+                                        <option @if(old('kelas', $user->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                        @endfor
+                                    </select>
+                                    @error('kelas')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="sekolah">Jurusan</label>
+                                <div class="input-group">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
+                                        <option value="">-- Pilih Jurusan --</option>
+                                        @foreach ($maj as $m )
+                                        <option @if(old('jurusan', $user->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('jurusan')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="role">Role</label>
+                                <div class="input-group">
+                                    <select name="role" class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror"" id=" role" aria-label="">
+                                        <option selected>-- Pilih Role --</option>
+                                        @php
+                                        $rl = [
+                                        'Super Admin',
+                                        'Admin Sekolah',
+                                        'Guru',
+                                        'Murid'
+                                        ];
+                                        @endphp
+                                        @for($i = 0; $i < count($rl); $i++) <option @if(old('role', $user->role)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ $rl[$i] }}</option>
+                                            @endfor
+                                    </select>
+                                    @error('role')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
                             </div>
 
                         </div>
