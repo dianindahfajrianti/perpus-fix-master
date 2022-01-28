@@ -17,12 +17,13 @@ Route::get('/file', 'HomeController@showfile')->name('file');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 
 //Admin Back-End
-Route::get('admin', 'Admin@index');
 Route::middleware('auth')->group(function () {
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::get('/', 'Admin@index');
         // CMS
         Route::resource('buku', 'BookController');
         Route::resource('user', 'UserController');
+        Route::post('user-store', 'UserController@storeOne')->name('user-store');
         Route::resource('grade', 'GradeController');
         Route::resource('video', 'VideoController');
         Route::resource('jurusan', 'MajorController');
@@ -30,14 +31,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('sekolah', 'SchoolController');
         // Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
-        Route::post('user/storeOne', 'UserController@storeOne')->name('user.storeOne');
         
     });
     Route::get('riwayat/{user}', 'HistoryController@show');
     Route::get('profile/{user}', 'UserController@profile');
 });
 Auth::routes([
-    // 'register' => false, // Registration Routes...
+    'register' => false, // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);

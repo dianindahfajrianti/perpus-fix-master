@@ -30,9 +30,10 @@ class PermissionController extends Controller
         $books = new stdClass;
         $bks = Book::where('id','=',$collect)->get();
         foreach ($collect as $c => $val) {
-            $books->$c = Book::where('id','=',$val)->get();
+            $books->$c = Book::where('id','=',$val)->get('id');
         }
-        return view('',compact('books'));
+        return compact('books');
+        // view('permission.test',);
     }
 
     /**

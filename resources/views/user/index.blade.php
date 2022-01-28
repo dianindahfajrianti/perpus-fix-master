@@ -69,7 +69,7 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{ route('user.storeOne' )}}" method="POST">
+                <form id="fdata" action="{{ route('user-store' )}}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h1>Tambah User</h1>

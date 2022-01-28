@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
@@ -101,8 +102,8 @@ class UserController extends Controller
     }
     public function storeOne(Request $request)
     {
-        $user = new User;
         $res = new stdClass();
+        
         $request->validate([
             'nama' => 'required',
             'username' => 'required|unique:users,username',
@@ -112,26 +113,50 @@ class UserController extends Controller
             'kelas' => 'required',
             'role' => 'required'
         ]);
+        
         try {
-            $user->nama = $request->name ;
-            $user->username = $request->username ;
-            $user->email = $request->email ;
-            $user->password = 123456;
-            $user->sekolah = $request->sekolah ;
-            $user->jenjang = $request->jenjang ;
-            $user->kelas = $request->kelas ;
-            $user->role = $request->role ;
+            $user = new User;
+            $fromDB = DB::table('users')->value('id');
+            if ($fromDB == null) {
+                $last = (int) "00001";
+            }else {
+                $last = substr($fromDB,1,5)+1;
+            }
+            if ($request->role <= 2) {
+                $wordID = "A";
+            }else {
+                $wordID = "U";
+            }
+            $id = $wordID.sprintf('%05s',$last);
+
+            $user->id = $id;
+            $user->name = $request->nama;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = Hash::make('123456');
+            $user->school_id = $request->sekolah;
+            $user->grade_id = $request->kelas;
+            $user->major_id = $request->jurusan;
+            $user->role = $request->role;
             $user->save();
+
             $stat = "success";
             $msg = "User $request->nama berhasil ditambahkan!";
 
+            $res->status = $stat;
+            $res->message= $msg;
+
+            return redirect()->route('user.index')->with($stat,json_encode($res));
+
         } catch (\Exception $th) {
+
             $stat = "error";
             $msg = $th;
+
+            $res->status = $stat;
+            $res->message= $msg;
+            return redirect()->route('user.index')->with($stat,json_encode($res));
         }
-        $res->status = $stat;
-        $res->message= $msg;
-        return redirect()->route('user.index')->with($stat,json_encode($res));
     }
 
     /**
