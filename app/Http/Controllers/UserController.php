@@ -35,7 +35,7 @@ class UserController extends Controller
         if (Auth::user()->role < 1) {
             $model = User::all();
         } else {
-            $model = User::where('role', '>=', 1);
+            $model = User::where('role', '>=', 1)->where('school_id','=',Auth::user()->school_id);
         }
         return DataTables::of($model)
             ->addIndexColumn()
@@ -104,11 +104,9 @@ class UserController extends Controller
         
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|unique:users,username',
+            'username' => 'required|unique:users,username|alpha_num|min:6|max:15',
             'email' => 'required|email',
             'sekolah' => 'required',
-            'jurusan' => 'required',
-            'kelas' => 'required',
             'role' => 'required'
         ]);
         
@@ -208,13 +206,13 @@ class UserController extends Controller
             'role' => 'required'
         ]);
         try {
-            $user->nama = $request->nama ;
+            $user->name = $request->nama ;
             $user->username = $request->username ;
             $user->email = $request->email ;
-            $user->sekolah = $request->sekolah ;
-            $user->jenjang = $request->jenjang ;
-            $user->kelas = $request->kelas ;
-            $user->role = $request->role ;
+            $user->school_id = $request->sekolah;
+            $user->grade_id = $request->kelas;
+            $user->major_id = $request->jurusan;
+            $user->role = $request->role;
             $user->save();
             $stat = "success";
             $msg = "User $request->nama berhasil ditambahkan!";
@@ -236,10 +234,36 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $res = new stdClass();
+        $nama = $user->name;
+        try {
+            $del = $user->delete();
+            if ($del) {
+                $stat = "success";
+                $msg = "User $nama berhasil dihapus!";
+            }else{
+                $stat = "error";
+                $msg = "Error, please contact Super Admin!";
+            }
+            $res->status = $stat;
+            $res->url = route('user.index');
+            $res->message = $msg;
+
+            return response()->json($res);
+        } catch (\Exception $ex) {
+            $stat = "error";
+            $msg = $ex;
+            $res->status = $stat;
+            $res->url = route('user.index');
+            $res->message = $msg;
+
+            return response()->json($res);
+            
+        }
     }
 
     public function profile()
     {
+
     }
 }
