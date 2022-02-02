@@ -116,10 +116,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/privilage" class="nav-link @if (Request::segment(2) == 'privilage') {{'active'}} @endif">
+                    <a href="/admin/permission" class="nav-link @if (Request::segment(2) == 'permission') {{'active'}} @endif">
                         <i class="nav-icon fas fa-igloo"></i>
                         <p>
-                            Privilage
+                            Permissions
                         </p>
                     </a>
                 </li>
