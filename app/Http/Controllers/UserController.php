@@ -30,18 +30,24 @@ class UserController extends Controller
         return view('user.index', compact('sch','grade','maj'));
     }
 
-    public function data()
+    public function data(Request $request)
     {
-        if (Auth::user()->role < 1) {
+        if (empty($request->ajax())) {
             $model = User::all();
-        } else {
-            $model = User::where('role', '>=', 1)->where('school_id','=',Auth::user()->school_id);
+        }else{
+            if (Auth::user()->role < 1) {
+                $model = User::all();
+            } else {
+                $model = User::where('role', '>=', 1)->where('school_id','=',Auth::user()->school_id);
+            }
         }
+        
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -61,9 +67,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'select_file'  => 'required|mimes:xls,xlsx'
+            'xcl'  => 'required|mimes:xls,xlsx'
         ]);
-        $path = $request->file('select_file')->getRealPath();
+        $path = $request->file('xcl')->getRealPath();
 
         $data = Excel::load($path)->get();
 
@@ -71,17 +77,19 @@ class UserController extends Controller
             foreach ($data->toArray() as $key => $value) {
                 foreach ($value as $row) {
                     $fromDB = DB::table('users')->value('id');
-                    $wordID = "A";
                     if ($fromDB == null) {
                         $last = (int) "00001";
                     } else {
                         if ($row['role'] < 2) {
-                            # code...
+                            $wordID = "A";
+                        }else {
+                            $wordID = "U";
                         }
                         $last = substr($fromDB, 1, 5) + 1;
                     }
                     $id = $wordID . sprintf('%05s', $last);
                     $insert_data[] = array(
+                        'id' => $id,
                         'CustomerName'  => $row['customer_name'],
                         'Gender'   => $row['gender'],
                         'Address'   => $row['address'],

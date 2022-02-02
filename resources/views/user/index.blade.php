@@ -5,6 +5,10 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+{{-- DataTables --}}
+<link rel="stylesheet" href="/assets/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -30,9 +34,10 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah user</button>
+                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah user</button> <button data-target="#modal-import" data-toggle="modal" class="d-inline btn btn-dark">Import user</button>
                     </div>
                     <div class="card-body">
+                        <p>Export to :</p>
                         <table id="tb-user" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
@@ -66,7 +71,7 @@
     return $returnValue;
     }
     @endphp
-    <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
+    <div class="modal fade" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form id="fdata" action="{{ route('user-store' )}}" method="POST">
@@ -181,6 +186,31 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" aria-modal="true" id="modal-import" aria-hidden="false" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form action="{{ route('user.store') }}" method="post">
+                    @csrf
+                    <div class="modal-header"><h2>Import User</h2></div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="xcl">Excel File</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <label for="xcl" class="custom-file-label">Choose excel file</label>
+                                    <input class="custom-file-input" type="file" name="xcl" id="xcl" accept=".xls,.xlsx">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-secondary">Tambah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection
 @section('ext-script')
@@ -219,6 +249,8 @@
             "searching": true,
             "ordering": true,
             "info": true,
+            "dom":'Blfrtip',
+            "buttons": ['excel','pdf'],
             "autoWidth": false,
             "responsive": true,
             "processing": true,

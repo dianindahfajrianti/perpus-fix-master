@@ -23,6 +23,7 @@ class Book extends Model
     {
         return $this->hasOne(Subject::class,'id','subject_id');
     }
+    
     protected $fillable = [
         'title',
         'desc',

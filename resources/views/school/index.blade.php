@@ -183,6 +183,7 @@
                 }
             ]
         });
+        
         $('#tb-school tbody').on('click','.edit-school',function(e){
             e.preventDefault;
             var id = $(this).closest('tr').attr('id');

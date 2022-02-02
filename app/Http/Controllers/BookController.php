@@ -20,10 +20,9 @@ class BookController extends Controller
     public function index()
     {
         $edu = Education::all();
-        $grade = Grade::all();
         $maj = Major::all();
         $sub = Subject::all();
-        return view('book.index',compact('grade','maj','sub'));
+        return view('book.index',compact('edu','maj','sub'));
     }
 
     public function data()

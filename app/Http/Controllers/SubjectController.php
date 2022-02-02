@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Major;
 use App\Subject;
+use App\Video;
 use Illuminate\Http\Request;
+use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubjectController extends Controller
@@ -21,7 +24,7 @@ class SubjectController extends Controller
     }
     public function data()
     {
-        $model = Subject::all();
+        $model = Subject::with('hasMajor');
         return DataTables::of($model)
                ->addIndexColumn()
                ->setRowId('id')
@@ -46,7 +49,28 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sub = new Subject;
+        $res = new stdClass;
+        $request->validate([
+            'jurusan' => 'required',
+            'mapel' => 'required|min:3'
+        ]);
+
+        try {
+            $sub->parent_id = $request->jurusan;
+            $sub->sbj_name = $request->mapel;
+            $sub->save();
+
+            $stat = "success";
+            $msg = "$request->mapel berhasil ditambahkan!";
+        } catch (\Exception $th) {
+            $stat = "error";
+            $msg = $th;
+        }
+        $res->stat = $stat;
+        $res->message = $msg;
+        return redirect()->route('mapel.index')->with($stat,json_encode($res));
+        
     }
 
     /**
@@ -68,7 +92,8 @@ class SubjectController extends Controller
      */
     public function edit(Subject $mapel)
     {
-        return view('subject.edit');
+        $maj = Major::all();
+        return view('subject.edit',compact('mapel','maj'));
     }
 
     /**
@@ -78,9 +103,28 @@ class SubjectController extends Controller
      * @param  \App\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request, Subject $mapel)
     {
-        //
+        $res = new stdClass;
+        $request->validate([
+            'jurusan' => 'required',
+            'mapel' => 'required|min:3'
+        ]);
+
+        try {
+            $mapel->parent_id = $request->jurusan;
+            $mapel->sbj_name = $request->mapel;
+            $mapel->save();
+
+            $stat = "success";
+            $msg = "$request->mapel berhasil ditambahkan!";
+        } catch (\Exception $th) {
+            $stat = "error";
+            $msg = $th;
+        }
+        $res->stat = $stat;
+        $res->message = $msg;
+        return redirect()->route('mapel.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -89,8 +133,38 @@ class SubjectController extends Controller
      * @param  \App\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subject $subject)
+    public function destroy(Subject $mapel)
     {
-        //
+        $res = new stdClass;
+        $e1 = Book::with('getSubject')->where('sub_id','=',$mapel->id)->first();
+        $e2 = Video::with('getSubject')->where('sub_id','=',$mapel->id)->first();
+
+        if (($e1||$e2) != null) {
+            $stat = "error";
+            $msg = "Mata pelajaran $mapel->name Tidak Boleh Dihapus!";
+            $title = "Gagal";
+        }else {
+            $nama = $mapel->name;
+            $mapel->delete();
+            $title = "Berhasil";
+            
+            $stat = "success";
+            $msg = "Mata pelajaran $nama berhasil dihapus!";
+        }
+        
+        
+        $res->status = $stat;
+        $res->title = $title;
+        $res->message = $msg;
+
+        return response()->json($res);
+    }
+    public function check(Subject $mapel)
+    {
+        $res = new stdClass;
+        $e1 = Book::with('getSubject')->where('sub_id','=',$mapel->id)->first();
+        $title = "Gagal";
+        $title = "Berhasil";
+        return compact('e1');
     }
 }

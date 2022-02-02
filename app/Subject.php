@@ -8,7 +8,7 @@ class Subject extends Model
 {
     public function hasMajor()
     {
-        return $this->hasOne(Major::class,'id','major_id');
+        return $this->hasOne(Major::class,'id','parent_id');
     }
     public function onBook()
     {

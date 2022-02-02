@@ -35,14 +35,14 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("mapel.update",$subject->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{route("mapel.update",$mapel->id)}}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="subject_name">Mata Pelajaran</label>
-                                <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{ old('subject_name', $mapel->sbj_name) }}">
-                                @error('subject_name')
+                                <label for="mapel">Mata Pelajaran</label>
+                                <input type="text" name="mapel" id="mapel" class="form-control @error('mapel'){{'is-invalid'}}@enderror" value="{{ old('mapel', $mapel->sbj_name) }}">
+                                @error('mapel')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -51,10 +51,10 @@
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Jurusan</label>
                                 <div class="input-group">
-                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id=" jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($maj as $m )
-                                        <option @if(old('jurusan', $subject->parent_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        <option @if(old('jurusan', $mapel->parent_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('jurusan')

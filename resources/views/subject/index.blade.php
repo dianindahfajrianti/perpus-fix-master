@@ -75,9 +75,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="subject_name">Mata Pelajaran</label>
-                            <input type="text" name="subject_name" id="subject_name" class="form-control @error('subject_name'){{'is-invalid'}}@enderror" value="{{old('subject_name')}}">
-                            @error('subject_name')
+                            <label for="mapel">Mata Pelajaran</label>
+                            <input type="text" name="mapel" id="mapel" class="form-control @error('mapel'){{'is-invalid'}}@enderror" value="{{old('mapel')}}">
+                            @error('mapel')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -146,12 +146,62 @@
                     name: "sbj_name"
                 },
                 {
+                    data: "has_major.maj_name",
+                    name: "has_major.maj_name",
+                    searchable:false
+                },
+                {
                     defaultContent:'<button type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
             ,"ajax" : "/mapel/all"
         });
 
+        $('#tb-subject tbody').on('click','.edit-subject',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "mapel/"+id+"/edit";
+        });
+        $('#tb-subject tbody').on('click','.del-subject',function(e){
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type:"delete",
+                        url:"/admin/mapel/"+id,
+                        data:{
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success:function(data){
+                            Swal.fire({
+                            icon: data.status,
+                            title: data.title,
+                            text: data.message,
+                            timer: 1200
+                            });
+                            table.draw();
+                        },error:function(data){
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                        }
+                    });
+                }
+            });
+        });
 
     });
 </script>

@@ -155,16 +155,20 @@ class SchoolController extends Controller
     public function destroy(School $sekolah)
     {
         $exist = User::where('school_id','=',$sekolah->id)->first();
+
         $res= new stdClass();
         if ($exist) {
             $stat = "error";
+            $title = "Gagal";
             $msg = "$sekolah->name tidak boleh dihapus! Karena ada user di $sekolah->name !";
         }else {
             $sekolah->delete();
             $stat = "success";
+            $title = "Berhasil";
             $msg = "$sekolah->name berhasil dihapus!";
         }
         $res->status = $stat;
+        $res->title = $title;
         $res->message = $msg;
         return response()->json($res);
     }

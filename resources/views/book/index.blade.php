@@ -26,6 +26,22 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+@php
+    function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
+    }
+    @endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -84,7 +100,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="filebook">Upload File</label>
-                                            <input type="file" name="filebook" id="filebook" class="form-control @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}">
+                                            <input type="file" name="filebook" id="filebook" class="form-control @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
                                             @error('filebook')
                                             <div class="invalid-feedback">
                                                 {{$message}}
@@ -122,8 +138,9 @@
                                             <div class="input-group">
                                                 <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                                     <option value="">-- Pilih Kelas --</option>
-                                                    @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                                        @endfor
+                                                    @for ($i = 1; $i < 13; $i++) 
+                                                    <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                                    @endfor
                                                 </select>
                                                 @error('kelas')
                                                 <div class="invalid-feedback">
