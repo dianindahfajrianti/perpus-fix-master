@@ -53,7 +53,7 @@
                         <ul>
                             <li><a href="/profile"><span><i class="ri-user-line"></i> Akun</span></a></li>
 
-                            <li><form action="{{ route('logout') }}" method="post">@csrf<button type="submit" class="btn btn-nav"><span><i class="ri-logout-box-line"></i> Keluar</span></button></form></li>
+                            <li><form action="{{ route('logout') }}" method="post">@csrf<button type="submit" class="btn btn-nav"><p><span><i class="ri-logout-box-line"></i> Keluar</span></p></button></form></li>
                         </ul>
                     </li>
                     @else

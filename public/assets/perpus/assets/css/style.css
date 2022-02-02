@@ -194,6 +194,27 @@ section {
 .navbar a i:hover, .navbar a i:focus:hover {
   color: #d66854;
 }
+.navbar p, .navbar a:focus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  font-weight: 550;
+  color: #fff;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+.navbar i, .navbar a:focus i {
+  font-size: 14px;
+  line-height: 0;
+  margin-left: 5px;
+  color: #bb4430;
+}
+.navbar i:hover, .navbar i:focus:hover {
+  color: #d66854;
+}
 .navbar a:hover, .navbar .active, .navbar .active:focus, .navbar li:hover > a {
   color: #bb4430;
 }
@@ -1313,6 +1334,30 @@ section {
     padding: 13px 0px 0px 12px;
   }
 }
+/*--------------------------------------------------------------
+# Panduan
+--------------------------------------------------------------*/
+.panduan h1 {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+  margin: 10px 17px 10px 5px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 54px;
+  color: #5b5b5b;
+}
+.panduan p {
+  text-align: left;
+  margin: 10px 17px 10px 5px;
+  font-family: Poppins;
+  font-style: normal;
+}
+.panduan img {
+  width: 70%;
+}
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
