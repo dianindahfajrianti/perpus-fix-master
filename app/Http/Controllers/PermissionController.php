@@ -18,7 +18,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        return view('permission.index');
     }
 
     public function data(School $school)

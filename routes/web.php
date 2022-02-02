@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('sekolah', 'SchoolController');
         // Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
+        Route::resource('permission', 'PermissionController');
         
     });
     Route::get('riwayat/{user}', 'HistoryController@show');
