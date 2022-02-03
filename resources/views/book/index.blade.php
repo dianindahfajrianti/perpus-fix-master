@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="/assets/css/admin.css">
 
 @endsection
+@section('csrf-ajax')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 @section('container')
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -76,8 +79,7 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{route('buku.store')}}" method="POST">
-                    @csrf
+                <form id="fdata" action="javascript:void(0)" method="POST">
                     <div class="modal-header">
                         <h1>Tambah buku</h1>
                     </div>
@@ -97,16 +99,25 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
                                 <div class="row mt-3">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label class="form-label" for="filebook">Upload File</label>
-                                            <input type="file" name="filebook" id="filebook" class="form-control @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
-                                            @error('filebook')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <label for="" class="custom-file-label">Pilih PDF</label>
+                                                    @csrf
+                                                    <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
+                                                    @error('filebook')
+                                                    <div class="invalid-feedback">
+                                                        {{$message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                            @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <canvas id="pdfViewer"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -222,19 +233,6 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label" for="jml">Jml Dilihat</label>
-                                            <input type="text" name="jml" id="jml" class="form-control @error('jml'){{'is-invalid'}}@enderror" value="{{old('jml')}}">
-                                            @error('jml')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
                                             <label class="form-label" for="tahun">Tahun Terbit</label>
                                             <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
                                             @error('tahun')
@@ -276,9 +274,9 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button id="save-book" class="btn btn-secondary">Tambah</button>
+                        <button type="button" id="save-book" class="btn btn-secondary">Tambah</button>
                     </div>
-                </form>
+                </form>  
             </div>
         </div>
     </div>
@@ -307,7 +305,7 @@
 
 <!--Javascript Admin -->
 <script src="/assets/js/admin.js"></script>
-
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -414,6 +412,118 @@
                     });
                 }
             });
+        });
+        // Loaded via <script> tag, create shortcut to access PDF.js exports.
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        var dataURL = null;
+        // The workerSrc property shall be specified.
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+        
+        $("#filebook").on("change", function(e){
+            var file = e.target.files[0];
+            var canvas = $("#pdfViewer")[0];
+            if(file.type == "application/pdf"){
+                var fileReader = new FileReader();
+                fileReader.onload = function() {
+                    var pdfData = new Uint8Array(this.result);
+                    // Using DocumentInitParameters object to load binary data.
+                    var loadingTask = pdfjsLib.getDocument({data: pdfData});
+                    loadingTask.promise.then(function(pdf) {
+                        console.log('PDF loaded');
+                        
+                        // Fetch the first page
+                        var pageNumber = 1;
+                        pdf.getPage(pageNumber).then(function(page) {
+                            console.log('Page loaded');
+                            
+                            var scale = 1.5;
+                            var viewport = page.getViewport({scale: scale});
+
+                            // Prepare canvas using PDF page dimensions
+                            
+                            var context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            // Render PDF page into canvas context
+                            var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                            };
+                            var renderTask = page.render(renderContext);
+                            renderTask.promise.then(function () {
+                            dataURL = canvas.toDataURL("image/png");
+                            console.log('Page rendered');
+                            // console.log(dataURL);
+                            });
+                        });
+                    }, function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                    });
+
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+        });
+        $("#save-book").on("click",function(e){
+            e.preventDefault;
+            var form = $("#fdata")[0];
+            var fd = new FormData(form);
+            $.each(form.files, function (i, file) { 
+                    fd.append('file-'+i,file);
+            });
+            fd.append('img',dataURL);
+            var dt = $("#filebook").val();
+            if (dt != "") {
+                
+                var opts = {
+                    type: "post",
+                    enctype: 'multipart/form-data',
+                    url: "{{ route('buku.store') }}",
+                    data: fd,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success:function(data){
+                        console.log(data);
+                        Swal.fire({
+                            icon: data.status,
+                            title: data.title,
+                            text: data.message,
+                            timer: 2000
+                        });
+                        table.draw();
+                    },
+                    error:function(data){
+                        console.log(data);
+                        var js = JSON.parse(data);
+                        console.log(js);
+                        Swal.fire({
+                            icon: js.status,
+                            title: js.title,
+                            text: js.message,
+                            timer: 2000
+                        });
+                    }
+                };
+                if(fd.fake) {
+                    // Make sure no text encoding stuff is done by xhr
+                    opts.xhr = function() { var xhr = jQuery.ajaxSettings.xhr(); xhr.send = xhr.sendAsBinary; return xhr; }
+                    opts.contentType = "multipart/form-data; boundary="+fd.boundary;
+                    opts.data = fd.toString();
+                }
+                jQuery.ajax(opts);
+                
+                $.ajax(opts);
+            }else{
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal",
+                    text: "File pdf belum dipilih",
+                    timer: 1100
+                });
+            }
         });
     });
 </script>

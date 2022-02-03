@@ -8,6 +8,8 @@ use App\Grade;
 use App\Major;
 use App\Subject;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookController extends Controller
@@ -54,6 +56,53 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $res = new stdClass;
+        // $request->validate([
+        //     'filebook' => 'required|file',
+        //     'jenjang' => '',
+        //     'kelas' => '',
+        //     'jurusan' => '',
+        //     'mapel' => '',
+        //     'judul' => 'required',
+        //     'desc' => '',
+        //     'tahun' => '',
+        //     'penerbit' => '',
+        //     'pengarang' => ''
+        // ]);
+        $file = $request->file('filebook');
+        $img = $request->get('img');
+        if ($file) {
+            $filename = $file->getClientOriginalName();
+            return 'yeah';
+            // if (preg_match('/data:image\/(gif|jpeg|png);base64,(.*)/i', $img, $matches)) {
+            //     $imageType = $matches[1];
+            //     $imageData = base64_decode($matches[2]);
+            //     $image = Image::make($imageData);
+            //     $ss = $image->move('assets/images/', $filename);
+            //     if ($ss) {
+            //         $res->status = "success";
+            //         $res->title = "Berhasil";
+            //         $res->message = "Gambar berhasil ditambahkan";
+            //         return response()->json($res);
+            //     } else {
+            //         $res->status = "error";
+            //         $res->title = "Gagal";
+            //         $res->message = 'Could not save the file.';
+            //         return response()->json($res);
+            //     }
+            // } else {
+            //     $res->status = "error";
+            //     $res->title = "Gagal";
+            //     $res->message = 'Invalid data URL.';
+            //     return response()->json($res);
+            // }
+        }else {
+            $res->status = "error";
+            $res->title = "Gagal";
+            $res->message = 'File tidak ter-upload.';
+            return response()->json($res);
+        }
     }
 
     /**
