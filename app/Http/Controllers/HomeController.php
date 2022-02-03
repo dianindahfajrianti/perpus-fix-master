@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Education;
+use App\Grade;
 use Illuminate\Http\Request;
 use App\Singlepage;
-
+use App\Subject;
 
 class HomeController extends Controller
 {
@@ -33,7 +35,10 @@ class HomeController extends Controller
     }
     public function showfile()
     {
-        return view('home.file');
+        $sub = Subject::all();
+        $edu = Education::all();
+
+        return view('home.file', compact('sub', 'edu'));
     }
     public function showprofile()
     {

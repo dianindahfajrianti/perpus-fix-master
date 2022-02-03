@@ -342,7 +342,7 @@ section {
   color: #1f1f1f;
 }
 .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
-  color: #4154f1;
+  color: #bb4430;
 }
 .navbar-mobile .getstarted, .navbar-mobile .getstarted:focus {
   margin: 15px;
@@ -580,7 +580,8 @@ section {
   background: #fff;
   transition: 0.3s;
   box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  margin-bottom: 20px;
 }
 .file .member .member-img {
   position: relative;
@@ -1354,8 +1355,20 @@ section {
   font-family: Poppins;
   font-style: normal;
 }
-.panduan img {
-  width: 70%;
+@media (max-width: 992px) {
+  .panduan img {
+    width: 70%;
+  }
+}
+@media (max-width: 768px) {
+  .panduan img {
+    width: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  .panduan img {
+    width: 65%;
+  }
 }
 
 /*--------------------------------------------------------------
