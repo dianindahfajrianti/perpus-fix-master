@@ -79,7 +79,7 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="javascript:void(0)" method="POST">
+                <form id="fdata" action="{{ route("buku.store") }}" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h1>Tambah buku</h1>
                     </div>
@@ -106,9 +106,10 @@
                                                 <div class="custom-file">
                                                     <label for="" class="custom-file-label">Pilih PDF</label>
                                                     @csrf
-                                                    <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
+                                                    <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'has-danger'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
+                                                    <input hidden type="text" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{'is-invalid'}}@enderror" value="{{old('thumb')}}" accept=".pdf">
                                                     @error('filebook')
-                                                    <div class="invalid-feedback">
+                                                    <div class="form-control-feedback">
                                                         {{$message}}
                                                     </div>
                                                     @enderror
@@ -274,7 +275,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button type="button" id="save-book" class="btn btn-secondary">Tambah</button>
+                        <button type="submit" id="save-book" class="btn btn-secondary">Tambah</button>
                     </div>
                 </form>  
             </div>
@@ -429,22 +430,20 @@
                     // Using DocumentInitParameters object to load binary data.
                     var loadingTask = pdfjsLib.getDocument({data: pdfData});
                     loadingTask.promise.then(function(pdf) {
-                        console.log('PDF loaded');
+                        // console.log('PDF loaded');
                         
                         // Fetch the first page
                         var pageNumber = 1;
                         pdf.getPage(pageNumber).then(function(page) {
-                            console.log('Page loaded');
+                            // console.log('Page loaded');
                             
-                            var scale = 1.5;
-                            var viewport = page.getViewport({scale: scale});
+                            var scale = 0.35;
+                            var viewport = page.getViewport({scale:scale});
 
                             // Prepare canvas using PDF page dimensions
-                            
                             var context = canvas.getContext('2d');
                             canvas.height = viewport.height;
                             canvas.width = viewport.width;
-
                             // Render PDF page into canvas context
                             var renderContext = {
                             canvasContext: context,
@@ -453,8 +452,10 @@
                             var renderTask = page.render(renderContext);
                             renderTask.promise.then(function () {
                             dataURL = canvas.toDataURL("image/png");
-                            console.log('Page rendered');
+                            $("#thumb").val(dataURL);
+                            {{-- // console.log('Page rendered');
                             // console.log(dataURL);
+                            --}}
                             });
                         });
                     }, function (reason) {
@@ -464,65 +465,6 @@
 
                 };
                 fileReader.readAsArrayBuffer(file);
-            }
-        });
-        $("#save-book").on("click",function(e){
-            e.preventDefault;
-            var form = $("#fdata")[0];
-            var fd = new FormData(form);
-            $.each(form.files, function (i, file) { 
-                    fd.append('file-'+i,file);
-            });
-            fd.append('img',dataURL);
-            var dt = $("#filebook").val();
-            if (dt != "") {
-                
-                var opts = {
-                    type: "post",
-                    enctype: 'multipart/form-data',
-                    url: "{{ route('buku.store') }}",
-                    data: fd,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success:function(data){
-                        console.log(data);
-                        Swal.fire({
-                            icon: data.status,
-                            title: data.title,
-                            text: data.message,
-                            timer: 2000
-                        });
-                        table.draw();
-                    },
-                    error:function(data){
-                        console.log(data);
-                        var js = JSON.parse(data);
-                        console.log(js);
-                        Swal.fire({
-                            icon: js.status,
-                            title: js.title,
-                            text: js.message,
-                            timer: 2000
-                        });
-                    }
-                };
-                if(fd.fake) {
-                    // Make sure no text encoding stuff is done by xhr
-                    opts.xhr = function() { var xhr = jQuery.ajaxSettings.xhr(); xhr.send = xhr.sendAsBinary; return xhr; }
-                    opts.contentType = "multipart/form-data; boundary="+fd.boundary;
-                    opts.data = fd.toString();
-                }
-                jQuery.ajax(opts);
-                
-                $.ajax(opts);
-            }else{
-                Swal.fire({
-                    icon: "error",
-                    title: "Gagal",
-                    text: "File pdf belum dipilih",
-                    timer: 1100
-                });
             }
         });
     });
