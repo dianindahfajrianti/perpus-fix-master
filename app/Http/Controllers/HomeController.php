@@ -48,4 +48,8 @@ class HomeController extends Controller
     {
         return view('home.panduan');
     }
+    public function showpdf()
+    {
+        return view('home.showpdf');
+    }
 }

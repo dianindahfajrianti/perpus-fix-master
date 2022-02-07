@@ -149,8 +149,8 @@ return $returnValue;
                 <div class="member-img">
                   <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
                   <div class="social">
-                    <a href=""><i class="ri-file-download-fill"></i></a>
-                    <a href=""><i class="ri-eye-fill"></i></a>
+                    <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
+                    <a href="/showpdf"><i class="ri-eye-fill"></i></a>
                   </div>
                 </div>
                 <div class="member-info">
