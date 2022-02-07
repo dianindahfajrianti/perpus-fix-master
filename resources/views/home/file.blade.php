@@ -143,7 +143,8 @@ return $returnValue;
           <div class="row">
 
             <!-- File -->
-            @for ($i=1; $i < 9; $i++) <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">
+            @for ($i=1; $i < 9; $i++) 
+            <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">
               <div class="member">
                 <div class="member-img">
                   <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
@@ -166,7 +167,7 @@ return $returnValue;
                   </div>
                 </div>
               </div>
-          </div>
+            </div>
           @endfor
 
           <!-- Pagination -->

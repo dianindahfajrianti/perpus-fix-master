@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 @if (Auth::user()->role < 2)
-                <li class="nav-header">CMS User</li>
+                <li class="nav-header">Administrasi User</li>
                 <li class="nav-item">
                     <a href="/admin/user" class="nav-link @if (Request::segment(2) == 'user') {{'active'}} @endif">
                         <i class="nav-icon fas fa-user"></i>
@@ -55,7 +55,7 @@
                 </li>
                 @endif
                 @if(Auth::user()->role < 1)
-                <li class="nav-header">CMS Sekolah</li>
+                <li class="nav-header">Administrasi Sekolah</li>
                 <li class="nav-item">
                     <a href="/admin/sekolah" class="nav-link @if (Request::segment(2) == 'sekolah') {{'active'}} @endif">
                         <i class="nav-icon fas fa-school"></i>
@@ -97,7 +97,7 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-header">CMS Pembukuan</li>
+                <li class="nav-header">Administrasi Buku</li>
                 <li class="nav-item">
                     <a href="/admin/buku" class="nav-link @if (Request::segment(2) == 'buku') {{'active'}} @endif">
                         <i class="nav-icon fas fa-book"></i>

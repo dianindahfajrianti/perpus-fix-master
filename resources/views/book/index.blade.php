@@ -418,7 +418,7 @@
         var pdfjsLib = window['pdfjs-dist/build/pdf'];
         var dataURL = null;
         // The workerSrc property shall be specified.
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/js/pdf.worker.js';
         
         $("#filebook").on("change", function(e){
             var file = e.target.files[0];
