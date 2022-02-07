@@ -24,7 +24,7 @@
 <script type="text/javascript">
     $(document).ready(function(e) {
         e.preventDefault;
-        var data = "<?= session('error'); ?>";
+        var data = '<?= session("error"); ?>';
         var js = JSON.parse(data);
         console.log(data);
         Swal.fire({

@@ -8,7 +8,9 @@ use App\Grade;
 use App\Major;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -58,64 +60,77 @@ class BookController extends Controller
     {
         
         $res = new stdClass;
-        // $request->validate([
-        //     'filebook' => 'required|file',
-        //     'jenjang' => 'required',
-        //     'kelas' => 'required',
-        //     'jurusan' => 'required',
-        //     'mapel' => '',
-        //     'judul' => 'required',
-        //     'desc' => '',
-        //     'tahun' => 'required',
-        //     'penerbit' => 'required',
-        //     'pengarang' => 'required'
-        // ]);
-        $file = $request->file('filebook');
-        $img = $request->get('img');
-        if ($file != null) {
-            
-            if (preg_match('/data:image\/(gif|jpeg|png);base64,(.*)/i', $img, $matches)) {
-                $thumbname = "$request->judul.png";
-                $filename = "$request->judul-$request->pengarang-$request->tahun";
-                //Image attr declaration
-                $imageType = $matches[1];
-                $imageData = base64_decode($matches[2]);
-                //saving image
-                $image = Image::make($imageData);
-                $ss = $image->move('assets/images/', $thumbname);
-                if ($ss) {
+        $validator = Validator::make($request->all(),[
+            'filebook' => 'required|file',
+            'jenjang' => 'required',
+            'kelas' => 'required',
+            'jurusan' => 'required',
+            'mapel' => '',
+            'judul' => 'required',
+            'desc' => '',
+            'tahun' => 'required',
+            'penerbit' => 'required',
+            'pengarang' => 'required'
+        ]);
 
-                    $book = new Book;
-                    $book->title = $request->judul;
-                    $book->desc = $request->desc;
-                    $book->filename = $filename;
-                    $book->filetype = $file->getClientOriginalExtension();
-                    $book->published_year = $request->tahun;
-                    $book->publisher = $request->penerbit;
-                    $book->author = $request->pengarang;
-                    $book->save();
-
-                    $res->status = "success";
-                    $res->title = "Berhasil";
-                    $res->message = "Gambar berhasil ditambahkan";
-                    return redirect()->route('pendidikan.index')->with($res->status,json_encode($res));
+        if ($validator->fails()) {
+            $res->status = "error";
+            $res->title = "Gagal";
+            $res->message = $validator;
+        } else {
+            $file = $request->file('filebook');
+            $img = $request->get('img');
+            if ($file != null) {
+                
+                if (preg_match('/data:image\/(gif|jpeg|png);base64,(.*)/i', $img, $matches)) {
+                    
+                    $filename = Str::slug("$request->judul-$request->pengarang-$request->tahun");
+                    $thumbname = "$filename.png";
+                    //Image attr declaration
+                    $imageType = $matches[1];
+                    $imageData = base64_decode($matches[2]);
+                    //saving image
+                    $image = Image::make($imageData);
+                    $ss = $image->save(public_path('assets/images/thumbs/').$thumbname);
+                    if ($ss) {
+                        $file->storeAs('app/pdf',"$filename.".$file->getClientOriginalExtension());
+                        $book = new Book;
+                        $book->title = $request->judul;
+                        $book->desc = $request->desc;
+                        $book->filename = "$filename.".$file->getClientOriginalExtension();
+                        $book->filetype = $file->getClientOriginalExtension();
+                        $book->clicked_time = 0;
+                        $book->edu_id= $request->jenjang;
+                        $book->grade_id= $request->kelas;
+                        $book->major_id= $request->jurusan;
+                        $book->sub_id= $request->mapel;
+                        $book->published_year = $request->tahun;
+                        $book->publisher = $request->penerbit;
+                        $book->author = $request->pengarang;
+                        $book->save();
+    
+                        $res->status = "success";
+                        $res->title = "Berhasil";
+                        $res->message = "Gambar berhasil ditambahkan";
+                        return response()->json($res);
+                    } else {
+                        $res->status = "error";
+                        $res->title = "Gagal";
+                        $res->message = 'Could not save the file.';
+                        return response()->json($res,400);
+                    }
                 } else {
                     $res->status = "error";
                     $res->title = "Gagal";
-                    $res->message = 'Could not save the file.';
-                    return redirect()->route('pendidikan.index')->with($res->status,json_encode($res));
+                    $res->message = 'Invalid data URL.';
+                    return response()->json($res,400);
                 }
-            } else {
+            }else {
                 $res->status = "error";
                 $res->title = "Gagal";
-                $res->message = 'Invalid data URL.';
-                return redirect()->route('pendidikan.index')->with($res->status,json_encode($res));
+                $res->message = 'File tidak ter-upload.';
+                return response()->json($res,404);
             }
-        }else {
-            $res->status = "error";
-            $res->title = "Gagal";
-            $res->message = 'File tidak ter-upload.';
-            return response()->json($res);
         }
     }
 
@@ -127,7 +142,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        
     }
 
     /**
