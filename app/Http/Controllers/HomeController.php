@@ -38,8 +38,9 @@ class HomeController extends Controller
     {
         $sub = Subject::all();
         $edu = Education::all();
+        $book = Book::where('desc','=',null)->get();
 
-        return view('home.file', compact('sub', 'edu'));
+        return view('home.file', compact('sub', 'edu','book'));
     }
     public function showprofile()
     {

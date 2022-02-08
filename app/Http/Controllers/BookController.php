@@ -178,6 +178,6 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        $e1 = Permission::where('')
+        // $e1 = Permission::where('')
     }
 }

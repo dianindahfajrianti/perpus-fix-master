@@ -159,12 +159,10 @@ class SubjectController extends Controller
 
         return response()->json($res);
     }
-    public function check(Subject $mapel)
+    public function check(Book $buku)
     {
-        $res = new stdClass;
-        $e1 = Book::with('getSubject')->where('sub_id','=',$mapel->id)->first();
-        $title = "Gagal";
-        $title = "Berhasil";
-        return compact('e1');
+        // $title = "Gagal";
+        // $title = "Berhasil";
+        return compact($buku);
     }
 }

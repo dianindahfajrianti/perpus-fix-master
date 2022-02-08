@@ -143,32 +143,32 @@ return $returnValue;
           <div class="row">
 
             <!-- File -->
-            @for ($i=1; $i < 9; $i++) 
-            <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">
-              <div class="member">
-                <div class="member-img">
-                  <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
-                  <div class="social">
-                    <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
-                    <a href="/showpdf"><i class="ri-eye-fill"></i></a>
+            @foreach ($book as $b)
+              <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">
+                <div class="member">
+                  <div class="member-img">
+                    <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
+                    <div class="social">
+                      <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
+                      <a href="/web/viewer.html?file={{ $b->filename }}"><i class="ri-eye-fill"></i></a>
+                    </div>
                   </div>
-                </div>
-                <div class="member-info">
-                  <h5>Matematika <br />Kelas 1 SMP</h5>
-                  <div class="btn-file">
-                    <span>PDF</span>
-                  </div>
-                  <p>
-                    Deskripsi Buku Deskripsi Buku Deskripsi Buku Deskripsi
-                    Buku
-                  </p>
-                  <div class="stat-content">
-                    <a href="#">dilihat 120 kali</a>
+                  <div class="member-info">
+                    <h5>Matematika <br />Kelas 1 SMP</h5>
+                    <div class="btn-file">
+                      <span>PDF</span>
+                    </div>
+                    <p>
+                      Deskripsi Buku Deskripsi Buku Deskripsi Buku Deskripsi
+                      Buku
+                    </p>
+                    <div class="stat-content">
+                      <a href="#">dilihat 120 kali</a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          @endfor
+            @endforeach
 
           <!-- Pagination -->
           <nav aria-label="...">
