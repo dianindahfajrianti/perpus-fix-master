@@ -16,7 +16,7 @@ Route::get('/', 'HomeController@index');
 Route::get('/file', 'HomeController@showfile')->name('file');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
-Route::get('/showpdf', 'HomeController@showpdf')->name('showpdf');
+Route::get('/showpdf/{book}', 'HomeController@showpdf')->name('showpdf');
 
 //Admin Back-End
 Route::middleware('auth')->group(function () {

@@ -6,6 +6,7 @@ use App\Book;
 use App\Education;
 use App\Grade;
 use App\Major;
+use App\Permission;
 use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -76,7 +77,8 @@ class BookController extends Controller
         if ($validator->fails()) {
             $res->status = "error";
             $res->title = "Gagal";
-            $res->message = $validator;
+            $res->message = $validator->errors();
+            return response()->json($res);
         } else {
             $file = $request->file('filebook');
             $img = $request->get('img');
@@ -93,7 +95,7 @@ class BookController extends Controller
                     $image = Image::make($imageData);
                     $ss = $image->save(public_path('assets/images/thumbs/').$thumbname);
                     if ($ss) {
-                        $file->storeAs('app/pdf',"$filename.".$file->getClientOriginalExtension());
+                        $file->storeAs('pdf',"$filename.".$file->getClientOriginalExtension());
                         $book = new Book;
                         $book->title = $request->judul;
                         $book->desc = $request->desc;
@@ -176,6 +178,6 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $e1 = Permission::where('')
     }
 }

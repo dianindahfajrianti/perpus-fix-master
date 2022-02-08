@@ -79,11 +79,18 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="{{ route("buku.store") }}" method="POST" enctype="multipart/form-data">
+                <form id="fdata" action="javascript:void(0)" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h1>Tambah buku</h1>
                     </div>
                     <div class="modal-body">
+                        <div id="valpar">
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h5><i class="icon fas fa-ban"></i>Peringatan!</h5>
+                                <div id="val"></div>
+                              </div>
+                        </div>
                         <p class="text-red">*) Pastikan seluruh input terisi</p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -106,10 +113,9 @@
                                                 <div class="custom-file">
                                                     <label for="" class="custom-file-label">Pilih PDF</label>
                                                     @csrf
-                                                    <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'has-danger'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
-                                                    <input hidden type="text" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{'is-invalid'}}@enderror" value="{{old('thumb')}}" accept=".pdf">
+                                                    <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
                                                     @error('filebook')
-                                                    <div class="form-control-feedback">
+                                                    <div class="invalid-feedback">
                                                         {{$message}}
                                                     </div>
                                                     @enderror
@@ -311,6 +317,7 @@
 <script>
     $(document).ready(function() {
         //Initialize Select2 Elements
+        $('#valpar').hide();
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
@@ -452,7 +459,6 @@
                             var renderTask = page.render(renderContext);
                             renderTask.promise.then(function () {
                             dataURL = canvas.toDataURL("image/png");
-                            $("#thumb").val(dataURL);
                             {{-- // console.log('Page rendered');
                             // console.log(dataURL);
                             --}}
@@ -465,6 +471,97 @@
 
                 };
                 fileReader.readAsArrayBuffer(file);
+            }
+        });
+        $("#fdata").on("submit",function(e){
+            e.preventDefault;
+            var form = $("#fdata")[0];
+            var fd = new FormData(form);
+            $('#valpar').slideUp();
+            {{-- 
+            $.each(form.files, function (i, file) { 
+                fd.append('file-'+i,file);
+            }); 
+            --}}
+            var dt = $("#filebook").val();
+            if (dt != "") {
+                fd.append('img',dataURL);
+                fd.append('filebook',$('#filebook')[0]);
+                if(fd.fake) {
+                    // Make sure no text encoding stuff is done by xhr
+                    opts.xhr = function() { var xhr = jQuery.ajaxSettings.xhr(); xhr.send = xhr.sendAsBinary; return xhr; }
+                    opts.contentType = "multipart/form-data; boundary="+fd.boundary;
+                    opts.data = fd.toString();
+                }
+                // console.log(fd,opts);
+                $.ajax({
+                    type: "post",
+                    enctype: 'multipart/form-data',
+                    url: "{{ route('buku.store') }}",
+                    data: fd,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success:function(data){
+                        console.log(data);
+                        // var js = JSON.parse(data);
+                        // console.log(js);
+                        var msg='';
+                        if (typeof data.message === 'string') {
+                            msg = data.message;
+                            Swal.fire({
+                            icon: data.status,
+                            title: data.title,
+                            text: msg,
+                            timer: 2000
+                            });
+                            $(':input','#fdata')
+                            .not(':button, :submit, :reset, :hidden')
+                            .val('')
+                            .prop('checked', false)
+                            .prop('selected', false);
+                            $('#filebook').val();
+                            $('#fdata')[0].reset();
+                            {{--  --}}
+                            table.draw();
+                        } else {
+                            var val_msg = data.message;
+                            for (var key in val_msg) {
+                                // skip loop if the property is from prototype
+                                if (!val_msg.hasOwnProperty(key)) continue;
+
+                                var obj = val_msg[key];
+                                for (var prop in obj) {
+                                    // skip loop if the property is from prototype
+                                    if (!obj.hasOwnProperty(prop)) continue;
+                                    // your code
+                                    msg +=obj[prop]+" ";
+                                }
+                            }
+                            $('#val').text(msg);
+                            console.log(msg);
+                            $('#valpar').slideDown();
+                        }
+                    },
+                    error:function(data){
+                        // console.log(data);
+                        var js = JSON.parse(data);
+                        console.log(js);
+                        Swal.fire({
+                            icon: js.status,
+                            title: js.responseJSON.exception,
+                            text: js.responseJSON.message,
+                            timer: 2000
+                        });
+                    }
+                });
+            }else{
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal",
+                    text: "File pdf belum dipilih",
+                    timer: 1100
+                });
             }
         });
     });

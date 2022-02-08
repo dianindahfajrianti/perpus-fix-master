@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Education;
 use App\Grade;
 use Illuminate\Http\Request;
@@ -48,8 +49,8 @@ class HomeController extends Controller
     {
         return view('home.panduan');
     }
-    public function showpdf()
+    public function showpdf(Book $book)
     {
-        return view('home.showpdf');
+        return view('home.showpdf',compact('book'));
     }
 }

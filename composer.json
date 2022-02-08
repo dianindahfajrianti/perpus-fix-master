@@ -12,6 +12,7 @@
         "artesaos/seotools": "*.*",
         "fideloper/proxy": "^4.4",
         "intervention/image": "^2.7",
+        "laravel-lang/lang": "^10.4",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
         "laravel/ui": "1.0",
