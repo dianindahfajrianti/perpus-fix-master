@@ -312,7 +312,7 @@
 
 <!--Javascript Admin -->
 <script src="/assets/js/admin.js"></script>
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="/assets/js/pdf/pdf.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -422,10 +422,10 @@
             });
         });
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
-        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        var pdfjsLib = window['assets/js/pdf/'];
         var dataURL = null;
         // The workerSrc property shall be specified.
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ url("/assets/js/pdf/pdf.worker.js") }}';
         
         $("#filebook").on("change", function(e){
             var file = e.target.files[0];
