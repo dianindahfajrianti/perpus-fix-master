@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('permission', 'PermissionController');
         
     });
-    Route::get('riwayat/{user}', 'HistoryController@show');
-    Route::get('profile/{user}', 'UserController@profile');
+    Route::get('/riwayat/{user}', 'HistoryController@show');
+    Route::get('/profile/{user}', 'UserController@profile');
 });
 Auth::routes([
     'register' => false, // Registration Routes...
@@ -56,3 +56,4 @@ Route::get('/video/all', 'VideoController@data');
 Route::get('/akses/{school}','PermissionController@data');
 Route::get('/cek/{buku}','SubjectController@check');
 Route::get('/pdfViewer?{buku}','HomeController@viewer');
+

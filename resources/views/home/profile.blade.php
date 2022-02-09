@@ -8,7 +8,7 @@
 
     <div class="photo">
       <img src="/assets/perpus/assets/img/profile-img.png" class="rounded-circle" height="200" width="200" alt="">
-      <p>Contoh Nama Pengguna</p>
+      <p>{{ Auth::user()->name }}</p>
     </div>
     <div class="d-flex justify-content-center">
 
@@ -18,59 +18,23 @@
 
           <div class="entry-history">
             <div class="row" data-aos="fade-up">
-              <h3>History</h3>
+              <h3>Riwayat</h3>
 
               <div class="row">
 
                 <div class="row align-self-center gy-2">
 
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
+                  @forelse($riwayat as $r)
+                    <div class="col-md-6 icon-box">
+                      <i class="ri-radio-button-line"></i>
+                      <div>
+                        <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
+                        <p>dibuka pada tanggal 09 agustus 2021</p>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6 icon-box">
-                    <i class="ri-radio-button-line"></i>
-                    <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
-                    </div>
-                  </div>
+                  @empty
+                    <h4 class="text-center">Belum ada riwayat baca</h4>
+                  @endforelse
 
                 </div>
 
@@ -86,31 +50,30 @@
           <div class="d-flex justify-content-center">
             <div class="col-lg-11" data-aos="fade-up">
               <h3>Detail Profil</h3>
-
-              <form>
-                <fieldset disabled>
-                  <div class="form-group">
-                    <label for="disabledTextInput">Username</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="contohusername">
-                  </div>
-                  <div class="form-group">
-                    <label for="disabledTextInput">Email</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="contohemail@gmail.com">
-                  </div>
-                  <div class="form-group">
-                    <label for="disabledTextInput">Asal Sekolah</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Contoh Nama Sekolah">
-                  </div>
-                  <div class="form-group">
-                    <label for="disabledTextInput">Jenjang</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="SMA">
-                  </div>
-                  <div class="form-group">
-                    <label for="disabledTextInput">Tingkatan</label>
-                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Kelas 1">
-                  </div>
-                </fieldset>
-
+                @foreach($user as $u)
+                  <fieldset disabled>
+                    <div class="form-group">
+                      <label for="disabledTextInput">Username</label>
+                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->username }}">
+                    </div>
+                    <div class="form-group">
+                      <label for="disabledTextInput">Email</label>
+                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
+                    </div>
+                    <div class="form-group">
+                      <label for="disabledTextInput">Asal Sekolah</label>
+                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
+                    </div>
+                    <div class="form-group">
+                      <label for="disabledTextInput">Jenjang</label>
+                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getGrade->grade_name }}">
+                    </div>
+                    <div class="form-group">
+                      <label for="disabledTextInput">Tingkatan</label>
+                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getMajor->maj_name }}">
+                    </div>
+                  </fieldset>
+                @endforeach
             </div>
           </div>
 

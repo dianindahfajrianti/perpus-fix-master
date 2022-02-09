@@ -51,7 +51,7 @@
                     @if(Auth::user())
                     <li class="dropdown"><a href="#"><i class="bi bi-person-circle"></i></a>
                         <ul>
-                            <li><a href="/profile"><span><i class="ri-user-line"></i> Akun</span></a></li>
+                            <li><a href="/profile/{{ Auth::user()->id }}"><span><i class="ri-user-line"></i> Akun</span></a></li>
 
                             <li><form action="{{ route('logout') }}" method="post">@csrf<button type="submit" class="btn btn-nav"><p><span><i class="ri-logout-box-line"></i> Keluar</span></p></button></form></li>
                         </ul>

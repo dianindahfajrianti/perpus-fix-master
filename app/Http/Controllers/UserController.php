@@ -7,6 +7,7 @@ use App\Grade;
 use App\Major;
 use App\School;
 use App\User;
+use App\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -245,7 +246,12 @@ class UserController extends Controller
         $res = new stdClass();
         $nama = $user->name;
         try {
-            $del = $user->delete();
+            if ($user->id == Auth::user()->id) {
+                $stat = "error";
+                $msg = "Error, please contact Super Admin!";
+            }else {
+                $del = $user->delete();
+            }
             if ($del) {
                 $stat = "success";
                 $msg = "User $nama berhasil dihapus!";
@@ -270,8 +276,11 @@ class UserController extends Controller
         }
     }
 
-    public function profile()
+    public function profile(User $user)
     {
-
+        $riwayat = [];
+        $user = $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
+        // $riwayat = History::where('user_id','=',$user->id)->get();
+        return view('home.profile',compact('user','riwayat'));
     }
 }

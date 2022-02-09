@@ -422,7 +422,7 @@
             });
         });
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
-        var pdfjsLib = window['assets/js/pdf/'];
+        var pdfjsLib = "{{ url('/assets/js/pdf/') }}"
         var dataURL = null;
         // The workerSrc property shall be specified.
         pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ url("/assets/js/pdf/pdf.worker.js") }}';
