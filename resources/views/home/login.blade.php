@@ -5,7 +5,7 @@
     <header id="headerLogin" class="headerLogin">
         <div class="container d-flex">
 
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="/" class="logo d-flex align-items-center">
                 <img src="/assets/perpus/assets/img/logo-perpus.png" class="img-fluid animated" alt="">
             </a>
             <p>Masuk</p>
@@ -44,7 +44,7 @@
                                   <label class="form-check-label" for="exampleCheck1">Ingatkan Saya</label>
                                 </div>
                                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-                                <a href="index.html" class="btn-login scrollto">Masuk</a>
+                                <a href="/" class="btn-login scrollto">Masuk</a>
                               </form>
                         </div>
                     </div>
