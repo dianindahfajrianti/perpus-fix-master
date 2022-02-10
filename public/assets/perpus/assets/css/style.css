@@ -1170,6 +1170,21 @@ section {
   font-size: 16px;
   color: #5B5B5B;
 }
+.profile .btn-profile {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 58px;
+  border-radius: 15px;
+  transition: 0.5s;
+  color: #fff;
+  background: #bb4430;
+}
+.profile .btn-profile:hover {
+  background: #d66854;
+}
 
 /*--------------------------------------------------------------
 # Profile Entry History

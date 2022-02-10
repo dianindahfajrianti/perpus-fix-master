@@ -25,15 +25,15 @@
                 <div class="row align-self-center gy-2">
 
                   @forelse($riwayat as $r)
-                    <div class="col-md-6 icon-box">
-                      <i class="ri-radio-button-line"></i>
-                      <div>
-                        <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
-                        <p>dibuka pada tanggal 09 agustus 2021</p>
-                      </div>
+                  <div class="col-md-6 icon-box">
+                    <i class="ri-radio-button-line"></i>
+                    <div>
+                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
+                      <p>dibuka pada tanggal 09 agustus 2021</p>
                     </div>
+                  </div>
                   @empty
-                    <h4 class="text-center">Belum ada riwayat baca</h4>
+                  <h4 class="text-center">Belum ada riwayat baca</h4>
                   @endforelse
 
                 </div>
@@ -50,32 +50,51 @@
           <div class="d-flex justify-content-center">
             <div class="col-lg-11" data-aos="fade-up">
               <h3>Detail Profil</h3>
-                @foreach($user as $u)
-                  <fieldset disabled>
-                    <div class="form-group">
-                      <label for="disabledTextInput">Username</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->username }}">
-                    </div>
-                    <div class="form-group">
-                      <label for="disabledTextInput">Email</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
-                    </div>
-                    @if ($u->school_id !== null)
-                    <div class="form-group">
-                      <label for="disabledTextInput">Asal Sekolah</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
-                    </div>
-                    <div class="form-group">
-                      <label for="disabledTextInput">Jenjang</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getGrade->grade_name }}">
-                    </div>
-                    <div class="form-group">
-                      <label for="disabledTextInput">Tingkatan</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getMajor->maj_name }}">
-                    </div>
-                    @endif
-                  </fieldset>
-                @endforeach
+              @foreach($user as $u)
+              <fieldset disabled>
+                <div class="form-group">
+                  <label for="disabledTextInput">Username</label>
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->username }}">
+                </div>
+                <div class="form-group">
+                  <label for="disabledTextInput">Email</label>
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
+                </div>
+                @if ($u->school_id !== null)
+                <div class="form-group">
+                  <label for="disabledTextInput">Asal Sekolah</label>
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
+                </div>
+                <div class="form-group">
+                  <label for="disabledTextInput">Jenjang</label>
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getGrade->grade_name }}">
+                </div>
+                <div class="form-group">
+                  <label for="disabledTextInput">Tingkatan</label>
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getMajor->maj_name }}">
+                </div>
+                @endif
+              </fieldset>
+              @endforeach
+              <br>
+              <h3>Ganti Password</h3>
+              <form>
+                <div class="form-group">
+                  <label for="pwSekarang">Password Sekarang</label>
+                  <input type="text" id="pwSekarang" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="pwBaru">Password Baru</label>
+                  <input type="text" id="pwBaru" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="pwKonfirmasi">Konfirmasi Password</label>
+                  <input type="text" id="pw-Konfirmasi" class="form-control">
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                  <button type="submit" class="btn-profile">Ganti</button>
+                </div>
+              </form>
             </div>
           </div>
 

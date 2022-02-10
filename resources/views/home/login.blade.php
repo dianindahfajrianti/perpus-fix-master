@@ -44,7 +44,7 @@
                                   <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                   <label class="form-check-label" for="exampleCheck1">Ingatkan Saya</label>
                                 </div> --}}
-                                <button type="submit" class="btn btn-login">Masuk</button>
+                                <button type="submit" class="btn-login">Masuk</button>
                                 {{-- <a href="/" class="btn-login scrollto">Masuk</a> --}}
                               </form>
                         </div>
