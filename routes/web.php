@@ -55,5 +55,7 @@ Route::get('/buku/all', 'BookController@data');
 Route::get('/video/all', 'VideoController@data');
 Route::get('/akses/{school}','PermissionController@data');
 Route::get('/cek/{buku}','SubjectController@check');
-Route::get('/pdfViewer?{buku}','HomeController@viewer');
+// Route::get('/pdfViewer?file={buku}','HomeController@viewer');
+Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
+Route::get('/file/{buku}', 'HomeController@file');
 

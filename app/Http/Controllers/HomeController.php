@@ -54,4 +54,14 @@ class HomeController extends Controller
     {
         return view('home.showpdf',compact('book'));
     }
+    public function viewer(Book $buku)
+    {
+        // return compact('buku');
+        return view('pdf.index',compact('buku'));
+    }
+    // public function file(string $filename)
+    // {
+
+    //     return 
+    // }
 }

@@ -35,6 +35,10 @@ See https://github.com/adobe-type-tools/cmap-resources
 <link rel="resource" type="application/l10n" href="locale/locale.properties">
 <script src="/build/pdf.js"></script>
 
+  <script>
+    var pdffilename = "{{url('/assets/pdf/'.$buku->filename)}}";
+    // pdffilename = 'http://localhost/file/namafile.pdf';
+  </script>
 
   <script src="/web/viewer.js"></script>
 

@@ -161,8 +161,9 @@ class SubjectController extends Controller
     }
     public function check(Book $buku)
     {
+        dd($buku->id);
         // $title = "Gagal";
         // $title = "Berhasil";
-        return compact($buku);
+        // return compact($buku);
     }
 }

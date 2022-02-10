@@ -171,6 +171,9 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //Intervention Image
         Intervention\Image\ImageServiceProvider::class,
+        //PDF Viewer
+        // Goodnesskay\LaravelPdfViewer\LaravelPdfViewerServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
