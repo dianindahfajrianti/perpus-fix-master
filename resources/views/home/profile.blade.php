@@ -60,6 +60,7 @@
                       <label for="disabledTextInput">Email</label>
                       <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
                     </div>
+                    @if ($u->school_id !== null)
                     <div class="form-group">
                       <label for="disabledTextInput">Asal Sekolah</label>
                       <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
@@ -72,6 +73,7 @@
                       <label for="disabledTextInput">Tingkatan</label>
                       <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getMajor->maj_name }}">
                     </div>
+                    @endif
                   </fieldset>
                 @endforeach
             </div>

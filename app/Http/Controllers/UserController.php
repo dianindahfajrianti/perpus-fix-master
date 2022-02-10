@@ -279,7 +279,11 @@ class UserController extends Controller
     public function profile(User $user)
     {
         $riwayat = [];
-        $user = $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
+        if ($user->with('getSchool')->get() != null ) {
+            $user = $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
+        }else {
+            $user = $user->where('id','=',$user->id)->get();
+        }
         // $riwayat = History::where('user_id','=',$user->id)->get();
         return view('home.profile',compact('user','riwayat'));
     }
