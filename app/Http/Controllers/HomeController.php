@@ -9,7 +9,6 @@ use App\Grade;
 use Illuminate\Http\Request;
 use App\Singlepage;
 use App\Subject;
-use App\Video;
 
 class HomeController extends Controller
 {

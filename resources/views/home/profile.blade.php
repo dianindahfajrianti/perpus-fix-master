@@ -78,8 +78,9 @@
               @endforeach
               <br>
               <h3>Ganti Password</h3>
-              <form>
+              <form action="{{ route('password.update') }}" method="post">
                 <div class="form-group">
+<<<<<<< Updated upstream
                   <label for="pwSekarang">Password Sekarang</label>
                   <input type="password" id="pwSekarang" class="form-control">
                 </div>
@@ -90,6 +91,18 @@
                 <div class="form-group">
                   <label for="pwKonfirmasi">Konfirmasi Password</label>
                   <input type="password" id="pw-Konfirmasi" class="form-control">
+=======
+                  <label for="oldpass">Password Lama</label>
+                  <input type="password" name="oldpass" id="oldpass" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="pass">Password Baru</label>
+                  <input type="password" name="pass" id="pass" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="confirm">Konfirmasi Password</label>
+                  <input type="password" name="confirm" id="confirm" class="form-control">
+>>>>>>> Stashed changes
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                   <button type="submit" class="btn-profile">Ganti</button>
