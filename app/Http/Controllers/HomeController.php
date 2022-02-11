@@ -8,6 +8,7 @@ use App\Grade;
 use Illuminate\Http\Request;
 use App\Singlepage;
 use App\Subject;
+use App\Video;
 
 class HomeController extends Controller
 {
@@ -64,4 +65,8 @@ class HomeController extends Controller
 
     //     return 
     // }
+    public function videoplayer(Video $video)
+    {
+        return view('home.videoplayer',compact('video'));
+    }
 }
