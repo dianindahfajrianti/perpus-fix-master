@@ -19,7 +19,7 @@ class AdminMiddleware
     {
         App::setLocale('id');
         if (Auth::user()->role <= 2) {
-            return $next($request);
+            return $next($request)->header('Access-Control-Allow-Origin', '*');
         }else {
             return redirect('/');
         }

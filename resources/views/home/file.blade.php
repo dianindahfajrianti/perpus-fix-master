@@ -150,7 +150,7 @@ return $returnValue;
                     <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
                     <div class="social">
                       <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
-                      <a href="/laraview/#../assets/pdf/{{ $b->filename }}"><i class="ri-eye-fill"></i></a>
+                      <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                     </div>
                   </div>
                   <div class="member-info">

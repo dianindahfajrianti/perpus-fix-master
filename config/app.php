@@ -169,10 +169,6 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         //Excel Services
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        //Intervention Image
-        Intervention\Image\ImageServiceProvider::class,
-        //PDF Viewer
-        // Goodnesskay\LaravelPdfViewer\LaravelPdfViewerServiceProvider::class,
         
         /*
          * Application Service Providers...
@@ -240,7 +236,6 @@ return [
          */
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Image' => Intervention\Image\Facades\Image::class
     ],
 
 ];
