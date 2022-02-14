@@ -9,9 +9,10 @@ use App\Major;
 use App\Permission;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
+use Spatie\PdfToImage\Pdf;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -61,7 +62,7 @@ class BookController extends Controller
     {
         
         $res = new stdClass;
-        $validator = Validator::make($request->all(),[
+        $request->validate([
             'filebook' => 'required|file',
             'jenjang' => 'required',
             'kelas' => 'required',
@@ -73,67 +74,57 @@ class BookController extends Controller
             'penerbit' => 'required',
             'pengarang' => 'required'
         ]);
-
-        if ($validator->fails()) {
-            $res->status = "error";
-            $res->title = "Gagal";
-            $res->message = $validator->errors();
-            return response()->json($res);
-        } else {
-            $file = $request->file('filebook');
-            $img = $request->get('img');
-            if ($file != null) {
-                
-                if (preg_match('/data:image\/(gif|jpeg|png);base64,(.*)/i', $img, $matches)) {
-                    
-                    $filename = Str::slug("$request->judul-$request->pengarang-$request->tahun");
-                    $thumbname = "$filename.png";
-                    //Image attr declaration
-                    $imageType = $matches[1];
-                    $imageData = base64_decode($matches[2]);
-                    //saving image
-                    $image = Image::make($imageData);
-                    $ss = $image->save(public_path('assets/images/thumbs/').$thumbname);
-                    if ($ss) {
-                        $file->storeAs('pdf',"$filename.".$file->getClientOriginalExtension());
-                        $book = new Book;
-                        $book->title = $request->judul;
-                        $book->desc = $request->desc;
-                        $book->filename = "$filename.".$file->getClientOriginalExtension();
-                        $book->filetype = $file->getClientOriginalExtension();
-                        $book->clicked_time = 0;
-                        $book->edu_id= $request->jenjang;
-                        $book->grade_id= $request->kelas;
-                        $book->major_id= $request->jurusan;
-                        $book->sub_id= $request->mapel;
-                        $book->published_year = $request->tahun;
-                        $book->publisher = $request->penerbit;
-                        $book->author = $request->pengarang;
-                        $book->save();
-    
-                        $res->status = "success";
-                        $res->title = "Berhasil";
-                        $res->message = "Gambar berhasil ditambahkan";
-                        return response()->json($res);
-                    } else {
-                        $res->status = "error";
-                        $res->title = "Gagal";
-                        $res->message = 'Could not save the file.';
-                        return response()->json($res,400);
-                    }
-                } else {
+        $file = $request->file('filebook');
+        if ($file != null) {
+            $filename = Str::slug("$request->judul-$request->pengarang-$request->tahun");
+            $fixname = "$filename.".$file->getClientOriginalExtension();
+            $thumbname = "$filename.png";
+            $ss = $file->storeAs('public\pdf',$fixname);
+            if ($ss) {
+                $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
+                $saved = $pdf->saveImage('assets/images/thumbs/'.$thumbname);
+                if ($saved) {
+                    $book = new Book;
+                    $book->title = $request->judul;
+                    $book->desc = $request->desc;
+                    $book->filename = $fixname;
+                    $book->thumb = $thumbname;
+                    $book->filetype = $file->getClientOriginalExtension();
+                    $book->clicked_time = 0;
+                    $book->edu_id= $request->jenjang;
+                    $book->grade_id= $request->kelas;
+                    $book->major_id= $request->jurusan;
+                    $book->sub_id= $request->mapel;
+                    $book->published_year = $request->tahun;
+                    $book->publisher = $request->penerbit;
+                    $book->author = $request->pengarang;
+                    $book->save();
+                //   savetoImg($fixname,$thumbname);
+                    $res->status = "success";
+                    $res->title = "Berhasil";
+                    $res->message = "Gambar berhasil ditambahkan";
+                }else {
                     $res->status = "error";
                     $res->title = "Gagal";
-                    $res->message = 'Invalid data URL.';
-                    return response()->json($res,400);
+                    $res->message = "Gambar gagal ditambah";
                 }
-            }else {
+                return redirect()->route('buku.index')->with($res->status,json_encode($res));
+            } else {
                 $res->status = "error";
                 $res->title = "Gagal";
-                $res->message = 'File tidak ter-upload.';
-                return response()->json($res,404);
+                $res->message = 'Gagal menyimpan file';
+                return redirect()->route('buku.index')->with($res->status,json_encode($res,400));
             }
+        }else {
+            $res->status = "error";
+            $res->title = "Gagal";
+            $res->message = 'File tidak ter-upload.';
+            return redirect()->route('buku.index')->with($res->status,json_encode($res,404));
         }
+    }
+    function savetoImg($fixname,$thumbname)
+    {
+        
     }
 
     /**

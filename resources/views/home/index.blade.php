@@ -92,14 +92,14 @@
 
             <div class="row gy-4">
 
-                @for ($i=1; $i < 7; $i++) 
+                @foreach($book as $b)
                 <div class="col-lg-2 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="member">
                         <div class="member-img">
                             <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
                             <div class="social">
                                 <a href=""><i class="ri-file-download-fill"></i></a>
-                                <a href="/laraview/#../assets/pdf/{{ $b->filename }}"><i class="ri-eye-fill"></i></a>
+                                <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
                         <div class="member-info">
@@ -117,11 +117,11 @@
                         </div>
                     </div>
                 </div>
-                @endfor
+                @endforeach
 
             <a href="/file">
                 <div class="d-grid gap-2 col-lg-3 col-6 mx-auto">
-                    <button class="btn btn-outline-danger" type="button">Lihat Buku Lainnya</button>
+                    <a href="{{ url('file') }}" class="btn btn-outline-danger" type="button">Lihat Buku Lainnya</a>
                 </div>
             </a>
         </div>

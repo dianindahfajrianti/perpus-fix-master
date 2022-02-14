@@ -12,13 +12,12 @@
         "artesaos/seotools": "*.*",
         "fideloper/proxy": "^4.4",
         "goodnesskay/laravelpdfviewer": "^1.0",
-        "intervention/image": "^2.7",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
         "laravel/ui": "1.0",
         "laravelcollective/html": "^6.3",
         "maatwebsite/excel": "^3.1",
-        "spatie/pdf-to-image": "^1.2",
+        "spatie/pdf-to-image": "^2.1",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

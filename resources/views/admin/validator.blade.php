@@ -1,6 +1,7 @@
 <script type="text/javascript">
     @if (count($errors) > 0)
-    $(document).ready(function() {
+    $(document).ready(function(e) {
+        e.preventDefault;
         $('#modal-add').modal('show');
     });
     @endif

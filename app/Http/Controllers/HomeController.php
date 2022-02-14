@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Video;
 use App\Education;
 use App\Grade;
 use Illuminate\Http\Request;
@@ -29,7 +30,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.index');
+        $book = Book::latest()->limit('6')->get();
+        $video = Video::latest()->limit('6')->get();
+        return view('home.index',compact('book','video'));
     }
     public function info()
     {
@@ -57,8 +60,11 @@ class HomeController extends Controller
     }
     public function viewer(Book $buku)
     {
+        $buku->clicked_time = $buku->clicked_time + 1;
+        $buku->save();
         // return compact('buku');
-        return view('pdf.index',compact('buku'));
+
+        return redirect('/laraview/#../storage/pdf/'.$buku->filename);
     }
     // public function file(string $filename)
     // {

@@ -79,18 +79,11 @@
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="fdata" action="javascript:void(0)" method="POST" enctype="multipart/form-data">
+                <form id="fdata" action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h1>Tambah buku</h1>
                     </div>
                     <div class="modal-body">
-                        <div id="valpar">
-                            <div class="alert alert-danger alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <h5><i class="icon fas fa-ban"></i>Peringatan!</h5>
-                                <div id="val"></div>
-                              </div>
-                        </div>
                         <p class="text-red">*) Pastikan seluruh input terisi</p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -109,18 +102,21 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="form-label" for="filebook">Upload File</label>
-                                            <div class="input-group">
+                                            <div class="input-group @error('filebook'){{'is-invalid'}}@enderror">
                                                 <div class="custom-file">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                                    </div>
                                                     <label for="" class="custom-file-label">Pilih PDF</label>
                                                     @csrf
                                                     <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'is-invalid'}}@enderror" value="{{old('filebook')}}" accept=".pdf">
-                                                    @error('filebook')
-                                                    <div class="invalid-feedback">
-                                                        {{$message}}
-                                                    </div>
-                                                    @enderror
                                                 </div>
                                             </div>
+                                            @error('filebook')
+                                            <div class="invalid-feedback">
+                                                {{$message}}
+                                            </div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -312,7 +308,6 @@
 
 <!--Javascript Admin -->
 <script src="/assets/js/admin.js"></script>
-<script src="/assets/js/pdf/pdf.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -421,149 +416,7 @@
                 }
             });
         });
-        // Loaded via <script> tag, create shortcut to access PDF.js exports.
-        var pdfjsLib = "{{ url('/assets/js/pdf/') }}"
-        var dataURL = null;
-        // The workerSrc property shall be specified.
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ url("/assets/js/pdf/pdf.worker.js") }}';
-        
-        $("#filebook").on("change", function(e){
-            var file = e.target.files[0];
-            var canvas = $("#pdfViewer")[0];
-            if(file.type == "application/pdf"){
-                var fileReader = new FileReader();
-                fileReader.onload = function() {
-                    var pdfData = new Uint8Array(this.result);
-                    // Using DocumentInitParameters object to load binary data.
-                    var loadingTask = pdfjsLib.getDocument({data: pdfData});
-                    loadingTask.promise.then(function(pdf) {
-                        // console.log('PDF loaded');
-                        
-                        // Fetch the first page
-                        var pageNumber = 1;
-                        pdf.getPage(pageNumber).then(function(page) {
-                            // console.log('Page loaded');
-                            
-                            var scale = 0.35;
-                            var viewport = page.getViewport({scale:scale});
 
-                            // Prepare canvas using PDF page dimensions
-                            var context = canvas.getContext('2d');
-                            canvas.height = viewport.height;
-                            canvas.width = viewport.width;
-                            // Render PDF page into canvas context
-                            var renderContext = {
-                            canvasContext: context,
-                            viewport: viewport
-                            };
-                            var renderTask = page.render(renderContext);
-                            renderTask.promise.then(function () {
-                            dataURL = canvas.toDataURL("image/png");
-                            {{-- // console.log('Page rendered');
-                            // console.log(dataURL);
-                            --}}
-                            });
-                        });
-                    }, function (reason) {
-                    // PDF loading error
-                    console.error(reason);
-                    });
-
-                };
-                fileReader.readAsArrayBuffer(file);
-            }
-        });
-        $("#fdata").on("submit",function(e){
-            e.preventDefault;
-            var form = $("#fdata")[0];
-            var fd = new FormData(form);
-            $('#valpar').slideUp();
-            {{-- 
-            $.each(form.files, function (i, file) { 
-                fd.append('file-'+i,file);
-            }); 
-            --}}
-            var dt = $("#filebook").val();
-            if (dt != "") {
-                fd.append('img',dataURL);
-                fd.append('filebook',$('#filebook')[0]);
-                if(fd.fake) {
-                    // Make sure no text encoding stuff is done by xhr
-                    opts.xhr = function() { var xhr = jQuery.ajaxSettings.xhr(); xhr.send = xhr.sendAsBinary; return xhr; }
-                    opts.contentType = "multipart/form-data; boundary="+fd.boundary;
-                    opts.data = fd.toString();
-                }
-                // console.log(fd,opts);
-                $.ajax({
-                    type: "post",
-                    enctype: 'multipart/form-data',
-                    url: "{{ route('buku.store') }}",
-                    data: fd,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success:function(data){
-                        console.log(data);
-                        // var js = JSON.parse(data);
-                        // console.log(js);
-                        var msg='';
-                        if (typeof data.message === 'string') {
-                            msg = data.message;
-                            Swal.fire({
-                            icon: data.status,
-                            title: data.title,
-                            text: msg,
-                            timer: 2000
-                            });
-                            $(':input','#fdata')
-                            .not(':button, :submit, :reset, :hidden')
-                            .val('')
-                            .prop('checked', false)
-                            .prop('selected', false);
-                            $('#filebook').val();
-                            $('#fdata')[0].reset();
-                            {{--  --}}
-                            table.draw();
-                        } else {
-                            var val_msg = data.message;
-                            for (var key in val_msg) {
-                                // skip loop if the property is from prototype
-                                if (!val_msg.hasOwnProperty(key)) continue;
-
-                                var obj = val_msg[key];
-                                for (var prop in obj) {
-                                    // skip loop if the property is from prototype
-                                    if (!obj.hasOwnProperty(prop)) continue;
-                                    // your code
-                                    msg +=obj[prop]+" ";
-                                }
-                            }
-                            $('#val').text(msg);
-                            console.log(msg);
-                            $('#valpar').slideDown();
-                        }
-                    },
-                    error:function(data){
-                        // console.log(data);
-                        var js = JSON.parse(data);
-                        console.log(js);
-                        Swal.fire({
-                            icon: js.status,
-                            title: js.responseJSON.exception,
-                            text: js.responseJSON.message,
-                            timer: 2000
-                        });
-                    }
-                });
-            }else{
-                Swal.fire({
-                    icon: "error",
-                    title: "Gagal",
-                    text: "File pdf belum dipilih",
-                    timer: 1100
-                });
-            }
-        });
     });
 </script>
 @include('admin.validator')
