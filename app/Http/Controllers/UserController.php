@@ -287,4 +287,36 @@ class UserController extends Controller
         // $riwayat = History::where('user_id','=',$user->id)->get();
         return view('home.profile',compact('user','riwayat'));
     }
+
+    public function reset(Request $request)
+    {
+        $res = new stdClass;
+        $uid= Auth::user()->id;
+        $user = User::findOrFail($uid);
+        $hauth = Auth::user()->password;
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|min:6|alpha_num|max:16',
+            'konfirmasi_password' => 'required|same:password_baru'
+        ]);
+        
+        $hpass = Hash::make($request->password_baru);
+
+        if (Hash::check($request->password_lama,$hauth)) {
+            $user->password = $hpass;
+            $user->save();
+
+            $res->status = 'success';
+            $res->message = 'Password berhasil diubah';
+            
+            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            
+        }else{
+            $res->status = 'error';
+            $res->message = 'Password Salah';
+            
+            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            
+        }
+    }
 }

@@ -558,12 +558,12 @@
     'port' => '2525',
     'from' => 
     array (
-      'address' => NULL,
+      'address' => '131e94d7ce-8701ae@inbox.mailtrap.io',
       'name' => 'Perpus App',
     ),
-    'encryption' => NULL,
-    'username' => NULL,
-    'password' => NULL,
+    'encryption' => 'tls',
+    'username' => 'cb985c3be8d847',
+    'password' => 'e2ebabb4b5cb0a',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (

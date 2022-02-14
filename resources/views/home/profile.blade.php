@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('ext-css')
+  
+@endsection
 @section('container')
 
 <!-- ======= Profile Section ======= -->
@@ -49,6 +51,18 @@
 
           <div class="d-flex justify-content-center">
             <div class="col-lg-11" data-aos="fade-up">
+              @if (session('success'))
+              <div class="alert alert-success" role="alert">
+                <h5><i class="ri-check-fill"></i> Berhasil !</h5>
+                <div class="val"></div>
+              </div>
+              @endif
+              @if (session('error'))
+              <div class="alert alert-danger" role="alert">
+                <h5><i class="ri-error-warning-line"></i> Error !</h5>
+                <div class="val"></div>
+              </div>
+              @endif
               <h3>Detail Profil</h3>
               @foreach($user as $u)
               <fieldset disabled>
@@ -60,7 +74,7 @@
                   <label for="disabledTextInput">Email</label>
                   <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
                 </div>
-                @if ($u->school_id !== null)
+                @if ($u->edu_id !== null)
                 <div class="form-group">
                   <label for="disabledTextInput">Asal Sekolah</label>
                   <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
@@ -75,39 +89,42 @@
                 </div>
                 @endif
               </fieldset>
-              @endforeach
               <br>
               <h3>Ganti Password</h3>
-              <form action="{{ route('password.update') }}" method="post">
+              <form action="/reset" method="post">
                 <div class="form-group">
-<<<<<<< Updated upstream
-                  <label for="pwSekarang">Password Sekarang</label>
-                  <input type="password" id="pwSekarang" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label for="pwBaru">Password Baru</label>
-                  <input type="password" id="pwBaru" class="form-control" required autocomplete="current-password">
-                </div>
-                <div class="form-group">
-                  <label for="pwKonfirmasi">Konfirmasi Password</label>
-                  <input type="password" id="pw-Konfirmasi" class="form-control">
-=======
                   <label for="oldpass">Password Lama</label>
-                  <input type="password" name="oldpass" id="oldpass" class="form-control">
+                  @csrf
+                  <input type="password" name="password_lama" id="oldpass" class="form-control @error('password_lama'){{ 'is-invalid' }}@enderror">
+                  @error('password_lama')
+                    <div class="invalid-feedback">
+                      {{$message}}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label for="pass">Password Baru</label>
-                  <input type="password" name="pass" id="pass" class="form-control">
+                  <input type="password" name="password_baru" id="pass" class="form-control @error('password_baru'){{ 'is-invalid' }}@enderror">
+                  @error('password_baru')
+                    <div class="invalid-feedback">
+                      {{$message}}
+                    </div>
+                  @enderror
                 </div>
                 <div class="form-group">
                   <label for="confirm">Konfirmasi Password</label>
-                  <input type="password" name="confirm" id="confirm" class="form-control">
->>>>>>> Stashed changes
+                  <input type="password" name="konfirmasi_password" id="confirm" class="form-control @error('konfirmasi_password'){{ 'is-invalid' }}@enderror">
+                  @error('konfirmasi_password')
+                    <div class="invalid-feedback">
+                      {{$message}}
+                    </div>
+                  @enderror
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
-                  <button type="submit" class="btn-profile">Ganti</button>
+                  <button type="submit" class="btn btn-profile">Simpan</button>
                 </div>
               </form>
+              @endforeach
             </div>
           </div>
 
@@ -120,4 +137,26 @@
 </section>
 
 </main><!-- End #main -->
+@endsection
+@section('ext-js')
+@if (session('success'))
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        e.preventDefault;
+        var data = '<?= session("success") ?>';
+        var js = JSON.parse(data);
+        $('.val').text(js.message);
+    });
+</script>
+@endif
+@if (session('error'))
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        e.preventDefault;
+        var data = '<?= session("error"); ?>';
+        var js = JSON.parse(data);
+        $('.val').text(js.message);
+    });
+</script>
+@endif
 @endsection
