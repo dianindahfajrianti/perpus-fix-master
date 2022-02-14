@@ -81,15 +81,15 @@
               <form>
                 <div class="form-group">
                   <label for="pwSekarang">Password Sekarang</label>
-                  <input type="text" id="pwSekarang" class="form-control">
+                  <input type="password" id="pwSekarang" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="pwBaru">Password Baru</label>
-                  <input type="text" id="pwBaru" class="form-control">
+                  <input type="password" id="pwBaru" class="form-control" required autocomplete="current-password">
                 </div>
                 <div class="form-group">
                   <label for="pwKonfirmasi">Konfirmasi Password</label>
-                  <input type="text" id="pw-Konfirmasi" class="form-control">
+                  <input type="password" id="pw-Konfirmasi" class="form-control">
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                   <button type="submit" class="btn-profile">Ganti</button>
