@@ -18,7 +18,7 @@ Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::get('/showpdf/{book}', 'HomeController@showpdf')->name('showpdf');
 Route::get('/videoplayer', 'HomeController@videoplayer')->name('videoplayer');
-https://stackoverflow.com/questions/3036847/how-to-install-imagick-imagemagick-php-extension-on-windows-7
+
 //Admin Back-End
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
