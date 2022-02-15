@@ -8,22 +8,22 @@
     "packages": [
         {
             "name": "artesaos/seotools",
-            "version": "v0.21.0",
+            "version": "v0.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/artesaos/seotools.git",
-                "reference": "bd2b4daa7607413b59ff0267f6cb9ad955b1ebd8"
+                "reference": "55746e0870d3bb6507479bd846d5528c46a7312e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/artesaos/seotools/zipball/bd2b4daa7607413b59ff0267f6cb9ad955b1ebd8",
-                "reference": "bd2b4daa7607413b59ff0267f6cb9ad955b1ebd8",
+                "url": "https://api.github.com/repos/artesaos/seotools/zipball/55746e0870d3bb6507479bd846d5528c46a7312e",
+                "reference": "55746e0870d3bb6507479bd846d5528c46a7312e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/config": "5.8.* || ^6.0 || ^7.0 || ^8.0",
-                "illuminate/support": "5.8.* || ^6.0 || ^7.0 || ^8.0",
+                "illuminate/config": "5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/support": "5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "php": ">=7.1"
             },
             "require-dev": {
@@ -75,7 +75,7 @@
                 "issues": "https://github.com/artesaos/seotools/issues",
                 "source": "https://github.com/artesaos/seotools"
             },
-            "time": "2022-02-06T04:33:16+00:00"
+            "time": "2022-02-08T20:21:56+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -1753,6 +1753,48 @@
             "time": "2022-01-27T09:35:39+00:00"
         },
         {
+            "name": "org_heigl/ghostscript",
+            "version": "2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heiglandreas/Org_Heigl_Ghostscript.git",
+                "reference": "fd73693a3f213427b585b45fa744c9cc60679f25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heiglandreas/Org_Heigl_Ghostscript/zipball/fd73693a3f213427b585b45fa744c9cc60679f25",
+                "reference": "fd73693a3f213427b585b45fa744c9cc60679f25",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "^5.5||^6.0||^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Org_Heigl\\Ghostscript\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Heigl",
+                    "email": "andreas@heigl.org"
+                }
+            ],
+            "description": "A PHP-Wrapper around the Ghostscript-CLI",
+            "support": {
+                "issues": "https://github.com/heiglandreas/Org_Heigl_Ghostscript/issues",
+                "source": "https://github.com/heiglandreas/Org_Heigl_Ghostscript/tree/2.3.2"
+            },
+            "time": "2020-09-23T05:00:00+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "source": {
@@ -2468,24 +2510,25 @@
         },
         {
             "name": "spatie/pdf-to-image",
-            "version": "2.1.0",
+            "version": "v2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/pdf-to-image.git",
-                "reference": "ea81a2d5f4fb0ca9f4c4fc0d4f8813135e993b2d"
+                "reference": "6718a89065c34dfadfbb2ca61eb1c3e6a956e503"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/ea81a2d5f4fb0ca9f4c4fc0d4f8813135e993b2d",
-                "reference": "ea81a2d5f4fb0ca9f4c4fc0d4f8813135e993b2d",
+                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/6718a89065c34dfadfbb2ca61eb1c3e6a956e503",
+                "reference": "6718a89065c34dfadfbb2ca61eb1c3e6a956e503",
                 "shasum": ""
             },
             "require": {
-                "ext-imagick": "*",
-                "php": "^7.2|^8.0"
+                "org_heigl/ghostscript": "^2.2",
+                "php": "^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.0|^9.0"
+                "phpunit/phpunit": "^6.2",
+                "spatie/temporary-directory": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -2516,15 +2559,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/pdf-to-image/issues",
-                "source": "https://github.com/spatie/pdf-to-image/tree/2.1.0"
+                "source": "https://github.com/spatie/pdf-to-image/tree/v2"
             },
-            "funding": [
-                {
-                    "url": "https://www.patreon.com/spatie",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2020-11-12T11:27:19+00:00"
+            "time": "2017-06-20T05:58:45+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3889,12 +3926,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4986,12 +5023,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Facade\\FlareClient\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Facade\\FlareClient\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6977,16 +7014,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "5.0.3",
+            "version": "5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "23bd5951f7ff26f12d4e3242864df3e08dec4e49"
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/23bd5951f7ff26f12d4e3242864df3e08dec4e49",
-                "reference": "23bd5951f7ff26f12d4e3242864df3e08dec4e49",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/0ca8db5a5fc9c8646244e629625ac486fa286bf2",
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2",
                 "shasum": ""
             },
             "require": {
@@ -7029,7 +7066,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.3"
+                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.5"
             },
             "funding": [
                 {
@@ -7037,7 +7074,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-11T13:31:12+00:00"
+            "time": "2022-02-14T08:28:10+00:00"
         },
         {
             "name": "sebastian/lines-of-code",
