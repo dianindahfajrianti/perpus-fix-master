@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
@@ -60,7 +61,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $res = new stdClass;
         $request->validate([
             'filebook' => 'required|file',
@@ -81,6 +82,7 @@ class BookController extends Controller
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
+                Ghostscript::setGsPath("D:\Andar\Project\Work\perpus-app\public\assets\gs\gs9.55.0\bin\gswin64c.exe");
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $saved = $pdf->saveImage('assets/images/thumbs/'.$thumbname);
                 if ($saved) {
@@ -124,7 +126,7 @@ class BookController extends Controller
     }
     function savetoImg($fixname,$thumbname)
     {
-        
+
     }
 
     /**
@@ -135,7 +137,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        
+
     }
 
     /**
@@ -170,5 +172,13 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         // $e1 = Permission::where('')
+    }
+    public function trial()
+    {
+        Ghostscript::setGsPath(public_path('assets\gs\gs9.55.0\bin\gswin64c.exe'));
+        $pdf = new Pdf(public_path('storage/pdf/asdasdmn-gerry-fxc-2019.pdf'));
+        // dd($pdf);
+        $pdf->setOutputFormat('png')->saveImage(public_path('assets/images/thumbs/asdasdmn-gerry-fxc-2019.png'));
+
     }
 }

@@ -18,7 +18,7 @@ Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::get('/showpdf/{book}', 'HomeController@showpdf')->name('showpdf');
 Route::get('/videoplayer', 'HomeController@videoplayer')->name('videoplayer');
-https://stackoverflow.com/questions/23026181/fatal-error-class-imagick-not-found
+
 //Admin Back-End
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
@@ -60,4 +60,4 @@ Route::get('/cek/{buku}','SubjectController@check');
 // Route::get('/pdfViewer?file={buku}','HomeController@viewer');
 Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
 Route::get('/file/{buku}', 'HomeController@file');
-
+Route::get('/gs', 'BookController@trial');
