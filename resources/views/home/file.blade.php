@@ -142,7 +142,7 @@ return $returnValue;
 
         <!-- File -->
         @foreach ($file as $b)
-        <div class="col-lg-2 col-md-3 col-sm-2 col-6 mb-2">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-2">
           <div class="card">
             <div class="card-img">
               <center>
