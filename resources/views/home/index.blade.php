@@ -94,15 +94,15 @@
 
                 @foreach($book as $b)
                 <div class="col-lg-2 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-                    <div class="member">
-                        <div class="member-img">
+                    <div class="card">
+                        <div class="card-img">
                             <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
                             <div class="social">
                                 <a href=""><i class="ri-file-download-fill"></i></a>
                                 <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
-                        <div class="member-info">
+                        <div class="card-info">
                             <h5>Matematika <br />Kelas 1 SMP</h5>
                             <div class="btn-file">
                                 <span>PDF</span>
@@ -139,15 +139,15 @@
 
                 @for ($i=1; $i < 7; $i++) 
                 <div class="col-lg-2 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-                    <div class="member">
-                        <div class="member-img">
+                    <div class="card">
+                        <div class="card-img">
                             <img src="/assets/perpus/assets/img/thumbnailvideo.png" class="img-fluid" alt="">
                             <div class="social">
                                 <a href="#"><i class="ri-video-download-fill"></i></a>
                                 <a href="#"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
-                        <div class="member-info">
+                        <div class="card-info">
                             <h5>Matematika <br>Kelas 1 SMP</h5>
                             <div class="btn-file">
                                 <span>Video</span>

@@ -37,13 +37,26 @@ class HomeController extends Controller
     {
         return phpinfo();
     }
-    public function showfile()
+    public function book()
     {
         $sub = Subject::all();
         $edu = Education::all();
-        $book = Book::where('desc','=',null)->get();
+        $file = Book::with('getGrade','getEdu')
+                ->orderBy('updated_at','desc')
+                ->limit(24)
+                ->get();
+        // $book = Book::where('desc','=',null)->get();
 
-        return view('home.file', compact('sub', 'edu','book'));
+        return view('home.file', compact('sub', 'edu','file'));
+    }
+    public function video()
+    {
+        $sub = Subject::all();
+        $edu = Education::all();
+        $file = Video::all();
+        // $book = Book::where('desc','=',null)->get();
+
+        return view('home.file', compact('sub', 'edu','file'));
     }
     public function showprofile()
     {

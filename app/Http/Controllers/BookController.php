@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Org_Heigl\Ghostscript\Ghostscript;
 use Spatie\PdfToImage\Pdf;
 use stdClass;
 use Yajra\DataTables\Facades\DataTables;
@@ -81,6 +82,7 @@ class BookController extends Controller
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
+                Ghostscript::setGsPath("");
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $saved = $pdf->saveImage('assets/images/thumbs/'.$thumbname);
                 if ($saved) {

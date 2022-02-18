@@ -9,10 +9,10 @@
 <section class="breadcrumbs">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
-      <h2>Buku</h2>
+      <h2>{{ ucfirst(Request::segment(1)) }}</h2>
       <ol>
         <li><a href="/">Home</a></li>
-        <li>Buku</li>
+        <li>{{ ucfirst(Request::segment(1)) }}</li>
       </ol>
     </div>
   </div>
@@ -42,7 +42,7 @@ return $returnValue;
     <div class="content-list" id="file-terbaru">
       <div class="row">
         <!-- Search Sidebar -->
-        <aside class="col-lg-3 mb-1">
+        <aside class="col-lg-2 mb-1">
           <button type="button" class="btn-lg btn-filter d-lg-none d-block" id="filterbtn">
             <center>
               <i class="ri-filter-fill"></i>
@@ -73,118 +73,125 @@ return $returnValue;
               </div>
               @endforeach
             </div>
-              <!-- kelas -->
-              <h3 class="sidebar-title">Kelas</h3>
-              <div class="sidebar-item filter">
-                <div class="row">
-                  <div class="col-6">
-                    @for ($i = 1; $i < 7; $i++) 
-                      <div class="form-check">
-                        <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
-                        <label class="form-check-label" for="kelas">
-                          {{ numberToRomanRepresentation($i) }}
-                        </label>
-                      </div>
-                    @endfor
-                  </div>
-                  <div class="col-6">
-                    @for ($i = 7; $i < 13; $i++) 
-                      <div class="form-check">
-                        <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
-                        <label class="form-check-label" for="kelas">
-                          {{ numberToRomanRepresentation($i) }}
-                        </label>
-                      </div>
-                    @endfor
-                  </div>
-                </div>
-              </div>
-            <!-- mapel -->
-            <h3 class="sidebar-title" for="mapel">Mata Pelajaran</h3>
+            <!-- kelas -->
+            <h3 class="sidebar-title">Kelas</h3>
             <div class="sidebar-item filter">
               <div class="row">
-                <div class="col-12">
-                  <div class="form-group">
-                    <!-- <label class="form-label" for="mapel">Mata Pelajaran</label> -->
-                    <div class="input-group">
-                      <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
-                        <option value="">-- Pilih Mata Pelajaran --</option>
-                        @foreach ($sub as $sbj )
-                        <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                        @endforeach
-                      </select>
-                      @error('mapel')
-                      <div class="invalid-feedback">
-                        {{$message}}
-                      </div>
-                      @enderror
-                    </div>
-                  </div>
+                <div class="col-6">
+                  @for ($i = 1; $i < 7; $i++) <div class="form-check">
+                    <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
+                    <label class="form-check-label" for="kelas">
+                      {{ numberToRomanRepresentation($i) }}
+                    </label>
                 </div>
+                @endfor
               </div>
+              <div class="col-6">
+                @for ($i = 7; $i < 13; $i++) <div class="form-check">
+                  <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
+                  <label class="form-check-label" for="kelas">
+                    {{ numberToRomanRepresentation($i) }}
+                  </label>
+              </div>
+              @endfor
             </div>
-            <!-- End sidebar filter-->
-            <div class="row justify-content-center">
-              <div class="col-12">
-                <a class="btn-hapus" href="#filterbtn">
-                  <span>Terapkan</span>
-                </a>
-                <a class="btn-hapus" href="#filterbtn">
-                  <span>Reset</span>
-                </a>
+          </div>
+      </div>
+      <!-- mapel -->
+      <h3 class="sidebar-title" for="mapel">Mata Pelajaran</h3>
+      <div class="sidebar-item filter">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <!-- <label class="form-label" for="mapel">Mata Pelajaran</label> -->
+              <div class="input-group">
+                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="">
+                  <option value="">-- Pilih Mata Pelajaran --</option>
+                  @foreach ($sub as $sbj )
+                  <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
+                  @endforeach
+                </select>
+                @error('mapel')
+                <div class="invalid-feedback">
+                  {{$message}}
+                </div>
+                @enderror
               </div>
             </div>
           </div>
-          <!-- End sidebar -->
-        </aside>
-
-
-        <div class="col-lg-9 entries">
-          <div class="row">
-
-            <!-- File -->
-            @foreach ($book as $b)
-              <div class="col-lg-3 col-md-4 col-sm-6 ml-3 mb-3">
-                <div class="member">
-                  <div class="member-img">
-                    <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
-                    <div class="social">
-                      <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
-                      <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
-                    </div>
-                  </div>
-                  <div class="member-info">
-                    <h5>Matematika <br />Kelas 1 SMP</h5>
-                    <div class="btn-file">
-                      <span>PDF</span>
-                    </div>
-                    <p>
-                      Deskripsi Buku Deskripsi Buku Deskripsi Buku Deskripsi
-                      Buku
-                    </p>
-                    <div class="stat-content">
-                      <a href="#">dilihat 120 kali</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            @endforeach
-
-          <!-- Pagination -->
-          <nav aria-label="...">
-            <ul class="pagination justify-content-center mt-3">
-              <li><a href="#">&laquo;</a></li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">&raquo;</a></li>
-            </ul>
-          </nav>
         </div>
-        <!-- End row buku entries list -->
       </div>
-      <!-- End buku sidebar -->
+      <!-- End sidebar filter-->
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <a class="btn-hapus" href="#filterbtn">
+            <span>Terapkan</span>
+          </a>
+          <a class="btn-hapus" href="#filterbtn">
+            <span>Reset</span>
+          </a>
+        </div>
+      </div>
     </div>
+    <!-- End sidebar -->
+    </aside>
+
+
+    <div class="col-lg-10 entries">
+      <div class="row gy g-4">
+
+        <!-- File -->
+        @foreach ($file as $b)
+        <div class="col-lg-2 col-md-3 col-sm-2 col-6 mb-2">
+          <div class="card">
+            <div class="card-img">
+              <center>
+              <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
+              </center>
+              <div class="social">
+                <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
+                <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
+              </div>
+            </div>
+            <div class="card-info">
+              <h5>{{substr($b->title,0,15)."..."}}</h5>
+              <h6>
+                @if(($b->getGrade || $b->getEdu) !== null)
+                {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
+                @endif
+              </h6>
+              <div class="btn-file">
+                <span>PDF</span>
+              </div>
+              {{--
+                    <p>
+                      {{substr($b->desc,0,50)."....."}}
+              <!-- {{ $b->desc}} -->
+              </p>
+              --}}
+              <div class="stat-content">
+                <a href="#">dilihat 120 kali</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endforeach
+
+        <!-- Pagination -->
+        <nav aria-label="...">
+          <ul class="pagination justify-content-center mt-3">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">&raquo;</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- End row buku entries list -->
+    </div>
+    <!-- End buku sidebar -->
+  </div>
   </div>
   </div>
 </section>
@@ -197,8 +204,11 @@ return $returnValue;
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
 <script type="text/javascript">
   //Initialize Select2 Elements
-  $('.select2bs4').select2({
+  $('.select2bs4').select2(
+    {
     theme: 'bootstrap4'
-  });
+    }
+  );
+  $("#mapel").select2({ dropdownCssClass: "myFont" });
 </script>
 @endsection

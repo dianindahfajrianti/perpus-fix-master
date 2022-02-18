@@ -13,12 +13,14 @@
 
 //Perpus Front - End
 Route::get('/', 'HomeController@index');
-Route::get('/file', 'HomeController@showfile')->name('file');
+Route::get('/buku', 'HomeController@book')->name('buku');
+Route::get('/video', 'HomeController@video')->name('video');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::get('/showpdf/{book}', 'HomeController@showpdf')->name('showpdf');
 Route::get('/videoplayer', 'HomeController@videoplayer')->name('videoplayer');
-https://stackoverflow.com/questions/23026181/fatal-error-class-imagick-not-found
+Route::get('/pagination', 'HomeController@pagination')->name('pagination');
+
 //Admin Back-End
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
