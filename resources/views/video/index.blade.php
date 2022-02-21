@@ -32,7 +32,7 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Video</button>
+                        <a href="{{ route('video.create') }}" class="btn btn-dark">Tambah Video</a>
                     </div>
                     <div class="card-body">
                         <table id="tb-video" class="table table-bordered table-striped">
@@ -48,175 +48,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <form id="fdata" action="{{route('video.store')}}" method="POST">
-                    @csrf
-                    <div class="modal-header">
-                        <h1>Tambah video</h1>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-red">*) Pastikan seluruh data terisi</p>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="file" aria-selected="true">File</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="sekolah" aria-selected="false">Sekolah</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="video" aria-selected="false">Video</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="upload">Upload File</label>
-                                            <input type="file" name="upload" id="upload" class="form-control @error('upload'){{'is-invalid'}}@enderror" value="{{old('upload')}}">
-                                            @error('upload')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="jenjang">Jenjang</label>
-                                            <div class="input-group">
-                                                <select class="form-control select2bs4 @error('jenjang'){{'is-invalid'}}@enderror" name="jenjang" id="jenjang" aria-label="Example select with button addon">
-                                                    <option value="">-- Pilih Jenjang --</option>
-                                                    @foreach ($edu as $e)
-                                                    <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('jenjang')
-                                                <div class="invalid-feedback">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="kelas">Kelas</label>
-                                            <div class="input-group">
-                                                <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
-                                                    <option value="">-- Pilih Kelas --</option>
-                                                    @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                                        @endfor
-                                                </select>
-                                                @error('kelas')
-                                                <div class="invalid-feedback">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="sekolah">Jurusan</label>
-                                            <div class="input-group">
-                                                <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
-                                                    <option value="">-- Pilih Jurusan --</option>
-                                                    @foreach ($maj as $m )
-                                                    <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('jurusan')
-                                                <div class="invalid-feedback">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="mapel">Mata Pelajaran</label>
-                                            <div class="input-group">
-                                                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
-                                                    <option value="">-- Pilih Mata Pelajaran --</option>
-                                                    @foreach ($sub as $sbj )
-                                                    <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('mapel')
-                                                <div class="invalid-feedback">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="judul">Judul Video</label>
-                                            <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{old('judul')}}">
-                                            @error('judul')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{old('desc')}}">
-                                            @error('desc')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label" for="creator">Creator</label>
-                                            <input type="text" name="creator" id="creator" class="form-control @error('creator'){{'is-invalid'}}@enderror" value="{{old('creator')}}">
-                                            @error('creator')
-                                            <div class="invalid-feedback">
-                                                {{$message}}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button id="save-video" class="btn btn-secondary">Tambah</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -263,9 +94,9 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
-            // "processing": true,
-            // "serverSide": true,
-            // "ajax": "/video/all",
+            "processing": true,
+            "serverSide": true,
+            "ajax": "/video/all",
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -289,6 +120,8 @@
                 }
             ]
         });
+
+
 
     });
 </script>

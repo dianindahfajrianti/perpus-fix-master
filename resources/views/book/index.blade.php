@@ -44,7 +44,7 @@
     }
     return $returnValue;
     }
-    @endphp
+@endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row justify-content-center">

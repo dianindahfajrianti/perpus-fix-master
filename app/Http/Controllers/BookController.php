@@ -37,7 +37,7 @@ class BookController extends Controller
         $rel = ['getEdu', 'getGrade'];
         $model = Book::with($rel)
             ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author')
-            ->orderBy('updated_at');
+            ->orderBy('updated_at','desc');
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
@@ -50,7 +50,7 @@ class BookController extends Controller
      */
     public function create()
     {
-
+        
     }
 
     /**
@@ -61,7 +61,6 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        
         $res = new stdClass;
         $request->validate([
             'filebook' => 'required|file',
