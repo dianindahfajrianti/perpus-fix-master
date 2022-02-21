@@ -53,8 +53,13 @@ return $returnValue;
           <div class="sidebar d-lg-block d-none mh-75% overflow-auto">
             <h3 class="sidebar-title">Search</h3>
             <div class="sidebar-item search-form">
-              <form action="">
-                <input type="text">
+              <form action="/buku">
+                {{--
+                @if (request('pendidikan'))
+                    <input type="hidden" name="pendidikan" value="{{ request('pendidikan') }}">
+                @endif
+                --}}
+                <input type="text" placeholder="cari judul..." name="search" value="{{ request('search') }}">
                 <button type="submit">
                   <i class="bi bi-search"></i>
                 </button>
@@ -66,10 +71,12 @@ return $returnValue;
               <!-- jenjang -->
               @foreach($edu as $e)
               <div class="form-check">
+                {{-- <a href="/buku?pendidikan={{ $file->pendidikan->edu_name }}"> --}}
                 <input value="{{ $e->id }}" class="form-check-input" type="radio" name="jenjang" id="jenjang" />
                 <label class="form-check-label" for="jenjang">
                   {{ $e->edu_name }}
                 </label>
+                </a>
               </div>
               @endforeach
             </div>
@@ -105,7 +112,7 @@ return $returnValue;
             <div class="form-group">
               <!-- <label class="form-label" for="mapel">Mata Pelajaran</label> -->
               <div class="input-group">
-                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="">
+                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
                   <option value="">-- Pilih Mata Pelajaran --</option>
                   @foreach ($sub as $sbj )
                   <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
@@ -146,7 +153,7 @@ return $returnValue;
           <div class="card">
             <div class="card-img">
               <center>
-              <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
+                <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
               </center>
               <div class="social">
                 <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
@@ -178,7 +185,11 @@ return $returnValue;
         @endforeach
 
         <!-- Pagination -->
-        <nav aria-label="...">
+        <div class="pagination d-flex justify-content-center mt-3">
+          {{ $file->links() }}
+        </div>
+
+        <!-- <nav aria-label="...">
           <ul class="pagination justify-content-center mt-3">
             <li><a href="#">&laquo;</a></li>
             <li class="active"><a href="#">1</a></li>
@@ -186,7 +197,7 @@ return $returnValue;
             <li><a href="#">3</a></li>
             <li><a href="#">&raquo;</a></li>
           </ul>
-        </nav>
+        </nav> -->
       </div>
       <!-- End row buku entries list -->
     </div>
@@ -204,11 +215,11 @@ return $returnValue;
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
 <script type="text/javascript">
   //Initialize Select2 Elements
-  $('.select2bs4').select2(
-    {
+  $('.select2bs4').select2({
     theme: 'bootstrap4'
-    }
-  );
-  $("#mapel").select2({ dropdownCssClass: "myFont" });
+  });
+  $("#mapel").select2({
+    dropdownCssClass: "myFont"
+  });
 </script>
 @endsection

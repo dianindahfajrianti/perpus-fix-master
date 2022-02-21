@@ -6,6 +6,7 @@ use App\Book;
 use App\Video;
 use App\Education;
 use App\Grade;
+use App\Major;
 use Illuminate\Http\Request;
 use App\Singlepage;
 use App\Subject;
@@ -39,13 +40,16 @@ class HomeController extends Controller
     }
     public function book()
     {
+        $req = request('search');
+        $res = ['getGrade','getEdu'];
+        $file = Book::latest();
+        // if($req) {
+        //     $file->where('title', 'like', '%' . $req . '%')
+        //          ->orWhere('desc', 'like', '%' . $req . '%');
+        // }
+        $file = $file->with($res)->filter(request(['search', 'pendidikan', 'kelas', 'mapel']))->paginate(12);
         $sub = Subject::all();
         $edu = Education::all();
-        $file = Book::with('getGrade','getEdu')
-                ->orderBy('updated_at','desc')
-                ->limit(24)
-                ->get();
-        // $book = Book::where('desc','=',null)->get();
 
         return view('home.file', compact('sub', 'edu','file'));
     }

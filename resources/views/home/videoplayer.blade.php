@@ -3,29 +3,33 @@
 @section('container')
 <!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
-    <div class="container">
+  <div class="container">
 
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Video</h2>
-        <ol>
-          <li><a href="/">Home</a></li>
-          <li><a href="/file">Multimedia</a></li>
-          <li>Video</li>
-        </ol>
-      </div>
-
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Video</h2>
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/file">Multimedia</a></li>
+        <li>Video</li>
+      </ol>
     </div>
-  </section><!-- End Breadcrumbs -->
 
-    <!-- ======= Video Player Section ======= -->
+  </div>
+</section><!-- End Breadcrumbs -->
 
-        <div class="d-flex justify-content-center">
-            <video controls>
-                <source src="/assets/perpus/assets/video/movie.mp4" type="video/mp4">
-            </video>
-        </div>
+<!-- ======= Video Player Section ======= -->
+
+<div class="d-flex justify-content-center">
+  <video controls>
+    <source src="/assets/perpus/assets/video/movie.mp4" type="video/mp4">
+  </video>
+  <!-- <video controls>
+    <source src="{{URL::asset("/images/upload/$itemContent->file_name")}}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video> -->
+</div>
 
 
-  </main><!-- End #main -->
+</main><!-- End #main -->
 
 @endsection

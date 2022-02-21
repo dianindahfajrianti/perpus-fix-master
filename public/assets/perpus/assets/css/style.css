@@ -684,6 +684,7 @@ section {
 }
 .file .pagination {
   color: #bb4430;
+  display: inline-block;
 }
 .file .pagination ul {
   display: flex;
@@ -707,9 +708,13 @@ section {
 }
 .file .pagination li.active, .file .pagination li:hover {
   background: #d66854;
+  border-radius: 5px;
+  color: white;
+  padding: 5px 14px 2px 14px;
 }
 .file .pagination li.active a, .file .pagination li:hover a {
   color: #fff;
+  padding: 0px;
 }
 .file .btn-file {
   font-family: "Jost", sans-serif;

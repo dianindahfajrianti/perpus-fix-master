@@ -45,8 +45,8 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="/file">Buku</a></li>
-                    <li><a href="/file">Multimedia</a></li>
+                    <li><a href="/buku">Buku</a></li>
+                    <li><a href="/video">Multimedia</a></li>
                     <li><a href="/panduan">Panduan</a></li>
                     @if(Auth::user())
                     <li class="dropdown"><a href="#"><i class="bi bi-person-circle"></i></a>
