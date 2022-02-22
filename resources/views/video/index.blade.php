@@ -32,7 +32,7 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Video</button>
+                        <a href="{{ route('video.create') }}" class="btn btn-dark">Tambah Video</a>
                     </div>
                     <div class="card-body">
                         <table id="tb-video" class="table table-bordered table-striped">
@@ -51,6 +51,8 @@
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
+=======
     <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -187,7 +189,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="desc">Deskripsi</label>
-                                            <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{old('desc')}}">
+                                            <textarea type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{old('desc')}}"></textarea>
                                             @error('desc')
                                             <div class="invalid-feedback">
                                                 {{$message}}
@@ -220,6 +222,7 @@
             </div>
         </div>
     </div>
+>>>>>>> Stashed changes
 </section>
 @endsection
 @section('ext-script')
@@ -263,9 +266,9 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
-            // "processing": true,
-            // "serverSide": true,
-            // "ajax": "/video/all",
+            "processing": true,
+            "serverSide": true,
+            "ajax": "/video/all",
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -289,6 +292,8 @@
                 }
             ]
         });
+
+
 
     });
 </script>

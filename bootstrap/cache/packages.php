@@ -83,6 +83,13 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'pion/laravel-chunk-upload' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Pion\\Laravel\\ChunkUpload\\Providers\\ChunkUploadServiceProvider',
+    ),
+  ),
   'yajra/laravel-datatables-oracle' => 
   array (
     'providers' => 

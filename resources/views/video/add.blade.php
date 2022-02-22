@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Admin - Menu')
+@section('title', 'Admin - Tambah Video')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="/assets/css/admin.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -24,6 +25,22 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+@php
+    function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
+    }
+@endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -35,19 +52,141 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/book" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('video.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="video_name">Nama Jenjang</label>
-                                <input type="text" name="video_name" id="video_name" class="form-control @error('video_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('video_name')}}">
-                                @error('video_name')
-                                <div class="invalid-feedback">
-                                    {{$message}}
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab2" role="tab" aria-controls="sekolah" aria-selected="true">Sekolah</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-toggle="tab" href="#tab3" role="tab" aria-controls="video" aria-selected="false">Video</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="tab2">
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="jenjang">Jenjang</label>
+                                                <div class="input-group">
+                                                    <select class="form-control select2bs4 @error('jenjang'){{'is-invalid'}}@enderror" name="jenjang" id="jenjang" aria-label="Example select with button addon">
+                                                        <option value="">-- Pilih Jenjang --</option>
+                                                        @foreach ($edu as $e)
+                                                        <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('jenjang')
+                                                    <div class="invalid-feedback">
+                                                        {{$message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="kelas">Kelas</label>
+                                                <div class="input-group">
+                                                    <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
+                                                        <option value="">-- Pilih Kelas --</option>
+                                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                                            @endfor
+                                                    </select>
+                                                    @error('kelas')
+                                                    <div class="invalid-feedback">
+                                                        {{$message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="sekolah">Jurusan</label>
+                                                <div class="input-group">
+                                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                                        <option value="">-- Pilih Jurusan --</option>
+                                                        @foreach ($maj as $m )
+                                                        <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('jurusan')
+                                                    <div class="invalid-feedback">
+                                                        {{$message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="mapel">Mata Pelajaran</label>
+                                                <div class="input-group">
+                                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                                        <option value="">-- Pilih Mata Pelajaran --</option>
+                                                        @foreach ($sub as $sbj )
+                                                        <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('mapel')
+                                                    <div class="invalid-feedback">
+                                                        {{$message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                @enderror
+                                <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3">
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="judul">Judul Video</label>
+                                                <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{old('judul')}}">
+                                                @error('judul')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="desc">Deskripsi</label>
+                                                <input type="text" name="deskripsi" id="desc" class="form-control @error('deskripsi'){{'is-invalid'}}@enderror" value="{{old('deskripsi')}}">
+                                                @error('deskripsi')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="pembuat">Nama Pembuat</label>
+                                                <input type="text" name="nama_pembuat" id="pembuat" class="form-control @error('nama_pembuat'){{'is-invalid'}}@enderror" value="{{old('nama_pembuat')}}">
+                                                @error('nama_pembuat')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                         <!-- /.card-body -->
 
@@ -68,7 +207,7 @@
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
 <!-- Page specific script -->
 <script>
-    $(function() {
+    $(document).ready(function() {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'

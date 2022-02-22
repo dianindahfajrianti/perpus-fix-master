@@ -6,6 +6,7 @@ use App\Book;
 use App\Video;
 use App\Education;
 use App\Grade;
+use App\Major;
 use Illuminate\Http\Request;
 use App\Singlepage;
 use App\Subject;
@@ -37,13 +38,29 @@ class HomeController extends Controller
     {
         return phpinfo();
     }
-    public function showfile()
+    public function book()
+    {
+        $req = request('search');
+        $res = ['getGrade','getEdu'];
+        $file = Book::latest();
+        // if($req) {
+        //     $file->where('title', 'like', '%' . $req . '%')
+        //          ->orWhere('desc', 'like', '%' . $req . '%');
+        // }
+        $file = $file->with($res)->filter(request(['search', 'pendidikan', 'kelas', 'mapel']))->paginate(12);
+        $sub = Subject::all();
+        $edu = Education::all();
+
+        return view('home.file', compact('sub', 'edu','file'));
+    }
+    public function video()
     {
         $sub = Subject::all();
         $edu = Education::all();
-        $book = Book::where('desc','=',null)->get();
+        $file = Video::all();
+        // $book = Book::where('desc','=',null)->get();
 
-        return view('home.file', compact('sub', 'edu','book'));
+        return view('home.file', compact('sub', 'edu','file'));
     }
     public function showprofile()
     {
