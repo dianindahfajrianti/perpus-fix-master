@@ -52,27 +52,26 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{ route('video.uploads',$video->id) }}" enctype="multipart/form-data">
+                    <form action="" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="ct-file">Video File</label>
-                                        <div class="input-group @error('file'){{'is-invalid'}}@enderror mb-3">
+                                        <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <input name="file" type="file" class="custom-file-input @error('file'){{'is-invalid'}}@enderror" value="{{old('file')}}" id="ct-file" accept="video/*">
+                                                <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*">
                                                 <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Video</label>
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="ct-file-desc">Upload</span>
                                             </div>
                                         </div>
-                                        @error('file')
-                                        <div class="invalid-feedback">
-                                            {{$message}}
-                                        </div>
-                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="stamp">Detik Thumbnail</label>
+                                        <input type="number" name="stamp" id="stamp" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <a href="" class="form-control" id="your-file"></a>
@@ -86,7 +85,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-dark">Save</button>
+                            <button id="save-file" type="submit" class="btn btn-dark">Save</button>
                         </div>
                     </form>
                 </div>
@@ -111,6 +110,8 @@
         bsCustomFileInput.init();
 
         $('#your-file').hide();
+        $('#save-file').addClass('disabled');
+        
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
@@ -154,6 +155,9 @@
             $('#your-file').attr('href', response.path);
             $('#your-file').text(response.filename);
             $('#your-file').show();
+            $('#save-file').removeClass('disabled');
+            $('#save-file').attr('href', '/admin/video');
+            $('form').prop('action',response.url);
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error

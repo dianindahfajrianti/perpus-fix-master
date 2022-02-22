@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
         // -- video Upload File --
         Route::get('/video/{video}/upload','VideoController@upload')->name('video.upload');
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
+        Route::post('/video/{video}/thumb','VideoController@thumb')->name('video.thumb');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/updateFile','VideoController@updateFile')->name('video.updatefile');
 

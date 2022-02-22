@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use FFI;
 use App\Major;
 use App\Video;
 use App\Subject;
 use App\Education;
+use FFMpeg\FFMpeg;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Psr\Log\LoggerInterface;
+use FFMpeg\Coordinate\TimeCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,6 +19,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use stdClass;
 
 class VideoController extends Controller
 {
@@ -37,11 +42,6 @@ class VideoController extends Controller
                 ->addIndexColumn()
                 ->setRowId('id')
                 ->toJson();
-    }
-
-    public function saveThumbnail()
-    {
-        
     }
 
     /**
@@ -110,7 +110,7 @@ class VideoController extends Controller
     public function uploadFile(Request $request,Video $video)
     {
         $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
-
+        
         if (!$receiver->isUploaded()) {
 
             // file not uploaded
@@ -130,8 +130,9 @@ class VideoController extends Controller
             $extension = $file->getClientOriginalExtension();
 
             $fileName = $video->filename.".".$extension; // a unique file name
-
+            $name = $video->filename;
             $path = "public/video/";
+            $path2 = storage_path($path.$fileName);
 
             $disk = Storage::disk(config('filesystems.default'));
 
@@ -143,10 +144,9 @@ class VideoController extends Controller
 
             $video->save();
 
-            saveThumbnail();
-
             return [
                 'path' => Storage::url($path.$fileName),
+                'url' => "/admin/video/".$video->id."/thumb",
                 'filename' => $fileName
             ];
 
@@ -162,6 +162,28 @@ class VideoController extends Controller
         ];
     }
 
+    public function thumb(Request $request, Video $video)
+    {
+        $dir1 = "C:\\FFmpeg\\bin\\ffmpeg.exe";
+        $dir2 = "C:\\FFmpeg\\bin\\ffprobe.exe";
+        $cfg = [
+            'ffmpeg.binaries' => $dir1,
+            'ffprobe.binaries' => $dir2,
+            'timeout' => 3600
+        ];
+        $stamp = $request->stamp ?? 1;
+        $res = new stdClass;
+        $path = storage_path('public/video/'.$video->filename);
+        $name = preg_replace('/\\.[^.\\s]{3,4}$/', '', $video->filename);
+        $thumb = public_path("/assets/video/thumb/".$name);
+        $mpg = FFMpeg::create($cfg);
+        $frame = TimeCode::fromSeconds($stamp);
+        $video = $mpg->open($path);
+
+        $video->frame($frame)->save($thumb);
+        
+        return redirect(route('video.index'))->with('success',json_encode($res));
+    }
     /**
      * Display the specified resource.
      *
