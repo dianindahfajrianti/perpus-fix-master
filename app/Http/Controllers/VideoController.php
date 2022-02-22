@@ -30,7 +30,10 @@ class VideoController extends Controller
      */
     public function index()
     {
-        return view('video.index');
+        $edu = Education::all();
+        $maj = Major::all();
+        $sub = Subject::all();
+        return view('video.index',compact('edu','maj','sub'));
     }
 
     public function data()
@@ -72,33 +75,42 @@ class VideoController extends Controller
             'mapel' => '',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required'
+            'nama_pembuat' => 'required',
+            'thumb' => 'required|mimes:png,jpeg'
         ]);
 
-        $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".now('Asia/Jakarta'),'-');
+
+        $file = $request->file('thumb');
+        if ($file != null) {
+            $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".now('Asia/Jakarta'),'-');
+            $file->storeAs(public_path('assets/images/thumbs/'),$filename);
         
-        $vid = new Video;
-        $vid->title = $request->judul;
-        $vid->desc = $request->deskripsi;
-        $vid->filename = $filename;
-        $vid->clicked_time = 0;
-        $vid->edu_id = $request->jenjang;
-        $vid->grade_id= $request->kelas;
-        $vid->major_id= $request->jurusan;
-        $vid->sub_id= $request->mapel;
-        $vid->creator = $request->nama_pembuat;
-        if ($vid->save()) {
-            $stats = 'success';
+            $vid = new Video;
+            $vid->title = $request->judul;
+            $vid->desc = $request->deskripsi;
+            $vid->filename = $filename;
+            $vid->clicked_time = 0;
+            $vid->edu_id = $request->jenjang;
+            $vid->grade_id= $request->kelas;
+            $vid->major_id= $request->jurusan;
+            $vid->sub_id= $request->mapel;
+            $vid->creator = $request->nama_pembuat;
+            $vid->thumb = $filename.$file->getClientOriginalExtension();
+            if ($vid->save()) {
+                $stats = 'success';
+                
+                $msg = 'Save data success';
+
+                return redirect('admin/video/' . $vid->id . '/upload');
+            }else {
+                $stats = 'failed';
+
+                $msg = 'Failed to save data';
+
+                return redirect('admin/video')->with($stats, $msg);
+            }   
+        } else {
             
-            $msg = 'Save data success';
-
-            return redirect('admin/video/' . $vid->id . '/upload');
-        }else {
-            $stats = 'failed';
-
-            $msg = 'Failed to save data';
-
-            return redirect('admin/video')->with($stats, $msg);
         }
 
     }
@@ -164,25 +176,25 @@ class VideoController extends Controller
 
     public function thumb(Request $request, Video $video)
     {
-        $dir1 = "C:\\FFmpeg\\bin\\ffmpeg.exe";
-        $dir2 = "C:\\FFmpeg\\bin\\ffprobe.exe";
-        $cfg = [
-            'ffmpeg.binaries' => $dir1,
-            'ffprobe.binaries' => $dir2,
-            'timeout' => 3600
-        ];
-        $stamp = $request->stamp ?? 1;
-        $res = new stdClass;
-        $path = storage_path('public/video/'.$video->filename);
-        $name = preg_replace('/\\.[^.\\s]{3,4}$/', '', $video->filename);
-        $thumb = public_path("/assets/video/thumb/".$name);
-        $mpg = FFMpeg::create($cfg);
-        $frame = TimeCode::fromSeconds($stamp);
-        $video = $mpg->open($path);
+        // $dir1 = "C:\\FFmpeg\\bin\\ffmpeg.exe";
+        // $dir2 = "C:\\FFmpeg\\bin\\ffprobe.exe";
+        // $cfg = [
+        //     'ffmpeg.binaries' => $dir1,
+        //     'ffprobe.binaries' => $dir2,
+        //     'timeout' => 3600
+        // ];
+        // $stamp = $request->stamp ?? 1;
+        // $res = new stdClass;
+        // $path = storage_path('public/video/'.$video->filename);
+        // $name = preg_replace('/\\.[^.\\s]{3,4}$/', '', $video->filename);
+        // $thumb = public_path("/assets/video/thumb/".$name);
+        // $mpg = FFMpeg::create($cfg);
+        // $frame = TimeCode::fromSeconds($stamp);
+        // $video = $mpg->open($path);
 
-        $video->frame($frame)->save($thumb);
+        // $video->frame($frame)->save($thumb);
         
-        return redirect(route('video.index'))->with('success',json_encode($res));
+        // return redirect(route('video.index'))->with('success',json_encode($res));
     }
     /**
      * Display the specified resource.

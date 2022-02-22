@@ -185,6 +185,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="thumb">Thumbnail</label>
+                                                <div class="input-group @error('thumb'){{ 'is-invalid' }}@enderror mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                                    </div>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{ 'is-invalid' }}@enderror" value="{{ old('thumb') }}">
+                                                        <label for="" class="custom-file-label">Pilih screenshot</label>
+                                                    </div>
+                                                </div>
+                                                @error('thumb')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

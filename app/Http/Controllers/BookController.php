@@ -81,7 +81,7 @@ class BookController extends Controller
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
-                Ghostscript::setGsPath("D:\Andar\Project\Work\perpus-app\public\assets\gs\gs9.55.0\bin\gswin64c.exe");
+                Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $saved = $pdf->saveImage('assets/images/thumbs/'.$thumbname);
                 if ($saved) {
@@ -100,7 +100,7 @@ class BookController extends Controller
                     $book->publisher = $request->penerbit;
                     $book->author = $request->pengarang;
                     $book->save();
-                //   savetoImg($fixname,$thumbname);
+                    
                     $res->status = "success";
                     $res->title = "Berhasil";
                     $res->message = "Gambar berhasil ditambahkan";
@@ -123,10 +123,6 @@ class BookController extends Controller
             return redirect()->route('buku.index')->with($res->status,json_encode($res,404));
         }
     }
-    function savetoImg($fixname,$thumbname)
-    {
-
-    }
 
     /**
      * Display the specified resource.
@@ -145,9 +141,13 @@ class BookController extends Controller
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit(Book $buku)
     {
-        //
+        $edu = Education::all();
+        $maj = Major::all();
+        $sub = Subject::all();
+
+        return view('book.edit',compact('edu','maj','sub','buku'));
     }
 
     /**
@@ -157,10 +157,67 @@ class BookController extends Controller
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, Book $buku)
     {
-        //
+        $res = new stdClass;
+        $request->validate([
+            'jenjang' => 'required',
+            'kelas' => 'required',
+            'jurusan' => 'required',
+            'mapel' => '',
+            'judul' => 'required',
+            'desc' => '',
+            'tahun' => 'required',
+            'penerbit' => 'required',
+            'pengarang' => 'required'
+        ]);
+        $title = $request->judul;
+        $author = $request->pengarang;
+        $year = $request->tahun;
+        $dbtitle = $buku->judul;
+        $dbauthor = $buku->pengarang;
+        $dbyear = $buku->tahun;
+        $file = $request->file('filebook');
+        
+        if ($file != null) {
+            $filename = Str::slug("$title-$author-$year");
+            $fixname = $filename.".pdf";
+            $thumbname = $filename.".png";
+            $file->storeAs('public\pdf',$fixname);
+            $buku->filename = $fixname;
+
+            Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
+            $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
+            $pdf->saveImage('assets/images/thumbs/'.$thumbname);
+        }else{
+            if ( ($title != $dbtitle)||($author != $dbauthor)||($year != $dbyear) ) {
+                $filename = Str::slug("$dbtitle-$dbauthor-$dbyear");
+                $buku->filename = $filename;
+            }else{
+                $buku->filename = $buku->filename;
+            }
+        }
+            $buku->title = $request->judul;
+            $buku->desc = $request->desc;
+            $buku->thumb = $thumbname;
+            $buku->filetype = $file->getClientOriginalExtension();
+            $buku->clicked_time = 0;
+            $buku->edu_id= $request->jenjang;
+            $buku->grade_id= $request->kelas;
+            $buku->major_id= $request->jurusan;
+            $buku->sub_id= $request->mapel;
+            $buku->published_year = $request->tahun;
+            $buku->publisher = $request->penerbit;
+            $buku->author = $request->pengarang;
+            $buku->save();
+            
+        $res->status = "success";
+        $res->title = "Berhasil";
+        $res->message = "Buku berhasil di edit";
+        return redirect()->route('buku.index')->with($res->status,json_encode($res));
     }
+
+
 
     /**
      * Remove the specified resource from storage.

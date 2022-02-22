@@ -69,10 +69,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="stamp">Detik Thumbnail</label>
-                                        <input type="number" name="stamp" id="stamp" class="form-control" required>
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <a href="" class="form-control" id="your-file"></a>
                                         <div class="progress">

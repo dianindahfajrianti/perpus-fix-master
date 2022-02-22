@@ -24,6 +24,22 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+@php
+    function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
+    }
+@endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -35,13 +51,21 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="{{route("buku.update",$book->id)}}" enctype="multipart/form-data">
+                    <form method="post" action="{{route("buku.update",$buku->id)}}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label" for="filebook">Upload File</label>
-                                <input type="file" name="filebook" id="filebook" class="form-control @error('filebook'){{'is-invalid'}}@enderror" value="{{ old('filebook', $book->filename) }}">
+                                <label for="filebook"> File Buku</label>
+                                <div class="input-group @error('filebook'){{'is-invalid'}}@enderror">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" >Upload</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" for="filebook">{{ $buku->filename }}</label>
+                                        <input type="file" name="filebook" id="filebook" class="custom-file-input @error('filebook'){{'is-invalid'}}@enderror" value="{{ old('filebook', $buku->filename) }}">
+                                    </div>
+                                </div>
                                 @error('filebook')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -51,10 +75,10 @@
                             <div class="form-group">
                                 <label class="form-label" for="jenjang">Jenjang</label>
                                 <div class="input-group">
-                                    <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror"" id=" jenjang" aria-label="Example select with button addon">
+                                    <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror" name="jenjang" id="jenjang" aria-label="Example select with button addon">
                                         <option value="">-- Pilih Jenjang --</option>
                                         @foreach ($edu as $e)
-                                        <option @if( old('jenjang', $book->edu_id) ==$e->id){{ 'selected' }} @endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                        <option @if( old('jenjang', $buku->edu_id) ==$e->id){{ 'selected' }} @endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('jenjang')
@@ -69,8 +93,9 @@
                                 <div class="input-group">
                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                         <option value="">-- Pilih Kelas --</option>
-                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                            @endfor
+                                        @for ($i = 1; $i < 13; $i++) 
+                                        <option @if(old('kelas', $buku->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                        @endfor
                                     </select>
                                     @error('kelas')
                                     <div class="invalid-feedback">
@@ -85,7 +110,7 @@
                                     <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($maj as $m )
-                                        <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        <option @if(old('jurusan',$buku->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('jurusan')
@@ -101,7 +126,7 @@
                                     <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                         @foreach ($sub as $sbj )
-                                        <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
+                                        <option @if(old('mapel',$buku->sub_id)==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('mapel')
@@ -113,7 +138,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="judul">Judul Buku</label>
-                                <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{ old('judul', $book->title) }}">
+                                <input type="text" name="judul" id="judul" class="form-control @error('judul'){{'is-invalid'}}@enderror" value="{{ old('judul', $buku->title) }}">
                                 @error('judul')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -122,7 +147,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="desc">Deskripsi</label>
-                                <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{ old('desc', $book->desc) }}">
+                                <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{ old('desc', $buku->desc) }}">
                                 @error('desc')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -131,7 +156,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="tahun">Tahun Terbit</label>
-                                <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{ old('tahun', $book->published_year) }}">
+                                <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{ old('tahun', $buku->published_year) }}">
                                 @error('tahun')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -140,7 +165,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="penerbit">Penerbit</label>
-                                <input type="text" name="penerbit" id="penerbit" class="form-control @error('penerbit'){{'is-invalid'}}@enderror" value="{{ old('penerbit', $book->publisher) }}">
+                                <input type="text" name="penerbit" id="penerbit" class="form-control @error('penerbit'){{'is-invalid'}}@enderror" value="{{ old('penerbit', $buku->publisher) }}">
                                 @error('penerbit')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -149,7 +174,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="pengarang">Pengarang</label>
-                                <input type="text" name="pengarang" id="pengarang" class="form-control @error('pengarang'){{'is-invalid'}}@enderror" value="{{ old('pengarang', $book->author) }}">
+                                <input type="text" name="pengarang" id="pengarang" class="form-control @error('pengarang'){{'is-invalid'}}@enderror" value="{{ old('pengarang', $buku->author) }}">
                                 @error('pengarang')
                                 <div class="invalid-feedback">
                                     {{$message}}
