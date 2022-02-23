@@ -148,7 +148,7 @@ return $returnValue;
       <div class="row gy g-4">
 
         <!-- File -->
-        @foreach ($file as $b)
+        @forelse ($file as $b)
         <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-2">
           <div class="card">
             <div class="card-img">
@@ -182,7 +182,9 @@ return $returnValue;
             </div>
           </div>
         </div>
-        @endforeach
+        @empty
+        <div class="file-notfound">Tidak Ada Buku</div>
+        @endforelse
 
         <!-- Pagination -->
         <div class="pagination d-flex justify-content-center mt-3">

@@ -668,6 +668,13 @@ section {
   right: 8px;
   opacity: 1;
 }
+.file .file-notfound {
+  font-weight: 550;
+  font-size: 20px;
+  line-height: 60px;
+  text-align: center;
+  color: #5B5B5B;
+}
 .file .getstarted, .navbar .getstarted:focus {
   background: #bb4430;
   padding: 8px 20px;
