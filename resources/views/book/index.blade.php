@@ -388,7 +388,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "delete",
-                        url: "/admin/buku/" + id,
+                        url: "/admin/buku/"+id,
                         data: {
                             _token: "{{ csrf_token() }}",
                         },

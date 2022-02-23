@@ -192,6 +192,7 @@ class BookController extends Controller
             Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
             $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
             $pdf->saveImage(storage_path('public/thumb/pdf').$thumbname);
+            $buku->thumb = $thumbname;
         }
         if ($file == null) {
             $fixname = $filename.".pdf";
@@ -199,12 +200,13 @@ class BookController extends Controller
             $thumbname = $filename.".png";
             $np = 'thumb/pdf/'.$thumbname;
             Storage::move($op,$np);
+            $buku->thumb = $thumbname;
         }
 
         $buku->title = $request->judul;
         $buku->desc = $request->desc;
         $buku->filename = $fixname;
-        $buku->thumb = $thumbname;
+        
         $buku->edu_id= $request->jenjang;
         $buku->grade_id= $request->kelas;
         $buku->major_id= $request->jurusan;
@@ -247,7 +249,7 @@ class BookController extends Controller
         $res->status = $status;
         $res->title = $title;
         $res->message = $msg;
-        return redirect()->route('buku.index')->with($res->status,json_encode($res));
+        return response()->json($res);
     }
     public function trial()
     {
