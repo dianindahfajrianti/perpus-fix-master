@@ -9,6 +9,7 @@ use App\Major;
 use App\Permission;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -83,7 +84,7 @@ class BookController extends Controller
             if ($ss) {
                 Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
-                $saved = $pdf->saveImage('assets/images/thumbs/'.$thumbname);
+                $saved = $pdf->saveImage(storage_path('public/thumb/pdf/').$thumbname);
                 if ($saved) {
                     $book = new Book;
                     $book->title = $request->judul;
@@ -171,56 +172,53 @@ class BookController extends Controller
             'penerbit' => 'required',
             'pengarang' => 'required'
         ]);
+
         $title = $request->judul;
         $author = $request->pengarang;
         $year = $request->tahun;
         $dbtitle = $buku->judul;
         $dbauthor = $buku->pengarang;
         $dbyear = $buku->tahun;
+        
+        $filename = Str::slug("$title-$author-$year");
         $file = $request->file('filebook');
         
         if ($file != null) {
-            $filename = Str::slug("$title-$author-$year");
             $fixname = $filename.".pdf";
             $thumbname = $filename.".png";
-            Storage::delete(public_path('assets/images/thumbs'));
+            File::delete(storage_path('app/public/thumb/pdf'));
             $file->storeAs('public\pdf',$fixname);
-            $buku->filename = $fixname;
 
             Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
             $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
-            $pdf->saveImage('assets/images/thumbs/'.$thumbname);
-            $buku->thumb = $thumbname;
-        }else{
-            if ( ($title != $dbtitle)||($author != $dbauthor)||($year != $dbyear) ) {
-                $filename = Str::slug("$dbtitle-$dbauthor-$dbyear");
-                $op = public_path('/assets/images/thumbs/'.$buku->thumb);
-                $buku->filename = $filename;
-                $thumbname = $filename.".png";
-                $np = public_path('/assets/images/thumbs/'.$thumbname);
-                Fileraa::move($op,$np);
-                $buku->thumb = $thumbname;
-            }else{
-                $buku->filename = $buku->filename;
-                $buku->thumb = $buku->thumb;
-            }
+            $pdf->saveImage(storage_path('public/thumb/pdf').$thumbname);
         }
-            $buku->title = $request->judul;
-            $buku->desc = $request->desc;
-            $buku->clicked_time = 0;
-            $buku->edu_id= $request->jenjang;
-            $buku->grade_id= $request->kelas;
-            $buku->major_id= $request->jurusan;
-            $buku->sub_id= $request->mapel;
-            $buku->published_year = $request->tahun;
-            $buku->publisher = $request->penerbit;
-            $buku->author = $request->pengarang;
-            $buku->save();
-            
+        if ($file == null) {
+            $fixname = $filename.".pdf";
+            $op = 'thumb/pdf/'.$buku->thumb;
+            $thumbname = $filename.".png";
+            $np = 'thumb/pdf/'.$thumbname;
+            Storage::move($op,$np);
+        }
+
+        $buku->title = $request->judul;
+        $buku->desc = $request->desc;
+        $buku->filename = $fixname;
+        $buku->thumb = $thumbname;
+        $buku->edu_id= $request->jenjang;
+        $buku->grade_id= $request->kelas;
+        $buku->major_id= $request->jurusan;
+        $buku->sub_id= $request->mapel;
+        $buku->published_year = $request->tahun;
+        $buku->publisher = $request->penerbit;
+        $buku->author = $request->pengarang;
+        $buku->save();
+
         $res->status = "success";
         $res->title = "Berhasil";
         $res->message = "Buku berhasil di edit";
         return redirect()->route('buku.index')->with($res->status,json_encode($res));
+        
     }
 
 
@@ -231,9 +229,25 @@ class BookController extends Controller
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy(Book $buku)
     {
-        // $e1 = Permission::where('')
+        $res = new stdClass;
+        $del = Storage::delete('pdf/'.$buku->filename);
+        if ($del) {
+            Storage::delete('thumb/pdf/'.$buku->thumb);
+            $buku->delete();
+            $status = 'success';
+            $title = 'Berhasil';
+            $msg = 'Hapus buku berhasil.';
+        }else{
+            $status = 'error';
+            $title = 'Gagal';
+            $msg = 'Hapus buku gagal.';
+        }
+        $res->status = $status;
+        $res->title = $title;
+        $res->message = $msg;
+        return redirect()->route('buku.index')->with($res->status,json_encode($res));
     }
     public function trial()
     {
