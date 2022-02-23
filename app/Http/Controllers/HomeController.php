@@ -30,8 +30,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $book = Book::latest()->limit('6')->get();
-        $video = Video::latest()->limit('6')->get();
+        $rel = ['getEdu','getGrade'];
+        $book = Book::latest()->with($rel)->limit('6')->get();
+        $video = Video::latest()->with($rel)->limit('6')->get();
         return view('home.index',compact('book','video'));
     }
     public function info()

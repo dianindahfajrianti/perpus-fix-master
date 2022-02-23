@@ -235,6 +235,5 @@ class BookController extends Controller
         $pdf = new Pdf(public_path('storage/pdf/asdasdmn-gerry-fxc-2019.pdf'));
         // dd($pdf);
         $pdf->setOutputFormat('png')->saveImage(public_path('assets/images/thumbs/asdasdmn-gerry-fxc-2019.png'));
-
     }
 }
