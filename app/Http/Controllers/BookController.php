@@ -183,24 +183,30 @@ class BookController extends Controller
             $filename = Str::slug("$title-$author-$year");
             $fixname = $filename.".pdf";
             $thumbname = $filename.".png";
+            Storage::delete(public_path('assets/images/thumbs'));
             $file->storeAs('public\pdf',$fixname);
             $buku->filename = $fixname;
 
             Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
             $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
             $pdf->saveImage('assets/images/thumbs/'.$thumbname);
+            $buku->thumb = $thumbname;
         }else{
             if ( ($title != $dbtitle)||($author != $dbauthor)||($year != $dbyear) ) {
                 $filename = Str::slug("$dbtitle-$dbauthor-$dbyear");
+                $op = public_path('/assets/images/thumbs/'.$buku->thumb);
                 $buku->filename = $filename;
+                $thumbname = $filename.".png";
+                $np = public_path('/assets/images/thumbs/'.$thumbname);
+                Fileraa::move($op,$np);
+                $buku->thumb = $thumbname;
             }else{
                 $buku->filename = $buku->filename;
+                $buku->thumb = $buku->thumb;
             }
         }
             $buku->title = $request->judul;
             $buku->desc = $request->desc;
-            $buku->thumb = $thumbname;
-            $buku->filetype = $file->getClientOriginalExtension();
             $buku->clicked_time = 0;
             $buku->edu_id= $request->jenjang;
             $buku->grade_id= $request->kelas;
