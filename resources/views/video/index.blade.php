@@ -57,9 +57,9 @@
                                 <th>Judul Video</th>
                                 <th>Deskripsi</th>
                                 <th>Creator</th>
+                                <th>Aksi</th>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -132,13 +132,58 @@
                     name: "creator"
                 },
                 {
-                    defaultContent: '<button type="button" class="edit-video btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    defaultContent: '<button type="button" class="show-video btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
                 }
             ]
         });
-
-
-
+        $('#tb-video tbody').on('click', '.show-video', function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            window.location.href = "video/"+id;
+        });
+        $('#tb-video tbody').on('click', '.del-video', function(e) {
+            e.preventDefault;
+            var id = $(this).closest('tr').attr('id');
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Anda tidak bisa kembalikan data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "delete",
+                        url: "/admin/video/"+id,
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            Swal.fire({
+                                icon: data.status,
+                                title: data.title,
+                                text: data.message,
+                                timer: 1200
+                            });
+                            table.draw();
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 @include('admin.validator')

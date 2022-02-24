@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('admin.body')
 @section('title')
-{{ 'Detail '.$video->name.' - Admin Rainer' }}
+{{ 'Detail '.$video->title.' - Admin Rainer' }}
 @endsection
 @section('ext-css')
 <!-- DataTables -->
@@ -23,7 +23,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/video">Video</a></li>
-                    <li class="breadcrumb-item active">{{ $video->name }}</li>
+                    <li class="breadcrumb-item active">{{ $video->title }}</li>
                 </ol>
             </div>
         </div>
@@ -35,19 +35,25 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Detail <b>{{ $video->name }}</b></h3>
+                        <h3 class="card-title">Detail <b>{{ $video->title }}</b></h3>
                         <div class="float-right">
-                            <a href="/admin/video/{{ $video->id }}/edit" class="btn btn-success">Edit</a>
                             <form class="ml-3 d-inline" action="/admin/video/{{ $video->id }}" method="post">@method('delete')@csrf <button id="delvideo" class="btn btn-danger" type="submit">Hapus</button></form>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>Judul Video : {{ $video->name }}</h3>
-                                <h3>Thumbnail Video : </h3>
+                                <a href="/admin/video/{{ $video->id }}/edit-file" class="btn btn-warning">Edit video</a><br><br>
+                                <video width="70%" controls>
+                                    <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
+                                        Your browser does not support the video tag.
+                                </video>
+                                <h3>Judul Video : {{ $video->title }}</h3>
+                                <h3>Thumbnail Video :</h3>
+                                <img class="img-fluid" src="/storage/thumb/video/{{ $video->thumb }}" alt="Thumbnail">
                             </div>
                             <div class="col-lg-6">
+                                <a href="/admin/video/{{ $video->id }}/edit" class="btn btn-success">Edit info</a>
                                 <table class="table table-borderless">
                                     <tr>
                                         <td>Deskripsi</td>

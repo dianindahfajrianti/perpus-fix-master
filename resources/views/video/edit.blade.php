@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Admin - Menu')
+@section('title', 'Detail {{ $video->title }}')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -24,6 +24,22 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+@php
+    function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+    foreach ($map as $roman => $int) {
+    if($number >= $int) {
+    $number -= $int;
+    $returnValue .= $roman;
+    break;
+    }
+    }
+    }
+    return $returnValue;
+    }
+@endphp
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -41,8 +57,8 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label" for="upload">Upload File</label>
-                                <input type="file" name="upload" id="upload" class="form-control @error('upload'){{'is-invalid'}}@enderror" value="{{ old('upload' $video->filename) }}">
-                                @error('upload')
+                                <input type="file" name="thumb" id="upload" class="form-control @error('thumb'){{'is-invalid'}}@enderror" value="{{ old('thumb', $video->thumb) }}">
+                                @error('thumb')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
