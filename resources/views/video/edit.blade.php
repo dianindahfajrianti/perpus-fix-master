@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Detail {{ $video->title }}')
+@section('title')
+Detail {{ $video->title }}
+@endsection
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -56,9 +58,17 @@
                         @method('put')
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label" for="upload">Upload File</label>
-                                <input type="file" name="thumb" id="upload" class="form-control @error('thumb'){{'is-invalid'}}@enderror" value="{{ old('thumb', $video->thumb) }}">
-                                @error('thumb')
+                                <label for="thumbnail">Thumbnail</label>
+                                <div class="input-group @error('thumbnail'){{'is-invalid'}}@enderror">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" >Upload</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" for="thumbnail">{{ $video->thumb }}</label>
+                                        <input type="file" name="thumbnail" id="thumbnail" class="custom-file-input @error('thumbnail'){{'is-invalid'}}@enderror" value="{{ old('thumbnail', $video->thumb) }}">
+                                    </div>
+                                </div>
+                                @error('thumbnail')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -67,7 +77,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="jenjang">Jenjang</label>
                                 <div class="input-group">
-                                    <select class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="Example select with button addon">
+                                    <select name="jenjang" class="form-control select2bs4 @error('jenjang'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="Example select with button addon">
                                         <option value="">-- Pilih Jenjang --</option>
                                         @foreach ($edu as $e)
                                         <option @if( old('jenjang', $video->edu_id) ==$e->id){{ 'selected' }} @endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
@@ -85,7 +95,7 @@
                                 <div class="input-group">
                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                         <option value="">-- Pilih Kelas --</option>
-                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas',$video->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
                                             @endfor
                                     </select>
                                     @error('kelas')
@@ -98,10 +108,10 @@
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Jurusan</label>
                                 <div class="input-group">
-                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($maj as $m )
-                                        <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                        <option @if(old('jurusan',$video->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('jurusan')
@@ -114,10 +124,10 @@
                             <div class="form-group">
                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                 <div class="input-group">
-                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="">
                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                         @foreach ($sub as $sbj )
-                                        <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
+                                        <option @if(old('mapel',$video->sub_id)==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('mapel')
@@ -138,8 +148,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="desc">Deskripsi</label>
-                                <input type="text" name="desc" id="desc" class="form-control @error('desc'){{'is-invalid'}}@enderror" value="{{ old('desc', $video->desc) }}">
-                                @error('desc')
+                                <input type="text" name="deskripsi" id="desc" class="form-control @error('deskripsi'){{'is-invalid'}}@enderror" value="{{ old('deskripsi', $video->desc) }}">
+                                @error('deskripsi')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
@@ -147,8 +157,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="creator">Creator</label>
-                                <input type="text" name="creator" id="creator" class="form-control @error('creator'){{'is-invalid'}}@enderror" value="{{ old('creator', $video->creator) }}">
-                                @error('creator')
+                                <input type="text" name="nama_pembuat" id="creator" class="form-control @error('nama_pembuat'){{'is-invalid'}}@enderror" value="{{ old('nama_pembuat', $video->creator) }}">
+                                @error('nama_pembuat')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>

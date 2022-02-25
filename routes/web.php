@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/video/{video}/upload','VideoController@upload')->name('video.upload');
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
-        Route::put('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
+        Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
 
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');

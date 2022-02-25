@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Admin - Tambah Video')
+@section('title', 'Admin - Edit Video File')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -13,13 +13,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Tambah Video</h3>
+                <h3 class="display-4">Edit Video File</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
                     <li class="breadcrumb-item"><a href="/admin/Video">Video</a></li>
-                    <li class="breadcrumb-item">Tambah Video</li>
+                    <li class="breadcrumb-item">Edit Video File</li>
                 </ol>
             </div>
         </div>
@@ -52,8 +52,6 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="" method="post">
-                        @csrf
                         <div class="card-body">
                             <div class="row mt-3">
                                 <div class="col-12">
@@ -84,7 +82,6 @@
                         <div class="card-footer">
                             <button id="save-file" type="submit" class="btn btn-dark">Save</button>
                         </div>
-                    </form>
                 </div>
 
             </div>
@@ -122,7 +119,7 @@
         //    console.log(chSize);
         // });
         let resumable = new Resumable({
-        target: '/admin/video/'+{{$video->id}}+'/uploadFile'
+        target: '/admin/video/'+{{$video->id}}+'/update'
         , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
         , query: {
             _token: '{{ csrf_token() }}',
@@ -154,7 +151,6 @@
             $('#your-file').show();
             $('#save-file').removeClass('disabled');
             $('#save-file').attr('href', '/admin/video');
-            $('form').prop('action',response.url);
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error

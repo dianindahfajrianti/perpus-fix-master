@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('admin.body')
 @section('title')
-{{ 'Detail '.$video->title.' - Admin Rainer' }}
+Detail {{ $video->title }} - Admin Rainer
 @endsection
 @section('ext-css')
 <!-- DataTables -->
@@ -42,7 +42,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 mt-3">
                                 <a href="/admin/video/{{ $video->id }}/edit-file" class="btn btn-warning">Edit video</a><br><br>
                                 <video width="70%" controls>
                                     <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
@@ -52,7 +52,7 @@
                                 <h3>Thumbnail Video :</h3>
                                 <img class="img-fluid" src="/storage/thumb/video/{{ $video->thumb }}" alt="Thumbnail">
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 mt-3">
                                 <a href="/admin/video/{{ $video->id }}/edit" class="btn btn-success">Edit info</a>
                                 <table class="table table-borderless">
                                     <tr>
@@ -186,21 +186,21 @@
         e.preventDefault;
         Swal.fire({
             icon: 'success',
-            title: 'Done',
+            title: 'Berhasil',
             text: "{{session('success')}}",
             timer: 1700
         });
     })
 </script>
 @endif
-@if (session('failed'))
+@if (session('error'))
 <script>
     $(document).ready(function(e) {
         e.preventDefault;
         Swal.fire({
             icon: 'error',
-            title: 'Failed',
-            text: "{{session('failed')}}",
+            title: 'Gagal',
+            text: "{{session('error')}}",
             timer: 1700
         });
     })

@@ -52,39 +52,36 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="" method="post">
-                        @csrf
-                        <div class="card-body">
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="ct-file">Video File</label>
-                                        <div class="input-group mb-3">
-                                            <div class="custom-file">
-                                                <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*">
-                                                <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Video</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="ct-file-desc">Upload</span>
-                                            </div>
+                    <div class="card-body">
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="ct-file">Video File</label>
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*">
+                                            <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Video</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="ct-file-desc">Upload</span>
                                         </div>
                                     </div>
-                                    
-                                    <div class="form-group">
-                                        <a href="" class="form-control" id="your-file"></a>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <a href="" class="form-control" id="your-file"></a>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card-body -->
 
-                        <div class="card-footer">
-                            <button id="save-file" type="submit" class="btn btn-dark">Save</button>
-                        </div>
-                    </form>
+                    <div class="card-footer">
+                        <a href="" id="save-file" type="submit" class="btn btn-dark">Save</a>
+                    </div>
                 </div>
 
             </div>
@@ -154,11 +151,15 @@
             $('#your-file').show();
             $('#save-file').removeClass('disabled');
             $('#save-file').attr('href', '/admin/video');
-            $('form').prop('action',response.url);
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error
-            alert('file uploading error.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response,
+                timer: 1800
+            });
         });
 
 

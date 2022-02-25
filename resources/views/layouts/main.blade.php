@@ -49,6 +49,9 @@
                     <li><a href="/video">Multimedia</a></li>
                     <li><a href="/panduan">Panduan</a></li>
                     @if(Auth::user())
+                    @if(Auth::user()->role < 3)
+                    <li><a href="/admin">Admin</a></li>
+                    @endif
                     <li class="dropdown"><a href="#"><i class="bi bi-person-circle"></i></a>
                         <ul>
                             <li><a href="/profile/{{ Auth::user()->id }}"><span><i class="ri-user-line"></i> Akun</span></a></li>

@@ -78,12 +78,12 @@ class VideoController extends Controller
             'nama_pembuat' => 'required',
             'thumb' => 'required|mimes:png,jpeg'
         ]);
-
-
         $file = $request->file('thumb');
+        $res = new stdClass;
+
         if ($file != null) {
-            $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".now('Asia/Jakarta'),'-');
-            $file->storeAs(public_path('assets/images/thumbs/'),$filename);
+            $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
+            $file->storeAs('public/thumb/video',$filename);
         
             $vid = new Video;
             $vid->title = $request->judul;
@@ -95,26 +95,26 @@ class VideoController extends Controller
             $vid->major_id= $request->jurusan;
             $vid->sub_id= $request->mapel;
             $vid->creator = $request->nama_pembuat;
-            $vid->thumb = $filename.$file->getClientOriginalExtension();
+            $vid->thumb = "$filename.".$file->getClientOriginalExtension();
             if ($vid->save()) {
-                $stats = 'success';
+                $res->stats = 'success';
                 
-                $msg = 'Save data success';
+                $res->message = 'Save data success';
 
                 return redirect('admin/video/' . $vid->id . '/upload');
             }else {
-                $stats = 'failed';
+                $res->stats = 'failed';
 
-                $msg = 'Failed to save data';
+                $res->message = 'Failed to save data';
 
-                return redirect('admin/video')->with($stats, $msg);
+                return redirect('admin/video')->with($res->stats, json_encode($res));
             }   
         } else {
-            $stats = 'failed';
+            $res->stats = 'failed';
 
-            $msg = 'Failed to save data';
+            $res->message = 'Failed to save data';
 
-            return redirect('admin/video')->with($stats, $msg);
+            return redirect('admin/video')->with($res->stats, json_encode($res));
         }
     }
     public function upload(Video $video)
@@ -161,7 +161,6 @@ class VideoController extends Controller
 
             return [
                 'path' => Storage::url($path.$fileName),
-                'url' => "/admin/video/".$video->id."/thumb",
                 'filename' => $fileName
             ];
 
@@ -228,44 +227,65 @@ class VideoController extends Controller
             'mapel' => '',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required',
-            'thumb' => 'required|mimes:png,jpeg'
+            'nama_pembuat' => 'required'
         ]);
-
-        $file = $request->file('thumb');
+        $res = new stdClass;
+        $time = date('Y-m-d');
+        $title = $request->judul;
+        $creator = $request->nama_pembuat;
+        $file = $request->file('thumbnail');
+        $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
         if ($file != null) {
-            $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".now('Asia/Jakarta'),'-');
-            $file->storeAs(public_path('assets/images/thumbs/'),$filename);
+            $sv = $file->storeAs('public/thumb/video',$filename);
+            
+            if ($sv) {
+                $video->title = $request->judul;
+                $video->desc = $request->deskripsi;
+                $video->filename = $filename;
+                $video->edu_id = $request->jenjang;
+                $video->grade_id= $request->kelas;
+                $video->major_id= $request->jurusan;
+                $video->sub_id= $request->mapel;
+                $video->creator = $request->nama_pembuat;
+                $video->thumb = $filename.$file->getClientOriginalExtension();
+                $video->save();
 
+                $res->stats = 'success';
+                
+                $res->message = 'Berhasil mengedit video info';
+
+                return redirect('admin/video/')->with($res->stats, json_encode($res));
+            }else {
+
+                $res->stats = 'error';
+                $res->message = 'Gagal mengedit video info';
+                return redirect('admin/video')->with($res->stats, json_encode($res));
+            }
+        } else {
+            
+            $op = 'public/video/'."$video->filename.$video->filetype";
+            $np = 'public/video/'."$filename.$video->filetype";
+            $opthumb = 'public/thumb/video/'.$video->thumb;
+            $npthumb = 'public/thumb/video/'."$filename.png";
+            if (($title !== $video->title) || ($creator !== $video->creator)) {    
+                Storage::move($opthumb,$npthumb);
+                Storage::move($op,$np);
+            }
             $video->title = $request->judul;
             $video->desc = $request->deskripsi;
             $video->filename = $filename;
-            $video->clicked_time = 0;
+            $video->thumb = "$filename.png";
             $video->edu_id = $request->jenjang;
             $video->grade_id= $request->kelas;
             $video->major_id= $request->jurusan;
             $video->sub_id= $request->mapel;
             $video->creator = $request->nama_pembuat;
-            $video->thumb = $filename.$file->getClientOriginalExtension();
-            if ($video->save()) {
-                $stats = 'success';
-                
-                $msg = 'Save data success';
+            $video->save();
+            $res->stats = 'Berhasil';
 
-                return redirect('admin/video/')->with($stats, $msg);
-            }else {
-                $stats = 'failed';
+            $res->message = 'Berhasil mengedit video info';
 
-                $msg = 'Failed to save data';
-
-                return redirect('admin/video')->with($stats, $msg);
-            }   
-        } else {
-            $stats = 'failed';
-
-            $msg = 'Failed to save data';
-
-            return redirect('admin/video')->with($stats, $msg);
+            return redirect('admin/video')->with($res->stats, json_encode($res));
         }
     }
 
@@ -289,7 +309,7 @@ class VideoController extends Controller
 
             $extension = $file->getClientOriginalExtension();
 
-            $fileName = $video->filename; // a unique file name
+            $fileName = "$video->filename.$extension"; // a unique file name
             $path = "public/video/";
 
             $disk = Storage::disk(config('filesystems.default'));
@@ -304,7 +324,6 @@ class VideoController extends Controller
 
             return [
                 'path' => Storage::url($path.$fileName),
-                'url' => "/admin/video/".$video->id."/thumb",
                 'filename' => $fileName
             ];
 
@@ -328,6 +347,23 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
-        //
+        $res = new stdClass;
+        $del = Storage::delete('public/video/'."$video->filename.$video->filetype");
+        if ($del) {
+            Storage::delete('public/thumb/video/'.$video->thumb);
+            
+            $video->delete();
+            $status = 'success';
+            $title = 'Berhasil';
+            $msg = 'Hapus video berhasil.';
+        }else{
+            $status = 'error';
+            $title = 'Gagal';
+            $msg = 'Hapus video gagal.';
+        }
+        $res->status = $status;
+        $res->title = $title;
+        $res->message = $msg;
+        return response()->json($res);
     }
 }

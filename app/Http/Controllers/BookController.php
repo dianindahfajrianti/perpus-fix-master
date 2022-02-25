@@ -280,11 +280,4 @@ class BookController extends Controller
         $res->message = $msg;
         return response()->json($res);
     }
-    public function trial()
-    {
-        Ghostscript::setGsPath(public_path('assets\gs\gs9.55.0\bin\gswin64c.exe'));
-        $pdf = new Pdf(public_path('storage/pdf/asdasdmn-gerry-fxc-2019.pdf'));
-        // dd($pdf);
-        $pdf->setOutputFormat('png')->saveImage(public_path('assets/images/thumbs/asdasdmn-gerry-fxc-2019.png'));
-    }
 }
