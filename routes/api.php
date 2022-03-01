@@ -1,6 +1,8 @@
 <?php
 
+use Doctrine\DBAL\Schema\Index;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,11 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::get('grades', 'GradeController@index');
+Route::get('files', 'HomeController@files');
+Route::get('subjects', 'SubjectController@index');
+Route::get('edus', 'EducationController@Index');

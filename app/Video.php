@@ -20,6 +20,6 @@ class Video extends Model
     }
     public function getSubject()
     {
-        return $this->hasOne(Subject::class,'id','subject_id');
+        return $this->hasOne(Subject::class,'id','sub_id');
     }
 }

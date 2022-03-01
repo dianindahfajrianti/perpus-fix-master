@@ -13,9 +13,9 @@ class Book extends Model
                          ->orWhere('desc', 'like', '%' . $search . '%');
         });
 
-        $query->when($filters['pendidikan'] ?? false, function($query, $pendidikan) {
-            return $query->whereHas('getEdu', function($query) use ($pendidikan) {
-                $query->where('edu_name', $pendidikan);
+        $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
+            return $query->whereHas('getEdu', function($query) use ($jenjang) {
+                $query->where('edu_name', $jenjang);
             });
         });
 
@@ -47,7 +47,7 @@ class Book extends Model
     }
     public function getSubject()
     {
-        return $this->hasOne(Subject::class,'id','subject_id');
+        return $this->hasOne(Subject::class,'id','sub_id');
     }
     
     protected $fillable = [

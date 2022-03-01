@@ -18,4 +18,11 @@ class Grade extends Model
     {
         return $this->belongsTo(User::class,'grade_id','id');
     }
+// tambahan
+    protected $fillable = ['grade_name', 'edu_name', 'sbj_name', 'title'];
+    
+    public function files()
+    {
+        return $this->hasMany(Files::class);
+    }
 }

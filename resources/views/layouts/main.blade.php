@@ -103,6 +103,7 @@
     <!-- Template Main JS File -->
     <script src="/assets/perpus/assets/js/main.js"></script>
     <script src="/assets/perpus/assets/js/config.js"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
     
     @yield('ext-js')
 

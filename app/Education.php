@@ -18,4 +18,11 @@ class Education extends Model
     {
         return $this->belongsTo(School::class,'edu_id','id');
     }
+// tambahan
+    protected $fillable = ['grade_name', 'edu_name', 'sbj_name', 'title'];
+    
+    public function files()
+    {
+        return $this->hasMany(Files::class);
+    }
 }

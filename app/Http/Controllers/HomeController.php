@@ -48,7 +48,7 @@ class HomeController extends Controller
         //     $file->where('title', 'like', '%' . $req . '%')
         //          ->orWhere('desc', 'like', '%' . $req . '%');
         // }
-        $file = $file->with($res)->filter(request(['search', 'pendidikan', 'kelas', 'mapel']))->paginate(12);
+        $file = $file->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->paginate(12);
         $sub = Subject::all();
         $edu = Education::all();
 

@@ -793,19 +793,19 @@ section {
   margin-bottom: 18px;
   font-size: 13px;
 }
-.file .sidebar .search-form form {
+.file .sidebar .search-form .fsrc {
   background: #fff;
   border: 1px solid #ddd;
   padding: 3px 10px;
   position: relative;
 }
-.file .sidebar .search-form form input[type=text] {
+.file .sidebar .search-form .fsrc input[type=text] {
   border: 0;
   padding: 4px;
   border-radius: 4px;
   width: calc(100% - 40px);
 }
-.file .sidebar .search-form form button {
+.file .sidebar .search-form .fsrc button {
   position: absolute;
   top: 0;
   right: 0;
@@ -821,10 +821,10 @@ section {
   border-radius: 0 4px 4px 0;
   line-height: 0;
 }
-.file .sidebar .search-form form button i {
+.file .sidebar .search-form .fsrc button i {
   line-height: 0;
 }
-.file .sidebar .search-form form button:hover {
+.file .sidebar .search-form .fsrc button:hover {
   background: #d66854;
 }
 .file .sidebar .filter ul {
