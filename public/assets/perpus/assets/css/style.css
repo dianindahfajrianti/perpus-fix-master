@@ -701,7 +701,7 @@ section {
 }
 .file .pagination li {
   margin: 0 5px;
-  transition: 0.3s;
+  /* transition: 0.3s; */
 }
 .file .pagination li a {
   color: #bb4430;

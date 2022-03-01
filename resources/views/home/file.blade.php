@@ -129,7 +129,7 @@
                                       </div>
                                   </div>
                               </div>   
-                          </div>
+
                             <!-- End sidebar filter-->
                             <div class="row justify-content-center">
                                 <div class="col-12">
@@ -141,6 +141,7 @@
                                     </button>
                                 </div>
                             </div>
+                          </div>
                         </aside>
                 </form>
 
@@ -172,9 +173,9 @@
                                             <span>PDF</span>
                                         </div>
                                         {{-- <p>
-                      {{substr($b->desc,0,50)."....."}}
-              <!-- {{ $b->desc}} -->
-              </p> --}}
+                                        {{substr($b->desc,0,50)."....."}}
+                                        <!-- {{ $b->desc}} -->
+                                        </p> --}}
                                         <div class="stat-content">
                                             <a href="#">dilihat 120 kali</a>
                                         </div>
@@ -192,16 +193,6 @@
                             @endphp
                             {{ $file->appends(request()->query())->links() }}
                         </div>
-
-                        <!-- <nav aria-label="...">
-              <ul class="pagination justify-content-center mt-3">
-                <li><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-            </nav> -->
                     </div>
                     <!-- End row buku entries list -->
                 </div>
