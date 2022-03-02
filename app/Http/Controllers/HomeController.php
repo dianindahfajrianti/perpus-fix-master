@@ -56,10 +56,16 @@ class HomeController extends Controller
     }
     public function video()
     {
+        $req = request('search');
+        $res = ['getGrade','getEdu'];
+        $file = Video::latest();
+        // if($req) {
+        //     $file->where('title', 'like', '%' . $req . '%')
+        //          ->orWhere('desc', 'like', '%' . $req . '%');
+        // }
+        $file = $file->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->paginate(12);
         $sub = Subject::all();
         $edu = Education::all();
-        $file = Video::all();
-        // $book = Book::where('desc','=',null)->get();
 
         return view('home.file', compact('sub', 'edu','file'));
     }
@@ -70,10 +76,6 @@ class HomeController extends Controller
     public function showpanduan()
     {
         return view('home.panduan');
-    }
-    public function showpdf(Book $book)
-    {
-        return view('home.showpdf',compact('book'));
     }
     public function viewer(Book $buku)
     {
@@ -90,6 +92,8 @@ class HomeController extends Controller
     // }
     public function videoplayer(Video $video)
     {
+        $video->clicked_time = $video->clicked_time+1;
+        $video->save();
         return view('home.videoplayer',compact('video'));
     }
 }

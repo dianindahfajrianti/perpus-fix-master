@@ -41,7 +41,7 @@
     <section id="file" class="file">
         <div class="container" data-aos="fade-up">
             <div class="content-list" id="file-terbaru">
-                <form id="filters" action="/buku">
+                <form id="filters" action="/{{Request::segment(1)}}">
                     <div class="row">
                         <!-- Search Sidebar -->
                         <aside class="col-lg-2 mb-1">
@@ -56,8 +56,7 @@
                               <h3 class="sidebar-title">Search</h3>
                               <div class="sidebar-item search-form">
                                   <div class="fsrc">
-                                      <input type="text" placeholder="cari judul..." name="search"
-                                          value="{{ request('search') }}">
+                                      <input type="text" placeholder="cari judul..." name="search" value="{{ request('search') }}">
                                       <button type="submit">
                                           <i class="bi bi-search"></i>
                                       </button>
@@ -158,8 +157,17 @@
                                             <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
                                         </center>
                                         <div class="social">
-                                            <a href="/assets/perpus/assets/pdf/example.pdf"><i class="ri-file-download-fill"></i></a>
-                                            <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
+                                            @php
+                                                if(Request::segment(1) == 'buku'){
+                                                    $link = 'pdf';
+                                                    $name = $b->filename;
+                                                }else{
+                                                    $link = 'video';
+                                                    $name = "$b->filename.$b->filetype";
+                                                };
+                                            @endphp
+                                            <a href="{{ Storage::url('public/').$link.'/'.$b->filename }}"><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
+                                            <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/videoplayer/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
                                         </div>
                                     </div>
                                     <div class="card-info">
@@ -170,27 +178,20 @@
                                             @endif
                                         </h6>
                                         <div class="btn-file">
-                                            <span>PDF</span>
+                                            <span>{{ strtoupper($b->filetype) }}</span>
                                         </div>
-                                        {{-- <p>
-                                        {{substr($b->desc,0,50)."....."}}
-                                        <!-- {{ $b->desc}} -->
-                                        </p> --}}
                                         <div class="stat-content">
-                                            <a href="#">dilihat 120 kali</a>
+                                            <a href="" class="">dilihat {{ $b->clicked_time }} kali</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <div class="file-notfound">Tidak Ada Buku</div>
+                            <div class="file-notfound">Tidak Ada File</div>
                         @endforelse
 
                         <!-- Pagination -->
                         <div class="pagination d-flex justify-content-center mt-3">
-                            @php
-                                $inp = ['search', 'jenjang', 'kelas', 'mapel'];
-                            @endphp
                             {{ $file->appends(request()->query())->links() }}
                         </div>
                     </div>

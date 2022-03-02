@@ -17,8 +17,8 @@ Route::get('/buku', 'HomeController@book')->name('buku');
 Route::get('/video', 'HomeController@video')->name('video');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
-Route::get('/showpdf/{book}', 'HomeController@showpdf')->name('showpdf');
-Route::get('/videoplayer', 'HomeController@videoplayer')->name('videoplayer');
+Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
+Route::get('/videoplayer/{video}', 'HomeController@videoplayer')->name('videoplayer');
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 
 //Admin Back-End
@@ -65,7 +65,3 @@ Route::get('/buku/all', 'BookController@data');
 Route::get('/video/all', 'VideoController@data');
 Route::get('/akses/{school}','PermissionController@data');
 Route::get('/cek/{buku}','SubjectController@check');
-// Route::get('/pdfViewer?file={buku}','HomeController@viewer');
-Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
-Route::get('/file/{buku}', 'HomeController@file');
-Route::get('/gs', 'BookController@trial');

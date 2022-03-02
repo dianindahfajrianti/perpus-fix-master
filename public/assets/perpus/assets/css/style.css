@@ -1404,6 +1404,84 @@ section {
 /*--------------------------------------------------------------
 # Video
 --------------------------------------------------------------*/
+.video {
+  padding: 40px 0 20px 0;
+}
+/* .video .entry {
+  padding: 0 20px 30px 20px;
+  margin-bottom: 60px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+} */
+.video .video-player {
+  max-width: 100%;
+  height: auto;
+}
+.video .entry-title {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+.video .entry-title a {
+  color: #1f1f1f;
+  transition: 0.3s;
+}
+.video .entry-title a:hover {
+  color: #5B5B5B;
+}
+.video .entry-meta {
+  margin-bottom: 15px;
+  color: #bb4430;
+}
+.video .entry-meta ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+.video .entry-meta ul li + li {
+  padding-left: 20px;
+}
+.video .entry-meta i {
+  font-size: 16px;
+  margin-right: 8px;
+  line-height: 0;
+}
+.video .entry-meta a {
+  color: #777777;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 1;
+}
+.video .entry-desc p {
+  line-height: 24px;
+  text-align: justify;
+}
+.video .entry-desc .unduh-video {
+  -moz-text-align-last: right;
+  text-align-last: right;
+}
+.video .entry-desc .unduh-video a {
+  display: inline-block;
+  background: #bb4430;
+  color: #fff;
+  padding: 6px 20px;
+  transition: 0.3s;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.video .entry-desc .unduh-video a:hover {
+  background: #d66854;
+}
+.video .entry-desc h3 {
+  font-size: 22px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+/* ............... */
 @media (max-width: 992px) {
   video {
     width: 70%;
@@ -1420,7 +1498,7 @@ section {
 }
 @media (min-width: 1024px) {
   video {
-    width: 80%;
+    width: 100%;
     height: auto;
     padding: 20px 0;
   }

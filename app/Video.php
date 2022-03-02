@@ -6,6 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            return $query->where('title', 'like', '%' . $search . '%')
+                         ->orWhere('desc', 'like', '%' . $search . '%');
+        });
+
+        $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
+            return $query->whereHas('getEdu', function($query) use ($jenjang) {
+                $query->where('edu_name', $jenjang);
+            });
+        });
+
+        $query->when($filters['kelas'] ?? false, function($query, $kelas) {
+            return $query->whereHas('getGrade', function($query) use ($kelas) {
+                $query->where('grade_name', $kelas);
+            });
+        });
+
+        $query->when($filters['mapel'] ?? false, function($query, $mapel) {
+            return $query->whereHas('getSubject', function($query) use ($mapel) {
+                $query->where('sbj_name', $mapel);
+            });
+        });
+    }
+
+    //
     public function getEdu()
     {
         return $this->hasOne(Education::class,'id','edu_id');
