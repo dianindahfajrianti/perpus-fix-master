@@ -767,7 +767,61 @@ section {
 .file .btn-hapus:hover {
   background: #d66854;
 }
-
+.file .btn-home:hover {
+  background: #d66854;
+}
+.file .btn-home a {
+  padding: 1px 0px 5px 0px;
+  color: #bb4430;
+}
+.file .btn-home a:hover {
+  color: #fff;
+}
+@media (max-width: 992px) {
+  .file .btn-home {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 5px 11px 5px 11px;
+    border-radius: 10px;
+    transition: 0.5s;
+    margin-bottom: 15px;
+    color: #fff;;
+    border: 1px solid #bb4430;
+  }
+}
+@media (max-width: 768px) {
+  .file .btn-home {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 5px 11px 5px 11px;
+    border-radius: 10px;
+    transition: 0.5s;
+    margin-bottom: 15px;
+    color: #fff;;
+    border: 1px solid #bb4430;
+  }
+}
+@media (min-width: 1024px) {
+  .file .btn-home {
+    font-family: "Jost", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 5px 11px 5px 11px;
+    border-radius: 10px;
+    transition: 0.5s;
+    margin-bottom: 15px;
+    color: #fff;;
+    border: 1px solid #bb4430;
+  }
+}
 /*--------------------------------------------------------------
 # File Sidebar
 --------------------------------------------------------------*/

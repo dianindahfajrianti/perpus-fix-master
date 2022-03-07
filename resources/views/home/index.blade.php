@@ -126,8 +126,8 @@
                 <div class="col-6 text-center"><b>Belum ada buku terbaru</b></div>
                 @endforelse
                 <a href="/file">
-                    <div class="d-grid gap-2 col-lg-3 col-6 mx-auto">
-                        <a href="{{ url('file') }}" class="btn btn-outline-danger" type="button">Lihat Buku Lainnya</a>
+                    <div class="btn-home justify-content-center d-grid col-lg-3 col-sm-6 col-10 mx-auto">
+                        <a href="/buku"><center>Lihat Buku Lainnya</center></a>
                     </div>
                 </a>
             </div>
@@ -175,8 +175,8 @@
                 <div class="col-6 text-center"><b>Belum ada buku terbaru</b></div>
                 @endforelse
                 <a href="/file">
-                    <div class="d-grid gap-2 col-lg-3 col-6 mx-auto">
-                        <button class="btn btn-outline-danger" type="button">Lihat Video Lainnya</button>
+                    <div class="btn-home justify-content-center d-grid col-lg-3 col-sm-6 col-10 mx-auto">
+                        <a href="/video"><center>Lihat Video Lainnya</center></a>
                     </div>
                 </a>
             </div>
