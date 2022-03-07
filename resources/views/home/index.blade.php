@@ -117,7 +117,7 @@
                                     @endif</span>
                             </div>
                             <div class="stat-content">
-                                <a href="#">dilihat 120 kali</a>
+                                <a href="#">dilihat {{ $b->clicked_time }} kali</a>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,8 @@
 
             <div class="row gy-4">
 
-                @for ($i=1; $i < 7; $i++) <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
+                @forelse($video as $v)
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="card">
                         <div class="card-img">
                             <center>
@@ -151,29 +152,35 @@
                             </center>
                             <div class="social">
                                 <a href="#"><i class="ri-video-download-fill"></i></a>
-                                <a href="#"><i class="ri-eye-fill"></i></a>
+                                <a href="/videoplayer/'.$v->id"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5>Matematika <br>Kelas 1 SMP</h5>
+                            <h5>{{substr($v->title,0,25)."..."}}</h5>
+                            <h6>
+                                @if(($v->getGrade || $v->getEdu) !== null)
+                                {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}
+                                @endif
+                            </h6>
                             <div class="btn-file">
-                                <span>Video</span>
+                                <span>{{ strtoupper($v->filetype) }}</span>
                             </div>
                             <div class="stat-content">
-                                <a href="#">dilihat 120 kali</a>
+                                <a href="#">dilihat {{ $v->clicked_time }} kali</a>
                             </div>
                         </div>
                     </div>
-            </div>
-            @endfor
-
-            <a href="/file">
-                <div class="d-grid gap-2 col-lg-3 col-6 mx-auto">
-                    <button class="btn btn-outline-danger" type="button">Lihat Video Lainnya</button>
                 </div>
-            </a>
+                @empty
+                <div class="col-6 text-center"><b>Belum ada buku terbaru</b></div>
+                @endforelse
+                <a href="/file">
+                    <div class="d-grid gap-2 col-lg-3 col-6 mx-auto">
+                        <button class="btn btn-outline-danger" type="button">Lihat Video Lainnya</button>
+                    </div>
+                </a>
+            </div>
 
-        </div>
         </div>
 
     </section><!-- End Video Section -->

@@ -52,12 +52,4 @@
 </section><!-- End Video Section -->
 
 </main><!-- End #main -->
-
-<!-- ======= Video Player Section ======= -->
-{{-- <div class="d-flex justify-content-center">
-  <video controls>
-    <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
-        Your browser does not support the video tag.
-  </video>  
-</div> --}}
 @endsection
