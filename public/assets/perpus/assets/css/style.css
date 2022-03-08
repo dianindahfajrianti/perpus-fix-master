@@ -207,7 +207,7 @@ section {
   transition: 0.3s;
 }
 .navbar i, .navbar a:focus i {
-  font-size: 14px;
+  /* font-size: 14px; */
   line-height: 0;
   margin-left: 5px;
   color: #bb4430;
@@ -770,10 +770,6 @@ section {
 .file .btn-home:hover {
   background: #d66854;
 }
-.file .btn-home a {
-  padding: 1px 0px 5px 0px;
-  color: #bb4430;
-}
 .file .btn-home a:hover {
   color: #fff;
 }
@@ -791,6 +787,10 @@ section {
     color: #fff;;
     border: 1px solid #bb4430;
   }
+  .file .btn-home a {
+    padding: 1px 0px 3px 0px;
+    color: #bb4430;
+  }
 }
 @media (max-width: 768px) {
   .file .btn-home {
@@ -806,6 +806,9 @@ section {
     color: #fff;;
     border: 1px solid #bb4430;
   }
+  .file .btn-home a {
+    color: #bb4430;
+  }
 }
 @media (min-width: 1024px) {
   .file .btn-home {
@@ -820,6 +823,10 @@ section {
     margin-bottom: 15px;
     color: #fff;;
     border: 1px solid #bb4430;
+  }
+  .file .btn-home a {
+    padding: 1px 0px 5px 0px;
+    color: #bb4430;
   }
 }
 /*--------------------------------------------------------------

@@ -96,4 +96,20 @@ class HomeController extends Controller
         $video->save();
         return view('home.videoplayer',compact('video'));
     }
+    public function search()
+    {
+        $req = request('search');
+        $res = ['getGrade','getEdu'];
+
+        $file = Book::latest();
+
+        $file = $file->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->get();
+        $sub = Subject::all();
+        $edu = Education::all();
+
+        $vids = Video::latest();
+        $vids = $vids->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->get();
+        $file = $file->concat($vids);
+        return view('home.searchpage', compact('sub', 'edu','file'));
+    }
 }

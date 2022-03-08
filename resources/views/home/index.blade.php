@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="search-form">
-                                <form action="/buku">
+                                <form action="/search">
                                     <input type="text" placeholder="Cari judul..." name="search" value="{{ request('search') }}">
                                     <button type="submit"><i class="bi bi-search"></i></button>
                                 </form>
