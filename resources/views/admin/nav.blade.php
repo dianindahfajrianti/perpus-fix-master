@@ -117,10 +117,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/permission" class="nav-link @if (Request::segment(2) == 'permission') {{'active'}} @endif">
+                    <a href="/admin/permission" class="nav-link @if (Request::segment(2) == 'akses') {{'active'}} @endif">
                         <i class="nav-icon fas fa-igloo"></i>
                         <p>
-                            Permissions
+                            Akses File
                         </p>
                     </a>
                 </li>

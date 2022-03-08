@@ -38,7 +38,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('sekolah', 'SchoolController');
         // Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
-        Route::resource('permission', 'PermissionController');
         // Video CMS
         Route::resource('video', 'VideoController');
         // -- video Upload File --
@@ -46,7 +45,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
-
+        // Permissions
+        Route::get('/akses','PermissionController@index');
+         // Buku
+        Route::get('/akses/buku','PermissionController@buku');
+        Route::get('/akses/buku/{buku}','PermissionController@showbuku');
+        Route::post('/akses/buku','PermissionController@storeBook');
+        Route::delete('/akses/buku','PermissionController@buku');
+         // Video
+        Route::get('/akses/video','PermissionController@video');
+        
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile/{user}', 'UserController@profile');
@@ -66,5 +74,7 @@ Route::get('/jurusan/all','MajorController@data');
 Route::get('/mapel/all','SubjectController@data');
 Route::get('/buku/all', 'BookController@data');
 Route::get('/video/all', 'VideoController@data');
-Route::get('/akses/{school}','PermissionController@data');
+
+
+Route::get('/akses/buku/{buku}','PermissionController@data');
 Route::get('/cek/{buku}','SubjectController@check');

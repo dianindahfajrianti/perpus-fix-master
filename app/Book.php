@@ -49,6 +49,11 @@ class Book extends Model
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
+
+    public function schools()
+    {
+        return $this->belongsToMany(School::class,'book_school','book_id','school_id','id','id');
+    }
     
     protected $fillable = [
         'title',

@@ -30,8 +30,7 @@ class SchoolController extends Controller
             $model = School::all();
         } else {
             $rel = ['hasEdu'];
-            $model = School::with($rel)
-                ->select('id','edu_id','sch_name','address','phone');
+            $model = School::with($rel);
         }
         return DataTables::of($model)
             ->addIndexColumn()
@@ -93,6 +92,7 @@ class SchoolController extends Controller
 
     public function show(School $school)
     {
+        dd($school);
         return view('school.show',compact('school'));
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionsTable extends Migration
+class SchoolVideo extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreatePermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('idfile');
-            $table->integer('school_id');
+        Schema::create('school_video', function (Blueprint $table) {
+            $table->unsignedBigInteger('video_id');
+            $table->unsignedBigInteger('school_id');
+
+            $table->foreign('video_id')->references('id')->on('videos');
+            $table->foreign('school_id')->references('id')->on('schools');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +31,6 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('school_video');
     }
 }

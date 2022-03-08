@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Permission;
 use App\School;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -18,7 +19,21 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('permission.index');
+        $book = Book::select(DB::raw('COUNT(id) as totidb'))->get();
+        $vid = Video::select(DB::raw('COUNT(id) as totidv'))->get();
+        
+        return view('permission.index',compact('book','vid'));
+    }
+
+    public function buku()
+    {
+        $books = Book::with('schools')->latest()->limit(5)->get();
+        // $buku = Permission::with('schools')->get();
+        return view('permission.test',compact('books'));
+    }
+    public function video()
+    {
+        $video = Video::all();
     }
 
     public function data(School $school)
@@ -31,7 +46,7 @@ class PermissionController extends Controller
         $bks = Book::where('id','=',$collect)->get();
         foreach ($collect as $c => $val) {
             $books->$c = Book::where('id','=',$val)->get('id');
-        }
+        };
         return compact('books');
         // view('permission.test',);
     }

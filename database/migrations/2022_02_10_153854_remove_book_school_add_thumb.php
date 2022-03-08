@@ -26,7 +26,7 @@ class RemoveBookSchoolAddThumb extends Migration
      */
     public function down()
     {
-        Schema::table('grades',function(Blueprint $t){
+        Schema::table('books',function(Blueprint $t){
             $t->integer('school_id');
             $t->dropColumn('thumb');
         });

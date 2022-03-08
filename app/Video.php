@@ -49,4 +49,8 @@ class Video extends Model
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
+    public function schools()
+    {
+        return $this->belongsToMany(School::class,'video_school','video_id','school_id','id','id');
+    }
 }

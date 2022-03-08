@@ -25,7 +25,7 @@ class RemoveMajorParents extends Migration
      */
     public function down()
     {
-        Schema::create('majors',function(Blueprint $t){
+        Schema::table('majors',function(Blueprint $t){
             $t->integer('parent_id');
         });
     }

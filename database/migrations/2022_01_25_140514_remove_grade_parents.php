@@ -25,7 +25,7 @@ class RemoveGradeParents extends Migration
      */
     public function down()
     {
-        Schema::create('grades',function(Blueprint $t){
+        Schema::table('grades',function(Blueprint $t){
             $t->integer('parent_id');
         });
     }
