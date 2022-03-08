@@ -11,7 +11,7 @@
 
         <div class="row gy-4">
 
-            @forelse($file as $v)
+            @forelse($file as $f)
             <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                 <div class="card">
                     <div class="card-img">
@@ -19,28 +19,37 @@
                             <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
                         </center>
                         <div class="social">
-                            <a href="#"><i class="ri-video-download-fill"></i></a>
-                            <a href="/videoplayer/'.$v->id"><i class="ri-eye-fill"></i></a>
+                            @php
+                                if(Request::segment(1) == 'buku'){
+                                    $link = 'pdf';
+                                    $name = $f->filename;
+                                }else{
+                                    $link = 'video';
+                                    $name = "$f->filename.$f->filetype";
+                                };
+                            @endphp
+                            <a href="{{ Storage::url('public/').$link.'/'.$f->filename }}"><i class="ri-@if($f->filetype == 'pdf'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
+                            <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/videoplayer/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
                         </div>
                     </div>
                     <div class="card-info">
-                        <h5>{{substr($v->title,0,20)."..."}}</h5>
+                        <h5>{{substr($f->title,0,16)."..."}}</h5>
                         <h6>
-                            @if(($v->getGrade || $v->getEdu) !== null)
-                            {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}
+                            @if(($f->getGrade || $f->getEdu) !== null)
+                            {{ "Kelas ".$f->getGrade->grade_name." ".$f->getEdu->edu_name}}
                             @endif
                         </h6>
                         <div class="btn-file">
-                            <span>{{ strtoupper($v->filetype) }}</span>
+                            <span>{{ strtoupper($f->filetype) }}</span>
                         </div>
                         <div class="stat-content">
-                            <a href="#">dilihat {{ $v->clicked_time }} kali</a>
+                            <a href="#">dilihat {{ $f->clicked_time }} kali</a>
                         </div>
                     </div>
                 </div>
             </div>
             @empty
-            <div class="col-6 text-center"><b>Belum ada buku terbaru</b></div>
+            <div class="col-6 text-center"><b>Tidak Ada File</b></div>
             @endforelse
             {{-- <a href="/file">
                 <div class="btn-home justify-content-center d-grid col-lg-3 col-sm-6 col-10 mx-auto">
