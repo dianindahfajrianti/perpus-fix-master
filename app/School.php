@@ -21,10 +21,12 @@ class School extends Model
     }
     public function books()
     {
-        return $this->belongsToMany(Book::class,'book_school','school_id','book_id','id','id');
+        return $this->belongsToMany(Book::class,'book_school','school_id','book_id')
+        ->withTimestamps();
     }
     public function videos()
     {
-        return $this->belongsToMany(Video::class,'school_video','school_id','video_id','id','id');
+        return $this->belongsToMany(Video::class,'school_video','school_id','video_id','id','id')
+        ->withTimestamps();
     }
 }

@@ -45,16 +45,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
-        // Permissions
+        // Akses || Permissions
         Route::get('/akses','PermissionController@index');
-         // Buku
-        Route::get('/akses/buku','PermissionController@buku');
-        Route::get('/akses/buku/{buku}','PermissionController@showbuku');
-        Route::post('/akses/buku','PermissionController@storeBook');
-        Route::delete('/akses/buku','PermissionController@buku');
-         // Video
-        Route::get('/akses/video','PermissionController@video');
-        
+          //Sekolah
+          Route::get('/akses/{school}','PermissionController@school');
+            // Buku
+            Route::get('/akses/buku','PermissionController@buku');
+            Route::get('/akses/buku/{school}','PermissionController@showBook');
+            Route::post('/akses/buku','PermissionController@storeBook');
+            Route::delete('/akses/buku','PermissionController@buku');
+            // Video
+            Route::get('/akses/video','PermissionController@video');
+        // End of Akses || Permissions
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile/{user}', 'UserController@profile');

@@ -52,7 +52,8 @@ class Book extends Model
 
     public function schools()
     {
-        return $this->belongsToMany(School::class,'book_school','book_id','school_id','id','id');
+        return $this->belongsToMany(School::class,'book_school','book_id','school_id')
+        ->withTimestamps();
     }
     
     protected $fillable = [
