@@ -20,10 +20,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $book = Book::select(DB::raw('COUNT(id) as totidb'))->get();
-        $vid = Video::select(DB::raw('COUNT(id) as totidv'))->get();
+        $school = School::with('hasEdu')->get();
         
-        return view('permission.index',compact('book','vid'));
+        return view('permission.index',compact('school'));
     }
 
     public function buku(School $school)
@@ -97,6 +96,13 @@ class PermissionController extends Controller
         };
         return compact('books');
         // view('permission.test',);
+    }
+    public function showfilesekolah()
+    {
+        $book = Book::select(DB::raw('COUNT(id) as totidb'))->get();
+        $vid = Video::select(DB::raw('COUNT(id) as totidv'))->get();
+
+        return view('permission.filesekolah', compact('book','vid'));
     }
 
     /**

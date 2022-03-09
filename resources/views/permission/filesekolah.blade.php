@@ -12,12 +12,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Daftar Sekolah</h1>
+                <h1>File Sekolah</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">Akses</li>
+                    <li class="breadcrumb-item active">Pendidikan</li>
                 </ol>
             </div>
         </div>
@@ -26,25 +26,24 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @forelse ($school as $s )
             <div class="col-lg-2 col-6">
-                @php
-                    $arCo = ['info','success','lightblue','teal','olive'];
-                    $c = array_rand($arCo);
-                @endphp
-                <a href="akses/filesekolah/{{$s->id}}" class="small-box bg-gradient-{{ $arCo[$c] }}">
+                <a href="/admin/buku" class="small-box bg-gradient-navy">
                     <div class="inner">
-                        <h3>{{ $s->hasEdu->edu_name }}</h3>
-                        <p>{{ $s->sch_name }}</p>
+                        <h3>@foreach($book as $b){{$b->totidb}}@endforeach</h3>
+                        <p>Buku</p>
                     </div>
-                    <div class="icon"><i class="fas fa-school"></i></div>
+                    <div class="icon"><i class="fas fa-book"></i></div>
                 </a>
             </div>
-            @empty
             <div class="col-lg-2 col-6">
-                Sekolah belum ditambahkan
+                <a href="/admin/video" class="small-box bg-gradient-lightblue">
+                <div class="inner">
+                    <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3>
+                    <p>Video</p>
+                </div>
+                <div class="icon"><i class="fas fa-film"></i></div>
+                </a>
             </div>
-            @endforelse
         </div>
     </div>
 </section>

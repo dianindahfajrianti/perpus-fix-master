@@ -106,7 +106,7 @@
                                 <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
                             </center>
                             <div class="social">
-                                <a href="#"><i class="ri-file-download-fill"></i></a>
+                                <a href="{{ $b->filename }}"><i class="ri-file-download-fill"></i></a>
                                 <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                             </center>
                             <div class="social">
                                 <a href="#"><i class="ri-video-download-fill"></i></a>
-                                <a href="/videoplayer/'.$v->id"><i class="ri-eye-fill"></i></a>
+                                <a href="/videoplayer/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                             </div>
                         </div>
                         <div class="card-info">

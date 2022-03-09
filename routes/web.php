@@ -13,7 +13,6 @@
 
 //Perpus Front - End
 
-
 Route::get('/', 'HomeController@index');
 Route::get('/buku', 'HomeController@book')->name('buku');
 Route::get('/video', 'HomeController@video')->name('video');
@@ -47,6 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
         // Akses || Permissions
         Route::get('/akses','PermissionController@index');
+<<<<<<< Updated upstream
           //Sekolah
           Route::get('/akses/{school}','PermissionController@school');
             // Buku
@@ -57,6 +57,17 @@ Route::middleware('auth')->group(function () {
             // Video
             Route::get('/akses/video','PermissionController@video');
         // End of Akses || Permissions
+=======
+         // Buku
+        Route::get('/akses/buku','PermissionController@buku');
+        Route::get('/akses/buku/{buku}','PermissionController@showbuku');
+        Route::post('/akses/buku','PermissionController@storeBook');
+        Route::delete('/akses/buku','PermissionController@buku');
+         // Video
+        Route::get('/akses/video','PermissionController@video');
+         // File Sekolah
+        Route::get('/akses/filesekolah', 'PermissionController@showfilesekolah');
+>>>>>>> Stashed changes
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile/{user}', 'UserController@profile');
