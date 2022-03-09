@@ -399,7 +399,7 @@ section {
 }
 @media (max-width: 991px) {
   #hero {
-    height: 100vh;
+    /* height: 100vh; */
     text-align: center;
   }
   #hero .animated {
@@ -668,13 +668,6 @@ section {
   right: 8px;
   opacity: 1;
 }
-.file .file-notfound {
-  font-weight: 550;
-  font-size: 20px;
-  line-height: 60px;
-  text-align: center;
-  color: #5B5B5B;
-}
 .file .getstarted, .navbar .getstarted:focus {
   background: #bb4430;
   padding: 8px 20px;
@@ -791,6 +784,15 @@ section {
     padding: 1px 0px 3px 0px;
     color: #bb4430;
   }
+  .file .not-found {
+    text-align: center;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 550;
+    font-size: 20px;
+    color: #5b5b5b;
+    padding-bottom: 120px;
+    }
 }
 @media (max-width: 768px) {
   .file .btn-home {
@@ -808,6 +810,15 @@ section {
   }
   .file .btn-home a {
     color: #bb4430;
+  }
+  .file .not-found {
+  text-align: center;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 550;
+  font-size: 20px;
+  color: #5b5b5b;
+  padding-bottom: 120px;
   }
 }
 @media (min-width: 1024px) {
@@ -828,6 +839,15 @@ section {
     padding: 1px 0px 5px 0px;
     color: #bb4430;
   }
+  .file .not-found {
+    text-align: center;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 550;
+    font-size: 20px;
+    color: #5b5b5b;
+    padding-bottom: 120px;
+    }
 }
 /*--------------------------------------------------------------
 # File Sidebar

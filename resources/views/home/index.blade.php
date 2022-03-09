@@ -23,8 +23,14 @@
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
-                <img src="/assets/perpus/assets/img/hero-img.png" class="img-fluid animated" alt="">
+                <img src="/assets/perpus/assets/img/img-book.png" class="img-fluid animated" alt="">
             </div>
+            {{-- <div class="col-lg-6 order-1 order-lg-2">
+                <center>
+                    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_Q895iE.json"  background="transparent"  speed="1"  style="width: 500px; height: 500px;"  loop  autoplay></lottie-player>
+                </center>
+            </div> --}}
         </div>
     </div>
 

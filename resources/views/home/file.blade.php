@@ -187,7 +187,11 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="file-notfound">Tidak Ada File</div>
+                        <center>
+                            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mk6o3c37.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+                        </center>
+                            <div class="not-found">Tidak Ada File</div>
                         @endforelse
 
                         <!-- Pagination -->

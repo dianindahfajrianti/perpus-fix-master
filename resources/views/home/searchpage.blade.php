@@ -49,7 +49,11 @@
                 </div>
             </div>
             @empty
-            <div class="col-6 text-center"><b>Tidak Ada File</b></div>
+            <center>
+                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mk6o3c37.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+            </center>
+                <div class="not-found">Tidak Ada File</div>
             @endforelse
             {{-- <a href="/file">
                 <div class="btn-home justify-content-center d-grid col-lg-3 col-sm-6 col-10 mx-auto">
