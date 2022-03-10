@@ -23,6 +23,7 @@ Route::get('/videoplayer/{video}', 'HomeController@videoplayer')->name('videopla
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
 
+
 //Admin Back-End
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
@@ -46,18 +47,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
         // Akses || Permissions
         Route::get('/akses','PermissionController@index');
-<<<<<<< Updated upstream
-          //Sekolah
-          Route::get('/akses/{school}','PermissionController@school');
-            // Buku
-            Route::get('/akses/buku','PermissionController@buku');
-            Route::get('/akses/buku/{school}','PermissionController@showBook');
-            Route::post('/akses/buku','PermissionController@storeBook');
-            Route::delete('/akses/buku','PermissionController@buku');
-            // Video
-            Route::get('/akses/video','PermissionController@video');
-        // End of Akses || Permissions
-=======
          // Buku
         Route::get('/akses/buku','PermissionController@buku');
         Route::get('/akses/buku/{buku}','PermissionController@showbuku');
@@ -67,7 +56,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/akses/video','PermissionController@video');
          // File Sekolah
         Route::get('/akses/filesekolah', 'PermissionController@showfilesekolah');
->>>>>>> Stashed changes
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile/{user}', 'UserController@profile');
