@@ -152,20 +152,29 @@
                         @forelse ($file as $b)
                             <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-2">
                                 <div class="card">
+                                    @php
+                                        if(Request::segment(1) == 'buku'){
+                                            $link = 'pdf';
+                                            $name = $b->filename;
+                                        }else{
+                                            $link = 'video';
+                                            $name = "$b->filename.$b->filetype";
+                                        };
+                                        $name1 = $b->thumb;
+                                        $ori = public_path("storage/thumb/".$link."/");
+                                        $path = "/storage/thumb/".$link."/";
+                                        $path1 = $ori.$name1;
+                                        if ( !file_exists($path1) || empty($name1) ) {
+                                            $path1 = $path."default.png";
+                                        }else {
+                                            $path1 = $path.$name1;
+                                        };
+                                    @endphp
                                     <div class="card-img">
                                         <center>
-                                            <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="" />
+                                                <img src="{{ $path1 }}" class="img-fluid" alt="">
                                         </center>
                                         <div class="social">
-                                            @php
-                                                if(Request::segment(1) == 'buku'){
-                                                    $link = 'pdf';
-                                                    $name = $b->filename;
-                                                }else{
-                                                    $link = 'video';
-                                                    $name = "$b->filename.$b->filetype";
-                                                };
-                                            @endphp
                                             <a href="{{ Storage::url('public/').$link.'/'.$name }}"><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
                                             <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/videoplayer/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
                                         </div>

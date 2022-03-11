@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-img">
                                 <center>
-                                    <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
+                                    <img src="/storage/thumb/pdf/@empty($f->thumb){{ 'default.png' }}@else{{ $f->thumb }}@endempty" class="img-fluid" alt="">
                                 </center>
                                 <div class="social">
                                     <a href="{{ Storage::url('public/pdf/').$f->filename }}"><i class="ri-file-download-fill"></i></a>
@@ -43,8 +43,23 @@
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="card">
                             <div class="card-img">
+                                {{-- <center>
+                                    <img src="/storage/thumb/video/@empty($f->thumb){{ 'default.png' }}@else{{ $f->thumb }}@endempty" class="img-fluid" alt="">
+                                </center> --}}
                                 <center>
-                                    <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
+                                    @php
+                                    $name = $f->thumb;
+                                    $ori = public_path("storage/thumb/video/");
+                                    $path = "/storage/thumb/video/";
+                                    $path1 = $ori.$name;
+                                    if ( !file_exists($path1) || empty($name) ) {
+                                        $path1 = $path."default.png";
+                                    }else {
+                                        $path1 = $path.$name;
+                                    };
+                                    @endphp
+                                                                    
+                                        <img src="{{ $path1 }}" class="img-fluid" alt="">
                                 </center>
                                 <div class="social">
                                     <a href="{{ Storage::url('public/video/').$f->filename.".".$f->filetype }}"><i class="ri-video-download-fill"></i></a>

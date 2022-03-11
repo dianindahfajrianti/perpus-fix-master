@@ -103,7 +103,7 @@
                     <div class="card">
                         <div class="card-img">
                             <center>
-                                <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
+                                <img src="/storage/thumb/pdf/@empty($b->thumb){{ 'default.png' }}@else{{ $b->thumb }}@endempty" class="img-fluid" alt="">
                             </center>
                             <div class="social">
                                 <a href="{{ Storage::url('public/pdf/').$b->filename }}"><i class="ri-file-download-fill"></i></a>
@@ -154,7 +154,19 @@
                     <div class="card">
                         <div class="card-img">
                             <center>
-                                <img src="/assets/perpus/assets/img/coverbuku.png" class="img-fluid" alt="">
+                                @php
+                                $name = $v->thumb;
+                                $ori = public_path("storage/thumb/video/");
+                                $path = "/storage/thumb/video/";
+                                $path1 = $ori.$name;
+                                if ( !file_exists($path1) || empty($name) ) {
+                                    $path1 = $path."default.png";
+                                }else {
+                                    $path1 = $path.$name;
+                                };
+                                @endphp
+                                                                
+                                    <img src="{{ $path1 }}" class="img-fluid" alt="">
                             </center>
                             <div class="social">
                                 <a href="{{Storage::url('public/video/').$v->filename.".".$v->filetype}}" class="download"><i class="ri-video-download-fill"></i></a>

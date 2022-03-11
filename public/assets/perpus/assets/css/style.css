@@ -606,12 +606,12 @@ section {
   opacity: 0;
   border-radius: 4px;
   transition: 0.5s;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(80, 80, 80, 0.3);
   z-index: 2;
 }
 .file .card .social a {
   transition: color 0.3s;
-  color: #d66854;
+  color: #bb4430;
   margin: 15px 12px;
   display: block;
   line-height: 0;
@@ -619,7 +619,7 @@ section {
   padding: 5px 0px 5px 0px;
 }
 .file .card .social a:hover {
-  color: #bb4430;
+  color: #d66854;
 }
 .file .card .social i {
   font-size: 22px;
