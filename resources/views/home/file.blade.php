@@ -68,7 +68,6 @@
                                   <!-- jenjang -->
                                   @foreach ($edu as $e)
                                       <div class="form-check">
-
                                           <input value="{{ old('jenjang', $e->edu_name) }}" class="form-check-input"
                                               type="radio" name="jenjang" id="jenjang" />
                                           <label class="form-check-label" for="jenjang">
@@ -182,8 +181,10 @@
                                     <div class="card-info">
                                         <h5>{{ substr($b->title, 0, 16) . '...' }}</h5>
                                         <h6>
-                                            @if (($b->getGrade || $b->getEdu) !== null)
-                                                {{ 'Kelas ' . $b->getGrade->grade_name . ' ' . $b->getEdu->edu_name }}
+                                            @empty ($b->getGrade || $b->getEdu)
+                                            
+                                            @else
+                                            {{ 'Kelas ' . $b->getGrade->grade_name . ' ' . $b->getEdu->edu_name }}
                                             @endif
                                         </h6>
                                         <div class="btn-file">

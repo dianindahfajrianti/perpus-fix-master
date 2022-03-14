@@ -14,7 +14,7 @@ class RemoveBookSchoolAddThumb extends Migration
     public function up()
     {
         Schema::table('books',function(Blueprint $t){
-            $t->string('thumb')->after('filename');
+            $t->string('thumb')->after('filename')->nullable();
             $t->dropColumn('school_id');
         });
     }

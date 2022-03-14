@@ -102,8 +102,23 @@
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="card">
                         <div class="card-img">
-                            <center>
+                            {{-- <center>
                                 <img src="/storage/thumb/pdf/@empty($b->thumb){{ 'default.png' }}@else{{ $b->thumb }}@endempty" class="img-fluid" alt="">
+                            </center> --}}
+                            <center>
+                                @php
+                                $name = $b->thumb;
+                                $ori = public_path("storage/thumb/pdf/");
+                                $path = "/storage/thumb/pdf/";
+                                $path1 = $ori.$name;
+                                if ( !file_exists($path1) || empty($name) ) {
+                                    $path1 = $path."default.png";
+                                }else {
+                                    $path1 = $path.$name;
+                                };
+                                @endphp
+                                                                
+                                    <img src="{{ $path1 }}" class="img-fluid" alt="">
                             </center>
                             <div class="social">
                                 <a href="{{ Storage::url('public/pdf/').$b->filename }}"><i class="ri-file-download-fill"></i></a>
@@ -190,7 +205,7 @@
                     </div>
                 </div>
                 @empty
-                <div class="col-6 text-center"><b>Belum ada buku terbaru</b></div>
+                <div class="col-6 text-center"><b>Belum ada video terbaru</b></div>
                 @endforelse
                 <a href="/file">
                     <div class="btn-home justify-content-center d-grid col-lg-3 col-sm-6 col-10 mx-auto">

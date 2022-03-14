@@ -2,14 +2,12 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Model;
+use App\Major;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
-    $jur = [
-        'Umum','Bahasa','IPA','IPS','Komputer Jaringan','Tata Boga','Kendaraan Ringan','Otomotif','Perhotelan','Tata Rias'
-    ];
+$factory->define(Major::class, function (Faker $faker) {
+    $jur = ['Umum','Bahasa','IPA','IPS','Komputer Jaringan','Tata Boga','Kendaraan Ringan','Otomotif','Perhotelan','Tata Rias', 'Elektro'];
     return [
-        'major_name' => shuffle($jur)
+        'maj_name' => shuffle($jur)
     ];
 });

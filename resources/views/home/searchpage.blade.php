@@ -7,7 +7,15 @@
 
     <div class="container" data-aos="fade-up">
         <br><br>
-        <h4 class="title-home">Hasil Pencarian</h4>
+            <h4 class="title-home">Hasil Pencarian</h4>
+            <div class="col-7">
+                <div class="search-form">
+                    <form action="/search">
+                        <input type="text" placeholder="Cari judul..." name="search" value="{{ request('search') }}">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                </div>
+            </div>
 
         <div class="row gy-4">
             @forelse($file as $f)
@@ -15,8 +23,23 @@
                     <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="card">
                             <div class="card-img">
-                                <center>
+                                {{-- <center>
                                     <img src="/storage/thumb/pdf/@empty($f->thumb){{ 'default.png' }}@else{{ $f->thumb }}@endempty" class="img-fluid" alt="">
+                                </center> --}}
+                                <center>
+                                    @php
+                                    $name = $f->thumb;
+                                    $ori = public_path("storage/thumb/pdf/");
+                                    $path = "/storage/thumb/pdf/";
+                                    $path1 = $ori.$name;
+                                    if ( !file_exists($path1) || empty($name) ) {
+                                        $path1 = $path."default.png";
+                                    }else {
+                                        $path1 = $path.$name;
+                                    };
+                                    @endphp
+                                                                    
+                                        <img src="{{ $path1 }}" class="img-fluid" alt="">
                                 </center>
                                 <div class="social">
                                     <a href="{{ Storage::url('public/pdf/').$f->filename }}"><i class="ri-file-download-fill"></i></a>
