@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Major;
-use App\Subject;
-use App\Video;
-use Illuminate\Http\Request;
 use stdClass;
+use App\Major;
+use App\Video;
+use App\School;
+use App\Subject;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubjectController extends Controller
@@ -159,9 +160,13 @@ class SubjectController extends Controller
 
         return response()->json($res);
     }
-    public function check(Book $buku)
+    public function check(School $school)
     {
-        dd($buku->id);
+        $books = Book::latest();
+        $id = $school->id;
+        $scope = ['id' => "$id"];
+        dd($school->books()->detach());
+        
         // $title = "Gagal";
         // $title = "Berhasil";
         // return compact($buku);

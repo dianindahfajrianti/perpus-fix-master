@@ -32,7 +32,7 @@
                     $arCo = ['info','success','lightblue','teal','olive'];
                     $c = array_rand($arCo);
                 @endphp
-                <a href="akses/filesekolah/{{$s->id}}" class="small-box bg-gradient-{{ $arCo[$c] }}">
+                <a href="/admin/akses/{{$s->id}}" class="small-box bg-gradient-{{ $arCo[$c] }}">
                     <div class="inner">
                         <h3>{{ $s->hasEdu->edu_name }}</h3>
                         <p>{{ $s->sch_name }}</p>

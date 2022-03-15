@@ -47,25 +47,28 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
         // Akses || Permissions
         Route::get('/akses','PermissionController@index');
+        // Pilih Sekolah
+       Route::get('/akses/{school}', 'PermissionController@showfilesekolah');
          // Buku
-        Route::get('/akses/buku','PermissionController@buku');
-        Route::get('/akses/buku/{buku}','PermissionController@showbuku');
-        Route::post('/akses/buku','PermissionController@storeBook');
-        Route::delete('/akses/buku','PermissionController@buku');
-         // Video
-        Route::get('/akses/video','PermissionController@video');
-         // File Sekolah
-        Route::get('/akses/filesekolah', 'PermissionController@showfilesekolah');
+        Route::get('/akses/{school}/buku','PermissionController@showBook');
+        Route::post('/akses/{school}/buku','PermissionController@storeBook');
+        Route::delete('/akses/{school}/buku','PermissionController@destroyBook');
+        // Video
+        Route::get('/akses/{school}/video','PermissionController@showVideo');
+        Route::post('/akses/{school}/video','PermissionController@storeVideo');
+        Route::delete('/akses/{school}/video','PermissionController@destroyVideo');
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile/{user}', 'UserController@profile');
     Route::post('/reset', 'UserController@reset');
 });
+
 Auth::routes([
     // 'register' => false, // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
+
 //DataTable Needs
 Route::get('/user/all', 'UserController@data');
 Route::get('/sekolah/all', 'SchoolController@data');
@@ -74,8 +77,12 @@ Route::get('/kelas/all','GradeController@data');
 Route::get('/jurusan/all','MajorController@data');
 Route::get('/mapel/all','SubjectController@data');
 Route::get('/buku/all', 'BookController@data');
+Route::get('/akses/buku/{school}','PermissionController@dataBook');
+Route::get('/akses/video/{school}','PermissionController@dataVideo');
 Route::get('/video/all', 'VideoController@data');
 
-
-Route::get('/akses/buku/{buku}','PermissionController@data');
-Route::get('/cek/{buku}','SubjectController@check');
+// Datatable Akses
+Route::get('/sekolah/{school}/buku','PermissionController@books');
+Route::get('/sekolah/{school}/video','PermissionController@videos');
+//Edge Server Needs
+Route::get('/cek/{school}','SubjectController@check');

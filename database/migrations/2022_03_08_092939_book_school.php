@@ -16,8 +16,8 @@ class BookSchool extends Migration
         Schema::create('book_school', function (Blueprint $table) {
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('school_id');
-            $table->foreign('book_id')->references('id')->on('books');
-            $table->foreign('school_id')->references('id')->on('schools');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

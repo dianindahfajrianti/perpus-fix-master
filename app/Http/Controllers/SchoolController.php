@@ -92,8 +92,7 @@ class SchoolController extends Controller
 
     public function show(School $school)
     {
-        dd($school);
-        return view('school.show',compact('school'));
+        //
     }
 
     /**

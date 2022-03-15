@@ -17,8 +17,8 @@ class SchoolVideo extends Migration
             $table->unsignedBigInteger('video_id');
             $table->unsignedBigInteger('school_id');
 
-            $table->foreign('video_id')->references('id')->on('videos');
-            $table->foreign('school_id')->references('id')->on('schools');
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

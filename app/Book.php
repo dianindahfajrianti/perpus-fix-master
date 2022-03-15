@@ -10,7 +10,18 @@ class Book extends Model
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where('title', 'like', '%' . $search . '%')
-                         ->orWhere('desc', 'like', '%' . $search . '%');
+                         ->orWhere('desc', 'like', '%' . $search . '%')
+                         ->orWhere('published_year', 'like', '%' . $search . '%')
+                         ->orWhere('publisher', 'like', '%' . $search . '%')
+                         ->orWhere('author', 'like', '%' . $search . '%');
+        });
+
+        $query->when($filters['ajax'] ?? false, function($query, $ajax) {
+            return $query->where('title', 'like', '%' . $ajax . '%')
+                         ->orWhere('desc', 'like', '%' . $ajax . '%')
+                         ->orWhere('published_year', 'like', '%' . $ajax . '%')
+                         ->orWhere('publisher', 'like', '%' . $ajax . '%')
+                         ->orWhere('author', 'like', '%' . $ajax . '%');
         });
 
         $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
@@ -31,6 +42,12 @@ class Book extends Model
             });
         });
     }
+
+    public function schools()
+    {
+        return $this->belongsToMany(School::class,'book_school','book_id','school_id')
+        ->withTimestamps();
+    }
     
     //
     public function getEdu()
@@ -48,12 +65,6 @@ class Book extends Model
     public function getSubject()
     {
         return $this->hasOne(Subject::class,'id','sub_id');
-    }
-
-    public function schools()
-    {
-        return $this->belongsToMany(School::class,'book_school','book_id','school_id')
-        ->withTimestamps();
     }
     
     protected $fillable = [

@@ -79,11 +79,12 @@ class VideoController extends Controller
             'thumb' => 'required|mimes:png,jpeg'
         ]);
         $file = $request->file('thumb');
+        $ext = ".".$file->getClientOriginalExtension();
         $res = new stdClass;
 
         if ($file != null) {
             $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
-            $file->storeAs('public/thumb/video',$filename);
+            $file->storeAs('public/thumb/video',$filename.$ext);
         
             $vid = new Video;
             $vid->title = $request->judul;
@@ -95,23 +96,20 @@ class VideoController extends Controller
             $vid->major_id= $request->jurusan;
             $vid->sub_id= $request->mapel;
             $vid->creator = $request->nama_pembuat;
-            $vid->thumb = "$filename.".$file->getClientOriginalExtension();
+            $vid->thumb = $filename.$ext;
             if ($vid->save()) {
                 $res->stats = 'success';
-                
                 $res->message = 'Save data success';
 
                 return redirect('admin/video/' . $vid->id . '/upload');
             }else {
                 $res->stats = 'failed';
-
                 $res->message = 'Failed to save data';
 
                 return redirect('admin/video')->with($res->stats, json_encode($res));
             }   
         } else {
             $res->stats = 'failed';
-
             $res->message = 'Failed to save data';
 
             return redirect('admin/video')->with($res->stats, json_encode($res));
@@ -234,11 +232,12 @@ class VideoController extends Controller
         $title = $request->judul;
         $creator = $request->nama_pembuat;
         $file = $request->file('thumbnail');
+        $ext = ".".$file->getClientOriginalExtension();
         $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
 
         if ($file != null) {
 
-            $sv = $file->storeAs('public/thumb/video',$filename.".png");
+            $sv = $file->storeAs('public/thumb/video/', $filename.$ext);
             
             if ($sv) {
                 $video->title = $request->judul;
@@ -249,11 +248,10 @@ class VideoController extends Controller
                 $video->major_id= $request->jurusan;
                 $video->sub_id= $request->mapel;
                 $video->creator = $request->nama_pembuat;
-                $video->thumb = $filename.$file->getClientOriginalExtension();
+                $video->thumb = $filename.$ext;
                 $video->save();
 
                 $res->stats = 'success';
-                
                 $res->message = 'Berhasil mengedit video info';
 
                 return redirect('admin/video/')->with($res->stats, json_encode($res));
@@ -276,7 +274,7 @@ class VideoController extends Controller
             $video->title = $request->judul;
             $video->desc = $request->deskripsi;
             $video->filename = $filename;
-            $video->thumb = "$filename.png";
+            $video->thumb = $filename.$ext;
             $video->edu_id = $request->jenjang;
             $video->grade_id= $request->kelas;
             $video->major_id= $request->jurusan;

@@ -10,7 +10,14 @@ class Video extends Model
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where('title', 'like', '%' . $search . '%')
-                         ->orWhere('desc', 'like', '%' . $search . '%');
+                         ->orWhere('desc', 'like', '%' . $search . '%')
+                         ->orWhere('creator', 'like', '%' . $search . '%');
+        });
+
+        $query->when($filters['ajax'] ?? false, function($query, $ajax) {
+            return $query->where('title', 'like', '%' . $ajax . '%')
+                         ->orWhere('desc', 'like', '%' . $ajax . '%')
+                         ->orWhere('creator', 'like', '%' . $ajax . '%');
         });
 
         $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
@@ -51,6 +58,7 @@ class Video extends Model
     }
     public function schools()
     {
-        return $this->belongsToMany(School::class,'video_school','video_id','school_id','id','id');
+        return $this->belongsToMany(School::class,'school_video','video_id','school_id')
+        ->withTimestamps();
     }
 }
