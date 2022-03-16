@@ -224,7 +224,7 @@
                 },{
                     data: 'DT_RowId',
                     render: function (data) { 
-                        return '<button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
+                        return '<button data-id="'+data+'" type="button" class="d-inline add-video btn btn-success"><i class="fas fa-plus"></i></button>';
                     },
                     searchable:false
                 }],
@@ -236,7 +236,48 @@
             tb.dataTable().fnClearTable();
             tb.dataTable().fnDestroy();
         });
-        
+        $('#tb-add tbody').on('click', '.add-video', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            Swal.fire({
+                title: 'Yakin tambah akses buku?',
+                text: "Sekolah akan dapat akses buku tersebut!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4CAF50',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, tambah!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "post",
+                        url: "/admin/akses/" + idschool+"/video",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id_video: id
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            });
+                            table.draw();
+                        },
+                        error: function(data) {
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 @include('admin.validator')

@@ -186,8 +186,11 @@ class PermissionController extends Controller
         $rel = Book::findOrFail($request->id_buku);
         $result = $rel->schools()->attach($school);
 
-        if ($result) {
+        if ($result != 0) {
+            
             return redirect()->with($res->status, $res);
+        }else{
+
         }
     }
 

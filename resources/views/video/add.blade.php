@@ -163,7 +163,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="desc">Deskripsi</label>
-                                                <input type="text" name="deskripsi" id="desc" class="form-control @error('deskripsi'){{'is-invalid'}}@enderror" value="{{old('deskripsi')}}">
+                                                <textarea type="text" name="deskripsi" id="desc" class="form-control @error('deskripsi'){{'is-invalid'}}@enderror" value="{{old('deskripsi')}}"></textarea>
                                                 @error('deskripsi')
                                                 <div class="invalid-feedback">
                                                     {{$message}}

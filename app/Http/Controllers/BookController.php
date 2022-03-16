@@ -84,7 +84,7 @@ class BookController extends Controller
             if ($ss) {
                 Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
-                $saved = $pdf->saveImage(storage_path('public/thumb/pdf/').$thumbname);
+                $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
                 if ($saved) {
                     $book = new Book;
                     $book->title = $request->judul;

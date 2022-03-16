@@ -13,7 +13,7 @@
         "doctrine/dbal": "2.6",
         "fideloper/proxy": "^4.4",
         "goodnesskay/laravelpdfviewer": "^1.0",
-        "intervention/image": "^2.7",
+        "intervention/image": "2.1",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
         "laravel/ui": "1.0",
