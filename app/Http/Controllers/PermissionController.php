@@ -183,20 +183,37 @@ class PermissionController extends Controller
     public function storeBook(School $school, Request $request)
     {
         $res = new stdClass;
-        $rel = Book::findOrFail($request->id_buku);
-        $result = $rel->schools()->attach($school);
+        $result = $school->books()->attach($request->id_buku);
 
         if ($result != 0) {
+            $res->status = "success";
+            $res->title = "Berhasil";
+            $res->message = "Akses video gagal diberikan!";
             
-            return redirect()->with($res->status, $res);
         }else{
-
+            $res->status = "success";
+            $res->title = "Gagal";
+            $res->message = "Akses video berhasil diberikan!";
         }
+        return response()->json($res);
     }
 
     public function storeVideo(School $school, Request $request)
     {
-        
+        $res = new stdClass;
+        $result = $school->videos()->attach($request->id_video);
+
+        if ($result != 0) {
+            $res->status = "success";
+            $res->title = "Berhasil";
+            $res->message = "Akses video gagal diberikan!";
+            
+        }else{
+            $res->status = "success";
+            $res->title = "Gagal";
+            $res->message = "Akses video berhasil diberikan!";
+        }
+        return response()->json($res);
     }
 
     public function video()
