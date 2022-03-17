@@ -194,7 +194,7 @@
                                                         <span class="input-group-text" id="ct-file-desc">Upload</span>
                                                     </div>
                                                     <div class="custom-file">
-                                                        <input type="file" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{ 'is-invalid' }}@enderror" value="{{ old('thumb') }}">
+                                                        <input type="file" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{ 'is-invalid' }}@enderror" value="{{ old('thumb') }}" accept=".png">
                                                         <label for="" class="custom-file-label">Pilih screenshot</label>
                                                     </div>
                                                 </div>
