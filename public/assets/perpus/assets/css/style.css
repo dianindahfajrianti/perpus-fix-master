@@ -379,7 +379,7 @@ section {
 --------------------------------------------------------------*/
 #hero {
   width: 100%;
-  height: 80vh;
+  height: 70vh;
   background: #03AE24;
 }
 #hero h1 {
@@ -410,7 +410,7 @@ section {
     text-align: center;
   }
   #hero .hero-img img {
-    width: 50%;
+    width: 70%;
   }
 }
 @media (max-width: 768px) {
@@ -424,7 +424,7 @@ section {
     margin-bottom: 30px;
   }
   #hero .hero-img img {
-    width: 70%;
+    width: 80%;
   }
 }
 @media (max-width: 575px) {
@@ -463,7 +463,7 @@ section {
 }
 #hero .search-form form input[type=text] {
   border: 0;
-  padding: 4px;
+  padding: 4px 0 4px 0;
   border-radius: 4px;
   width: calc(100% - 40px);
 }
@@ -730,7 +730,7 @@ section {
   list-style: none;
 }
 .file .pagination li {
-  margin: 0 5px;
+  margin: 0 2px;
   /* transition: 0.3s; */
 }
 .file .pagination li a {
@@ -1498,7 +1498,7 @@ section {
   color: #5b5b5b;
 }
 .panduan p {
-  text-align: left;
+  text-align: justify;
   margin: 10px 17px 10px 5px;
   font-family: Poppins;
   font-style: normal;
