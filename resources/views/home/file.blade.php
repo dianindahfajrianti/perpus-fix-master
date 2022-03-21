@@ -174,7 +174,7 @@
                                                 <img src="{{ $path1 }}" class="img-fluid" alt="">
                                         </center>
                                         <div class="social">
-                                            <a href="{{ Storage::url('public/').$link.'/'.$name }}"><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
+                                            <a href="{{ Storage::url('public/').$link.'/'.$name }}" download><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
                                             <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/videoplayer/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
                                         </div>
                                     </div>
