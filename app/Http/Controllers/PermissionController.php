@@ -188,12 +188,12 @@ class PermissionController extends Controller
         if ($result != 0) {
             $res->status = "success";
             $res->title = "Berhasil";
-            $res->message = "Akses video gagal diberikan!";
+            $res->message = "Akses buku gagal diberikan!";
             
         }else{
             $res->status = "success";
             $res->title = "Gagal";
-            $res->message = "Akses video berhasil diberikan!";
+            $res->message = "Akses buku berhasil diberikan!";
         }
         return response()->json($res);
     }

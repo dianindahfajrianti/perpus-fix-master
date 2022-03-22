@@ -296,6 +296,7 @@ class BookController extends Controller
         
         $path = storage_path("app/public/pdf/");
         $tempFolder = $path."tmp/";
+        
         if (!is_dir($tempFolder)) {
             mkdir($tempFolder);
         }
@@ -305,23 +306,24 @@ class BookController extends Controller
             copy($path.$b->filename,$tempFolder.$b->filename);
 
         };
-        $zip = new ZipArchive;
-
-        if ($zip->open(public_path($tempFolder.$fileName), ZipArchive::CREATE) === TRUE)
-        {
+        $url = [
+            'url' => $tempFolder.$fileName
+        ];
+        // $zip = new ZipArchive;
+        // if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
+        // {
             
-            $files = File::files(public_path($path));
+        //     $files = File::files(public_path($path));
 
-            foreach ($files as $key => $value) {
-                $relativeNameInZipFile = basename($value);
+        //     foreach ($files as $key => $value) {
+        //         $relativeNameInZipFile = basename($value);
 
-                $zip->addFile($value, $relativeNameInZipFile);
-            }
+        //         $zip->addFile($value, $relativeNameInZipFile);
+        //     }
             
-            $zip->close();
-        }
-    
-        return response()
-                ->json();
+        //     $zip->close();
+        // }
+        $books = $book->concat($url);
+        return response()->json($book);
     }
 }

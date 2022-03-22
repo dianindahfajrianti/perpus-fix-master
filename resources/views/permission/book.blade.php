@@ -57,7 +57,37 @@
             </div>
         </div>
     </div>
-    
+    <div class="modal fade show" aria-modal="true" id="modal-add" aria-hidden="false" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1>Tambah sekolah</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table id="tb-add" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Buku</th>
+                                    <th>Tahun</th>
+                                    <th>Penerbit</th>
+                                    <th>Pengarang</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection
 @section('ext-script')
@@ -156,6 +186,100 @@
                     $.ajax({
                         type: "delete",
                         url: "/admin/akses/" + id+"/buku",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id_buku: id
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                icon: data.status,
+                                title: "Berhasil",
+                                text: data.message,
+                                timer: 1200
+                            });
+                            table.draw();
+                        },
+                        error: function(data) {
+                            var js = data.responseJSON;
+                            Swal.fire({
+                                icon: 'error',
+                                title: js.exception,
+                                text: js.message,
+                                timer: 1200
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Modal pop-up
+        var tb = $('#tb-add');
+        $('#modal-add').on('shown.bs.modal', function (e) {
+            e.preventDefault();
+            tb.DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                // "dom":'Blfrtip',
+                // "buttons": ['excel','pdf'],
+                "autoWidth": false,
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "columns": [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                }, {
+                    data: "title",
+                    name: "title"
+                }, {
+                    data: "published_year",
+                    name: "published_year"
+                    
+                },{
+                    data: "publisher",
+                    name: "publisher"
+                    
+                },{
+                    data: "author",
+                    name: "author"
+
+                },{
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="d-inline add-buku btn btn-success"><i class="fas fa-plus"></i></button>';
+                    },
+                    searchable:false
+                }],
+                "ajax": {url : "/akses/buku/"+idschool,}
+            });
+        });
+        $('#modal-add').on('hidden.bs.modal', function (e) {
+            e.preventDefault();
+            tb.dataTable().fnClearTable();
+            tb.dataTable().fnDestroy();
+        });
+        $('#tb-add tbody').on('click', '.add-buku', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            Swal.fire({
+                title: 'Yakin tambah akses buku?',
+                text: "Sekolah akan dapat akses buku tersebut!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4CAF50',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, tambah!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "post",
+                        url: "/admin/akses/" + idschool+"/buku",
                         data: {
                             _token: "{{ csrf_token() }}",
                             id_buku: id
