@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Education;
+use App\User;
+use stdClass;
 use App\Grade;
 use App\Major;
 use App\School;
-use App\User;
 use App\History;
+use App\Education;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use stdClass;
 use Yajra\DataTables\Facades\DataTables;
+
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -36,10 +38,19 @@ class UserController extends Controller
         if (empty($request->ajax())) {
             $model = User::all();
         }else{
+            if (Auth::check()) {
+                $sch = Auth::user()->school_id;
+            }else{
+                if (empty(env('SCHOOL_ID'))) {
+                    return redirect('login');
+                }else{
+                    $sch = env('SCHOOL_ID');
+                }
+            }
             if (Auth::user()->role < 1) {
                 $model = User::all();
             } else {
-                $model = User::where('role', '>=', 1)->where('school_id','=',Auth::user()->school_id);
+                $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
             }
         }
         
@@ -47,6 +58,19 @@ class UserController extends Controller
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
+    }
+
+    public function export(School $school)
+    {
+        $id = $school->id;
+        $user = User::where('school_id',$id)->get()->makeVisible('password');
+        $super = User::where('role',0)->get()->makeVisible(['password']);
+        $users = $user->concat($super);
+        if (empty($user)|| empty($super)) {
+            return response()->json([],404);
+        } else {
+            return response()->json($users,200);
+        }
     }
 
     /**
@@ -143,10 +167,13 @@ class UserController extends Controller
             $user->grade_id = $request->kelas;
             $user->major_id = $request->jurusan;
             $user->role = $request->role;
-            $user->save();
-
-            $stat = "success";
-            $msg = "User $request->nama berhasil ditambahkan!";
+            if ($user->save()) {
+                $stat = "success";
+                $msg = "User $request->nama berhasil ditambahkan!";
+            } else {
+                $stat = "error";
+                $msg = "User $request->nama gagal ditambahkan!";
+            }
 
             $res->status = $stat;
             $res->message= $msg;

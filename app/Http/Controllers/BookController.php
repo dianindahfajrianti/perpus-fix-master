@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Education;
+use stdClass;
 use App\Grade;
 use App\Major;
-use App\Permission;
+use App\School;
+use ZipArchive;
 use App\Subject;
+use App\Education;
+use App\Permission;
+use Spatie\PdfToImage\Pdf;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Org_Heigl\Ghostscript\Ghostscript;
-use Spatie\PdfToImage\Pdf;
-use stdClass;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -279,5 +281,47 @@ class BookController extends Controller
         $res->title = $title;
         $res->message = $msg;
         return response()->json($res);
+    }
+
+    public function export(School $school)
+    {
+        //get data
+        $id = $school->id;
+        
+        $book = Book::latest()
+                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->whereHas('schools', function ($query) use ($id) {
+                    $query->where('id', $id);
+                })->get();
+        
+        $path = storage_path("app/public/pdf/");
+        $tempFolder = $path."tmp/";
+        if (!is_dir($tempFolder)) {
+            mkdir($tempFolder);
+        }
+
+        $fileName = 'pdf-'.date('Y-m-d');
+        foreach($book as $b){
+            copy($path.$b->filename,$tempFolder.$b->filename);
+
+        };
+        $zip = new ZipArchive;
+
+        if ($zip->open(public_path($tempFolder.$fileName), ZipArchive::CREATE) === TRUE)
+        {
+            
+            $files = File::files(public_path($path));
+
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+            
+            $zip->close();
+        }
+    
+        return response()
+                ->json();
     }
 }

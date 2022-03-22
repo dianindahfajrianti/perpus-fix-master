@@ -84,5 +84,9 @@ Route::get('/video/all', 'VideoController@data');
 // Datatable Akses
 Route::get('/sekolah/{school}/buku','PermissionController@books');
 Route::get('/sekolah/{school}/video','PermissionController@videos');
+
 //Edge Server Needs
-Route::get('/cek/{school}','SubjectController@check');
+Route::get('/user/{school}','UserController@export')->name('export.user');
+Route::get('/buku/{school}','BookController@export')->name('export.book');
+Route::get('/video/{school}','VideoController@export')->name('export.video');
+Route::get('/filter/{school}','HomeController@export')->name('export.filter');

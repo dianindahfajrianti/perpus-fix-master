@@ -158,10 +158,10 @@ class PermissionController extends Controller
     public function showBook(School $school,Request $request)
     {
         $id = $school->id;
-        if (empty(request('id_buku'))) {
+        if (empty($request->ajax())) {
             $book = Book::latest()->limit(3)->get();
         }else {
-            $filter = ['search' => request('id_buku')];
+            $filter = ['search' => $request->ajax()];
             $book = Book::latest()->filter($filter)->get();
         }
         return view('permission.book', compact('school', 'book'));

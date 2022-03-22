@@ -16,11 +16,11 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->char('title',100);
-            $table->text('desc');
+            $table->text('desc')->nullable();
             $table->string('filename');
             $table->char('filetype',3);
+            $table->string('thumb')->nullable();
             $table->bigInteger('clicked_time');
-            $table->integer('school_id');
             $table->integer('edu_id');
             $table->integer('grade_id');
             $table->integer('major_id');
