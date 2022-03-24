@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use FFI;
+use stdClass;
 use App\Major;
 use App\Video;
+use App\School;
+use ZipArchive;
 use App\Subject;
 use App\Education;
-use FFMpeg\FFMpeg;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Psr\Log\LoggerInterface;
-use FFMpeg\Coordinate\TimeCode;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use stdClass;
 
 class VideoController extends Controller
 {
@@ -90,6 +88,7 @@ class VideoController extends Controller
             $vid->title = $request->judul;
             $vid->desc = $request->deskripsi;
             $vid->filename = $filename;
+            $vid->filetype = 'mp4';
             $vid->clicked_time = 0;
             $vid->edu_id = $request->jenjang;
             $vid->grade_id= $request->kelas;
@@ -365,5 +364,38 @@ class VideoController extends Controller
         $res->title = $title;
         $res->message = $msg;
         return response()->json($res);
+    }
+
+    public function export(School $school)
+    {
+        //get data
+        $id = $school->id;
+        
+        $video = Video::latest()
+                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->whereHas('schools', function ($query) use ($id) {
+                    $query->where('id', $id);
+                })->get();
+        
+        $path = public_path("storage/video/");
+        $tempFolder = $path."tmp/";
+
+        $fileName = 'video-'.$id.".zip";
+        foreach($video as $b){
+            $name = $b->filename.".".$b->filetype;
+            copy($path.$name,$tempFolder.$name);
+        };
+        $zip = new ZipArchive;
+        if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
+        {
+            $files = File::files($tempFolder);
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                $zip->addFile($value, $relativeNameInZipFile);
+            }
+            
+            $zip->close();
+        }
+        return response()->json($video);
     }
 }
