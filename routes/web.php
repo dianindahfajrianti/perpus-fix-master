@@ -91,4 +91,3 @@ Route::get('/user/{school}','UserController@export')->name('export.user');
 Route::get('/buku/{school}','BookController@export')->name('export.book');
 Route::get('/video/{school}','VideoController@export')->name('export.video');
 Route::get('/filter/{school}','HomeController@export')->name('export.filter');
-Route::get('/files/{school}','HomeController@files')->name('export.files');

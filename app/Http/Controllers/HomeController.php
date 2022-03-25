@@ -116,6 +116,7 @@ class HomeController extends Controller
     public function export(School $school)
     {
         $id = $school->edu_id;
+        $sid = $school->id;
         $edu = Education::where('id',$id)->get();
         $eduname = DB::table('education')->where('id',$id)->value('edu_name');
         if ($eduname == 'SD') {
@@ -134,11 +135,13 @@ class HomeController extends Controller
         $maj = Major::where('maj_name','Umum')->get();
         $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
         $sub = Subject::where('parent_id',$maj_id)->get();
+        $sch = School::where('id',$sid)->get();
         $filters = [
             'edu' => $edu,
             'grade' => $gr,
             'jur' => $maj,
-            'sub' => $sub
+            'sub' => $sub,
+            'school' => $sch
         ];
         return response()->json($filters);
     }

@@ -295,11 +295,14 @@ class BookController extends Controller
                 })->get();
         
         $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
         $tempFolder = $path."tmp/";
-
+        $tempThumb = $thumbpath."tmp/";
         $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
         foreach($book as $b){
             copy($path.$b->filename,$tempFolder.$b->filename);
+            copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
@@ -315,6 +318,19 @@ class BookController extends Controller
             
             $zip->close();
         }
+        $zips = new ZipArchive;
+        if ($zips->open($tempThumb.$fileThumb, ZipArchive::CREATE) === TRUE)
+        {
+            $files = File::files($tempThumb);
+            foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+
+                $zips->addFile($value, $relativeNameInZipFile);
+            }
+            
+            $zips->close();
+        }
+        $lg = count($book);
         return response()->json($book);
     }
 }
