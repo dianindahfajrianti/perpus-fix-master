@@ -44,7 +44,7 @@
         {{$video->desc}}  
       </p>
       <div class="unduh-video">
-        <a href="video-single.html">Unduh Video</a>
+        <a href="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" download>Unduh Video</a>
       </div>
     </div>
   </div>
