@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f56794e35ebccb9264747927b3b27de9",
+    "content-hash": "7f0b47ef0fc7e224032572d07a335209",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -2935,6 +2935,20 @@
                 "source": "https://github.com/PHP-FFMpeg/PHP-FFMpeg/tree/v0.18.0"
             },
             "time": "2021-03-29T20:20:00+00:00"
+        },
+        {
+            "name": "phpclasses/multipart-compress",
+            "version": "1.0.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://www.phpclasses.org/install/package/multipart-compress.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "MultipartCompress.php"
+                ]
+            }
         },
         {
             "name": "phpoffice/phpspreadsheet",

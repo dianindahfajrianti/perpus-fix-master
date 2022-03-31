@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use stdClass;
 use App\Grade;
 use App\Major;
 use App\Video;
@@ -144,5 +145,13 @@ class HomeController extends Controller
             'school' => $sch
         ];
         return response()->json($filters);
+    }
+    public function tiket()
+    {
+        $res = new stdClass;
+        $now = request('now')+1;
+        $res->status = "success";
+        $res->nomor = $now;
+        return response()->json($res);
     }
 }

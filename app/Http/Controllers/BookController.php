@@ -11,10 +11,12 @@ use ZipArchive;
 use App\Subject;
 use App\Education;
 use App\Permission;
+use MultipartCompress;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -287,37 +289,52 @@ class BookController extends Controller
     {
         //get data
         $id = $school->id;
-        
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        if (!is_dir($tempFolder)) {
+            mkdir($tempFolder);
+        }
+        if (!is_dir($tempThumb)) {
+            mkdir($tempThumb);
+        }
+        //clear path
+        $file = new Filesystem;
+        $file->cleanDirectory($tempFolder);
+        $fil = new Filesystem;
+        $fil->cleanDirectory($tempThumb);
+
         $book = Book::latest()
                 ->with('getEdu','getGrade','getMajor','getSubject')
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
                 })->get();
         
-        $path = public_path("storage/pdf/");
-        $thumbpath = public_path("storage/thumb/pdf/");
-        $tempFolder = $path."tmp/";
-        $tempThumb = $thumbpath."tmp/";
+        //declare file name
         $fileName = 'pdf-'.$id.".zip";
+        $fileName2 = 'part-'.$id.".zip";
         $fileThumb = 'pdf-'.$id.".zip";
+        $fileThumb2 = 'part-'.$id.".zip";
+        //copy file to temp
         foreach($book as $b){
             copy($path.$b->filename,$tempFolder.$b->filename);
             copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
+        //zip all pdf file
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
         {
-            
             $files = File::files($tempFolder);
-
+            
             foreach ($files as $key => $value) {
                 $relativeNameInZipFile = basename($value);
-
                 $zip->addFile($value, $relativeNameInZipFile);
             }
-            
             $zip->close();
         }
+        //zip thumbnail
         $zips = new ZipArchive;
         if ($zips->open($tempThumb.$fileThumb, ZipArchive::CREATE) === TRUE)
         {
@@ -330,7 +347,26 @@ class BookController extends Controller
             
             $zips->close();
         }
-        $lg = count($book);
-        return response()->json($book);
+        //split zip thumbnail
+        $s = 10 * 1024 * 1024;
+        $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
+        //delete original thumbnail zip
+        File::delete($tempThumb.$fileThumb);
+
+        // delete original files
+        foreach($book as $v){
+            File::delete($tempFolder.$v->filename);
+            File::delete($tempThumb.$v->thumb);
+        }
+        //split zip pdf
+        $partZip = MultipartCompress::zip($tempFolder.$fileName,$tempFolder.$fileName2,$s);
+        //delete original zip
+        File::delete($tempFolder.$fileName);
+        $books = [
+            'book' => $book,
+            'pdf' => $partZip,
+            'thumb' => $partZips
+        ];
+        return response()->json($books);
     }
 }
