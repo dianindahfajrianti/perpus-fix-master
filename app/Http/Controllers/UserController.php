@@ -7,16 +7,12 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\School;
-use App\History;
-use App\Education;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -58,19 +54,6 @@ class UserController extends Controller
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
-    }
-
-    public function export(School $school)
-    {
-        $id = $school->id;
-        $user = User::where('school_id',$id)->get()->makeVisible('password');
-        $super = User::where('role',0)->get()->makeVisible(['password']);
-        $users = $user->concat($super);
-        if (empty($user)|| empty($super)) {
-            return response()->json([],404);
-        } else {
-            return response()->json($users,200);
-        }
     }
 
     /**

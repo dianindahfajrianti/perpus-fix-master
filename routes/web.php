@@ -87,9 +87,14 @@ Route::get('/sekolah/{school}/video','PermissionController@videos');
 
 //Edge Server Needs
 
-Route::get('/user/{school}','UserController@export')->name('export.user');
-Route::get('/buku/{school}','BookController@export')->name('export.book');
-Route::get('/video/{school}','VideoController@export')->name('export.video');
-Route::get('/filter/{school}','HomeController@export')->name('export.filter');
+//Export Files & Data
+Route::get('/user/{school}','ExportController@user')->name('export.user');
+Route::get('/buku/{school}','ExportController@book')->name('export.book');
+Route::get('/video/{school}','ExportController@video')->name('export.video');
+Route::get('/filter/{school}','ExportController@filer')->name('export.filter');
+//Sync Files & Data
+Route::get('/sync/book/{school}','ExportController@syncBook');
+Route::get('/sync/video/{school}','ExportController@syncVideo');
+
 
 Route::get('/tiket','HomeController@tiket');
