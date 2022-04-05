@@ -34,35 +34,39 @@ class ExportController extends Controller
     
     public function filter(School $school)
     {
-        $id = $school->edu_id;
-        $sid = $school->id;
-        $edu = Education::where('id',$id)->get();
-        $eduname = DB::table('education')->where('id',$id)->value('edu_name');
-        if ($eduname == 'SD') {
-            $gr = Grade::where('grade_name','<','7')->get();
-        }elseif ($eduname == 'SMP') {
-            $gr = Grade::
-                    where('grade_name','>=','7')
-                    ->where('grade_name','<=','9')
-                    ->get();
-        }elseif ($eduname == 'SMA') {
-            $gr = Grade::
-                  where('grade_name','>=','10')
-                  ->where('grade_name','<=','12')
-                  ->get();
+        try {
+            $id = $school->edu_id;
+            $sid = $school->id;
+            $edu = Education::where('id',$id)->get();
+            $eduname = DB::table('education')->where('id',$id)->value('edu_name');
+            if ($eduname == 'SD') {
+                $gr = Grade::where('grade_name','<','7')->get();
+            }elseif ($eduname == 'SMP') {
+                $gr = Grade::
+                        where('grade_name','>=','7')
+                        ->where('grade_name','<=','9')
+                        ->get();
+            }elseif ($eduname == 'SMA') {
+                $gr = Grade::
+                      where('grade_name','>=','10')
+                      ->where('grade_name','<=','12')
+                      ->get();
+            }
+            $maj = Major::where('maj_name','Umum')->get();
+            $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
+            $sub = Subject::where('parent_id',$maj_id)->get();
+            $sch = School::where('id',$sid)->get();
+            $filters = [
+                'edu' => $edu,
+                'grade' => $gr,
+                'jur' => $maj,
+                'sub' => $sub,
+                'school' => $sch
+            ];
+            return response()->json($filters);   
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        $maj = Major::where('maj_name','Umum')->get();
-        $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
-        $sub = Subject::where('parent_id',$maj_id)->get();
-        $sch = School::where('id',$sid)->get();
-        $filters = [
-            'edu' => $edu,
-            'grade' => $gr,
-            'jur' => $maj,
-            'sub' => $sub,
-            'school' => $sch
-        ];
-        return response()->json($filters);
     }
 
     public function book(School $school)

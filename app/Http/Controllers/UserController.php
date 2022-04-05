@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use stdClass;
 use App\Grade;
+use App\Imports\ImportUsers;
 use App\Major;
 use App\School;
 use Illuminate\Http\Request;
@@ -74,6 +75,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $res = new stdClass;
+
+        $request->validate([
+            'xcl'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new ImportUsers, $request->file('xcl'));
+        
+        $res->status = 'success';
+        $res->message = 'Users imported successfully.';
+
+        return redirect()->route('user.index')->with($res->status, json_encode($res));
+    }
+    public function import(Request $request)
+    {
         $this->validate($request, [
             'xcl'  => 'required|mimes:xls,xlsx'
         ]);
@@ -84,15 +100,15 @@ class UserController extends Controller
         if ($data->count() > 0) {
             foreach ($data->toArray() as $key => $value) {
                 foreach ($value as $row) {
-                    $fromDB = DB::table('users')->value('id');
+                    if ($row['role'] < 2) {
+                        $wordID = "A";
+                    }else {
+                        $wordID = "U";
+                    }
+                    $fromDB = DB::table('users')->where('id','like',$wordID)->orderBy('id','DESC')->value('id');
                     if ($fromDB == null) {
                         $last = (int) "00001";
                     } else {
-                        if ($row['role'] < 2) {
-                            $wordID = "A";
-                        }else {
-                            $wordID = "U";
-                        }
                         $last = substr($fromDB, 1, 5) + 1;
                     }
                     $id = $wordID . sprintf('%05s', $last);
@@ -128,7 +144,8 @@ class UserController extends Controller
         
         try {
             $user = new User;
-            $fromDB = DB::table('users')->value('id');
+            $role = $request->role;
+            $fromDB = DB::table('users')->where('role','=',$role)->value('id');
             if ($fromDB == null) {
                 $last = (int) "00001";
             }else {
@@ -149,7 +166,7 @@ class UserController extends Controller
             $user->school_id = $request->sekolah;
             $user->grade_id = $request->kelas;
             $user->major_id = $request->jurusan;
-            $user->role = $request->role;
+            $user->role = $role;
             if ($user->save()) {
                 $stat = "success";
                 $msg = "User $request->nama berhasil ditambahkan!";

@@ -91,7 +91,7 @@ Route::get('/sekolah/{school}/video','PermissionController@videos');
 Route::get('/user/{school}','ExportController@user')->name('export.user');
 Route::get('/buku/{school}','ExportController@book')->name('export.book');
 Route::get('/video/{school}','ExportController@video')->name('export.video');
-Route::get('/filter/{school}','ExportController@filer')->name('export.filter');
+Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
 //Sync Files & Data
 Route::get('/sync/book/{school}','ExportController@syncBook');
 Route::get('/sync/video/{school}','ExportController@syncVideo');

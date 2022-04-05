@@ -189,7 +189,7 @@
     <div class="modal fade" aria-modal="true" id="modal-import" aria-hidden="false" role="dialog">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form action="{{ route('user.store') }}" method="post">
+                <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header"><h2>Import User</h2></div>
                     <div class="modal-body">
