@@ -7,6 +7,7 @@ use stdClass;
 use App\Video;
 use App\Subject;
 use App\Education;
+use App\Grade;
 
 class HomeController extends Controller
 {
