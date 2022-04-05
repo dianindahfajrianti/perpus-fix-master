@@ -193,6 +193,7 @@
                     @csrf
                     <div class="modal-header"><h2>Import User</h2></div>
                     <div class="modal-body">
+                        <p class="text-red">*) Pastikan anda sudah melengkapi data jurusan dengan menginputnya dibagian menu jurusan</p>
                         <div class="form-group">
                             <label for="xcl">Excel File</label>
                             <div class="input-group">

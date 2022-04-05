@@ -19,7 +19,7 @@
 
     <main id="main">
 
-        <!-- ======= About Section ======= -->
+        <!-- ======= Login Section ======= -->
         <section id="login" class="login">
 
             <div class="container" data-aos="fade-up">
@@ -48,12 +48,7 @@
                                       {{ $message }}
                                   @enderror
                                 </div>
-                                {{-- <div class="form-check">
-                                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                  <label class="form-check-label" for="exampleCheck1">Ingatkan Saya</label>
-                                </div> --}}
                                 <button type="submit" class="btn-login">Masuk</button>
-                                {{-- <a href="/" class="btn-login scrollto">Masuk</a> --}}
                               </form>
                         </div>
                     </div>
@@ -65,7 +60,7 @@
                 </div>
             </div>
 
-        </section><!-- End About Section -->
+        </section><!-- End Login Section -->
 
     </main><!-- End #main -->
 @endsection

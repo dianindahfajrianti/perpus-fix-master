@@ -48,8 +48,9 @@ class HomeController extends Controller
         $file = $file->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->paginate(12);
         $sub = Subject::all();
         $edu = Education::all();
+        $kls = Grade::all();
 
-        return view('home.file', compact('sub', 'edu','file'));
+        return view('home.file', compact('sub', 'edu', 'file', 'kls'));
     }
     public function video()
     {
@@ -63,8 +64,9 @@ class HomeController extends Controller
         $file = $file->with($res)->filter(request(['search', 'jenjang', 'kelas', 'mapel']))->paginate(18);
         $sub = Subject::all();
         $edu = Education::all();
+        $kls = Grade::all();
 
-        return view('home.file', compact('sub', 'edu','file'));
+        return view('home.file', compact('sub', 'edu', 'file', 'kls'));
     }
     public function showprofile()
     {

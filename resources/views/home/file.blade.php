@@ -37,7 +37,7 @@
     }
     @endphp
 
-    <!-- ======= Buku Single Section ======= -->
+    <!-- ======= File Single Section ======= -->
     <section id="file" class="file">
         <div class="container" data-aos="fade-up">
             <div class="content-list" id="file-terbaru">
@@ -53,7 +53,7 @@
                           </button>
 
                           <div class="sidebar d-lg-block d-none mh-75% overflow-auto">
-                              <h3 class="sidebar-title">Search</h3>
+                              <h3 class="sidebar-title">Cari</h3>
                               <div class="sidebar-item search-form">
                                   <div class="fsrc">
                                       <input type="text" placeholder="cari judul..." name="search" value="{{ request('search') }}">
@@ -63,9 +63,10 @@
                                   </div>
                               </div>
                               <!-- End sidebar search formn-->
+
+                              <!-- jenjang -->
                               <h3 class="sidebar-title">Jenjang</h3>
                               <div class="sidebar-item filter">
-                                  <!-- jenjang -->
                                   @foreach ($edu as $e)
                                       <div class="form-check">
                                           <input value="{{ old('jenjang', $e->edu_name) }}" class="form-check-input"
@@ -76,7 +77,7 @@
                                       </div>
                                   @endforeach
                               </div>
-                              <!-- kelas -->
+                              <!-- Kelas -->
                               <h3 class="sidebar-title">Kelas</h3>
                               <div class="sidebar-item filter">
                                   <div class="row">
@@ -102,6 +103,19 @@
                                       </div>
                                   </div>
                               </div>    
+                              {{-- <h3 class="sidebar-title">Kelas</h3>
+                              <div class="sidebar-item filter">
+                                    @foreach ($kls as $k)
+                                        <div class="form-check">
+                                            <input value="{{ old('kelas', $k->grade_name) }}" class="form-check-input"
+                                                type="radio" name="kelas" id="kelas" />
+                                            <label class="form-check-label" for="kelas">
+                                                {{ $k->grade_name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                              </div> --}}
+                              <!-- Mapel -->
                               <h3 class="sidebar-title" for="mapel">Mata Pelajaran</h3>
                               <div class="sidebar-item filter">
                                   <div class="row">
