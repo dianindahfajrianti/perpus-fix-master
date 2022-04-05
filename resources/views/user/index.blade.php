@@ -193,7 +193,10 @@
                     @csrf
                     <div class="modal-header"><h2>Import User</h2></div>
                     <div class="modal-body">
-                        <p class="text-red">*) Pastikan anda sudah melengkapi data jurusan dengan menginputnya dibagian menu jurusan</p>
+                        <p class="text-red">*) Pastikan anda sudah melengkapi data jurusan dengan menginputnya dibagian menu<a class="text-red" href="/admin/jurusan"><u> jurusan</u></a></p>
+                        <p>CONTOH IMPORT USER</p>
+                        <img src="/assets/perpus/assets/img/contohuser.png" alt="">
+                        <p></p>
                         <div class="form-group">
                             <label for="xcl">Excel File</label>
                             <div class="input-group">
