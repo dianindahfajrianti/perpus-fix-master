@@ -26,7 +26,7 @@
                 <img src="/assets/perpus/assets/img/super-admin.png" alt="">
             </div>
             <div class="col-lg-7 d-flex align-items-center">
-                <p>Super Admin untuk Dinas Profinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
+                <p>Super Admin untuk Dinas Profinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah dengan username nomor pokok sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
         <h1>Sekolah</h1>
         <div class="row">
             <div class="col-lg-7 d-flex align-items-center">
-                <p>Jika sekolah belum terdaftar di aplikasi online ini, dapat mendaftar terlebih dahulu dengan menghubungi super admin. Dimana setelah sekolah terdaftar, sekolah akan mendapatkan username dan password. Setelah masuk, sekolah dapat menambahkan user (guru dan murid), buku dan multimedia. Sebelum menambahkan user, sekolah harus melengkapi data jurusan terlebih dahulu dengan menginputnya dibagian admin pada menu jurusan.</p>
+                <p>Jika sekolah belum terdaftar di aplikasi online ini, dapat mendaftar terlebih dahulu dengan menghubungi super admin. Dimana setelah sekolah terdaftar, sekolah akan mendapatkan username dan password. Setelah masuk, sekolah dapat menambahkan user (guru dan murid), buku dan multimedia. Dimana, userneme guru menggunakan NPP dan username murid dengan menggunakan NISN. Sebelum menambahkan user, sekolah harus melengkapi data jurusan terlebih dahulu dengan menginputnya dibagian admin pada menu jurusan.</p>
             </div>
             <div class="col-lg-5 d-flex align-items-center justify-content-center">
                 <img src="/assets/perpus/assets/img/sekolah.png" alt="">
