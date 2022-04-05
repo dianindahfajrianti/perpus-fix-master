@@ -195,7 +195,7 @@
                     <div class="modal-body">
                         <p class="text-red">*) Pastikan anda sudah melengkapi data jurusan dengan menginputnya dibagian menu<a class="text-red" href="/admin/jurusan"><u> jurusan</u></a></p>
                         <p>CONTOH IMPORT USER</p>
-                        <img src="/assets/perpus/assets/img/contohuser.png" alt="">
+                        <img src="/assets/perpus/assets/img/contohuser.png" alt="" class="img-fluid">
                         <p></p>
                         <div class="form-group">
                             <label for="xcl">Excel File</label>
