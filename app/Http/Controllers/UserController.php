@@ -145,16 +145,16 @@ class UserController extends Controller
         try {
             $user = new User;
             $role = $request->role;
-            $fromDB = DB::table('users')->where('role','=',$role)->value('id');
-            if ($fromDB == null) {
-                $last = (int) "00001";
-            }else {
-                $last = substr($fromDB,1,5)+1;
-            }
             if ($request->role <= 2) {
                 $wordID = "A";
             }else {
                 $wordID = "U";
+            }
+            $fromDB = DB::table('users')->where('id','like',$wordID)->value('id');
+            if ($fromDB == null) {
+                $last = (int) "00001";
+            }else {
+                $last = substr($fromDB,1,5)+1;
             }
             $id = $wordID.sprintf('%05s',$last);
 
