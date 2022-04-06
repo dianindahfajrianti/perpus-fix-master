@@ -150,7 +150,7 @@ class UserController extends Controller
             }else {
                 $wordID = "U";
             }
-            $fromDB = DB::table('users')->where('id','like',$wordID."%")->value('id');
+            $fromDB = DB::table('users')->where('id','like',$wordID."%")->orderBy('id','DESC')->value('id');
             if ($fromDB == null) {
                 $last = (int) "00001";
             }else {
