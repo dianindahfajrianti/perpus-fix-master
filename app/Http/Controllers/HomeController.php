@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use stdClass;
+use App\Grade;
 use App\Video;
+use App\Export;
 use App\Subject;
 use App\Education;
-use App\Grade;
 
 class HomeController extends Controller
 {
@@ -120,19 +121,33 @@ class HomeController extends Controller
         // $res->status = "success";
         // $res->nomor = $now;
         // return response()->json($res);
-        $rqrole = request('role');
-        if ($rqrole < 2) {
-            $wordID = "A";
-        }else {
-            $wordID = "U";
-        }
-        $fromDB = DB::table('users')->where('id','like',$wordID)->orderBy('id','DESC')->value('id');
-        if ($fromDB == null) {
-            $last = (int) "00001";
-        } else {
-            $last = substr($fromDB, 1, 5) + 1;
-        }
-        $id = $wordID . sprintf('%05s', $last);
-        return $id;
+        // $rqrole = request('role');
+        // if ($rqrole < 2) {
+        //     $wordID = "A";
+        // }else {
+        //     $wordID = "U";
+        // }
+        // $fromDB = DB::table('users')->where('id','like',$wordID)->orderBy('id','DESC')->value('id');
+        // if ($fromDB == null) {
+        //     $last = (int) "00001";
+        // } else {
+        //     $last = substr($fromDB, 1, 5) + 1;
+        // }
+        // $id = $wordID . sprintf('%05s', $last);
+        // return $id;
+        $dt = request('date');
+        $id = request('id');
+        $res = Export::where('type','like','video')->select('updated_at')->first();
+        $import = $dt;//$res->updated_at;
+        // return $import;
+        $video = Video::latest()
+                ->with('getEdu','getGrade','getMajor','getSubject',
+                'schools')
+                ->whereHas('schools', function ($query) use ($id,$import) {
+                    $query->where('id', $id);
+                    
+                })
+                ->get();
+        return $video;
     }
 }
