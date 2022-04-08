@@ -40,4 +40,23 @@ class Admin extends Controller
         }
         return $view;
     }
+    public function getID()
+    {
+        $role = request('r');
+        if ($role <= 2) {
+            $wordID = "A";
+        }else {
+            $wordID = "U";
+        }
+        $fromDB = DB::table('users')->where('id','like',$wordID."%")->orderBy('id', 'DESC')->value('id');
+        
+        if ($fromDB == null) {
+            $last = (int) "00001";
+        } else {
+            $last = substr($fromDB, 1, 5) + 1;
+        }
+        
+        $id = $wordID . sprintf('%05s', $last);
+        return $id;
+    }
 }

@@ -61,4 +61,9 @@ class Video extends Model
         return $this->belongsToMany(School::class,'school_video','video_id','school_id')
         ->withTimestamps();
     }
+    public function lastfiles($date)
+    {
+        return $this->belongsToMany(School::class,'school_video','video_id','school_id')
+        ->wherePivot(date('updated_at'),'>=',$date);
+    }
 }

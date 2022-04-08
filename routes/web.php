@@ -28,6 +28,7 @@ Route::get('/search', 'HomeController@search')->name('search');
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/', 'Admin@index');
+        Route::get('gid', 'Admin@getID');
         // CMS
         Route::resource('buku', 'BookController');
         Route::resource('user', 'UserController');
@@ -95,6 +96,5 @@ Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
 //Sync Files & Data
 Route::get('/sync/book/{school}','ExportController@syncBook');
 Route::get('/sync/video/{school}','ExportController@syncVideo');
-
 
 Route::get('/tiket','HomeController@tiket');
