@@ -118,7 +118,7 @@ class SubjectController extends Controller
             $mapel->save();
 
             $stat = "success";
-            $msg = "$request->mapel berhasil ditambahkan!";
+            $msg = "$request->mapel berhasil diubah!";
         } catch (\Exception $th) {
             $stat = "error";
             $msg = $th;

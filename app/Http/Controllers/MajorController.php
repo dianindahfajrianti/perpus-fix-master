@@ -115,7 +115,7 @@ class MajorController extends Controller
             $jurusan->save();
 
             $stat = "success";
-            $msg = "Jurusan $request->jurusan berhasil ditambahkan!";
+            $msg = "Jurusan $request->jurusan berhasil diubah!";
         } catch (\Exception $ex) {
             $stat = "error";
             $msg = $ex;

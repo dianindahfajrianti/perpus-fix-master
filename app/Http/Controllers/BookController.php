@@ -34,7 +34,8 @@ class BookController extends Controller
         $edu = Education::all();
         $maj = Major::all();
         $sub = Subject::all();
-        return view('book.index',compact('edu','maj','sub'));
+        $kls = Grade::all();
+        return view('book.index',compact('edu','maj','sub', 'kls'));
     }
 
     public function data()
@@ -151,8 +152,9 @@ class BookController extends Controller
         $edu = Education::all();
         $maj = Major::all();
         $sub = Subject::all();
+        $kls = Grade::all();
 
-        return view('book.edit',compact('edu','maj','sub','buku'));
+        return view('book.edit',compact('edu','maj','sub','buku', 'kls'));
     }
 
     /**

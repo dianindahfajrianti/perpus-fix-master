@@ -80,7 +80,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button id="save-file" type="submit" class="btn btn-dark">Save</button>
+                            <a href="" id="save-file" type="submit" class="btn btn-dark">Save</a>
                         </div>
                 </div>
 
@@ -154,7 +154,12 @@
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error
-            alert('file uploading error.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response,
+                timer: 1800
+            });
         });
 
         let progress = $('.progress');
