@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('admin.body')
 @section('title')
-Detail {{ $video->title }} - Admin Rainer
+Detail {{ $video->title }} - Admin Perpus
 @endsection
 @section('ext-css')
 <!-- DataTables -->
@@ -50,7 +50,7 @@ Detail {{ $video->title }} - Admin Rainer
                                 </video>
                                 <h3>Judul Video : {{ $video->title }}</h3>
                                 <h3>Thumbnail Video :</h3>
-                                <img class="img-fluid" src="/storage/thumb/video/{{ $video->thumb }}" alt="Thumbnail">
+                                <img class="img-fluid" src="/storage/thumb/video/{{ $video->thumb }}" alt="Thumbnail" accept=".png">
                             </div>
                             <div class="col-lg-6 mt-3">
                                 <a href="/admin/video/{{ $video->id }}/edit" class="btn btn-success">Edit info</a>
