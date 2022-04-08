@@ -59,7 +59,8 @@ class ExportController extends Controller
             }
             $maj = Major::where('maj_name','Umum')->get();
             $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
-            $sub = Subject::where('parent_id',$maj_id)->get();
+            
+            $sub = Subject::where('parent_id',$maj_id)->with('hasMajor')->get();
             $sch = School::where('id',$sid)->get();
             $filters = [
                 'edu' => $edu,
@@ -261,9 +262,10 @@ class ExportController extends Controller
         $book = Book::latest()
                 ->with('getEdu','getGrade','getMajor','getSubject')
                 ->whereHas('schools', function ($query) use ($id,$import) {
-                    $query->where('id', $id)->whereDate('school_video.updated_at','>',$import);
+                    $query->where('id', $id)
+                    ->whereDate('book_school.updated_at','>',$import);
                 })->get();
-        if (!$video->isEmpty()) {
+        if (!$book->isEmpty()) {
             //get data
             $path = public_path("storage/pdf/");
             $thumbpath = public_path("storage/thumb/pdf/");
@@ -332,7 +334,7 @@ class ExportController extends Controller
             $partZip = MultipartCompress::zip($tempFolder.$fileName,$tempFolder.$fileName2,$s);
             //delete original zip
             File::delete($tempFolder.$fileName);
-            $books = [
+            $rs = [
                 'behave' => TRUE,
                 'book' => $book,
                 'pdf' => $partZip,

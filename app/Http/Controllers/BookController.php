@@ -16,6 +16,7 @@ use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
 use Illuminate\Filesystem\Filesystem;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
@@ -91,6 +92,8 @@ class BookController extends Controller
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
                 if ($saved) {
+                    $imgman = new ImageManager(['driver'=> 'imagick']);
+                    $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                     $book = new Book;
                     $book->title = $request->judul;
                     $book->desc = $request->desc;
@@ -109,11 +112,11 @@ class BookController extends Controller
                     
                     $res->status = "success";
                     $res->title = "Berhasil";
-                    $res->message = "Gambar berhasil ditambahkan";
+                    $res->message = "Buku berhasil ditambahkan";
                 }else {
                     $res->status = "error";
                     $res->title = "Gagal";
-                    $res->message = "Gambar gagal ditambah";
+                    $res->message = "Buku gagal ditambah";
                 }
                 return redirect()->route('buku.index')->with($res->status,json_encode($res));
             } else {

@@ -233,11 +233,11 @@ class VideoController extends Controller
         $title = $request->judul;
         $creator = $request->nama_pembuat;
         $file = $request->file('thumbnail');
-        $ext = ".".$file->getClientOriginalExtension();
+        
         $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
 
         if ($file != null) {
-
+            $ext = ".".$file->getClientOriginalExtension();
             $sv = $file->storeAs('public/thumb/video/', $filename.$ext);
             
             if ($sv) {
