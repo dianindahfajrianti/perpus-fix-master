@@ -65,7 +65,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <table id="tb-add" class="table table-bordered table-striped">
+                        <table id="tb-add" class="table table-responsive table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>

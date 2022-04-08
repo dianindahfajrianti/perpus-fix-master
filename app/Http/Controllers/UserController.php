@@ -251,7 +251,7 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->save();
             $stat = "success";
-            $msg = "User $request->nama berhasil ditambahkan!";
+            $msg = "User $request->nama berhasil diubah!";
 
         } catch (\Exception $th) {
             $stat = "error";
