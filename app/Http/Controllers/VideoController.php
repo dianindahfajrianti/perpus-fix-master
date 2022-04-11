@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -86,6 +87,8 @@ class VideoController extends Controller
             $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
             $file->storeAs('public/thumb/video',$filename.$ext);
         
+            $imgman = new ImageManager(['driver'=> 'imagick']);
+            $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(385,216)->save();
             $vid = new Video;
             $vid->title = $request->judul;
             $vid->desc = $request->deskripsi;

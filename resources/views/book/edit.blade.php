@@ -96,9 +96,6 @@
                                         @for ($i = 1; $i < 13; $i++) 
                                         <option @if(old('kelas', $buku->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
                                         @endfor
-                                        {{-- @foreach ($kls as $k )
-                                        <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                        @endforeach --}}
                                     </select>
                                     @error('kelas')
                                     <div class="invalid-feedback">
