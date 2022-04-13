@@ -16,6 +16,7 @@ class CreateExportsTable extends Migration
         Schema::create('exports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type',6)->nullable();
+            $table->integer('sch_id');
             $table->timestamps();
         });
     }

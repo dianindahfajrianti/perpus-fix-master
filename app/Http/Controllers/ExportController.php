@@ -31,6 +31,7 @@ class ExportController extends Controller
         } else {
             $ex = new Export;
             $ex->type = "user";
+            $ex->sch_id = $id;
             $ex->save();
             
             return response()->json($users,200);
@@ -71,6 +72,7 @@ class ExportController extends Controller
             ];
             $ex = new Export;
             $ex->type = "filter";
+            $ex->sch_id = $id;
             $ex->save();
 
             return response()->json($filters);   
@@ -163,6 +165,7 @@ class ExportController extends Controller
         ];
         $ex = new Export;
         $ex->type = "buku";
+        $ex->sch_id = $id;
         $ex->save();
         return response()->json($books);
     }
@@ -228,7 +231,7 @@ class ExportController extends Controller
             $zips->close();
         }
         //split zip thumbnail
-        $s = 10 * 1024 * 1024;
+        $s = 150 * 1024 * 1024;
         $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
         //delete original thumbnail zip
         File::delete($tempThumb.$fileThumb);
@@ -250,6 +253,7 @@ class ExportController extends Controller
         ];
         $ex = new Export;
         $ex->type = "video";
+        $ex->sch_id = $id;
         $ex->save();
         return response()->json($videos);
     }
@@ -320,7 +324,7 @@ class ExportController extends Controller
                 $zips->close();
             }
             //split zip thumbnail
-            $s = 10 * 1024 * 1024;
+            $s = 150 * 1024 * 1024;
             $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
             //delete original thumbnail zip
             File::delete($tempThumb.$fileThumb);
@@ -340,7 +344,9 @@ class ExportController extends Controller
                 'pdf' => $partZip,
                 'thumb' => $partZips
             ];
-            $ex = Export::where('type','=','buku')->first();
+            $ex = Export::where('type','=','buku')
+                    ->where('sch_id','=',$id)
+                    ->latest()->first();
             $ex->touch();
         } else{
             $rs = [
@@ -438,7 +444,9 @@ class ExportController extends Controller
                 'mp4' => $partZip,
                 'thumb' => $partZips
             ];
-            $ex = Export::where('type','=','video')->first();
+            $ex = Export::where('type','=','video')
+                ->where('sch_id','=',$id)
+                ->latest()->first();
             $ex->touch();
             
         }else{
