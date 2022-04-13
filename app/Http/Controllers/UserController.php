@@ -93,6 +93,7 @@ class UserController extends Controller
         $this->validate($request, [
             'xcl'  => 'required|mimes:xls,xlsx'
         ]);
+
         $path = $request->file('xcl')->getRealPath();
 
         $data = Excel::load($path)->get();
@@ -133,12 +134,26 @@ class UserController extends Controller
     public function storeOne(Request $request)
     {
         $res = new stdClass();
-        
+        if ($request->role < 1) {
+            $sch = '';
+            $murid ='';
+            $val = 'required|alpha_num|min:6|max:15';
+        }else{
+            if ($request->role == 3) {
+                $murid = 'required';
+            }else{
+                $murid ='';
+            }
+            $sch = 'required';
+            $val = "required|digits_between:6,15";
+        }
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|unique:users,username|alpha_num|min:6|max:15',
+            'username' => $val,
             'email' => 'required|email',
-            'sekolah' => 'required',
+            'sekolah' => $sch,
+            'kelas' => $murid,
+            'jurusan' => $murid,
             'role' => 'required'
         ]);
         
@@ -232,13 +247,26 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $res = new stdClass();
+        if ($request->role < 1) {
+            $sch = '';
+            $murid ='';
+            $val = 'required|alpha_num|min:6|max:15';
+        }else{
+            if ($request->role == 3) {
+                $murid = 'required';
+            }else{
+                $murid ='';
+            }
+            $sch = 'required';
+            $val = "required|digits_between:6,15";
+        }
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|max:10|numeric',
+            'username' => $val,
             'email' => 'required|email',
-            'sekolah' => 'required',
-            'jenjang' => 'required',
-            'kelas' => 'required',
+            'sekolah' => $sch,
+            'kelas' => $murid,
+            'jurusan' => $murid,
             'role' => 'required'
         ]);
         try {

@@ -9,6 +9,7 @@ use App\School;
 use ZipArchive;
 use App\Subject;
 use App\Education;
+use App\Grade;
 use MultipartCompress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -34,7 +35,9 @@ class VideoController extends Controller
         $edu = Education::all();
         $maj = Major::all();
         $sub = Subject::all();
-        return view('video.index',compact('edu','maj','sub'));
+        $kls = Grade::all();
+
+        return view('video.index',compact('edu','maj','sub','kls'));
     }
 
     public function data()
@@ -58,7 +61,9 @@ class VideoController extends Controller
         $edu = Education::all();
         $maj = Major::all();
         $sub = Subject::all();
-        return view('video.add',compact('edu','maj','sub'));
+        $kls = Grade::all();
+
+        return view('video.add',compact('edu','maj','sub','kls'));
     }
 
     /**
@@ -232,7 +237,7 @@ class VideoController extends Controller
             'nama_pembuat' => 'required'
         ]);
         $res = new stdClass;
-        $time = date('Y-m-d');
+        $time = $video->created_at;
         $title = $request->judul;
         $creator = $request->nama_pembuat;
         $file = $request->file('thumbnail');
@@ -254,6 +259,8 @@ class VideoController extends Controller
                 $video->creator = $request->nama_pembuat;
                 $video->thumb = $filename.$ext;
                 $video->save();
+                $imgman = new ImageManager(['driver'=> 'imagick']);
+                $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(385,216)->save();
 
                 $res->stats = 'success';
                 $res->message = 'Berhasil mengedit video info';
@@ -271,14 +278,14 @@ class VideoController extends Controller
             $np = 'public/video/'."$filename.$video->filetype";
             $opthumb = 'public/thumb/video/'.$video->thumb;
             $npthumb = 'public/thumb/video/'."$filename.png";
-            if (($title !== $video->title) || ($creator !== $video->creator)) {    
+            if (($title != $video->title) || ($creator != $video->creator)) {
+                $video->filename = $filename;
+                $video->thumb = $filename.".png";
                 Storage::move($opthumb,$npthumb);
                 Storage::move($op,$np);
             }
             $video->title = $request->judul;
             $video->desc = $request->deskripsi;
-            $video->filename = $filename;
-            $video->thumb = $filename.$ext;
             $video->edu_id = $request->jenjang;
             $video->grade_id= $request->kelas;
             $video->major_id= $request->jurusan;

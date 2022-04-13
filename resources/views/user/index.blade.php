@@ -168,7 +168,7 @@
                                     'Murid'
                                     ];
                                     @endphp
-                                    @for($i = 0; $i < count($rl); $i++) <option @if(old('role')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ $rl[$i] }}</option>
+                                    @for($i = 0; $i < count($rl); $i++) <option value="{{ $i }}">{{ $rl[$i] }}</option>
                                         @endfor
                                 </select>
                                 @error('role')

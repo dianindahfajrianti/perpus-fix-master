@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
@@ -61,9 +62,8 @@ class Video extends Model
         return $this->belongsToMany(School::class,'school_video','video_id','school_id')
         ->withTimestamps();
     }
-    public function lastfiles($date)
+    public function getCreatedAtAttribute($date)
     {
-        return $this->belongsToMany(School::class,'school_video','video_id','school_id')
-        ->wherePivot(date('updated_at'),'>=',$date);
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 }

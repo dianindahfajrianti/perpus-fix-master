@@ -92,8 +92,9 @@
                                                 <div class="input-group">
                                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                                         <option value="">-- Pilih Kelas --</option>
-                                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas')==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                                            @endfor
+                                                        @foreach ($kls as $k )
+                                                        <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
+                                                        @endforeach
                                                     </select>
                                                     @error('kelas')
                                                     <div class="invalid-feedback">

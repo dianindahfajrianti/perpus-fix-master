@@ -193,20 +193,33 @@ class BookController extends Controller
             $fixname = "$filename.".$file->getClientOriginalExtension();
             $thumbname = $filename.".png";
             
+            $opfile = 'public/pdf/'.$buku->filename;
+            $op = 'public/thumb/pdf/'.$buku->thumb;
+            
+            $npfile = 'public/pdf/'.$fixname;
+            $np = 'public/thumb/pdf/'.$thumbname;
+            $statepdf=file_exists(storage_path($opfile));
+            $statethumb=file_exists(storage_path($op));
+
+            if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
+                Storage::delete($opfile);
+                Storage::delete($op);
+            }
+            
             $sv = $file->storeAs('public\pdf',$fixname);
             if ($sv) {
-                
-                Storage::delete('public/pdf/'.$buku->filename);
-                Storage::delete('public/thumb/pdf/'.$buku->thumb);
+
                 Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $pdfdir = storage_path('app/public/thumb/pdf/').$thumbname;
                 $pdf->saveImage($pdfdir);
-                $buku->thumb = $thumbname;
+
+                $imgman = new ImageManager(['driver'=> 'imagick']);
+                $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                 $buku->title = $request->judul;
                 $buku->desc = $request->desc;
                 $buku->filename = $fixname;
-
+                $buku->thumb = $thumbname;
                 $buku->edu_id= $request->jenjang;
                 $buku->grade_id= $request->kelas;
                 $buku->major_id= $request->jurusan;
@@ -226,23 +239,22 @@ class BookController extends Controller
                 $res->message = "Buku gagal di upload";
                 return redirect()->route('buku.index')->with($res->status,json_encode($res));
             }
-            
-        }
-        if ($file == null) {
+        }else {
             $fixname = $filename.".pdf";
             $opfile = 'public/pdf/'.$buku->filename;
             $op = 'public/thumb/pdf/'.$buku->thumb;
             $thumbname = $filename.".png";
             $npfile = 'public/pdf/'.$fixname;
             $np = 'public/thumb/pdf/'.$thumbname;
-            if ($fixname !== $buku->filename) {
+            if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
+                $buku->filename = $fixname;
+                $buku->thumb = $thumbname;
                 Storage::move($opfile,$npfile);
                 Storage::move($op,$np);
             }
             $buku->title = $request->judul;
             $buku->desc = $request->desc;
-            $buku->filename = $fixname;
-            $buku->thumb = $thumbname;
+            
 
             $buku->edu_id= $request->jenjang;
             $buku->grade_id= $request->kelas;
