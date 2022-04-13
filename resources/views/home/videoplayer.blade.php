@@ -21,7 +21,7 @@
 <section id="video" class="video">
   <div class="container" data-aos="fade-up">
     <div class="video-player d-flex justify-content-center">
-      <video controls>
+      <video controls preload="auto">
         <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
             Your browser does not support the video tag.
       </video>  
