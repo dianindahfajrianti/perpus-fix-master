@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -82,4 +83,8 @@ class Book extends Model
         'publisher',
         'author'
     ];
+    public function getUploadedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+    }
 }

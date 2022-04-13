@@ -6,22 +6,15 @@ use App\Book;
 use stdClass;
 use App\Grade;
 use App\Major;
-use App\School;
-use ZipArchive;
 use App\Subject;
 use App\Education;
-use App\Permission;
-use MultipartCompress;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
-use Illuminate\Filesystem\Filesystem;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -141,7 +134,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-
+        
     }
 
     /**
@@ -198,8 +191,8 @@ class BookController extends Controller
             
             $npfile = 'public/pdf/'.$fixname;
             $np = 'public/thumb/pdf/'.$thumbname;
-            $statepdf=file_exists(storage_path($opfile));
-            $statethumb=file_exists(storage_path($op));
+            $statepdf = file_exists(storage_path($opfile));
+            $statethumb = file_exists(storage_path($op));
 
             if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
                 Storage::delete($opfile);
@@ -255,7 +248,6 @@ class BookController extends Controller
             $buku->title = $request->judul;
             $buku->desc = $request->desc;
             
-
             $buku->edu_id= $request->jenjang;
             $buku->grade_id= $request->kelas;
             $buku->major_id= $request->jurusan;

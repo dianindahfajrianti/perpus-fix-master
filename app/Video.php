@@ -62,8 +62,13 @@ class Video extends Model
         return $this->belongsToMany(School::class,'school_video','video_id','school_id')
         ->withTimestamps();
     }
-    public function getCreatedAtAttribute($date)
+    public function getUploadedAtAttribute($date)
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+    }
+
+    public function getUploadTimeAttribute()
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s',$this->attributes['created_at'])->format('Y-m-d');
     }
 }

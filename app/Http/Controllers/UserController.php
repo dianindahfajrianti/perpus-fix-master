@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Temp;
 use App\User;
 use stdClass;
 use App\Grade;
-use App\Imports\ImportUsers;
 use App\Major;
 use App\School;
+use App\Imports\TempImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Filesystem\Filesystem;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -76,17 +78,78 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $res = new stdClass;
-
         $request->validate([
             'xcl'  => 'required|mimes:xls,xlsx'
         ]);
+        $file = $request->file('xcl');
 
-        Excel::import(new ImportUsers, $request->file('xcl'));
+        // $path = 'public/temp';
+        // $filename = $file->getClientOriginalName();
+        // $file->storeAs($path,$filename);
         
-        $res->status = 'success';
-        $res->message = 'Users imported successfully.';
+        Excel::import(new TempImport,$file);
+        
+        $res = new stdClass;
+        $temps = Temp::all();
+        foreach ($temps as $temp) {
+            $user = new User;
+            if ($temp->role == 'Sekolah') {
+                $role = 1;
+            }elseif ($temp->role == 'Guru') {
+                $role = 2;
+            }else{
+                $role = 3;
+            };
+            if ($role <= 2) {
+                $wordID = "A";
+            }else {
+                $wordID = "U";
+            };
 
-        return redirect()->route('user.index')->with($res->status, json_encode($res));
+            $fromDB = DB::table('users')->where('id','like',$wordID."%")->orderBy('id','DESC')->value('id');
+
+            if ($fromDB == null) {
+                $last = (int) "00001";
+            }else {
+                $last = substr($fromDB,1,5)+1;
+            }
+            $id = $wordID.sprintf('%05s',$last);
+            
+            $sch = School::where('sch_name','=',$temp->sekolah)->first();
+            $grade = Grade::where('grade_name','=',$temp->kelas)->first();
+            if (!isset($grade)) {
+                $gr = $grade->id;
+            }else{
+                $gr = '';
+            }
+            $mjr = Major::where('maj_name','=',$temp->jurusan)->first();
+            if (!isset($mjr)) {
+                $mj = $mjr->id;
+            }else{
+                $mj = '';
+            }
+            $user->id = $id;
+            $user->name = $temp->name;
+            $user->username = $temp->username;
+            $user->email = $temp->email;
+            $user->password = Hash::make(123456);
+            $user->role = $role;
+            $user->school_id = $sch->id;
+            $user->grade_id = $gr;
+            $user->major_id = $mj;
+            $save = $user->save();
+        }
+        if ($save) {
+            $res->status = 'success';
+            $res->message = 'Users imported successfully.';
+    
+            return redirect()->route('user.index')->with($res->status, json_encode($res));
+        }else{
+            $res->status = 'error';
+            $res->message = 'Failed to import users.';
+    
+            return redirect()->route('user.index')->with($res->status, json_encode($res));
+        }
     }
     public function import(Request $request)
     {

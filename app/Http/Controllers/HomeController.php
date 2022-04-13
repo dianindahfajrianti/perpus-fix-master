@@ -145,7 +145,6 @@ class HomeController extends Controller
                 'schools')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id);
-                    
                 })
                 ->get();
         return $video;
