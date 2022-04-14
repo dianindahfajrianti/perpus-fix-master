@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
