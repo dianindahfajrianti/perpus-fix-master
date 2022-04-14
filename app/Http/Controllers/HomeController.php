@@ -141,12 +141,7 @@ class HomeController extends Controller
         $import = $dt;//$res->updated_at;
         // return $import;
         $video = Video::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject',
-                'schools')
-                ->whereHas('schools', function ($query) use ($id,$import) {
-                    $query->where('id', $id);
-                })
-                ->get();
+                ->first()->upload_time;
         return $video;
     }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use DateTime;
 class Video extends Model
 {
     public function scopeFilter($query, array $filters)
@@ -69,6 +69,8 @@ class Video extends Model
 
     public function getUploadTimeAttribute()
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s',$this->attributes['created_at'])->format('Y-m-d');
+        $date = new DateTime($this->created_at);
+        return $date->format('Y-m-d');
+        //Carbon::createFromFormat('Y-m-d H:i:s',)->format('Y-m-d');
     }
 }
