@@ -143,7 +143,7 @@ class ExportController extends Controller
             $zips->close();
         }
         //split zip thumbnail
-        $s = 10 * 1024 * 1024;
+        $s = 150 * 1024 * 1024;
         $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
         //delete original thumbnail zip
         File::delete($tempThumb.$fileThumb);
@@ -421,7 +421,7 @@ class ExportController extends Controller
                 $zips->close();
             }
             //split zip thumbnail
-            $s = 10 * 1024 * 1024;
+            $s = 150 * 1024 * 1024;
             $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
             //delete original thumbnail zip
             File::delete($tempThumb.$fileThumb);
