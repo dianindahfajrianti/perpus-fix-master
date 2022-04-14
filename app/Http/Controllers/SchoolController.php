@@ -104,9 +104,8 @@ class SchoolController extends Controller
     public function edit(School $sekolah)
     {
         $edu = Education::all();
-        $sch = $sekolah->first();
         // return compact('school');
-        return view('school.edit',compact('sch','edu'));
+        return view('school.edit',compact('sekolah','edu'));
     }
 
     /**

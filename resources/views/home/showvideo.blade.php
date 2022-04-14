@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('ext-css')
+<link rel="stylesheet" href="/assets/css/player.css">
+@endsection
 @section('container')
 <!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
@@ -21,10 +23,13 @@
 <section id="video" class="video">
   <div class="container" data-aos="fade-up">
     <div class="video-player d-flex justify-content-center">
-      <video controls>
+      {{-- <video controls>
         <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
             Your browser does not support the video tag.
-      </video>  
+      </video>   --}}
+      <video id="video_example" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" height="600" width="980">
+           <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
+      </video>
     </div>
 
     <h2 class="entry-title">
@@ -53,4 +58,12 @@
 </section><!-- End Video Section -->
 
 </main><!-- End #main -->
+@endsection
+@section('ext-js')
+<script src="/assets/js/player.js"></script>
+<script type="text/javascript">
+  videojs(document.getElementById('video_example'), {}, function() {
+      
+  });
+</script>
 @endsection
