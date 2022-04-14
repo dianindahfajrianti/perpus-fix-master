@@ -87,11 +87,12 @@ class UserController extends Controller
         // $filename = $file->getClientOriginalName();
         // $file->storeAs($path,$filename);
         
-        Excel::import(new TempImport,$file);
-        
-        $res = new stdClass;
+        $imp = (new TempImport);
+        $imp->import($file);
+
         $temps = Temp::all();
         foreach ($temps as $temp) {
+            
             $user = new User;
             if ($temp->role == 'Sekolah') {
                 $role = 1;
@@ -117,17 +118,18 @@ class UserController extends Controller
             
             $sch = School::where('sch_name','=',$temp->sekolah)->first();
             $grade = Grade::where('grade_name','=',$temp->kelas)->first();
-            if (!isset($grade)) {
-                $gr = $grade->id;
-            }else{
-                $gr = '';
-            }
             $mjr = Major::where('maj_name','=',$temp->jurusan)->first();
-            if (!isset($mjr)) {
-                $mj = $mjr->id;
+            if (empty($grade)) {
+                $gr = null;
             }else{
-                $mj = '';
+                $gr = $grade->id;
             }
+            if (empty($mjr)) {
+                $mj = null;
+            }else {
+                $mj = $mjr->id;
+            }
+            
             $user->id = $id;
             $user->name = $temp->name;
             $user->username = $temp->username;
@@ -139,7 +141,10 @@ class UserController extends Controller
             $user->major_id = $mj;
             $save = $user->save();
         }
+        
         if ($save) {
+            Temp::truncate();
+            
             $res->status = 'success';
             $res->message = 'Users imported successfully.';
     
