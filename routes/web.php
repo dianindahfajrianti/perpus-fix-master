@@ -19,7 +19,7 @@ Route::get('/video', 'HomeController@video')->name('video');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
-Route::get('/videoplayer/{video}', 'HomeController@videoplayer')->name('videoplayer');
+Route::get('/video/{video}', 'HomeController@showvideo');
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
 

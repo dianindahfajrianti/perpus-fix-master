@@ -8,6 +8,7 @@ use App\Grade;
 use App\Video;
 use App\Export;
 use App\Subject;
+use VideoStream;
 use App\Education;
 
 class HomeController extends Controller
@@ -91,11 +92,17 @@ class HomeController extends Controller
 
     //     return 
     // }
-    public function videoplayer(Video $video)
+    public function showvideo(Video $video)
     {
         $video->clicked_time = $video->clicked_time+1;
         $video->save();
-        return view('home.videoplayer',compact('video'));
+        return view('home.showvideo',compact('video'));
+    }
+    public function stream(Video $video)
+    {
+        $video_path = public_path('storage/video/'.$video->id);
+        $stream = new VideoStream($video_path);
+        $stream->start(); 
     }
     public function search()
     {
@@ -144,4 +151,5 @@ class HomeController extends Controller
                 ->first()->upload_time;
         return $video;
     }
+    
 }

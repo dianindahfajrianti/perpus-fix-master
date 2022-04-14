@@ -1,5 +1,4 @@
-<script type="text/javascript">
-    const videoPlayer = document.querySelector('.video-player')
+const videoPlayer = document.querySelector('.video-player')
 const video = videoPlayer.querySelector('.video')
 const playButton = videoPlayer.querySelector('.play-button')
 const volume = videoPlayer.querySelector('.volume')
@@ -50,4 +49,3 @@ progress.addEventListener('click', (e) =>{
   const progressTime = (e.offsetX / progress.offsetWidth) * video.duration
   video.currentTime = progressTime
 })
-</script>
