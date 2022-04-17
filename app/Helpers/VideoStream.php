@@ -1,14 +1,13 @@
 <?php
+namespace App\Helpers;
 /**
  *  * Description of VideoStream
  *   *
  *    * @author Rana
  *     * @link http://codesamplez.com/programming/php-html5-video-streaming-t...
- *      */
-function trial()
-{
-    
-}
+ * 
+ */
+
 class VideoStream
 {
 	private $path = '/storage/video';

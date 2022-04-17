@@ -8,8 +8,8 @@ use App\Grade;
 use App\Video;
 use App\Export;
 use App\Subject;
-use VideoStream;
 use App\Education;
+use App\Helpers\VideoStream;
 
 class HomeController extends Controller
 {
@@ -100,9 +100,10 @@ class HomeController extends Controller
     }
     public function stream(Video $video)
     {
-        $video_path = public_path('storage/video/'.$video->id);
-        $stream = new VideoStream($video_path);
-        $stream->start(); 
+        $filename = $video->filename.".".$video->filetype;
+        $video_path = public_path('storage/video/'.$filename);
+        $stream = new VideoStream ($video_path);
+        return $stream->start();
     }
     public function search()
     {

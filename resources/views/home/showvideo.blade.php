@@ -28,7 +28,7 @@
             Your browser does not support the video tag.
       </video>   --}}
       <video id="video_example" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" height="600" width="980">
-           <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
+           <source src="/stream/{{ $video->id }}" type="video/{{ $video->filetype }}">
       </video>
     </div>
 
@@ -62,8 +62,15 @@
 @section('ext-js')
 <script src="/assets/js/player.js"></script>
 <script type="text/javascript">
-  videojs(document.getElementById('video_example'), {}, function() {
-      
-  });
+var options = {
+  controls: true,
+  autoplay: false,
+  preload: 'auto',
+  liveui:true
+};
+var player = videojs('video_example',options);
+player.ready(function () {
+  
+});
 </script>
 @endsection
