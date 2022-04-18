@@ -79,9 +79,9 @@ Route::get('/kelas/all','GradeController@data');
 Route::get('/jurusan/all','MajorController@data');
 Route::get('/mapel/all','SubjectController@data');
 Route::get('/buku/all', 'BookController@data');
+Route::get('/getvid/all', 'VideoController@data');
 Route::get('/akses/buku/{school}','PermissionController@dataBook');
 Route::get('/akses/video/{school}','PermissionController@dataVideo');
-Route::get('/video/all', 'VideoController@data');
 
 // Datatable Akses
 Route::get('/sekolah/{school}/buku','PermissionController@books');

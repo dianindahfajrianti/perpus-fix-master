@@ -148,8 +148,7 @@ class HomeController extends Controller
         $res = Export::where('type','like','video')->select('updated_at')->first();
         $import = $dt;//$res->updated_at;
         // return $import;
-        $video = Video::latest()
-                ->first()->upload_time;
+        $video = Video::latest()->get();
         return $video;
     }
     

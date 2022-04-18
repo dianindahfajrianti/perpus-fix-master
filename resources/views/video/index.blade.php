@@ -112,7 +112,7 @@
             "responsive": true,
             "processing": true,
             "serverSide": true,
-            "ajax": "/video/all",
+            "ajax": "/getvid/all",
             "columns": [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
