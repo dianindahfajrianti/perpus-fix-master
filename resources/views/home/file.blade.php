@@ -189,7 +189,7 @@
                                         </center>
                                         <div class="social">
                                             <a href="{{ Storage::url('public/').$link.'/'.$name }}" download><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
-                                            <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/videoplayer/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
+                                            <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/video/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
                                         </div>
                                     </div>
                                     <div class="card-info">
