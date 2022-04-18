@@ -160,12 +160,11 @@ class SubjectController extends Controller
 
         return response()->json($res);
     }
-    public function check(School $school)
+    public function check()
     {
-        $books = Book::latest();
-        $id = $school->id;
-        $scope = ['id' => "$id"];
-        dd($school->books()->detach());
+        $rel = ['getEdu','getGrade'];
+        $th = Video::all();
+        dd($th);
         
         // $title = "Gagal";
         // $title = "Berhasil";

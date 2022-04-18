@@ -5,18 +5,13 @@ namespace App\Http\Controllers;
 use stdClass;
 use App\Major;
 use App\Video;
-use App\School;
-use ZipArchive;
 use App\Subject;
 use App\Education;
 use App\Grade;
-use MultipartCompress;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -32,12 +27,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        $edu = Education::all();
-        $maj = Major::all();
-        $sub = Subject::all();
-        $kls = Grade::all();
-
-        return view('video.index',compact('edu','maj','sub','kls'));
+        return view('video.index');
     }
 
     public function data()
@@ -377,5 +367,4 @@ class VideoController extends Controller
         $res->message = $msg;
         return response()->json($res);
     }
-
 }

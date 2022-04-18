@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
+
 class Video extends Model
 {
     public function scopeFilter($query, array $filters)
@@ -57,17 +57,24 @@ class Video extends Model
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
+    protected $fillable = [
+        'title','desc','filename','filetype','thumb','clicked_time',
+        'school_id',
+        'edu_id',
+        'grade_id',
+        'major_id',
+        'sub_id',
+        'creator'
+    ];
     public function schools()
     {
         return $this->belongsToMany(School::class,'school_video','video_id','school_id')
         ->withTimestamps();
     }
-
     public function getUploadDateAttribute()
     {
         $date = new DateTime($this->created_at);
         return $date->format('Y-m-d');
         //Carbon::createFromFormat('Y-m-d H:i:s',)->format('Y-m-d');
     }
-
 }
