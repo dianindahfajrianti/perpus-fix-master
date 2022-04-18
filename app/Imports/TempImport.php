@@ -19,13 +19,13 @@ class TempImport implements ToModel, SkipsOnError
     public function model(array $row)
     {
         return new Temp([
-            'name' => @$row[0],
-            'username' => @$row[1],
-            'email' => @$row[2],
-            'role' => @$row[3],
-            'sekolah' => @$row[4],
-            'kelas' => @$row[5],
-            'jurusan' => @$row[6]
+            'name' => @$row['name'],
+            'username' => @$row['username'],
+            'email' => @$row['email'],
+            'role' => @$row['role'],
+            'sekolah' => @$row['sekolah'],
+            'kelas' => @$row['kelas'],
+            'jurusan' => @$row['jurusan']
         ]);
     }
 }
