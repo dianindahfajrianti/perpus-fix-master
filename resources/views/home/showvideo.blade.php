@@ -27,12 +27,12 @@
         <source src="{{ url('storage/video/'.$video->filename.".".$video->filetype) }}" type="video/{{ $video->filetype }}">
             Your browser does not support the video tag.
       </video>   --}}
-      <video id="video_example" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" height="600" width="980">
+      <video id="video_example" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" height="auto" width="1300">
            <source src="/stream/{{ $video->id }}" type="video/{{ $video->filetype }}">
       </video>
     </div>
 
-    <h2 class="entry-title">
+    <h2 class="entry-title pt-3">
       <a>{{$video->title}}</a>
     </h2>
 

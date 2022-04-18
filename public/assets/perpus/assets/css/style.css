@@ -1571,7 +1571,7 @@ section {
 
 /* ............... */
 @media (max-width: 992px) {
-  video {
+  .video {
     width: 70%;
     height: auto;
     padding: 20px 0;
@@ -1609,7 +1609,7 @@ section {
   }
 }
 @media (max-width: 768px) {
-  video {
+  .video {
     width: 100%;
     height: auto;
     padding: 10px 0;
@@ -1647,7 +1647,7 @@ section {
   }
 }
 @media (min-width: 1024px) {
-  video {
+  .video {
     width: 100%;
     height: auto;
     padding: 20px 0;

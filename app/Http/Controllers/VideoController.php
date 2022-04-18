@@ -44,7 +44,7 @@ class VideoController extends Controller
     {
         $rel = ['getEdu','getGrade'];
         $model = Video::with($rel)
-                 ->orderBy('updated_at','desc');
+                 ->orderBy('created_at','desc');
         return DataTables::of($model)
                 ->addIndexColumn()
                 ->setRowId('id')
