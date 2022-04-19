@@ -81,78 +81,95 @@ class UserController extends Controller
         $request->validate([
             'xcl'  => 'required|mimes:xls,xlsx'
         ]);
-        $file = $request->file('xcl');
-
-        // $path = 'public/temp';
-        // $filename = $file->getClientOriginalName();
-        // $file->storeAs($path,$filename);
         
-        $imp = (new TempImport);
-        $imp->import($file);
+        try {
+            $file = $request->file('xcl');
 
-        $temps = Temp::all();
-        foreach ($temps as $temp) {
+            // $path = 'public/temp';
+            // $filename = $file->getClientOriginalName();
+            // $file->storeAs($path,$filename);
             
-            $user = new User;
-            if ($temp->role == 'Sekolah') {
-                $role = 1;
-            }elseif ($temp->role == 'Guru') {
-                $role = 2;
-            }else{
-                $role = 3;
-            };
-            if ($role <= 2) {
-                $wordID = "A";
-            }else {
-                $wordID = "U";
-            };
+            $imp = (new TempImport);
+            $imp->import($file);
 
-            $fromDB = DB::table('users')->where('id','like',$wordID."%")->orderBy('id','DESC')->value('id');
+            $temps = Temp::all();
+            foreach ($temps as $temp) {
+                
+                $user = new User;
+                if ($temp->role == 'Sekolah') {
+                    $role = 1;
+                }elseif ($temp->role == 'Guru') {
+                    $role = 2;
+                }else{
+                    $role = 3;
+                };
+                if ($role <= 2) {
+                    $wordID = "A";
+                }else {
+                    $wordID = "U";
+                };
 
-            if ($fromDB == null) {
-                $last = (int) "00001";
-            }else {
-                $last = substr($fromDB,1,5)+1;
+                $fromDB = DB::table('users')->where('id','like',$wordID."%")->orderBy('id','DESC')->value('id');
+
+                if ($fromDB == null) {
+                    $last = (int) "00001";
+                }else {
+                    $last = substr($fromDB,1,5)+1;
+                }
+                $id = $wordID.sprintf('%05s',$last);
+                
+                $sch = School::where('sch_name','=',$temp->sekolah)->first();
+                $grade = Grade::where('grade_name','=',$temp->kelas)->first();
+                $mjr = Major::where('maj_name','=',$temp->jurusan)->first();
+                if (empty($grade)) {
+                    $gr = null;
+                }else{
+                    $gr = $grade->id;
+                }
+                if (empty($mjr)) {
+                    $mj = null;
+                }else {
+                    $mj = $mjr->id;
+                }
+                
+                $user->id = $id;
+                $user->name = $temp->name;
+                $user->username = $temp->username;
+                $user->email = $temp->email;
+                $user->password = Hash::make(123456);
+                $user->role = $role;
+                $user->school_id = $sch->id;
+                $user->grade_id = $gr;
+                $user->major_id = $mj;
+                $save = $user->save();
             }
-            $id = $wordID.sprintf('%05s',$last);
             
-            $sch = School::where('sch_name','=',$temp->sekolah)->first();
-            $grade = Grade::where('grade_name','=',$temp->kelas)->first();
-            $mjr = Major::where('maj_name','=',$temp->jurusan)->first();
-            if (empty($grade)) {
-                $gr = null;
-            }else{
-                $gr = $grade->id;
-            }
-            if (empty($mjr)) {
-                $mj = null;
-            }else {
-                $mj = $mjr->id;
-            }
-            
-            $user->id = $id;
-            $user->name = $temp->name;
-            $user->username = $temp->username;
-            $user->email = $temp->email;
-            $user->password = Hash::make(123456);
-            $user->role = $role;
-            $user->school_id = $sch->id;
-            $user->grade_id = $gr;
-            $user->major_id = $mj;
-            $save = $user->save();
-        }
+            if ($save) {
+                Temp::truncate();
+                
+                $res->status = 'success';
+                $res->message = 'Users imported successfully.';
         
-        if ($save) {
-            Temp::truncate();
+                return redirect()->route('user.index')->with($res->status, json_encode($res));
+            }else{
+                $res->status = 'error';
+                $res->message = 'Failed to import users.';
+        
+                return redirect()->route('user.index')->with($res->status, json_encode($res));
+            }
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
             
-            $res->status = 'success';
-            $res->message = 'Users imported successfully.';
-    
-            return redirect()->route('user.index')->with($res->status, json_encode($res));
-        }else{
+            foreach ($failures as $key => $val) {
+                $val->row(); // row that went wrong
+                $val->attribute(); // either heading key (if using heading row concern) or column index
+                $val->errors(); // Actual error messages from Laravel validator
+                $val->values(); // The values of the row that has failed.
+                
+                $res->message[$key] = $val->errors();
+            }
             $res->status = 'error';
-            $res->message = 'Failed to import users.';
-    
+
             return redirect()->route('user.index')->with($res->status, json_encode($res));
         }
     }
@@ -213,8 +230,8 @@ class UserController extends Controller
                 $murid ='';
             }
             $sch = 'required';
-            $val = "required|digits_between:6,15";
-        }
+            $val = "required|digits_between:6,15|unique:users,username";
+        };
         $request->validate([
             'nama' => 'required',
             'username' => $val,
