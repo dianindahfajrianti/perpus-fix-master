@@ -107,16 +107,24 @@ class ExportController extends Controller
                     $query->where('id', $id);
                 })->get();
         
-        //declare file name
-        $fileName = 'pdf-'.$id.".zip";
-        $fileName2 = 'part-'.$id.".zip";
-        $fileThumb = 'pdf-'.$id.".zip";
-        $fileThumb2 = 'part-'.$id.".zip";
         //copy file to temp
         foreach($book as $b){
             copy($path.$b->filename,$tempFolder.$b->filename);
             copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
+
+        return redirect()->route('export.bookzip',$id);
+    }
+    public function bookzip(School $school)
+    {
+        $id = $school->id;
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+        $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
+
         //zip all pdf file
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
@@ -142,6 +150,29 @@ class ExportController extends Controller
             
             $zips->close();
         }
+
+        return redirect()->route('export.bookpart',$id);
+    }
+
+    public function bookpart(School $school)
+    {
+        $id = $school->id;
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        $fileName2 = 'part-'.$id.".zip";
+        $fileThumb2 = 'part-'.$id.".zip";
+        $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
+
+        $book = Book::latest()
+                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->whereHas('schools', function ($query) use ($id) {
+                    $query->where('id', $id);
+                })->get();
+
         //split zip thumbnail
         $s = 150 * 1024 * 1024;
         $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
@@ -153,6 +184,7 @@ class ExportController extends Controller
             File::delete($tempFolder.$v->filename);
             File::delete($tempThumb.$v->thumb);
         }
+
         //split zip pdf
         $partZip = MultipartCompress::zip($tempFolder.$fileName,$tempFolder.$fileName2,$s);
         //delete original zip
@@ -166,6 +198,7 @@ class ExportController extends Controller
         $ex->type = "buku";
         $ex->sch_id = $id;
         $ex->save();
+
         return response()->json($books);
     }
 
@@ -195,16 +228,25 @@ class ExportController extends Controller
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
                 })->get();
-        //declare file name
-        $fileName = 'video-'.$id.".zip";
-        $fileName2 = 'part-'.$id.".zip";
-        $fileThumb = 'thumbvideo-'.$id.".zip";
-        $fileThumb2 = 'part-'.$id.".zip";
+        
         //copy file to temp
         foreach($video as $b){
             copy($path.$b->filename.".".$b->filetype,$tempFolder.$b->filename.".".$b->filetype);
             copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
+        return redirect()->route('export.videozip',$id);
+    }
+    public function videozip(School $school)
+    {
+        //get data
+        $id = $school->id;
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        $fileName = 'video-'.$id.".zip";
+        $fileThumb = 'thumbvideo-'.$id.".zip";
         //zip all pdf file
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
@@ -229,6 +271,29 @@ class ExportController extends Controller
             
             $zips->close();
         }
+
+        return redirect()->route('export.videopart',$id);
+    }
+
+    public function videopart(School $school)
+    {
+        $id = $school->id;
+        $path = public_path("storage/video/");
+        $thumbpath = public_path("storage/thumb/video/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        //declare file name
+        $fileName = 'video-'.$id.".zip";
+        $fileName2 = 'part-'.$id.".zip";
+        $fileThumb = 'thumbvideo-'.$id.".zip";
+        $fileThumb2 = 'part-'.$id.".zip";
+
+        $video = Video::latest()
+                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->whereHas('schools', function ($query) use ($id) {
+                    $query->where('id', $id);
+                })->get();
         //split zip thumbnail
         $s = 150 * 1024 * 1024;
         $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
