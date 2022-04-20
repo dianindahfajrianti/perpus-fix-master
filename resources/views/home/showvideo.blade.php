@@ -11,7 +11,7 @@
       <h2>Video</h2>
       <ol>
         <li><a href="/">Home</a></li>
-        <li><a href="/file">Multimedia</a></li>
+        <li><a href="/video">Multimedia</a></li>
         <li>Video</li>
       </ol>
     </div>
