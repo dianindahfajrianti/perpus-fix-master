@@ -117,6 +117,7 @@ class ExportController extends Controller
     }
     public function bookzip(School $school)
     {
+        set_time_limit(0);
         $id = $school->id;
         $path = public_path("storage/pdf/");
         $thumbpath = public_path("storage/thumb/pdf/");
@@ -238,6 +239,7 @@ class ExportController extends Controller
     }
     public function videozip(School $school)
     {
+        set_time_limit(0);
         //get data
         $id = $school->id;
         $path = public_path("storage/pdf/");
@@ -368,6 +370,7 @@ class ExportController extends Controller
     }
     public function syncBookzip(School $school)
     {
+        set_time_limit(0);
         $import = request('date');
         $id = $school->id;
         $path = public_path("storage/video/");
@@ -494,11 +497,7 @@ class ExportController extends Controller
                 copy($path.$b->filename.".".$b->filetype,$tempFolder.$b->filename.".".$b->filetype);
                 copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
             };
-            $param = [
-                'id' => $id,
-                'date' => $import
-            ];
-            return redirect()->route('sync.videozip',$param);
+            return redirect('/sync/video/'.$id.'/zip?date='.$import);
         }else{
             $rs = [
                 'behave' => FALSE,
@@ -507,9 +506,10 @@ class ExportController extends Controller
             return response()->json($rs);
         }
     }
-    public function syncVideozip(School $school, array $param)
+    public function syncVideozip(School $school)
     {
-        $import = $param['date'];
+        set_time_limit(0);
+        $import = request('date');
         $id = $school->id;
         //get data
         $path = public_path("storage/video/");
@@ -520,7 +520,6 @@ class ExportController extends Controller
         //declare file name
         $fileName = 'video-'.$id.".zip";
         $fileThumb = 'thumbvideo-'.$id.".zip";
-
         //zip all pdf file
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
@@ -546,12 +545,12 @@ class ExportController extends Controller
             $zips->close();
         }
         
-        return redirect();
+        return redirect('/sync/video/'.$id.'/part?date='.$import);
     }
-    public function syncVideopart(School $school,array $param)
+    public function syncVideopart(School $school)
     {
         $id = $school->id;
-        $import = $param['date'];
+        $import = request('date');
         $video = Video::latest()
                 ->with('getEdu','getGrade','getMajor','getSubject')
                 ->whereHas('schools', function ($query) use ($id,$import) {
