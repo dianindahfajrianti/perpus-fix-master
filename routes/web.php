@@ -99,7 +99,11 @@ Route::get('/video/{school}/zip','ExportController@videozip')->name('export.vide
 Route::get('/video/{school}/part','ExportController@videopart')->name('export.videopart');
 Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
 //Sync Files & Data
-Route::get('/sync/book/{school}','ExportController@syncBook');
-Route::get('/sync/video/{school}','ExportController@syncVideo');
+Route::get('/sync/book/{school}','ExportController@syncBook')->name('sync.book');
+Route::get('/sync/book/{school}/zip','ExportController@syncBookzip')->name('sync.bookzip');
+Route::get('/sync/book/{school}/part','ExportController@syncBookpart')->name('sync.bookpart');
+Route::get('/sync/video/{school}','ExportController@syncVideo')->name('sync.vid');
+Route::get('/sync/video/{school}/zip','ExportController@syncVideozip')->name('sync.videozip');
+Route::get('/sync/video/{school}/part','ExportController@syncVideopart')->name('sync.videopart');
 
 Route::get('/tiket','HomeController@tiket');
