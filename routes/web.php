@@ -92,11 +92,7 @@ Route::get('/sekolah/{school}/video','PermissionController@videos');
 //Export Files & Data
 Route::get('/user/{school}','ExportController@user')->name('export.user');
 Route::get('/buku/{school}','ExportController@book')->name('export.book');
-Route::get('/buku/{school}/zip','ExportController@bookzip')->name('export.bookzip');
-Route::get('/buku/{school}/part','ExportController@bookpart')->name('export.bookpart');
 Route::get('/video/{school}','ExportController@video')->name('export.video');
-Route::get('/video/{school}/zip','ExportController@videozip')->name('export.videozip');
-Route::get('/video/{school}/part','ExportController@videopart')->name('export.videopart');
 Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
 //Sync Files & Data
 Route::get('/sync/book/{school}','ExportController@syncBook')->name('sync.book');

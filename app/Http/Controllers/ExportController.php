@@ -82,12 +82,21 @@ class ExportController extends Controller
 
     public function book(School $school)
     {
+        set_time_limit(0);
         //get data
         $id = $school->id;
         $path = public_path("storage/pdf/");
         $thumbpath = public_path("storage/thumb/pdf/");
         $tempFolder = $path."tmp/$id/";
         $tempThumb = $thumbpath."tmp/$id/";
+        
+        $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
+        $fileName2 = 'part-'.$id.".zip";
+        $fileThumb2 = 'part-'.$id.".zip";
+        $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
+
 
         if (!is_dir($tempFolder)) {
             mkdir($tempFolder);
@@ -112,19 +121,6 @@ class ExportController extends Controller
             copy($path.$b->filename,$tempFolder.$b->filename);
             copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
-
-        return redirect()->route('export.bookzip',$id);
-    }
-    public function bookzip(School $school)
-    {
-        set_time_limit(0);
-        $id = $school->id;
-        $path = public_path("storage/pdf/");
-        $thumbpath = public_path("storage/thumb/pdf/");
-        $tempFolder = $path."tmp/$id/";
-        $tempThumb = $thumbpath."tmp/$id/";
-        $fileName = 'pdf-'.$id.".zip";
-        $fileThumb = 'pdf-'.$id.".zip";
 
         //zip all pdf file
         $zip = new ZipArchive;
@@ -151,28 +147,6 @@ class ExportController extends Controller
             
             $zips->close();
         }
-
-        return redirect()->route('export.bookpart',$id);
-    }
-
-    public function bookpart(School $school)
-    {
-        $id = $school->id;
-        $path = public_path("storage/pdf/");
-        $thumbpath = public_path("storage/thumb/pdf/");
-        $tempFolder = $path."tmp/$id/";
-        $tempThumb = $thumbpath."tmp/$id/";
-
-        $fileName2 = 'part-'.$id.".zip";
-        $fileThumb2 = 'part-'.$id.".zip";
-        $fileName = 'pdf-'.$id.".zip";
-        $fileThumb = 'pdf-'.$id.".zip";
-
-        $book = Book::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
-                ->whereHas('schools', function ($query) use ($id) {
-                    $query->where('id', $id);
-                })->get();
 
         //split zip thumbnail
         $s = 150 * 1024 * 1024;
@@ -201,6 +175,42 @@ class ExportController extends Controller
         $ex->save();
 
         return response()->json($books);
+
+    }
+    public function bookzip(School $school)
+    {
+        
+        $id = $school->id;
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+        $fileName = 'pdf-'.$id.".zip";
+        $fileThumb = 'pdf-'.$id.".zip";
+
+        
+
+        return redirect()->route('export.bookpart',$id);
+    }
+
+    public function bookpart(School $school)
+    {
+        set_time_limit(0);
+        $book = Book::latest()
+            ->with('getEdu','getGrade','getMajor','getSubject')
+            ->whereHas('schools', function ($query) use ($id) {
+                $query->where('id', $id);
+            })->get();
+
+        $id = $school->id;
+        $path = public_path("storage/pdf/");
+        $thumbpath = public_path("storage/thumb/pdf/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        
+
+        return response()->json($books);
     }
 
     public function video(School $school)
@@ -224,6 +234,12 @@ class ExportController extends Controller
         $fil = new Filesystem;
         $fil->cleanDirectory($tempThumb);
 
+        //declare file name
+        $fileName = 'video-'.$id.".zip";
+        $fileName2 = 'part-'.$id.".zip";
+        $fileThumb = 'thumbvideo-'.$id.".zip";
+        $fileThumb2 = 'part-'.$id.".zip";
+
         $video = Video::latest()
                 ->with('getEdu','getGrade','getMajor','getSubject')
                 ->whereHas('schools', function ($query) use ($id) {
@@ -235,20 +251,7 @@ class ExportController extends Controller
             copy($path.$b->filename.".".$b->filetype,$tempFolder.$b->filename.".".$b->filetype);
             copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
         };
-        return redirect()->route('export.videozip',$id);
-    }
-    public function videozip(School $school)
-    {
-        set_time_limit(0);
-        //get data
-        $id = $school->id;
-        $path = public_path("storage/pdf/");
-        $thumbpath = public_path("storage/thumb/pdf/");
-        $tempFolder = $path."tmp/$id/";
-        $tempThumb = $thumbpath."tmp/$id/";
 
-        $fileName = 'video-'.$id.".zip";
-        $fileThumb = 'thumbvideo-'.$id.".zip";
         //zip all pdf file
         $zip = new ZipArchive;
         if ($zip->open($tempFolder.$fileName, ZipArchive::CREATE) === TRUE)
@@ -273,29 +276,6 @@ class ExportController extends Controller
             
             $zips->close();
         }
-
-        return redirect()->route('export.videopart',$id);
-    }
-
-    public function videopart(School $school)
-    {
-        $id = $school->id;
-        $path = public_path("storage/video/");
-        $thumbpath = public_path("storage/thumb/video/");
-        $tempFolder = $path."tmp/$id/";
-        $tempThumb = $thumbpath."tmp/$id/";
-
-        //declare file name
-        $fileName = 'video-'.$id.".zip";
-        $fileName2 = 'part-'.$id.".zip";
-        $fileThumb = 'thumbvideo-'.$id.".zip";
-        $fileThumb2 = 'part-'.$id.".zip";
-
-        $video = Video::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
-                ->whereHas('schools', function ($query) use ($id) {
-                    $query->where('id', $id);
-                })->get();
         //split zip thumbnail
         $s = 150 * 1024 * 1024;
         $partZips = MultipartCompress::zip($tempThumb.$fileThumb,$tempThumb.$fileThumb2,$s);
@@ -321,7 +301,29 @@ class ExportController extends Controller
         $ex->type = "video";
         $ex->sch_id = $id;
         $ex->save();
+
         return response()->json($videos);
+    }
+    public function videozip(School $school)
+    {
+        set_time_limit(0);
+        //get data
+        $id = $school->id;
+        
+
+        return redirect()->route('export.videopart',$id);
+    }
+
+    public function videopart(School $school)
+    {
+        set_time_limit(0);
+        $id = $school->id;
+        $path = public_path("storage/video/");
+        $thumbpath = public_path("storage/thumb/video/");
+        $tempFolder = $path."tmp/$id/";
+        $tempThumb = $thumbpath."tmp/$id/";
+
+        
     }
 
     public function syncBook(School $school)
@@ -412,6 +414,7 @@ class ExportController extends Controller
     }
     public function syncBookpart(School $school)
     {
+        set_time_limit(0);
         $import = request('date');
         $id = $school->id;
         $path = public_path("storage/video/");
@@ -549,6 +552,7 @@ class ExportController extends Controller
     }
     public function syncVideopart(School $school)
     {
+        set_time_limit(0);
         $id = $school->id;
         $import = request('date');
         $video = Video::latest()
