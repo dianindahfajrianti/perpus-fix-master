@@ -77,10 +77,7 @@
                     <div class="content">
                         <h2>Tujuan Kami di Perpus Online</h2>
                         <p>
-                            ppppppppp pppppppp ppppp pppppppp ppppppppp ppppp pppppppp pppp ppppppppp ppppp pppp
-                            pppp pppp ppppp pppppppp ppppp pppppppp ppppppppp ppppp pppppppp pppp ppppppppp ppppp
-                            pppp pppp ppppppppp pppppppp ppppp pppppppp ppppppppp ppppp pppppppp pppp ppppppppp
-                            ppppp pppp pppp.
+                            Untuk memudahkan guru dan siswa dalam proses pembelajaran, dimana guru dan siswa dapat menggunakan buku digital berupa pdf dan multimedia yang sesuai dengan sekolah dan kelas masing-masing.
                         </p>
                     </div>
                 </div>

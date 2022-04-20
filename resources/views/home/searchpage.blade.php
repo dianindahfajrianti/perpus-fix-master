@@ -43,7 +43,7 @@
                                 </center>
                                 <div class="social">
                                     <a href="{{ Storage::url('public/pdf/').$f->filename }}"><i class="ri-file-download-fill"></i></a>
-                                    <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/videoplayer/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
+                                    <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/video/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
                                 </div>
                             </div>
                             <div class="card-info">
@@ -86,7 +86,7 @@
                                 </center>
                                 <div class="social">
                                     <a href="{{ Storage::url('public/video/').$f->filename.".".$f->filetype }}"><i class="ri-video-download-fill"></i></a>
-                                    <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/videoplayer/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
+                                    <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/video/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
                                 </div>
                             </div>
                             <div class="card-info">
