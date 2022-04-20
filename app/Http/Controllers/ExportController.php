@@ -357,22 +357,18 @@ class ExportController extends Controller
                 copy($path.$b->filename,$tempFolder.$b->filename);
                 copy($thumbpath.$b->thumb,$tempThumb.$b->thumb);
             };
-            $param = [
-                'id' => $id,
-                'date' => $import
-            ];
-            return redirect()->route('sync.bookzip',$param);
+            return redirect('/sync/book/'.$id.'/zip?date='.$import);
         } else{
             $rs = [
                 'behave' => FALSE,
                 'message' => "Nothing to synchronize"
             ];
-            return redirect()->json($rs);
+            return response()->json($rs);
         }
     }
-    public function syncBookzip(School $school,array $param)
+    public function syncBookzip(School $school)
     {
-        $import = $param['date'];
+        $import = request('date');
         $id = $school->id;
         $path = public_path("storage/video/");
         $thumbpath = public_path("storage/thumb/video/");
@@ -408,16 +404,12 @@ class ExportController extends Controller
             
             $zips->close();
         }
-        $param = [
-            'id' => $id,
-            'date' => $import
-        ];
-
-        return redirect()->route('sync.bookpart',$param);
+        
+        return redirect('/sync/book/'.$id.'/part?date='.$import);
     }
-    public function syncBookpart(School $school, array $param)
+    public function syncBookpart(School $school)
     {
-        $import = $param['date'];
+        $import = request('date');
         $id = $school->id;
         $path = public_path("storage/video/");
         $thumbpath = public_path("storage/thumb/video/");
@@ -464,7 +456,7 @@ class ExportController extends Controller
             'thumb' => $partZips
         ];
 
-        return redirect()->json($rs);
+        return response()->json($rs);
     }
 
     public function syncVideo(School $school)
@@ -553,11 +545,8 @@ class ExportController extends Controller
             
             $zips->close();
         }
-        $param = [
-            'id' => $id,
-            'date' => $import
-        ];
-        return redirect()->route('sync.videopart',$param);
+        
+        return redirect();
     }
     public function syncVideopart(School $school,array $param)
     {
