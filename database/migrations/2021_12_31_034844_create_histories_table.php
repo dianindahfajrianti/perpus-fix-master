@@ -17,7 +17,8 @@ class CreateHistoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('userid',6);
             $table->integer('file_id');
-            $table->string('type',4);
+            $table->string('title',100);
+            $table->dateTime('view_at');
             $table->timestamps();
         });
     }

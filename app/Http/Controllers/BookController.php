@@ -103,7 +103,6 @@ class BookController extends Controller
                     $book->author = $request->pengarang;
                     $book->save();
                     
-
                     $res->status = "success";
                     $res->title = "Berhasil";
                     $res->message = "Buku berhasil ditambahkan";

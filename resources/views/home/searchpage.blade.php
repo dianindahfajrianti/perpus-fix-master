@@ -42,7 +42,7 @@
                                         <img src="{{ $path1 }}" class="img-fluid" alt="">
                                 </center>
                                 <div class="social">
-                                    <a href="{{ Storage::url('public/pdf/').$f->filename }}"><i class="ri-file-download-fill"></i></a>
+                                    <a href="{{ Storage::url('public/pdf/').$f->filename }}" download><i class="ri-file-download-fill"></i></a>
                                     <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/video/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                         <img src="{{ $path1 }}" class="img-fluid" alt="">
                                 </center>
                                 <div class="social">
-                                    <a href="{{ Storage::url('public/video/').$f->filename.".".$f->filetype }}"><i class="ri-video-download-fill"></i></a>
+                                    <a href="{{ Storage::url('public/video/').$f->filename.".".$f->filetype }}" download><i class="ri-video-download-fill"></i></a>
                                     <a href="@if($f->filetype == 'pdf'){{ '/pdfViewer/'.$f->id }}@else{{'/video/'.$f->id}}@endif"><i class="ri-eye-fill"></i></a>
                                 </div>
                             </div>

@@ -432,7 +432,7 @@ class ExportController extends Controller
                 ->with('getEdu','getGrade','getMajor','getSubject')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id)
-                ->whereDate('book_school.updated_at','>',$import);
+                    ->whereDate('book_school.updated_at','>',$import);
                 })->get();
         //split zip thumbnail
         $s = 50 * 1024 * 1024;
