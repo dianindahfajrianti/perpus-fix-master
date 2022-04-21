@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistoriesTable extends Migration
+class CreateLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('userid',6);
-            $table->integer('file_id');
-            $table->string('type',4);
+            $table->string('context');
+            $table->string('username',32);
+            $table->string('ip',16);
+            $table->string('url');
+            $table->string('agent');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('logs');
     }
 }

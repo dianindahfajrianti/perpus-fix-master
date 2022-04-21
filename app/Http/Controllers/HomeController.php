@@ -10,6 +10,7 @@ use App\Export;
 use App\Subject;
 use App\Education;
 use App\Helpers\VideoStream;
+use App\History;
 
 class HomeController extends Controller
 {
@@ -83,6 +84,14 @@ class HomeController extends Controller
     {
         $buku->clicked_time = $buku->clicked_time + 1;
         $buku->save();
+        if (auth()->check()) {
+            $his = new History;
+            $his->userid = auth()->user()->id;
+            $his->file_id = $buku->id;
+            $his->type = $buku->filetype;
+            $his->view_at = date('Y-m-d H:i:s');
+            $his->save();
+        }
         // return compact('buku');
 
         return redirect('/laraview/#../storage/pdf/'.$buku->filename);
