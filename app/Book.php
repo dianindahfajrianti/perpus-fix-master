@@ -68,7 +68,10 @@ class Book extends Model
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
-    
+    public function histories()
+    {
+        return $this->belongsTo(History::class,'file_id','id');
+    }
     protected $fillable = [
         'title',
         'desc',

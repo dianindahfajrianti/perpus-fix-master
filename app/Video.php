@@ -71,6 +71,12 @@ class Video extends Model
         return $this->belongsToMany(School::class,'school_video','video_id','school_id')
         ->withTimestamps();
     }
+    
+    public function histories()
+    {
+        return $this->belongsTo(History::class,'file_id','id');
+    }
+
     public function getUploadDateAttribute()
     {
         $date = new DateTime($this->created_at);

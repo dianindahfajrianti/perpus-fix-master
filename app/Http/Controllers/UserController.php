@@ -8,6 +8,7 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\School;
+use App\History;
 use App\Imports\TempImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -418,13 +419,13 @@ class UserController extends Controller
 
     public function profile(User $user)
     {
-        $riwayat = [];
+        $his = History::where('userid','=',$user->id)->getFiles()->get();
         if ($user->with('getSchool')->get() != null ) {
-            $user = $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
+            $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
         }else {
             $user = $user->where('id','=',$user->id)->get();
         }
-        // $riwayat = History::where('user_id','=',$user->id)->get();
+        
         return view('home.profile',compact('user','riwayat'));
     }
 
