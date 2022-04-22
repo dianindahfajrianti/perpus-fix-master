@@ -89,7 +89,6 @@ class HomeController extends Controller
             $his->userid = auth()->user()->id;
             $his->file_id = $buku->id;
             $his->type = $buku->filetype;
-            $his->view_at = date('Y-m-d H:i:s');
             $his->save();
         }
         // return compact('buku');
@@ -105,6 +104,13 @@ class HomeController extends Controller
     {
         $video->clicked_time = $video->clicked_time+1;
         $video->save();
+        if (auth()->check()) {
+            $his = new History;
+            $his->userid = auth()->user()->id;
+            $his->file_id = $video->id;
+            $his->type = $video->filetype;
+            $his->save();
+        }
         return view('home.showvideo',compact('video'));
     }
     public function stream(Video $video)
@@ -159,6 +165,8 @@ class HomeController extends Controller
         // return $import;
         $video = Video::latest()->get();
         return $video;
+
+        
     }
     
 }

@@ -15,7 +15,7 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        return view('user.murid');
+        
     }
 
     /**
@@ -34,9 +34,13 @@ class HistoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+        $history = new History;
+        $history->userid = auth()->user()->id;
+        $history->file_id = $id;
+        $history->view_at = date('Y-m-d H:i:s');
+        $history->save();
     }
 
     /**
