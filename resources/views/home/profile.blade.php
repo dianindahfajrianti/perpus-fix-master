@@ -30,17 +30,23 @@
                   <div class="col-md-6 icon-box">
                     <i class="ri-radio-button-line"></i>
                     <div>
-                      {{-- @php
-                          if(Request::segment(1) == 'buku'){
-                              $link = 'pdf';
-                              $name = $r->filename;
-                          }else{
-                              $link = 'video';
-                              $name = "$r->filename.$r->filetype";
-                          };
-                      @endphp --}}
-                      <h4>{{ substr($r->title, 0, 16) . '...' }}</h4>
-                      <p>dibuka pada tanggal 09 agustus 2021</p>
+                      @if ($r->type == 'pdf')
+                      <h4>
+                        <a href="/pdfViewer/{{ $r->file_id }}">
+                          <b>{{ substr($r->books->title, 0, 30) . '' }}</b>
+                          <br><span class="btn-file">PDF</span>
+                          <br><p>dibuka {{ $r->created_at->diffForHumans() }}</p>
+                      </a>
+                      </h4>
+                      @elseif ($r->type == 'mp4') 
+                      <h4>
+                        <a href="/video/{{ $r->file_id }}">
+                          <b>{{ substr($r->videos->title, 0, 30) . '' }}</b>
+                          <br><span class="btn-file">MP4</span>
+                          <br><p>dibuka {{ $r->created_at->diffForHumans() }}</p>
+                      </a>
+                      </h4>
+                      @endif
                     </div>
                   </div>
                   @empty
@@ -48,8 +54,9 @@
                   @endforelse
 
                 </div>
-
               </div>
+              
+              <a href="/history"><h1>Lihat Riwayat ...</h1></a>
 
             </div><!-- End Feature Icons -->
           </div>
@@ -73,28 +80,28 @@
               </div>
               @endif
               <h3>Detail Profil</h3>
-              @foreach($user as $u)
+              
               <fieldset disabled>
                 <div class="form-group">
                   <label for="disabledTextInput">Username</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->username }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->username }}">
                 </div>
                 <div class="form-group">
                   <label for="disabledTextInput">Email</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->email}}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->email}}">
                 </div>
-                @if ($u->edu_id !== null)
+                @if ($user->edu_id !== null)
                 <div class="form-group">
                   <label for="disabledTextInput">Asal Sekolah</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getSchool->sch_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getSchool->sch_name }}">
                 </div>
                 <div class="form-group">
                   <label for="disabledTextInput">Jenjang</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getGrade->grade_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getGrade->grade_name }}">
                 </div>
                 <div class="form-group">
                   <label for="disabledTextInput">Tingkatan</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $u->getMajor->maj_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getMajor->maj_name }}">
                 </div>
                 @endif
               </fieldset>
@@ -133,7 +140,7 @@
                   <button type="submit" class="btn btn-profile">Simpan</button>
                 </div>
               </form>
-              @endforeach
+              
             </div>
           </div>
 

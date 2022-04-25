@@ -23,6 +23,7 @@ Route::get('/video/{video}', 'HomeController@showvideo');
 Route::get('/stream/{video}', 'HomeController@stream');
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
+Route::get('/history', 'HomeController@showhistory')->name('history');
 
 
 //Admin Back-End

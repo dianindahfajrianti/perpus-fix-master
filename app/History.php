@@ -19,29 +19,30 @@ class History extends Model
         return $this->hasOne(Video::class,'id','file_id');
     }
 
-    public function getFiles($query)
-    {
-        $type = $this->type;
-        return $query->when($type === 'mp4',function($que)
-        {
-            return $que->with('videos');
-        })->
-        when($type === 'pdf', function($que)
-        {
-            return $que->with('books');
-        });
-    }
-
-    // public function scopeTypes($query)
+    // public function getFiles($query)
     // {
-    //     return $query
-    //     ->when($this->type === "mp4",function($q)
+    //     $type = $this->type;
+    //     return $query->when($type === 'mp4',function($que)
     //     {
-    //         return $q->with('videos');
-    //     })
-    //     ->when($this->type === "pdf",function($q)
+    //         return $que->with('videos');
+    //     })->
+    //     when($type === 'pdf', function($que)
     //     {
-    //         return $q->with('books');
+    //         return $que->with('books');
     //     });
     // }
+
+    public function scopeTypes($query)
+    {
+        $type = "$this->type";
+        return $query
+        ->when($type = "mp4",function($q)
+        {
+            return $q->with('videos');
+        })
+        ->when($type = "pdf",function($q)
+        {
+            return $q->with('books');
+        });
+    }
 }

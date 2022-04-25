@@ -83,6 +83,13 @@ class HomeController extends Controller
     {
         return view('home.panduan');
     }
+    public function showhistory()
+    {
+        $uid = auth()->user()->id;
+        $riwayat = History::where('userid','=',$uid)->types()->get();
+
+        return view('home.history', compact('riwayat'));
+    }
     public function viewer(Book $buku)
     {
         $buku->clicked_time = $buku->clicked_time + 1;

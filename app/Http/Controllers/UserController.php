@@ -422,17 +422,17 @@ class UserController extends Controller
         $uid = auth()->user()->id;
         $attr = ['getSchool','getGrade','getMajor'];
         $nosch = ['getGrade','getMajor'];
-        $user = User::findOrFail($uid);
+        $us = User::with($attr)->findOrFail($uid);
         
-        if ($user->with($attr)->first() != null ) {
-            $user = $user->with($attr)->get();
+        if ($us !== null ) {
+            $user = $us;
         }else {
-            $user->with($nosch)->get();
+            $user = User::findOrFail($uid)->with($nosch);
         }
+        // return $user;
+        $riwayat = History::where('userid','=',$uid)->types()->limit(6)->get();
         
-        $riwayat = History::where('userid','=',$uid)->types()->get();
-        return $riwayat;
-        // return view('home.profile',compact('user','riwayat'));
+        return view('home.profile',compact('user','riwayat'));
     }
 
     public function reset(Request $request)
