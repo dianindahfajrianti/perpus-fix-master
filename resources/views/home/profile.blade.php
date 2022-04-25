@@ -30,7 +30,16 @@
                   <div class="col-md-6 icon-box">
                     <i class="ri-radio-button-line"></i>
                     <div>
-                      <h4>Ppppppppppp ppppppppp ppppppp ppppp.</h4>
+                      {{-- @php
+                          if(Request::segment(1) == 'buku'){
+                              $link = 'pdf';
+                              $name = $r->filename;
+                          }else{
+                              $link = 'video';
+                              $name = "$r->filename.$r->filetype";
+                          };
+                      @endphp --}}
+                      <h4>{{ substr($r->title, 0, 16) . '...' }}</h4>
                       <p>dibuka pada tanggal 09 agustus 2021</p>
                     </div>
                   </div>

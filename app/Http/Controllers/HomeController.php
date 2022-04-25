@@ -11,6 +11,7 @@ use App\Subject;
 use App\Education;
 use App\Helpers\VideoStream;
 use App\History;
+use App\Major;
 
 class HomeController extends Controller
 {
@@ -53,8 +54,9 @@ class HomeController extends Controller
         $sub = Subject::all();
         $edu = Education::all();
         $kls = Grade::all();
+        $maj = Major::all();
 
-        return view('home.file', compact('sub', 'edu', 'file', 'kls'));
+        return view('home.file', compact('sub', 'edu', 'file', 'kls', 'maj'));
     }
     public function video()
     {
@@ -69,8 +71,9 @@ class HomeController extends Controller
         $sub = Subject::all();
         $edu = Education::all();
         $kls = Grade::all();
+        $maj = Major::all();
 
-        return view('home.file', compact('sub', 'edu', 'file', 'kls'));
+        return view('home.file', compact('sub', 'edu', 'file', 'kls', 'maj'));
     }
     public function showprofile()
     {

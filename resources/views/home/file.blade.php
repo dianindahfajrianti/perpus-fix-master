@@ -115,6 +115,32 @@
                                         </div>
                                     @endforeach
                               </div> --}}
+                              <!-- Jurusan -->
+                              <h3 class="sidebar-title" for="jurusan">Jurusan</h3>
+                              <div class="sidebar-item filter">
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <div class="form-group">
+                                              <div class="input-group">
+                                                  <select name="jurusan" class="form-control select2bs4 @error('jurusan') {{ 'is-invalid' }} @enderror" id="jurusan" aria-label="">
+                                                      <option value="">-- Pilih Jurusan --</option>
+                                                      @foreach ($maj as $mjr)
+                                                          <option
+                                                              @if (old('jurusan') == $mjr->maj_name) {{ 'selected' }} @endif
+                                                              value="{{ $mjr->maj_name }}">
+                                                              {{ $mjr->maj_name }}</option>
+                                                      @endforeach
+                                                  </select>
+                                                  @error('jurusan')
+                                                      <div class="invalid-feedback">
+                                                          {{ $message }}
+                                                      </div>
+                                                  @enderror
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>   
                               <!-- Mapel -->
                               <h3 class="sidebar-title" for="mapel">Mata Pelajaran</h3>
                               <div class="sidebar-item filter">
@@ -243,6 +269,9 @@
             theme: 'bootstrap4'
         });
         $("#mapel").select2({
+            dropdownCssClass: "myFont"
+        });
+        $("#jurusan").select2({
             dropdownCssClass: "myFont"
         });
         $("#resetbtn").on('click', function(e) {
