@@ -417,16 +417,22 @@ class UserController extends Controller
         }
     }
 
-    public function profile(User $user)
+    public function profile()
     {
-        $his = History::where('userid','=',$user->id)->getFiles()->get();
-        if ($user->with('getSchool')->get() != null ) {
-            $user->where('id','=',$user->id)->with('getSchool','getGrade','getMajor')->get();
+        $uid = auth()->user()->id;
+        $attr = ['getSchool','getGrade','getMajor'];
+        $nosch = ['getGrade','getMajor'];
+        $user = User::findOrFail($uid);
+        
+        if ($user->with($attr)->first() != null ) {
+            $user = $user->with($attr)->get();
         }else {
-            $user = $user->where('id','=',$user->id)->get();
+            $user->with($nosch)->get();
         }
         
-        return view('home.profile',compact('user','riwayat'));
+        $riwayat = History::where('userid','=',$uid)->types()->get();
+        return $riwayat;
+        // return view('home.profile',compact('user','riwayat'));
     }
 
     public function reset(Request $request)

@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/akses/{school}/video','PermissionController@destroyVideo');
     });
     Route::get('/riwayat/{user}', 'HistoryController@show');
-    Route::get('/profile/{user}', 'UserController@profile');
+    Route::get('/profile', 'UserController@profile');
     Route::post('/reset', 'UserController@reset');
 });
 
