@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHtmlsTable extends Migration
+class AddUsersLogStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateHtmlsTable extends Migration
      */
     public function up()
     {
-        // Schema::create('htmls', function (Blueprint $table) {
-        //     $table->bigIncrements('id');
-            
-        //     $table->timestamps();
-        // });
+        Schema::table('users',function(Blueprint $t)
+        {
+            $t->boolean('log_status')->after('remember_token')->default(0);
+        });
     }
 
     /**
@@ -27,6 +26,9 @@ class CreateHtmlsTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('htmls');
+        Schema::table('users',function(Blueprint $t)
+        {
+            $t->dropColumn('log_status');
+        });
     }
 }

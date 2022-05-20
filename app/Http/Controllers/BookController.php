@@ -34,11 +34,12 @@ class BookController extends Controller
 
     public function data()
     {
-        $rel = ['getEdu', 'getGrade'];
-        $model = Book::with($rel)
+        
+        return DataTables::of(
+            Book::with(['getEdu', 'getGrade'])
             ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author')
-            ->orderBy('updated_at','desc');
-        return DataTables::of($model)
+            ->orderBy('updated_at','desc')
+        )
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
@@ -81,12 +82,14 @@ class BookController extends Controller
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
-                Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
+                if (str_contains($request->header('User-Agent'), 'Windows')) { 
+                    Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
+                }
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
                 if ($saved) {
                     $imgman = new ImageManager(['driver'=> 'imagick']);
-                    $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
+                    $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                     $book = new Book;
                     $book->title = $request->judul;
                     $book->desc = $request->desc;

@@ -18,9 +18,11 @@ Route::get('/buku', 'HomeController@book')->name('buku');
 Route::get('/video', 'HomeController@video')->name('video');
 Route::get('/profile', 'HomeController@showprofile')->name('profile');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
-Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
-Route::get('/video/{video}', 'HomeController@showvideo');
-Route::get('/stream/{video}', 'HomeController@stream');
+Route::middleware('active')->group(function () {
+    Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
+    Route::get('/video/{video}', 'HomeController@showvideo');
+    Route::get('/stream/{video}', 'HomeController@stream');
+});
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
 Route::get('/history', 'HomeController@showhistory')->name('history');
