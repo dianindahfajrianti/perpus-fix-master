@@ -91,7 +91,7 @@
                         </div>
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="number" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username')}}">
+                            <input type="text" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username')}}">
                             @error('username')
                             <div class="invalid-feedback">
                                 {{$message}}

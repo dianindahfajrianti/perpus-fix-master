@@ -75,10 +75,6 @@ class HomeController extends Controller
 
         return view('home.file', compact('sub', 'edu', 'file', 'kls', 'maj'));
     }
-    public function showprofile()
-    {
-        return view('home.profile');
-    }
     public function showpanduan()
     {
         return view('home.panduan');

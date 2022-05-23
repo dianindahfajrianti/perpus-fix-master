@@ -128,7 +128,7 @@
                   @enderror
                 </div>
                 <div class="form-group">
-                  <label for="confirm">Konfirmasi Password</label>
+                  <label for="confirm">Konfirmasi Password Baru</label>
                   <input type="password" name="konfirmasi_password" id="confirm" class="form-control @error('konfirmasi_password'){{ 'is-invalid' }}@enderror">
                   @error('konfirmasi_password')
                     <div class="invalid-feedback">
