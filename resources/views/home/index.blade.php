@@ -117,10 +117,10 @@
                                                                 
                                     <img src="{{ $path1 }}" class="img-fluid" alt="">
                             </center>
-                            <div class="social">
-                                <a href="{{ Storage::url('public/pdf/').$b->filename }}" download><i class="ri-file-download-fill"></i></a>
-                                <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
-                            </div>
+                        </div>
+                        <div class="social">
+                            <a href="{{ Storage::url('public/pdf/').$b->filename }}" download><i class="ri-file-download-fill"></i></a>
+                            <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
                             <h5>{{substr($b->title,0,20)."..."}}</h5>
@@ -180,10 +180,10 @@
                                                                 
                                     <img src="{{ $path1 }}" class="img-fluid" alt="">
                             </center>
-                            <div class="social">
-                                <a href="{{Storage::url('public/video/').$v->filename.".".$v->filetype}}" download><i class="ri-video-download-fill"></i></a>
-                                <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
-                            </div>
+                        </div>
+                        <div class="social">
+                            <a href="{{Storage::url('public/video/').$v->filename.".".$v->filetype}}" download><i class="ri-video-download-fill"></i></a>
+                            <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
                             <h5>{{substr($v->title,0,25)."..."}}</h5>
