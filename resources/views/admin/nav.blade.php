@@ -98,7 +98,7 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-header">Administrasi Buku</li>
+                <li class="nav-header">Administrasi Konten</li>
                 <li class="nav-item">
                     <a href="/admin/buku" class="nav-link @if (Request::segment(2) == 'buku') {{'active'}} @endif">
                         <i class="nav-icon fas fa-book"></i>

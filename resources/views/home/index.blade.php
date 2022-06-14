@@ -123,7 +123,7 @@
                             </div>
                         </div>
                         <div class="card-info">
-                            <h5>{{substr($b->title,0,25)."..."}}</h5>
+                            <h5>{{substr($b->title,0,23)."..."}}</h5>
                             <h6>
                                 @if(($b->getGrade || $b->getEdu) !== null)
                                 {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
