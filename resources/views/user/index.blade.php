@@ -163,13 +163,21 @@
                                     @php
                                     $rl = [
                                     'Super Admin',
+                                    'Client',
                                     'Admin Sekolah',
                                     'Guru',
                                     'Murid'
                                     ];
                                     @endphp
-                                    @for($i = 0; $i < count($rl); $i++) <option value="{{ $i }}">{{ $rl[$i] }}</option>
-                                        @endfor
+                                    @for($i = 0; $i < count($rl); $i++)
+                                    @php
+                                        if ($i == 1) {
+                                            $i = $i+1;
+                                        }
+                                    @endphp
+                                    <option value="{{ $i }}">{{ $rl[$i] }}</option>
+
+                                    @endfor
                                 </select>
                                 @error('role')
                                 <div class="invalid-feedback">

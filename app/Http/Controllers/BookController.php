@@ -82,10 +82,12 @@ class BookController extends Controller
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
-                if (str_contains($request->header('User-Agent'), 'Windows')) { 
-                    Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
-                }
-                $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
+                // if (str_contains(PHP_OS, 'WIN')) {
+                //     Ghostscript::setGsPath(public_path('gs/win/bin/gswin64c.exe'));
+                // }else{
+                //     Ghostscript::setGsPath(public_path('gs/lin/gs-9561-linux-x86_64'));
+                // }   
+                $pdf = new Pdf(storage_path('app/public/pdf/'.$fixname));
                 $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
                 if ($saved) {
                     $imgman = new ImageManager(['driver'=> 'imagick']);

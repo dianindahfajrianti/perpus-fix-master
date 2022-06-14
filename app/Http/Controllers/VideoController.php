@@ -81,6 +81,8 @@ class VideoController extends Controller
         if ($file != null) {
             $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
             $file->storeAs('public/thumb/video',$filename.$ext);
+
+            
         
             $imgman = new ImageManager(['driver'=> 'imagick']);
             $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(385,216)->save();
