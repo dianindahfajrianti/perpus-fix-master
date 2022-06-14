@@ -402,10 +402,10 @@ section {
     /* height: 100vh; */
     text-align: center;
   }
-  #hero .animated {
+  /* #hero .animated {
     -webkit-animation: none;
     animation: none;
-  }
+  } */
   #hero .hero-img {
     text-align: center;
   }
@@ -414,6 +414,9 @@ section {
   }
 }
 @media (max-width: 768px) {
+  #hero {
+    height: 80vh;
+  }
   #hero h1 {
     font-size: 28px;
     line-height: 36px;
@@ -428,8 +431,12 @@ section {
   }
 }
 @media (max-width: 575px) {
+  #hero {
+    height: 76vh;
+  }
   #hero .hero-img img {
     width: 80%;
+    margin-top: 45px;
   }
   #hero .btn-get-started {
     font-size: 16px;
@@ -515,6 +522,11 @@ section {
 .about .content {
   background-color: #f6f9ff;
   padding: 40px;
+}
+@media (max-width: 768px) {
+  .about .content {
+    margin-top: 20px;
+  }
 }
 .about h3 {
   font-size: 14px;
