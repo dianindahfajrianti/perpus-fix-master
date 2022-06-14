@@ -142,37 +142,5 @@ class HomeController extends Controller
         $file = $file->concat($vids);
         return view('home.searchpage', compact('sub', 'edu','file'));
     }
-
-    public function tiket()
-    {
-        // $res = new stdClass;
-        // $now = request('now')+1;
-        // $res->status = "success";
-        // $res->nomor = $now;
-        // return response()->json($res);
-        // $rqrole = request('role');
-        // if ($rqrole < 2) {
-        //     $wordID = "A";
-        // }else {
-        //     $wordID = "U";
-        // }
-        // $fromDB = DB::table('users')->where('id','like',$wordID)->orderBy('id','DESC')->value('id');
-        // if ($fromDB == null) {
-        //     $last = (int) "00001";
-        // } else {
-        //     $last = substr($fromDB, 1, 5) + 1;
-        // }
-        // $id = $wordID . sprintf('%05s', $last);
-        // return $id;
-        $dt = request('date');
-        $id = request('id');
-        $res = Export::where('type','like','video')->select('updated_at')->first();
-        $import = $dt;//$res->updated_at;
-        // return $import;
-        $video = Video::latest()->get();
-        return $video;
-
-        
-    }
     
 }
