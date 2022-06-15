@@ -91,7 +91,7 @@ class BookController extends Controller
                 $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
                 if ($saved) {
                     $imgman = new ImageManager(['driver'=> 'imagick']);
-                    $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(72,104)->save();
+                    $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                     $book = new Book;
                     $book->title = $request->judul;
                     $book->desc = $request->desc;
@@ -213,7 +213,7 @@ class BookController extends Controller
                 $pdf->saveImage($pdfdir);
 
                 $imgman = new ImageManager(['driver'=> 'imagick']);
-                $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(72,104)->save();
+                $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                 $buku->title = $request->judul;
                 $buku->desc = $request->desc;
                 $buku->filename = $fixname;

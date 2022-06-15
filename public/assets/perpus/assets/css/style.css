@@ -687,6 +687,16 @@ section {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.file .card .card-info h1 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: -1px;
+  display: inline-block;
+  white-space: nowrap; 
+  width: 140px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 @media (max-width: 991px) {
   .file .card .card-info h5 {
     width: 145px; 
@@ -696,9 +706,15 @@ section {
   .file .card .card-info h5 {
     width: 135px; 
   }
+  .file .card .card-info h1 {
+    width: 135px; 
+  }
 }
 @media (max-width: 300px) {
   .file .card .card-info h5 {
+    width: 85px; 
+  }
+  .file .card .card-info h1 {
     width: 85px; 
   }
 }
