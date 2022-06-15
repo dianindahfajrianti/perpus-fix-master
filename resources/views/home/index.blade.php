@@ -123,7 +123,8 @@
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
-                            <h5>{{substr($b->title,0,20)."..."}}</h5>
+                            {{-- <h5>{{substr($b->title,0,20)."..."}}</h5> --}}
+                            <h5>{{ $b->title }}</h5>
                             <h6>
                                 @if(($b->getGrade || $b->getEdu) !== null)
                                 {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}

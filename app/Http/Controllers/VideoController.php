@@ -85,7 +85,7 @@ class VideoController extends Controller
             
         
             $imgman = new ImageManager(['driver'=> 'imagick']);
-            $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(385,216)->save();
+            $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(192,108)->save();
             $vid = new Video;
             $vid->title = $request->judul;
             $vid->desc = $request->deskripsi;
@@ -252,7 +252,7 @@ class VideoController extends Controller
                 $video->thumb = $filename.$ext;
                 $video->save();
                 $imgman = new ImageManager(['driver'=> 'imagick']);
-                $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(385,216)->save();
+                $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(192,108)->save();
 
                 $res->stats = 'success';
                 $res->message = 'Berhasil mengedit video info';

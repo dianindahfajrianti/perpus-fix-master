@@ -681,6 +681,26 @@ section {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: -1px;
+  display: inline-block;
+  white-space: nowrap; 
+  width: 165px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 991px) {
+  .file .card .card-info h5 {
+    width: 145px; 
+  }
+}
+@media (max-width: 768px) {
+  .file .card .card-info h5 {
+    width: 135px; 
+  }
+}
+@media (max-width: 300px) {
+  .file .card .card-info h5 {
+    width: 85px; 
+  }
 }
 .file .card .card-info h6 {
   font-size: 12px;
