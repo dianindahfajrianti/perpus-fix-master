@@ -71,45 +71,32 @@ class VideoController extends Controller
             'mapel' => '',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required',
-            'thumb' => 'required|mimes:png,jpeg'
+            'nama_pembuat' => 'required'
+            // 'thumb' => 'required|mimes:png,jpeg'
         ]);
-        $file = $request->file('thumb');
-        $ext = ".".$file->getClientOriginalExtension();
-        $res = new stdClass;
-
-        if ($file != null) {
-            $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
-            $file->storeAs('public/thumb/video',$filename.$ext);
-
-            
+        // $file = $request->file('thumb');
         
-            $imgman = new ImageManager(['driver'=> 'imagick']);
-            $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(192,108)->save();
-            $vid = new Video;
-            $vid->title = $request->judul;
-            $vid->desc = $request->deskripsi;
-            $vid->filename = $filename;
-            $vid->filetype = 'mp4';
-            $vid->clicked_time = 0;
-            $vid->edu_id = $request->jenjang;
-            $vid->grade_id= $request->kelas;
-            $vid->major_id= $request->jurusan;
-            $vid->sub_id= $request->mapel;
-            $vid->creator = $request->nama_pembuat;
-            $vid->thumb = $filename.$ext;
-            if ($vid->save()) {
-                $res->stats = 'success';
-                $res->message = 'Save data success';
+        $res = new stdClass;
+        $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
+        $vid = new Video;
+        $vid->title = $request->judul;
+        $vid->desc = $request->deskripsi;
+        $vid->filename = $filename;
+        $vid->filetype = 'mp4';
+        $vid->clicked_time = 0;
+        $vid->edu_id = $request->jenjang;
+        $vid->grade_id= $request->kelas;
+        $vid->major_id= $request->jurusan;
+        $vid->sub_id= $request->mapel;
+        $vid->creator = $request->nama_pembuat;
+        // $vid->thumb = "$filename.".$file->getClientOriginalExtension();
+        
+        if ($vid->save()) {
+            $res->stats = 'success';
+            $res->message = 'Save data success';
 
-                return redirect('admin/video/' . $vid->id . '/upload');
-            }else {
-                $res->stats = 'failed';
-                $res->message = 'Failed to save data';
-
-                return redirect('admin/video')->with($res->stats, json_encode($res));
-            }   
-        } else {
+            return redirect('admin/video/' . $vid->id . '/upload');
+        }else {
             $res->stats = 'failed';
             $res->message = 'Failed to save data';
 
@@ -147,6 +134,8 @@ class VideoController extends Controller
             $name = $video->filename;
             $path = "public/video/";
             $path2 = storage_path($path.$fileName);
+            $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
+            $frame = $request->frame;
 
             $disk = Storage::disk(config('filesystems.default'));
 
@@ -154,6 +143,11 @@ class VideoController extends Controller
 
             unlink($file->getPathname());
 
+            $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
+            exec($imagick);
+            
+            $imgman = new ImageManager(['driver'=> 'imagick']);
+            $img = $imgman->make($thumbPath)->resize(192,108)->save();
             $video->filetype = $extension;
 
             $video->save();
@@ -314,13 +308,20 @@ class VideoController extends Controller
 
             $fileName = "$video->filename.$extension"; // a unique file name
             $path = "public/video/";
+            $path2 = storage_path($path.$fileName);
+            $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
+            $frame = $request->frame;
 
             $disk = Storage::disk(config('filesystems.default'));
 
             $disk->putFileAs($path,$file,$fileName);
 
             unlink($file->getPathname());
-
+            
+            $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
+            exec($imagick);
+            $imgman = new ImageManager(['driver'=> 'imagick']);
+            $img = $imgman->make($thumbPath)->resize(192,108)->save();
             $video->filetype = $extension;
 
             $video->save();

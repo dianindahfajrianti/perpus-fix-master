@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('ext-css')
+    <link rel="stylesheet" href="/assets/adminlte/plugins/sweetalert2/sweetalert2.css">
+@endsection
 @section('container')
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
@@ -218,6 +220,38 @@
         </div>
 
     </section><!-- End Video Section -->
-
+    
 </main><!-- End #main -->
+@endsection
+@section('ext-js')
+<!-- SweetAlert2 -->
+<script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Berhasil',
+        //     text: 'Lah bisa?!',
+        //     timer: 1700
+        // });
+        // $('#btnPop').click(function(e) { 
+        //     e.preventDefault();
+        // });
+    });
+</script>
+@if (session('error'))
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = '<?= session("error") ?>';
+        var js = JSON.parse(data);
+        console.log(data);
+        Swal.fire({
+            icon: js.status,
+            title: js.title,
+            text: js.message,
+            timer: 2000
+        });
+    });
+</script>
+@endif
 @endsection
