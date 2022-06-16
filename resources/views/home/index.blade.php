@@ -216,18 +216,7 @@
         </div>
 
     </section><!-- End Video Section -->
-    <section id="file" class="file">
-
-        <div class="container" data-aos="fade-up">
-            <h4 class="title-home">Button Terbaru</h4>
-            <div class="row justify-content-center">
-                <div class="col-6">
-                    <button class="btn btn-dark" id="btnPop">Pop !!</button>
-                </div>
-            </div>
-        </div>
-
-    </section><!-- End Video Section -->
+    
 </main><!-- End #main -->
 @endsection
 @section('ext-js')
