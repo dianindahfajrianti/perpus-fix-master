@@ -697,6 +697,7 @@ section {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 @media (max-width: 991px) {
   .file .card .card-info h5 {
     width: 145px; 

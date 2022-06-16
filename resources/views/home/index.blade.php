@@ -123,8 +123,9 @@
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
-                            {{-- <h5>{{substr($b->title,0,20)."..."}}</h5> --}}
-                            <h5>{{ $b->title }}</h5>
+                            <h5 data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $b->title }}">
+                                {{ $b->title }}
+                            </h5>
                             <h6>
                                 @if(($b->getGrade || $b->getEdu) !== null)
                                 {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
@@ -187,7 +188,9 @@
                             <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
-                            <h5>{{substr($v->title,0,25)."..."}}</h5>
+                            <h5 data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $v->title }}">
+                                {{ $v->title }}
+                            </h5>
                             <h6>
                                 @if(($v->getGrade || $v->getEdu) !== null)
                                 {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}

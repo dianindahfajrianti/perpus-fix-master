@@ -220,7 +220,9 @@
                                     </div>
                                     <div class="card-info">
                                         {{-- <h5>{{ substr($b->title, 0, 16) . '...' }}</h5> --}}
-                                        <h1>{{ $b->title }}</h1>
+                                        <h1 data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $b->title }}">
+                                            {{ $b->title }}
+                                        </h1>
                                         <h6>
                                             @empty ($b->getGrade || $b->getEdu)
                                             
