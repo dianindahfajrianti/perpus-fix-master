@@ -20,6 +20,7 @@ Route::get('/video', 'HomeController@video')->name('video');
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::middleware('active')->group(function () {
     Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
+    Route::get('/pdf','HomeController@tempPdfView');
     Route::get('/video/{video}', 'HomeController@showvideo');
     Route::get('/stream/{video}', 'HomeController@stream');
 });

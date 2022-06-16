@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('ext-css')
+    <link rel="stylesheet" href="/assets/adminlte/plugins/sweetalert2/sweetalert2.css">
+@endsection
 @section('container')
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
@@ -123,8 +125,7 @@
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
-                            {{-- <h5>{{substr($b->title,0,20)."..."}}</h5> --}}
-                            <h5>{{ $b->title }}</h5>
+                            <h5>{{substr($b->title,0,18)."..."}}</h5>
                             <h6>
                                 @if(($b->getGrade || $b->getEdu) !== null)
                                 {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
@@ -187,7 +188,7 @@
                             <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
-                            <h5>{{substr($v->title,0,25)."..."}}</h5>
+                            <h5>{{substr($v->title,0,18)."..."}}</h5>
                             <h6>
                                 @if(($v->getGrade || $v->getEdu) !== null)
                                 {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}
@@ -215,6 +216,49 @@
         </div>
 
     </section><!-- End Video Section -->
+    <section id="file" class="file">
 
+        <div class="container" data-aos="fade-up">
+            <h4 class="title-home">Button Terbaru</h4>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <button class="btn btn-dark" id="btnPop">Pop !!</button>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- End Video Section -->
 </main><!-- End #main -->
+@endsection
+@section('ext-js')
+<!-- SweetAlert2 -->
+<script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Berhasil',
+        //     text: 'Lah bisa?!',
+        //     timer: 1700
+        // });
+        // $('#btnPop').click(function(e) { 
+        //     e.preventDefault();
+        // });
+    });
+</script>
+@if (session('error'))
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = '<?= session("error") ?>';
+        var js = JSON.parse(data);
+        console.log(data);
+        Swal.fire({
+            icon: js.status,
+            title: js.title,
+            text: js.message,
+            timer: 2000
+        });
+    });
+</script>
+@endif
 @endsection

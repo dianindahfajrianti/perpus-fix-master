@@ -188,7 +188,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="thumb">Thumbnail</label>
                                                 <div class="input-group @error('thumb'){{ 'is-invalid' }}@enderror mb-3">
                                                     <div class="input-group-prepend">
@@ -204,7 +204,7 @@
                                                     {{ $message }}
                                                 </div>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>

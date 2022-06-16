@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Book;
 use stdClass;
 use App\Grade;
+use App\Major;
 use App\Video;
 use App\Export;
+use App\History;
 use App\Subject;
 use App\Education;
 use App\Helpers\VideoStream;
-use App\History;
-use App\Major;
 
 class HomeController extends Controller
 {
@@ -90,17 +90,26 @@ class HomeController extends Controller
     {
         $buku->clicked_time = $buku->clicked_time + 1;
         $buku->save();
-        if (auth()->check()) {
-            $his = new History;
-            $his->userid = auth()->user()->id;
-            $his->file_id = $buku->id;
-            $his->type = $buku->filetype;
-            $his->save();
-        }
+        $his = new History;
+        $his->userid = auth()->user()->id;
+        $his->file_id = $buku->id;
+        $his->type = $buku->filetype;
+        $his->save();
         // return compact('buku');
-
-        return redirect('/laraview/#../storage/pdf/'.$buku->filename);
+        return redirect('/pdf#toolbar=0')->with('book',$buku);
     }
+    public function tempPdfView()
+    {
+        if (session('book')) {
+            $book = session('book');
+            $path = storage_path('app/public/pdf/'.$book->filename);
+            return response()->file($path);
+        }else{
+            $html = "<p>File session expired</p><a href='/'>Home</a>";
+            return $html;
+        }
+    }
+
     // public function file(string $filename)
     // {
 
@@ -108,16 +117,15 @@ class HomeController extends Controller
     // }
     public function showvideo(Video $video)
     {
-        $video->clicked_time = $video->clicked_time+1;
-        $video->save();
         if (auth()->check()) {
+            $video->clicked_time = $video->clicked_time+1;
+            $video->save();
             $his = new History;
             $his->userid = auth()->user()->id;
             $his->file_id = $video->id;
             $his->type = $video->filetype;
             $his->save();
-        }
-        return view('home.showvideo',compact('video'));
+            return view('home.showvideo',compact('video'));}
     }
     public function stream(Video $video)
     {

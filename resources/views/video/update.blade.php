@@ -56,6 +56,10 @@
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <div class="form-group">
+                                        <label for="frame">Video Frame</label>
+                                        <input class="form-control" type="number" name="frame" id="frame">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="ct-file">Video File</label>
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
@@ -111,7 +115,7 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
-
+        var frm = $('#frame').val();
         let browseFile = $('#ct-file');
         // let chSize = 0;
         // browseFile.change(function() {
@@ -123,6 +127,7 @@
         , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
         , query: {
             _token: '{{ csrf_token() }}',
+            frame: frm,
         } // CSRF token
         , fileType: ['mp4','webm','ogm']
         , headers: {

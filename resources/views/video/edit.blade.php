@@ -57,7 +57,7 @@ Detail {{ $video->title }}
                         @csrf
                         @method('put')
                         <div class="card-body">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="thumbnail">Thumbnail</label>
                                 <div class="input-group @error('thumbnail'){{'is-invalid'}}@enderror">
                                     <div class="input-group-prepend">
@@ -73,7 +73,7 @@ Detail {{ $video->title }}
                                     {{$message}}
                                 </div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label class="form-label" for="jenjang">Jenjang</label>
                                 <div class="input-group">

@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 bootstrap/cache/packages.php
 bootstrap/cache/services.php
+all.sql
+edu_grade_users.sql
