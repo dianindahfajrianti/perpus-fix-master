@@ -206,8 +206,6 @@ class BookController extends Controller
             
             $sv = $file->storeAs('public\pdf',$fixname);
             if ($sv) {
-
-                Ghostscript::setGsPath(public_path('gs/bin/gswin64c.exe'));
                 $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
                 $pdfdir = storage_path('app/public/thumb/pdf/').$thumbname;
                 $pdf->saveImage($pdfdir);

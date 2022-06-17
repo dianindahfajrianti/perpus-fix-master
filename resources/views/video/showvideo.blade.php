@@ -37,7 +37,7 @@ Detail {{ $video->title }} - Admin Perpus
                     <div class="card-header">
                         <h3 class="card-title">Detail <b>{{ $video->title }}</b></h3>
                         <div class="float-right">
-                            <form class="ml-3 d-inline" action="/admin/video/{{ $video->id }}" method="post">@method('delete')@csrf <button id="delvideo" class="btn btn-danger" type="submit">Hapus</button></form>
+                            <button id="delvideo" class="btn btn-danger ml-3 d-inline" type="submit">Hapus</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -109,6 +109,16 @@ Detail {{ $video->title }} - Admin Perpus
                                             @endif
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Frame</td>
+                                        <td>:</td>
+                                        <td>
+                                            @empty($video->frame)
+                                            @else
+                                            {{ $video->frame }}
+                                            @endempty
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -141,13 +151,13 @@ Detail {{ $video->title }} - Admin Perpus
 <script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 
 {{-- Custom Scripts --}}
-{{-- <script>
+<script>
     $(document).ready(function() {
         $('.btn-videodel').click(function(e) {
             e.preventDefault;
             Swal.fire({
-                title: 'Are you sure?'
-                , text: "You won't be able to revert this!"
+                title: 'Yakin hapus?'
+                , text: "Anda tidak bisa mengembalikan data!"
                 , icon: 'warning'
                 , showCancelButton: true
                 , confirmButtonColor: '#3085d6'
@@ -156,17 +166,35 @@ Detail {{ $video->title }} - Admin Perpus
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
+                        type: "POST",
                         url: "/admin/singlepage"
-                        , data: {{}}
-, success: success
-, dataType: dataType
-});
-}
-})
-});
-});
+                        , dataType: "JSON"
+                        , data: {
+                            _token: "{{ csrf_token() }}",
+                            id: "{{ $video->id }}"
+                        }, success:function (data) { 
+                            console.log(data);
 
-</script> --}}
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: "",
+                                timer: 1700
+                            });
+                        },error:function (data) { 
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: "",
+                                timer: 1700
+                            });
+                        }
+                    });
+                }
+            })
+        });
+    });
+</script>
 <script>
     $(function() {
         $('#videotable').DataTable({

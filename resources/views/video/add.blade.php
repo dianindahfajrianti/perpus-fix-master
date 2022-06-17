@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
+{{-- TimePicker --}}
+<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -188,23 +190,44 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            {{-- <div class="form-group">
-                                                <label for="thumb">Thumbnail</label>
-                                                <div class="input-group @error('thumb'){{ 'is-invalid' }}@enderror mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                            <div class="form-group">
+                                                <label for="frame">Detik video untuk thumbnail</label>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <div class="input-group @error('jam'){{ 'is-invalid' }}@enderror">
+                                                            <div class="input-group-prepend"><span class="input-group-text">Jam</span></div>
+                                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam') }}"/>
+                                                        </div>
+                                                        @error('jam')
+                                                        <div class="invalid-feedback">
+                                                            {{$message}}
+                                                        </div>
+                                                        @enderror
                                                     </div>
-                                                    <div class="custom-file">
-                                                        <input type="file" name="thumb" id="thumb" class="custom-file-input @error('thumb'){{ 'is-invalid' }}@enderror" value="{{ old('thumb') }}" accept=".png">
-                                                        <label for="" class="custom-file-label">Pilih screenshot</label>
+                                                    <div class="col-4">
+                                                        <div class="input-group @error('menit'){{ 'is-invalid' }}@enderror">
+                                                            <div class="input-group-prepend"><span class="input-group-text">Menit</span></div>
+                                                            <input class="form-control" type="number" min="00" max="59" name="menit" id="menit" value="{{ old('menit') }}"/>
+                                                        </div>
+                                                        @error('menit')
+                                                        <div class="invalid-feedback">
+                                                            {{$message}}
+                                                        </div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="input-group @error('detik'){{ 'is-invalid' }}@enderror">
+                                                            <div class="input-group-prepend"><span class="input-group-text">Detik</span></div>
+                                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik') }}"/>
+                                                        </div>
+                                                        @error('detik')
+                                                        <div class="invalid-feedback">
+                                                            {{$message}}
+                                                        </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                @error('thumb')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -227,6 +250,7 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
+<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -235,6 +259,15 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
+
+        //Customize timepicker.js
+        $('#frame').timepicker({
+            timeFormat: 'HH:mm:ss',
+            maxHour: 2,
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true
+        });
     });
 
 </script>

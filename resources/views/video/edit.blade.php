@@ -57,23 +57,44 @@ Detail {{ $video->title }}
                         @csrf
                         @method('put')
                         <div class="card-body">
-                            {{-- <div class="form-group">
-                                <label for="thumbnail">Thumbnail</label>
-                                <div class="input-group @error('thumbnail'){{'is-invalid'}}@enderror">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" >Upload</span>
+                            <div class="form-group">
+                                <label for="">Detik video untuk thumbnail</label>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="input-group @error('jam'){{ 'is-invalid' }}@enderror">
+                                            <div class="input-group-prepend"><span class="input-group-text">Jam</span></div>
+                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam',$tObj->jam) }}"/>
+                                        </div>
+                                        @error('jam')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="thumbnail">{{ $video->thumb }}</label>
-                                        <input type="file" name="thumbnail" id="thumbnail" class="custom-file-input @error('thumbnail'){{'is-invalid'}}@enderror" value="{{ old('thumbnail', $video->thumb) }}">
+                                    <div class="col-4">
+                                        <div class="input-group @error('menit'){{ 'is-invalid' }}@enderror">
+                                            <div class="input-group-prepend"><span class="input-group-text">Menit</span></div>
+                                            <input class="form-control" type="number" menit="00" max="59" name="menit" id="menit" value="{{ old('menit',$tObj->menit) }}"/>
+                                        </div>
+                                        @error('menit')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group @error('detik'){{ 'is-invalid' }}@enderror">
+                                            <div class="input-group-prepend"><span class="input-group-text">Detik</span></div>
+                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik',$tObj->detik) }}"/>
+                                        </div>
+                                        @error('detik')
+                                        <div class="invalid-feedback">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
                                 </div>
-                                @error('thumbnail')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                            </div> --}}
+                            </div>
                             <div class="form-group">
                                 <label class="form-label" for="jenjang">Jenjang</label>
                                 <div class="input-group">
@@ -190,6 +211,12 @@ Detail {{ $video->title }}
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
+
+        
     });
+    function addZero(i) {
+        if (i < 10) {i = "0" + i}
+        return i;
+    }
 </script>
 @endsection

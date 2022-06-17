@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use stdClass;
+use App\Grade;
 use App\Major;
 use App\Video;
 use App\Subject;
 use App\Education;
-use App\Grade;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -71,7 +73,10 @@ class VideoController extends Controller
             'mapel' => '',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required'
+            'nama_pembuat' => 'required',
+            'jam' => 'nullable|numeric|max:2',
+            'menit' => 'nullable|numeric|max:59',
+            'detik' => 'nullable|numeric|max:59',
             // 'thumb' => 'required|mimes:png,jpeg'
         ]);
         // $file = $request->file('thumb');
@@ -89,6 +94,7 @@ class VideoController extends Controller
         $vid->major_id= $request->jurusan;
         $vid->sub_id= $request->mapel;
         $vid->creator = $request->nama_pembuat;
+        $vid->frame = "$request->jam:$request->menit:$request->detik";
         // $vid->thumb = "$filename.".$file->getClientOriginalExtension();
         
         if ($vid->save()) {
@@ -135,7 +141,7 @@ class VideoController extends Controller
             $path = "public/video/";
             $path2 = storage_path($path.$fileName);
             $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
-            $frame = $request->frame;
+            $frame = $video->frame;
 
             $disk = Storage::disk(config('filesystems.default'));
 
@@ -143,18 +149,20 @@ class VideoController extends Controller
 
             unlink($file->getPathname());
 
-            $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
-            exec($imagick);
+            // $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
+            $ffmpeg = "ffmpeg -ss $frame -i $path2 -q:v 4 -frames:v 1 $thumbPath";
+            shell_exec($ffmpeg);
             
-            $imgman = new ImageManager(['driver'=> 'imagick']);
-            $img = $imgman->make($thumbPath)->resize(192,108)->save();
+            // $imgman = new ImageManager(['driver'=> 'imagick']);
+            // $img = $imgman->make($thumbPath)->resize(192,108)->save();
             $video->filetype = $extension;
 
             $video->save();
 
             return [
                 'path' => Storage::url($path.$fileName),
-                'filename' => $fileName
+                'filename' => $fileName,
+                'frame' => $frame
             ];
 
         }
@@ -195,8 +203,15 @@ class VideoController extends Controller
         $maj = Major::all();
         $sub = Subject::all();
 
+        $time = Carbon::createFromFormat('Y-m-d H:i:s',$video->created_at,'Asia/Jakarta')->format('H:i:s');
+        $tArr = explode(':',$time);
+        $tObj = new stdClass;
+        $tObj->jam = $tArr[0];
+        $tObj->menit = $tArr[1];
+        $tObj->detik = $tArr[2];
+
         $video->with('getEdu','getGrade')->get();
-        return view('video.edit',compact('edu','maj','sub','video'));
+        return view('video.edit',compact('edu','maj','sub','video','tObj'));
     }
     public function editFile(Video $video)
     {
@@ -220,7 +235,10 @@ class VideoController extends Controller
             'mapel' => '',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required'
+            'nama_pembuat' => 'required',
+            'jam' => 'nullable|numeric|max:2',
+            'menit' => 'nullable|numeric|max:59',
+            'detik' => 'nullable|numeric|max:59'
         ]);
         $res = new stdClass;
         $time = $video->created_at;
@@ -230,60 +248,31 @@ class VideoController extends Controller
         
         $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
 
-        if ($file != null) {
-            $ext = ".".$file->getClientOriginalExtension();
-            $sv = $file->storeAs('public/thumb/video/', $filename.$ext);
-            
-            if ($sv) {
-                $video->title = $request->judul;
-                $video->desc = $request->deskripsi;
-                $video->filename = $filename;
-                $video->edu_id = $request->jenjang;
-                $video->grade_id= $request->kelas;
-                $video->major_id= $request->jurusan;
-                $video->sub_id= $request->mapel;
-                $video->creator = $request->nama_pembuat;
-                $video->thumb = $filename.$ext;
-                $video->save();
-                $imgman = new ImageManager(['driver'=> 'imagick']);
-                $img = $imgman->make(storage_path('app/public/thumb/video/').$filename.$ext)->resize(192,108)->save();
-
-                $res->stats = 'success';
-                $res->message = 'Berhasil mengedit video info';
-
-                return redirect('admin/video/')->with($res->stats, json_encode($res));
-            }else {
-
-                $res->stats = 'error';
-                $res->message = 'Gagal mengedit video info';
-                return redirect('admin/video')->with($res->stats, json_encode($res));
-            }
-        } else {
-            
-            $op = 'public/video/'."$video->filename.$video->filetype";
-            $np = 'public/video/'."$filename.$video->filetype";
-            $opthumb = 'public/thumb/video/'.$video->thumb;
-            $npthumb = 'public/thumb/video/'."$filename.png";
-            if (($title != $video->title) || ($creator != $video->creator)) {
-                $video->filename = $filename;
-                $video->thumb = $filename.".png";
-                Storage::move($opthumb,$npthumb);
-                Storage::move($op,$np);
-            }
-            $video->title = $request->judul;
-            $video->desc = $request->deskripsi;
-            $video->edu_id = $request->jenjang;
-            $video->grade_id= $request->kelas;
-            $video->major_id= $request->jurusan;
-            $video->sub_id= $request->mapel;
-            $video->creator = $request->nama_pembuat;
-            $video->save();
-            $res->stats = 'Berhasil';
-
-            $res->message = 'Berhasil mengedit video info';
-
-            return redirect('admin/video')->with($res->stats, json_encode($res));
+        $op = 'public/video/'."$video->filename.$video->filetype";
+        $np = 'public/video/'."$filename.$video->filetype";
+        $opthumb = 'public/thumb/video/'.$video->thumb;
+        $npthumb = 'public/thumb/video/'."$filename.png";
+        if (($title != $video->title) || ($creator != $video->creator)) {
+            $video->filename = $filename;
+            $video->thumb = $filename.".png";
+            Storage::move($opthumb,$npthumb);
+            Storage::move($op,$np);
         }
+        $video->title = $request->judul;
+        $video->desc = $request->deskripsi;
+        $video->edu_id = $request->jenjang;
+        $video->grade_id= $request->kelas;
+        $video->major_id= $request->jurusan;
+        $video->sub_id= $request->mapel;
+        $video->creator = $request->nama_pembuat;
+        $video->frame = "$request->jam:$request->menit:$request->detik";
+        $video->save();
+        $res->stats = 'Berhasil';
+
+        $res->message = 'Berhasil mengedit video info';
+
+        return redirect('admin/video')->with($res->stats, json_encode($res));
+        
     }
 
     public function updateFile(Request $request, Video $video)
@@ -310,7 +299,7 @@ class VideoController extends Controller
             $path = "public/video/";
             $path2 = storage_path($path.$fileName);
             $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
-            $frame = $request->frame;
+            $frame = $video->frame;
 
             $disk = Storage::disk(config('filesystems.default'));
 
@@ -319,7 +308,9 @@ class VideoController extends Controller
             unlink($file->getPathname());
             
             $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
-            exec($imagick);
+            $ffmpeg = "ffmpeg -ss $frame -i $path2 -qscale:v 4 -frames:v 1 $thumbPath";
+            shell_exec($ffmpeg);
+
             $imgman = new ImageManager(['driver'=> 'imagick']);
             $img = $imgman->make($thumbPath)->resize(192,108)->save();
             $video->filetype = $extension;
