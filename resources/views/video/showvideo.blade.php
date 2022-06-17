@@ -153,8 +153,8 @@ Detail {{ $video->title }} - Admin Perpus
 {{-- Custom Scripts --}}
 <script>
     $(document).ready(function() {
-        $('.btn-videodel').click(function(e) {
-            e.preventDefault;
+        $('#delvideo').click(function(e) {
+            e.preventDefault();
             Swal.fire({
                 title: 'Yakin hapus?'
                 , text: "Anda tidak bisa mengembalikan data!"
@@ -166,21 +166,22 @@ Detail {{ $video->title }} - Admin Perpus
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: "POST",
-                        url: "/admin/singlepage"
+                        type: "DELETE",
+                        url: "/admin/video/{{ $video->id }}"
                         , dataType: "JSON"
                         , data: {
                             _token: "{{ csrf_token() }}",
                             id: "{{ $video->id }}"
                         }, success:function (data) { 
                             console.log(data);
-
+                            
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: "",
                                 timer: 1700
                             });
+                            window.location.href = "/admin/video";
                         },error:function (data) { 
                             Swal.fire({
                                 icon: 'error',

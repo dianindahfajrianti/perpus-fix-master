@@ -280,6 +280,8 @@
         $("#resetbtn").on('click', function(e) {
             e.preventDefault();
             $("#filters").trigger("reset");
+            $('#jurusan').select2('val','All');
+            $('#mapel').select2('val','All');
         });
     </script>
 @endsection

@@ -203,7 +203,7 @@ class VideoController extends Controller
         $maj = Major::all();
         $sub = Subject::all();
 
-        $time = Carbon::createFromFormat('Y-m-d H:i:s',$video->created_at,'Asia/Jakarta')->format('H:i:s');
+        $time = $video->frame;
         $tArr = explode(':',$time);
         $tObj = new stdClass;
         $tObj->jam = $tArr[0];
