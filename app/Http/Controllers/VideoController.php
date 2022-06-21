@@ -74,9 +74,9 @@ class VideoController extends Controller
             'judul' => 'required',
             'deskripsi' => '',
             'nama_pembuat' => 'required',
-            'jam' => 'nullable|numeric|max:2',
-            'menit' => 'nullable|numeric|max:59',
-            'detik' => 'nullable|numeric|max:59',
+            'jam' => 'required|numeric|max:2',
+            'menit' => 'required|numeric|max:59',
+            'detik' => 'required|numeric|max:59',
             // 'thumb' => 'required|mimes:png,jpeg'
         ]);
         // $file = $request->file('thumb');
@@ -137,24 +137,17 @@ class VideoController extends Controller
             $extension = $file->getClientOriginalExtension();
 
             $fileName = $video->filename.".".$extension; // a unique file name
-            $name = $video->filename;
+            
             $path = "public/video/";
-            $path2 = storage_path($path.$fileName);
-            $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
-            $frame = $video->frame;
 
             $disk = Storage::disk(config('filesystems.default'));
 
             $disk->putFileAs($path,$file,$fileName);
 
             unlink($file->getPathname());
-
-            // $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
-            $ffmpeg = "ffmpeg -ss $frame -i $path2 -q:v 4 -frames:v 1 $thumbPath";
-            shell_exec($ffmpeg);
             
-            // $imgman = new ImageManager(['driver'=> 'imagick']);
-            // $img = $imgman->make($thumbPath)->resize(192,108)->save();
+
+            $video->thumb = $video->filename.".png";
             $video->filetype = $extension;
 
             $video->save();
@@ -162,7 +155,6 @@ class VideoController extends Controller
             return [
                 'path' => Storage::url($path.$fileName),
                 'filename' => $fileName,
-                'frame' => $frame
             ];
 
         }
@@ -236,9 +228,9 @@ class VideoController extends Controller
             'judul' => 'required',
             'deskripsi' => '',
             'nama_pembuat' => 'required',
-            'jam' => 'nullable|numeric|max:2',
-            'menit' => 'nullable|numeric|max:59',
-            'detik' => 'nullable|numeric|max:59'
+            'jam' => 'required|numeric|max:2',
+            'menit' => 'required|numeric|max:59',
+            'detik' => 'required|numeric|max:59'
         ]);
         $res = new stdClass;
         $time = $video->created_at;
@@ -267,6 +259,7 @@ class VideoController extends Controller
         $video->creator = $request->nama_pembuat;
         $video->frame = "$request->jam:$request->menit:$request->detik";
         $video->save();
+
         $res->stats = 'Berhasil';
 
         $res->message = 'Berhasil mengedit video info';
@@ -297,9 +290,7 @@ class VideoController extends Controller
 
             $fileName = "$video->filename.$extension"; // a unique file name
             $path = "public/video/";
-            $path2 = storage_path($path.$fileName);
-            $thumbPath = storage_path("app/public/thumb/video/".$video->filename.".png");
-            $frame = $video->frame;
+            
 
             $disk = Storage::disk(config('filesystems.default'));
 
@@ -307,12 +298,8 @@ class VideoController extends Controller
 
             unlink($file->getPathname());
             
-            $imagick = "/usr/bin/convert $path2[$frame] $thumbPath --resize 192x108";
-            $ffmpeg = "ffmpeg -ss $frame -i $path2 -qscale:v 4 -frames:v 1 $thumbPath";
-            shell_exec($ffmpeg);
-
-            $imgman = new ImageManager(['driver'=> 'imagick']);
-            $img = $imgman->make($thumbPath)->resize(192,108)->save();
+            
+            $video->thumb = $video->filename.".jpg";
             $video->filetype = $extension;
 
             $video->save();
@@ -343,22 +330,58 @@ class VideoController extends Controller
     public function destroy(Video $video)
     {
         $res = new stdClass;
-        $del = Storage::delete('public/video/'."$video->filename.$video->filetype");
-        if ($del) {
-            Storage::delete('public/thumb/video/'.$video->thumb);
-            
-            $video->delete();
-            $status = 'success';
-            $title = 'Berhasil';
-            $msg = 'Hapus video berhasil.';
-        }else{
-            $status = 'error';
-            $title = 'Gagal';
-            $msg = 'Hapus video gagal.';
+        $ex = file_exists(storage_path('public/video/')."$video->filename.$video->filetype");
+        $et = file_exists(storage_path('public/thumb/video/').$video->thumb);
+        if ($ex) {
+            Storage::delete('public/video/'."$video->filename.$video->filetype");
         }
+        if ($et) {
+            Storage::delete('public/thumb/video/'.$video->thumb);
+        }
+
+        $video->delete();
+
+        $status = 'success';
+        $title = 'Berhasil';
+        $msg = 'Hapus video berhasil.';
+
         $res->status = $status;
         $res->title = $title;
         $res->message = $msg;
         return response()->json($res);
+    }
+
+    public function thumb(Video $video)
+    {
+        $res = new stdClass;
+        $req = "/admin/video";
+        $url = url()->previous();
+        $lastUrl = explode('/',$url);
+        $key = sizeof($lastUrl);
+        $last = $lastUrl[$key-1];
+        try {
+            $frame = $video->frame;
+            $filename = "$video->filename.$video->filetype";
+            $path = storage_path('app/public/video/'.$filename);
+            $path2 = storage_path('app/public/thumb/video/'.$video->thumb);
+            if ($last == 'upload') {
+                $ffmpeg = "ffmpeg -ss $frame -i $path -q:v 4 -frames:v 1 -s 192x108 $path2";
+                // return dd($last,$ffmpeg);
+            }else{
+                $ffmpeg = "ffmpeg -ss $frame -i $path -q:v 4 -frames:v 1 -s 192x108 $path2 -y";
+                // return dd($last,$ffmpeg);
+            }
+            $exec = shell_exec($ffmpeg);
+            
+            $res->status = 'success';
+            $res->title = 'Berhasil';
+            $res->message= 'Upload video berhasil, generate thumbnail sukses';
+            return redirect($req)->with($res->status,json_encode($res));
+        } catch (\Throwable $th) {
+            $res->status = 'error';
+            $res->title = 'Gagal';
+            $res->message= $th;
+            return redirect($req)->with($res->status,json_encode($res));
+        }
     }
 }

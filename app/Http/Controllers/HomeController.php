@@ -150,5 +150,9 @@ class HomeController extends Controller
         $file = $file->concat($vids);
         return view('home.searchpage', compact('sub', 'edu','file'));
     }
-    
+    public function tiket()
+    {
+        
+        // return dd($last);
+    }
 }
