@@ -196,7 +196,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('jam'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Jam</span></div>
-                                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam', 0) }}"/>
                                                         </div>
                                                         @error('jam')
                                                         <div class="invalid-feedback">
@@ -207,7 +207,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('menit'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Menit</span></div>
-                                                            <input class="form-control" type="number" min="00" max="59" name="menit" id="menit" value="{{ old('menit') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="59" name="menit" id="menit" value="{{ old('menit', 0) }}"/>
                                                         </div>
                                                         @error('menit')
                                                         <div class="invalid-feedback">
@@ -218,7 +218,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('detik'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Detik</span></div>
-                                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik', 0) }}"/>
                                                         </div>
                                                         @error('detik')
                                                         <div class="invalid-feedback">
