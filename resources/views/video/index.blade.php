@@ -49,6 +49,7 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="{{ route('video.create') }}" class="btn btn-dark">Tambah Video</a>
+                        <a href="video-import" class="btn btn-dark">Import Video</a>
                     </div>
                     <div class="card-body">
                         <table id="tb-video" class="table table-bordered table-striped">

@@ -58,6 +58,11 @@ class VideoController extends Controller
         return view('video.add',compact('edu','maj','sub','kls'));
     }
 
+    public function imports()
+    {
+        return view('video.import');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

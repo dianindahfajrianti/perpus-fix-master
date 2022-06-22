@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
+        Route::get('/video-import','VideoController@imports')->name('video.imports');
+
         // Akses || Permissions
         Route::get('/akses','PermissionController@index');
         // Pilih Sekolah
