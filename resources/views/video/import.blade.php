@@ -103,6 +103,7 @@
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
+        $('#your-file').hide();
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
@@ -117,6 +118,63 @@
             dropdown: true,
             scrollbar: true
         });
+
+        let browseFile = $('#ct-file');
+        let resumable = new Resumable({
+        target: '/admin/video-import'
+        , chunkSize: 10*1024*1024
+        , query: {
+            _token: '{{ csrf_token() }}',
+        }
+        , fileType: ['video']
+        , headers: {
+            'Accept': 'application/json'
+        }
+        , testChunks: false
+        , throttleProgressCallbacks: 1
+        , });
+        
+        resumable.assignBrowse(browseFile);
+
+        resumable.on('fileAdded', function(file, event) {
+            showProgress();
+            // let fSize = file.size / 1000000;
+            resumable.upload()
+        });
+        
+        resumable.on('fileProgress', function(file) {
+        updateProgress(Math.floor(file.progress() * 100));
+        });
+
+        resumable.on('fileSuccess', function(file, response) {
+            response = JSON.parse(response)
+            $('#your-file').attr('href', response.path);
+            $('#your-file').text(response.filename);
+            $('#your-file').show();
+        });
+
+        resumable.on('fileError', function(file, response) {
+            alert('file uploading error.')
+        });
+
+
+        let progress = $('.progress');
+
+        function showProgress() {
+            progress.find('.progress-bar').css('width', '0%');
+            progress.find('.progress-bar').html('0%');
+            progress.find('.progress-bar').removeClass('bg-success');
+            progress.show();
+        }
+
+        function updateProgress(value) {
+            progress.find('.progress-bar').css('width', `${value}%`)
+            progress.find('.progress-bar').html(`${value}%`)
+        }
+
+        function hideProgress() {
+            progress.hide();
+        }
     });
 
 </script>
