@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Import Video</h3>
+                <h3 class="display-4">Import Excel</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -50,7 +50,7 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Import Video</h3>
+                        <h3 class="card-title">Import Excel</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -58,21 +58,13 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="ct-file">Video File</label>
-                                <div class="input-group mb-3">
+                                <label for="xcl">Excel File</label>
+                                <div class="input-group">
                                     <div class="custom-file">
-                                        <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*" multiple>
-                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Video</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                        <label for="xcl" class="custom-file-label">Choose excel file</label>
+                                        <input class="custom-file-input" type="file" name="xcl" id="xcl" accept=".xls,.xlsx">
                                     </div>
                                 </div>
-                                @error('file')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
                             </div>
                             <div class="form-group">
                                 <a href="" id="your-file"></a>
@@ -81,15 +73,10 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                            </div>
+                            <a href="/admin/video" type="button" class="btn btn-dark">Save</a>
                         </div>
                     </form>
                 </div>
-                <!-- card-->
-                <a href="/admin/video" type="button" class="btn btn-dark">Save</a>
-
             </div>
         </div>
     </div>

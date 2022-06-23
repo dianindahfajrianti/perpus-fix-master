@@ -62,6 +62,10 @@ class VideoController extends Controller
     {
         return view('video.import');
     }
+    public function excel()
+    {
+        return view('video.excel');
+    }
 
     /**
      * Store a newly created resource in storage.

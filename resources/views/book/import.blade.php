@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Admin - Import Video')
+@section('title', 'Admin - Import Buku')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -15,13 +15,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Import Video</h3>
+                <h3 class="display-4">Import Buku</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/Video">Video</a></li>
-                    <li class="breadcrumb-item">Import Video</li>
+                    <li class="breadcrumb-item"><a href="/admin/buku">Buku</a></li>
+                    <li class="breadcrumb-item">Import Buku</li>
                 </ol>
             </div>
         </div>
@@ -50,19 +50,19 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Import Video</h3>
+                        <h3 class="card-title">Import Buku</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/video" enctype="multipart/form-data">
+                    <form method="post" action="/admin/buku" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="ct-file">Video File</label>
+                                <label for="ct-file">Buku File</label>
                                 <div class="input-group mb-3">
                                     <div class="custom-file">
-                                        <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*" multiple>
-                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Video</label>
+                                        <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept=".pdf,.doc,.docx" multiple>
+                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Buku</label>
                                     </div>
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="ct-file-desc">Upload</span>
@@ -88,7 +88,7 @@
                     </form>
                 </div>
                 <!-- card-->
-                <a href="/admin/video" type="button" class="btn btn-dark">Save</a>
+                <a href="/admin/buku" type="button" class="btn btn-dark">Save</a>
 
             </div>
         </div>

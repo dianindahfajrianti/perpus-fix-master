@@ -296,4 +296,13 @@ class BookController extends Controller
         $res->message = $msg;
         return response()->json($res);
     }
+
+    public function imports()
+    {
+        return view('book.import');
+    }
+    public function excel()
+    {
+        return view('book.excel');
+    }
 }
