@@ -116,6 +116,7 @@
                         </p>
                     </a>
                 </li>
+                @if (Auth::user()->role < 1)
                 <li class="nav-item">
                     <a href="/admin/akses" class="nav-link @if (Request::segment(2) == 'akses') {{'active'}} @endif">
                         <i class="nav-icon fas fa-igloo"></i>
@@ -124,6 +125,7 @@
                         </p>
                     </a>
                 </li>
+                @endif
                 {{-- <li class="nav-item">
                     <a href="/admin/riwayat" class="nav-link @if (Request::segment(2) == 'riwayat') {{'active'}} @endif">
                         <i class="nav-icon fas fa-book-open"></i>

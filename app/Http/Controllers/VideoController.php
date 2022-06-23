@@ -8,11 +8,13 @@ use App\Grade;
 use App\Major;
 use App\Video;
 use App\Subject;
+use App\TempVid;
 use App\Education;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -35,8 +37,21 @@ class VideoController extends Controller
     public function data()
     {
         $rel = ['getEdu','getGrade'];
-        $model = Video::with($rel)
-                 ->orderBy('created_at','desc');
+        $id = [
+            'id' => Auth::user()->school_id
+        ];
+        $role = Auth::user()->role;
+        if ($role < 1) {
+            $model = Video::with($rel)
+            ->orderBy('created_at','desc');
+        }else{
+            $model = Video::with($rel)
+            ->whereHas('schools',function($query) use ($id){
+                $query->where($id);
+            })
+            ->orderBy('created_at','desc');
+        }
+
         return DataTables::of($model)
                 ->addIndexColumn()
                 ->setRowId('id')
@@ -351,6 +366,13 @@ class VideoController extends Controller
         return response()->json($res);
     }
 
+    /**
+     * Generate Thumbnail with ffmpeg
+     * @param  \App\Video  $video
+     * @return \Illuminate\Http\RedirectResponse
+     * 
+     */
+
     public function thumb(Video $video)
     {
         $res = new stdClass;
@@ -385,10 +407,74 @@ class VideoController extends Controller
         }
     }
 
-    public function imports()
+    public function dataTemp()
+    {
+        $model = TempVid::orderBy('created_at','desc');
+        return DataTables::of($model)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->toJson();
+    }
+
+    public function mass(Request $request)
+    {
+        
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+        
+        if (!$receiver->isUploaded()) {
+
+            // file not uploaded
+
+            throw new UploadMissingFileException();
+
+        }
+
+        $fileReceived = $receiver->receive(); // receive file
+
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+
+            $file = $fileReceived->getFile(); // get file
+
+            $extension = $file->getClientOriginalExtension();
+
+            
+            $vid = new TempVid;
+            $fileName = $file->getClientOriginalName().".".$extension; // a unique file name
+            
+            $path = "public/temp/video/";
+
+            $disk = Storage::disk(config('filesystems.default'));
+
+            $disk->putFileAs($path,$file,$fileName);
+
+            unlink($file->getPathname());
+            
+            $vid->filename = str_replace('.mp4','',$file->getClientOriginalName());
+            $vid->filetype = $extension;
+
+            $vid->save();
+
+            return [
+                'path' => 'video/temp'
+            ];
+
+        }
+        // otherwise return percentage information
+        $handler = $fileReceived->handler();
+        return [
+
+            'done' => $handler->getPercentageDone(),
+
+            'status' => true
+
+        ];
+    }
+
+    public function import()
     {
         return view('video.import');
     }
+
     public function excel()
     {
         return view('video.excel');

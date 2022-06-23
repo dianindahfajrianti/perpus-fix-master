@@ -170,11 +170,6 @@
                                     ];
                                     @endphp
                                     @for($i = 0; $i < count($rl); $i++)
-                                    @php
-                                        if ($i == 1) {
-                                            $i = $i+1;
-                                        }
-                                    @endphp
                                     <option value="{{ $i }}">{{ $rl[$i] }}</option>
 
                                     @endfor

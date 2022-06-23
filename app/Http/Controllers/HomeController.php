@@ -10,8 +10,14 @@ use App\Video;
 use App\Export;
 use App\History;
 use App\Subject;
+use App\TempVid;
 use App\Education;
 use App\Helpers\VideoStream;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class HomeController extends Controller
 {
@@ -152,7 +158,11 @@ class HomeController extends Controller
     }
     public function tiket()
     {
-        
-        // return dd($last);
+        return view('home.test');
+    }
+
+    public function xcl()
+    {
+        return view('home');
     }
 }

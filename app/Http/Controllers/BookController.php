@@ -11,6 +11,7 @@ use App\Education;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
@@ -34,12 +35,21 @@ class BookController extends Controller
 
     public function data()
     {
-        
-        return DataTables::of(
-            Book::with(['getEdu', 'getGrade'])
-            ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author')
-            ->orderBy('updated_at','desc')
-        )
+        $rl = Auth::user()->role;
+        $scale = [
+            'id' => Auth::user()->school_id
+        ];
+        if ($rl < 1) {
+            $model = Book::with(['getEdu', 'getGrade'])
+            ->orderBy('updated_at','desc');
+        }else{
+            $model = Book::with(['getEdu', 'getGrade'])
+            ->whereHas('schools',function($query) use ($scale){
+                $query->where($scale);
+            })
+            ->orderBy('updated_at','desc');
+        }
+        return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();

@@ -47,14 +47,21 @@ Route::middleware('auth')->group(function () {
         Route::resource('sekolah', 'SchoolController');
         // Route::resource('riwayat', 'HistoryController');
         Route::resource('pendidikan', 'EducationController');
+        // Special route with mass upload
+        
         // Video CMS
+        Route::prefix('video')->group(function () {
+            Route::get('/temp','VideoController@list');
+            Route::post('/mass','VideoController@mass');
+            Route::get('/dtemp','VideoController@dataTemp');
+        });
         Route::resource('video', 'VideoController');
         // -- video Upload File --
         Route::get('/video/{video}/upload','VideoController@upload')->name('video.upload');
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
-        Route::get('/video-import','VideoController@imports')->name('video.imports');
+        Route::get('/video-import','VideoController@import')->name('video.import');
         Route::get('/video-excel','VideoController@excel')->name('video.excel');
         // -- exec FFMPEG --
         Route::get('/video/{video}/thumb','VideoController@thumb');
@@ -74,6 +81,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile', 'UserController@profile');
     Route::post('/reset', 'UserController@reset');
+    
+    //DataTable Needs
+    Route::get('/user/all', 'UserController@data');
+    Route::get('/sekolah/all', 'SchoolController@data');
+    Route::get('/pendidikan/all', 'EducationController@data');
+    Route::get('/kelas/all','GradeController@data');
+    Route::get('/jurusan/all','MajorController@data');
+    Route::get('/mapel/all','SubjectController@data');
+    Route::get('/buku/all', 'BookController@data');
+    Route::get('/getvid/all', 'VideoController@data');
+    Route::get('/akses/buku/{school}','PermissionController@dataBook');
+    Route::get('/akses/video/{school}','PermissionController@dataVideo');
+
+    // Datatable Akses
+    Route::get('/sekolah/{school}/buku','PermissionController@books');
+    Route::get('/sekolah/{school}/video','PermissionController@videos');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/sch/{edu}','Admin@sch');
+    Route::get('/gr/{school}','Admin@gr');
+    Route::get('/maj','Admin@maj');
+    Route::get('/sub/{major}','Admin@sub');
 });
 
 Auth::routes([
@@ -82,21 +112,7 @@ Auth::routes([
     'verify' => false, // Email Verification Routes...
 ]);
 
-//DataTable Needs
-Route::get('/user/all', 'UserController@data');
-Route::get('/sekolah/all', 'SchoolController@data');
-Route::get('/pendidikan/all', 'EducationController@data');
-Route::get('/kelas/all','GradeController@data');
-Route::get('/jurusan/all','MajorController@data');
-Route::get('/mapel/all','SubjectController@data');
-Route::get('/buku/all', 'BookController@data');
-Route::get('/getvid/all', 'VideoController@data');
-Route::get('/akses/buku/{school}','PermissionController@dataBook');
-Route::get('/akses/video/{school}','PermissionController@dataVideo');
 
-// Datatable Akses
-Route::get('/sekolah/{school}/buku','PermissionController@books');
-Route::get('/sekolah/{school}/video','PermissionController@videos');
 
 //Edge Server Needs
 
