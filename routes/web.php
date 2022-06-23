@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('gid', 'Admin@getID');
         // CMS
         Route::resource('buku', 'BookController');
+        Route::get('/buku-import','BookController@imports')->name('book.imports');
+        Route::get('/buku-excel','BookController@excel')->name('book.excel');
+
         Route::resource('user', 'UserController');
         Route::post('user-store', 'UserController@storeOne')->name('user-store');
         Route::resource('grade', 'GradeController');
@@ -51,6 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
         Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
         Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
+        Route::get('/video-import','VideoController@imports')->name('video.imports');
+        Route::get('/video-excel','VideoController@excel')->name('video.excel');
         // -- exec FFMPEG --
         Route::get('/video/{video}/thumb','VideoController@thumb');
         // Akses || Permissions

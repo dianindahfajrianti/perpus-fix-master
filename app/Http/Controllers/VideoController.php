@@ -384,4 +384,13 @@ class VideoController extends Controller
             return redirect($req)->with($res->status,json_encode($res));
         }
     }
+
+    public function imports()
+    {
+        return view('video.import');
+    }
+    public function excel()
+    {
+        return view('video.excel');
+    }
 }
