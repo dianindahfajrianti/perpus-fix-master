@@ -121,12 +121,21 @@
 
         let browseFile = $('#ct-file');
         let resumable = new Resumable({
+<<<<<<< Updated upstream
         target: '/admin/buku-import'
         , chunkSize: 10*1024*1024
         , query: {
             _token: '{{ csrf_token() }}',
         }
         , fileType: ['.pdf','.doc','docx']
+=======
+        target: '/admin/driver/'+{{$driver->id}}+'/updateFile'
+        , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+        , query: {
+            _token: '{{ csrf_token() }}',
+        } // CSRF token
+        , fileType: ['iso','zip']
+>>>>>>> Stashed changes
         , headers: {
             'Accept': 'application/json'
         }
