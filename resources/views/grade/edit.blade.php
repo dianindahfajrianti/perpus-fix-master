@@ -17,7 +17,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/kelas">Kelas</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/grade">Kelas</a></li>
                     <li class="breadcrumb-item">Edit Kelas</li>
                 </ol>
             </div>
