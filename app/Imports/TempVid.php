@@ -41,7 +41,7 @@ class TempVid implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'sekolah' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => ''
+            'mapel' => 'required'
         ];
     }
 }

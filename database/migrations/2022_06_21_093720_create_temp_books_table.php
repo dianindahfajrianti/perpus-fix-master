@@ -15,17 +15,17 @@ class CreateTempBooksTable extends Migration
     {
         Schema::create('temp_books', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('title',100)->nullable();
-            $table->text('desc')->nullable();
+            $table->char('judul',100)->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->integer('th_terbit')->nullable();
+            $table->string('penerbit',100)->nullable();
+            $table->string('pengarang',100)->nullable();
+            $table->integer('jenjang')->nullable();
+            $table->integer('kelas')->nullable();
+            $table->integer('jurusan')->nullable();
+            $table->integer('mapel')->nullable();
             $table->string('filename')->nullable();
             $table->char('filetype',3)->nullable();
-            $table->integer('edu_id')->nullable();
-            $table->integer('grade_id')->nullable();
-            $table->integer('major_id')->nullable();
-            $table->integer('sub_id')->nullable();
-            $table->integer('published_year')->nullable();
-            $table->string('publisher',100)->nullable();
-            $table->string('author',100)->nullable();
             $table->timestamps();
         });
     }

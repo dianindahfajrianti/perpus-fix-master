@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
 use stdClass;
 use App\Grade;
 use App\Major;
@@ -10,12 +9,12 @@ use App\Video;
 use App\Subject;
 use App\TempVid;
 use App\Education;
-use Carbon\Carbon;
+use App\Exports\TempVid as ExportsTempVid;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Imports\TempVid as ImportsTempVid;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -478,5 +477,115 @@ class VideoController extends Controller
     public function excel()
     {
         return view('video.excel');
+    }
+
+    public function downloadExcel(Request $request)
+    {
+        return new ExportsTempVid();
+    }
+
+    public function saveExcel(Request $request)
+    {
+        $res = new stdClass;
+        $request->validate([
+            'xcl' => 'required|mimes:xls,xlsx'
+        ]);
+        try {
+            $file = $request->file('xcl');
+
+            $imp = (new ImportsTempVid);
+            $imp->import($file);
+
+            $temp = TempVid::all();
+            
+            foreach ($temp as $vid) {
+                $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
+                
+                $video = new Video;
+                $video->filename = $filename;
+                $video->filetype = $vid->filetype;
+                
+                $op = 'public/temp/video/'."$vid->filename.$vid->filetype";
+                $np = 'public/video/'."$filename.$video->filetype";
+                $path = storage_path('app/'.$op);
+                $opthumb = 'public/temp/video/'."$filename.jpg";
+                $npthumb = 'public/thumb/video/'."$filename.jpg";
+                $path2 = storage_path('app/'.$opthumb);
+                
+                
+                if (file_exists("$vid->filename.$vid->filetype")) {
+                    $ffmpeg = "ffmpeg -ss $vid->thumbnail -i $path -q:v 4 -frames:v 1 -s 192x108 $path2";
+                    $exec = shell_exec($ffmpeg);
+
+                    Storage::move($op,$np);
+                    Storage::move($opthumb,$npthumb);
+                }
+                
+                $edu = Education::where('edu_name','=',$vid->jenjang)->first();
+                $grade = Grade::where('grade_name','=',$vid->kelas)->first();
+                $mjr = Major::where('maj_name','=',$vid->jurusan)->first();
+                $sub = Subject::where('sbj_name','=',$vid->mapel)->first();
+
+                if (empty($edu)) {
+                    $ed = $edu->id;
+                }else{
+                    $ed = null;
+                }
+                if (empty($grade)) {
+                    $gr = null;
+                }else{
+                    $gr = $grade->id;
+                }
+                if (empty($mjr)) {
+                    $mj = null;
+                }else {
+                    $mj = $mjr->id;
+                }
+                if (empty($sub)) {
+                    $su = null;
+                }else {
+                    $su = $sub->id;
+                }
+
+                $video->title = $vid->judul;
+                $video->desc = $vid->deskripsi;
+                $video->edu_id = $ed;
+                $video->grade_id= $gr;
+                $video->major_id= $mj;
+                $video->sub_id= $su;
+                $video->creator = $vid->nama_pembuat;
+                $video->frame = $vid->thumbnail;
+                $save = $video->save();
+            }
+            if ($save) {
+                TempVid::truncate();
+                
+                $res->status = 'success';
+                $res->title = 'Berhasil';
+                $res->message = 'Video berhasil di import.';
+                
+                return redirect()->route('video.index')->with($res->status, json_encode($res));
+            }else{
+                $res->status = 'error';
+                $res->title = 'Gagal';
+                $res->message = 'Gagal import video.';
+        
+                return redirect()->route('video.index')->with($res->status, json_encode($res));
+            }
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            
+            foreach ($failures as $key => $val) {
+                $val->row(); // row that went wrong
+                $val->attribute(); // either heading key (if using heading row concern) or column index
+                $val->errors(); // Actual error messages from Laravel validator
+                $val->values(); // The values of the row that has failed.
+                
+                $res->message[$key] = $val->errors();
+            }
+            $res->status = 'error';
+
+            return redirect()->route('video.index')->with($res->status, json_encode($res));
+        }
     }
 }

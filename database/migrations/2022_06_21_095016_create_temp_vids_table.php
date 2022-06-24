@@ -15,16 +15,16 @@ class CreateTempVidsTable extends Migration
     {
         Schema::create('temp_vids', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('title',100)->nullable();
-            $table->text('desc')->nullable();
+            $table->char('judul',100)->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->string('nama_pembuat')->nullable();
+            $table->string('thumbnail',8)->nullable();
+            $table->integer('jenjang')->nullable();
+            $table->integer('kelas')->nullable();
+            $table->integer('jurusan')->nullable();
+            $table->integer('mapel')->nullable();
             $table->string('filename')->nullable();
             $table->char('filetype',3)->nullable();
-            $table->string('frame',8)->nullable();
-            $table->integer('edu_id')->nullable();
-            $table->integer('grade_id')->nullable();
-            $table->integer('major_id')->nullable();
-            $table->integer('sub_id')->nullable();
-            $table->string('creator')->nullable();
             $table->timestamps();
         });
     }

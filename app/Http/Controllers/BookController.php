@@ -7,7 +7,10 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\Subject;
+use App\TempBook;
 use App\Education;
+use App\Exports\TempBook as ExportsTempBook;
+use App\Imports\TempBook as ImportsTempBook;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -16,6 +19,9 @@ use Intervention\Image\ImageManager;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class BookController extends Controller
 {
@@ -288,19 +294,20 @@ class BookController extends Controller
     public function destroy(Book $buku)
     {
         $res = new stdClass;
-        $del = Storage::delete('public/pdf/'.$buku->filename);
-        if ($del) {
-            Storage::delete('public/thumb/pdf/'.$buku->thumb);
-            
-            $buku->delete();
-            $status = 'success';
-            $title = 'Berhasil';
-            $msg = 'Hapus buku berhasil.';
-        }else{
-            $status = 'error';
-            $title = 'Gagal';
-            $msg = 'Hapus buku gagal.';
+        $ex = file_exists(storage_path("public/pdf/")."$buku->filename.$buku->filetype");
+        $ex = file_exists(storage_path("public/thumb/pdf/")."$buku->thumb");
+        if ($ex) {
+            Storage::delete('public/pdf/'.$buku->filename);
         }
+        if ($et) {
+            Storage::delete('public/thumb/pdf/'.$buku->thumb);
+        }
+        $buku->delete();
+        
+        $status = 'success';
+        $title = 'Berhasil';
+        $msg = 'Hapus buku berhasil.';
+        
         $res->status = $status;
         $res->title = $title;
         $res->message = $msg;
@@ -314,5 +321,163 @@ class BookController extends Controller
     public function excel()
     {
         return view('book.excel');
+    }
+
+    public function mass(Request $request)
+    {
+        
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+        
+        if (!$receiver->isUploaded()) {
+
+            // file not uploaded
+
+            throw new UploadMissingFileException();
+
+        }
+
+        $fileReceived = $receiver->receive(); // receive file
+
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+
+            $file = $fileReceived->getFile(); // get file
+
+            $extension = $file->getClientOriginalExtension();
+
+            
+            $buku = new TempBook;
+            $fileName = $file->getClientOriginalName().".".$extension; // a unique file name
+            
+            $path = "public/temp/pdf/";
+
+            $disk = Storage::disk(config('filesystems.default'));
+
+            $disk->putFileAs($path,$file,$fileName);
+
+            unlink($file->getPathname());
+            
+            $buku->filename = str_replace('.mp4','',$file->getClientOriginalName());
+            $buku->filetype = $extension;
+
+            $buku->save();
+
+            return [
+                'path' => 'pdf/temp'
+            ];
+
+        }
+        // otherwise return percentage information
+        $handler = $fileReceived->handler();
+        return [
+            'done' => $handler->getPercentageDone(),
+            'status' => true
+        ];
+    }
+    public function downloadExcel(Request $request)
+    {
+        return new ExportsTempBook();
+    }
+
+    public function saveExcel(Request $request)
+    {
+
+        $res = new stdClass;
+        $request->validate([
+            'xcl' => 'required|mimes:xls,xlsx'
+        ]);
+        try {
+            $file = $request->file('xcl');
+
+            $imp = (new ImportsTempBook);
+            $imp->import($file);
+
+            $temp = TempBook::all();
+
+            foreach ($temp as $bk) {
+                $filename = Str::slug($bk->judul." ".$bk->nama_pembuat." ".date('Y-m-d'),'-');
+                
+                $book = new Book;
+                $book->filename = $filename;
+                $book->filetype = $bk->filetype;
+                
+                $op = 'public/temp/pdf/'."$bk->filename.$bk->filetype";
+                $np = 'public/pdf/'."$filename.$book->filetype";
+                $path = storage_path('app/'.$op);
+                $opthumb = 'public/temp/pdf/'."$filename.jpg";
+                $npthumb = 'public/thumb/pdf/'."$filename.jpg";
+                $path2 = storage_path('app/'.$opthumb);
+                
+                if (file_exists("$bk->filename.$bk->filetype")) {
+                    Storage::move($op,$np);
+                    Storage::move($opthumb,$npthumb);
+                }
+                
+                $edu = Education::where('edu_name','=',$bk->jenjang)->first();
+                $grade = Grade::where('grade_name','=',$bk->kelas)->first();
+                $mjr = Major::where('maj_name','=',$bk->jurusan)->first();
+                $sub = Subject::where('sbj_name','=',$bk->mapel)->first();
+
+                if (empty($edu)) {
+                    $ed = $edu->id;
+                }else{
+                    $ed = null;
+                }
+                if (empty($grade)) {
+                    $gr = null;
+                }else{
+                    $gr = $grade->id;
+                }
+                if (empty($mjr)) {
+                    $mj = null;
+                }else {
+                    $mj = $mjr->id;
+                }
+                if (empty($sub)) {
+                    $su = null;
+                }else {
+                    $su = $sub->id;
+                }
+
+                $book->title = $bk->judul;
+                $book->desc = $bk->deskripsi;
+                $book->edu_id = $ed;
+                $book->grade_id= $gr;
+                $book->major_id= $mj;
+                $book->sub_id= $su;
+                $book->creator = $bk->nama_pembuat;
+                $book->frame = $bk->thumbnail;
+                $book->thumb = "$filename.jpg";
+                $save = $book->save();
+            }
+            if ($save) {
+                TempBook::truncate();
+                
+                $res->status = 'success';
+                $res->title = 'Berhasil';
+                $res->message = 'Buku berhasil di import.';
+                
+                return redirect()->route('buku.index')->with($res->status, json_encode($res));
+            }else{
+                $res->status = 'error';
+                $res->title = 'Gagal';
+                $res->message = 'Gagal import buku.';
+        
+                return redirect()->route('buku.index')->with($res->status, json_encode($res));
+            }
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            
+            foreach ($failures as $key => $val) {
+                $val->row(); // row that went wrong
+                $val->attribute(); // either heading key (if using heading row concern) or column index
+                $val->errors(); // Actual error messages from Laravel validator
+                $val->values(); // The values of the row that has failed.
+                
+                $res->message[$key] = $val->errors();
+            }
+            $res->status = 'error';
+
+            return redirect()->route('video.index')->with($res->status, json_encode($res));
+        }
     }
 }

@@ -150,7 +150,7 @@ class UserController extends Controller
                 
                 $res->status = 'success';
                 $res->message = 'Users imported successfully.';
-        
+                
                 return redirect()->route('user.index')->with($res->status, json_encode($res));
             }else{
                 $res->status = 'error';

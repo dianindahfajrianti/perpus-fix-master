@@ -36,8 +36,15 @@ Route::middleware('auth')->group(function () {
         Route::get('gid', 'Admin@getID');
         // CMS
         Route::resource('buku', 'BookController');
-        Route::get('/buku-import','BookController@imports')->name('book.imports');
-        Route::get('/buku-excel','BookController@excel')->name('book.excel');
+        Route::get('/buku-import','BookController@imports')->name('buku.imports');
+        Route::get('/buku-excel','BookController@excel')->name('buku.excel');
+
+        Route::prefix('buku')->group(function () {
+            Route::post('/mass','BookController@mass');
+            Route::post('/exceldata','BookController@saveExcel')->name('buku.saveExcel');
+            Route::post('/xcl-download','BookController@downloadExcel');
+            Route::get('/dtemp','BookController@dataTemp');
+        });
 
         Route::resource('user', 'UserController');
         Route::post('user-store', 'UserController@storeOne')->name('user-store');
@@ -50,9 +57,11 @@ Route::middleware('auth')->group(function () {
         // Special route with mass upload
         
         // Video CMS
+        //Mass Upload
         Route::prefix('video')->group(function () {
-            Route::get('/temp','VideoController@list');
             Route::post('/mass','VideoController@mass');
+            Route::post('/exceldata','VideoController@saveExcel')->name('video.saveExcel');
+            Route::post('/xcl-download','VideoController@downloadExcel');
             Route::get('/dtemp','VideoController@dataTemp');
         });
         Route::resource('video', 'VideoController');
@@ -98,7 +107,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sekolah/{school}/buku','PermissionController@books');
     Route::get('/sekolah/{school}/video','PermissionController@videos');
 });
-
+// return condition for ajax
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/sch/{edu}','Admin@sch');
     Route::get('/gr/{school}','Admin@gr');
@@ -106,8 +115,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/sub/{major}','Admin@sub');
 });
 
+if (\App\User::count() > 0) {
+    $param = false;
+}else{
+    $param = true;
+};
+
 Auth::routes([
-    'register' => false, // Registration Routes...
+    'register' => $param, // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
