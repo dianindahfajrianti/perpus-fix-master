@@ -54,7 +54,6 @@
                     <div class="card-header">
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah buku</button>
                         <a href="buku-import" class="btn btn-dark">Import Buku</a>
-                        <a href="buku-excel" class="btn btn-dark">Import Excel</a>
                     </div>
                     <div class="card-body">
                         {{-- <div class="table-responsive"> --}}

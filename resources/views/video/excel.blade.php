@@ -20,7 +20,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/Video">Video</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/video">Video</a></li>
                     <li class="breadcrumb-item">Import Video</li>
                 </ol>
             </div>
@@ -58,7 +58,15 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="xcl">Excel File</label>
+                                <label for="">Download Nama File</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-download" download></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="xcl">Import Excel File</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <label for="xcl" class="custom-file-label">Choose excel file</label>
