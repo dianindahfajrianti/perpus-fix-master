@@ -62,7 +62,7 @@
                                 <div class="input-group mb-3">
                                     <div class="custom-file">
                                         <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept=".pdf,.doc,.docx" multiple>
-                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Buku</label>
+                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi File</label>
                                     </div>
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="ct-file-desc">Upload</span>
@@ -88,7 +88,7 @@
                     </form>
                 </div>
                 <!-- card-->
-                <a href="/admin/buku" type="button" class="btn btn-dark">Save</a>
+                <a href="/admin/buku-excel" type="button" class="btn btn-dark">Save</a>
 
             </div>
         </div>

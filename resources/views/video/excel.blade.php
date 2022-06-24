@@ -58,7 +58,15 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="xcl">Excel File</label>
+                                <label for="">Download Nama File</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-download" download></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="xcl">Import Excel File</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <label for="xcl" class="custom-file-label">Choose excel file</label>
