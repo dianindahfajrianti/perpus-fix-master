@@ -380,7 +380,7 @@ class BookController extends Controller
 
     public function saveExcel(Request $request)
     {
-
+        set_time_limit(0);
         $res = new stdClass;
         $request->validate([
             'xcl' => 'required|mimes:xls,xlsx'
