@@ -19,8 +19,8 @@ Detail {{ $video->title }}
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/Video">Video</a></li>
-                    <li class="breadcrumb-item">Edit Video</li>
+                    <li class="breadcrumb-item"><a href="/admin/video">Video</a></li>
+                    <li class="breadcrumb-item">Edit Video Info</li>
                 </ol>
             </div>
         </div>
@@ -49,7 +49,7 @@ Detail {{ $video->title }}
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Edit Video</h3>
+                        <h3 class="card-title">Edit Video Info</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->

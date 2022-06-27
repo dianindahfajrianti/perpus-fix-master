@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
-{{-- TimePicker --}}
-<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -54,41 +52,39 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/buku" enctype="multipart/form-data">
-                        @csrf
+                    <form method="post" action="{{ route('/buku/mass') }}" enctype="multipart/form-data">
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="ct-file">Buku File</label>
-                                <div class="input-group mb-3">
-                                    <div class="custom-file">
-                                        <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept=".pdf,.doc,.docx" multiple>
-                                        <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Buku</label>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="ct-file">Buku File</label>
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="buku/*" multiple>
+                                                <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi File</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                    
+                                    <div class="form-group">
+                                        <a href="" class="form-control" id="your-file"></a>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                @error('file')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <a href="" id="your-file"></a>
                             </div>
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                            </div>
+                            <a href="/admin/buku-excel" id="save-file" type="submit" class="btn btn-dark">Save</a>
                         </div>
                     </form>
                 </div>
-                <!-- card-->
-                <a href="/admin/buku" type="button" class="btn btn-dark">Save</a>
 
             </div>
         </div>
@@ -99,34 +95,28 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
+<script src="/assets/js/resumable/resumable.js"></script>
 <!-- Page specific script -->
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
-        $('#your-file').hide();
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
 
-        //Customize timepicker.js
-        $('#frame').timepicker({
-            timeFormat: 'HH:mm:ss',
-            maxHour: 2,
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
+        $('#your-file').hide();
+        $('#save-file').addClass('disabled');
 
         let browseFile = $('#ct-file');
+
         let resumable = new Resumable({
-        target: '/admin/buku-import'
-        , chunkSize: 10*1024*1024
+        target: '/mass'
+        , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
         , query: {
             _token: '{{ csrf_token() }}',
-        }
-        , fileType: ['.pdf','.doc','docx']
+        } // CSRF token
+        , fileType: ['mp4','webm','ogm']
         , headers: {
             'Accept': 'application/json'
         }
@@ -136,25 +126,32 @@
         
         resumable.assignBrowse(browseFile);
 
-        resumable.on('fileAdded', function(file, event) {
+        resumable.on('fileAdded', function(file, event) { // trigger when file picked
             showProgress();
             // let fSize = file.size / 1000000;
-            resumable.upload()
+            resumable.upload() // to actually start uploading.
         });
         
-        resumable.on('fileProgress', function(file) {
+        resumable.on('fileProgress', function(file) { // trigger when file progress update
         updateProgress(Math.floor(file.progress() * 100));
         });
 
-        resumable.on('fileSuccess', function(file, response) {
+        resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
             response = JSON.parse(response)
             $('#your-file').attr('href', response.path);
             $('#your-file').text(response.filename);
             $('#your-file').show();
+            $('#save-file').removeClass('disabled');
+            $('#save-file').attr('href', '/admin/buku');
         });
 
-        resumable.on('fileError', function(file, response) {
-            alert('file uploading error.')
+        resumable.on('fileError', function(file, response) { // trigger when there is any error
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response,
+                timer: 1800
+            });
         });
 
 
@@ -176,6 +173,5 @@
             progress.hide();
         }
     });
-
 </script>
 @endsection

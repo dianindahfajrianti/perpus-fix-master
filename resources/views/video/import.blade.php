@@ -48,40 +48,42 @@
                 <!-- general form elements -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Video</h3>
+                        <h3 class="card-title">Import Video</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <div class="card-body">
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="ct-file">Video File</label>
-                                    <div class="input-group mb-3">
-                                        <div class="custom-file">
-                                            <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*" multiple>
-                                            <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Video</label>
-                                        </div>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" id="ct-file-desc">Upload</span>
+                    <form method="post" action="{{ route('/video/mass') }}" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="ct-file">Video File</label>
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                <input name="file" type="file" class="custom-file-input" value="{{old('file')}}" id="ct-file" accept="video/*" multiple>
+                                                <label class="custom-file-label" for="ct-file" aria-describedby="ct-file-desc">Choose Multi Video</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="ct-file-desc">Upload</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <a href="" class="form-control" id="your-file"></a>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                    
+                                    <div class="form-group">
+                                        <a href="" class="form-control" id="your-file"></a>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- /.card-body -->
+                        <!-- /.card-body -->
 
-                    <div class="card-footer">
-                        <a href="/admin/video-excel" id="save-file" type="submit" class="btn btn-dark">Save</a>
-                    </div>
+                        <div class="card-footer">
+                            <a href="/admin/video-excel" id="save-file" type="submit" class="btn btn-dark">Save</a>
+                        </div>
+                    </form>
                 </div>
 
             </div>
