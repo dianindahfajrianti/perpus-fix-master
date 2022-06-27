@@ -60,7 +60,9 @@
                             <div class="form-group">
                                 <label for="">Download Nama File</label>
                                 <div class="input-group">
-                                    <a href="/xcl-download"><i class="fas fa-download" download></i></a>
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-download" download></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="form-group">
