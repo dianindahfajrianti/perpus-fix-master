@@ -19,10 +19,10 @@ class CreateTempVidsTable extends Migration
             $table->text('deskripsi')->nullable();
             $table->string('nama_pembuat')->nullable();
             $table->string('thumbnail',8)->nullable();
-            $table->integer('jenjang')->nullable();
-            $table->integer('kelas')->nullable();
-            $table->integer('jurusan')->nullable();
-            $table->integer('mapel')->nullable();
+            $table->string('jenjang',100)->nullable();
+            $table->string('kelas',100)->nullable();
+            $table->string('jurusan',100)->nullable();
+            $table->string('mapel',100)->nullable();
             $table->string('filename')->nullable();
             $table->char('filetype',3)->nullable();
             $table->timestamps();

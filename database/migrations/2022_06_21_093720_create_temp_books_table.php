@@ -20,10 +20,10 @@ class CreateTempBooksTable extends Migration
             $table->integer('th_terbit')->nullable();
             $table->string('penerbit',100)->nullable();
             $table->string('pengarang',100)->nullable();
-            $table->integer('jenjang')->nullable();
-            $table->integer('kelas')->nullable();
-            $table->integer('jurusan')->nullable();
-            $table->integer('mapel')->nullable();
+            $table->string('jenjang',100)->nullable();
+            $table->string('kelas',100)->nullable();
+            $table->string('jurusan',100)->nullable();
+            $table->string('mapel',100)->nullable();
             $table->string('filename')->nullable();
             $table->char('filetype',3)->nullable();
             $table->timestamps();
