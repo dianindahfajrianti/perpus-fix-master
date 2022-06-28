@@ -223,7 +223,7 @@ class UserController extends Controller
         if ($request->role < 1) {
             $sch = '';
             $murid ='';
-            $val = 'required|alpha_num|min:6|max:15';
+            $val = 'required|alpha_num|min:6|max:19';
         }else{
             if ($request->role == 3) {
                 $murid = 'required';
@@ -231,7 +231,7 @@ class UserController extends Controller
                 $murid ='';
             }
             $sch = 'required';
-            $val = "required|digits_between:6,15|unique:users,username";
+            $val = "required|digits_between:6,19|unique:users,username";
         };
         $request->validate([
             'nama' => 'required',
@@ -336,7 +336,7 @@ class UserController extends Controller
         if ($request->role < 1) {
             $sch = '';
             $murid ='';
-            $val = 'required|alpha_num|min:6|max:15';
+            $val = 'required|alpha_num|min:6|max:19';
         }else{
             if ($request->role == 3) {
                 $murid = 'required';
@@ -344,7 +344,7 @@ class UserController extends Controller
                 $murid ='';
             }
             $sch = 'required';
-            $val = "required|digits_between:6,15";
+            $val = "required|digits_between:6,19";
         }
         $request->validate([
             'nama' => 'required',
@@ -363,6 +363,9 @@ class UserController extends Controller
             $user->grade_id = $request->kelas;
             $user->major_id = $request->jurusan;
             $user->role = $request->role;
+            if (!empty($request->password)) {
+                $user->password = Hash::make($request->password);
+            };
             $user->save();
             $stat = "success";
             $msg = "User $request->nama berhasil diubah!";
@@ -456,13 +459,13 @@ class UserController extends Controller
             $res->status = 'success';
             $res->message = 'Password berhasil diubah';
             
-            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            return redirect('/profile')->with($res->status,json_encode($res));
             
         }else{
             $res->status = 'error';
             $res->message = 'Password Salah';
             
-            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            return redirect('/profile')->with($res->status,json_encode($res));
             
         }
     }

@@ -6,17 +6,18 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\Video;
+use App\School;
 use App\Subject;
 use App\TempVid;
 use App\Education;
-use App\Exports\TempVid as ExportsTempVid;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Imports\TempVid as ImportsTempVid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\TempVid as ExportsTempVid;
+use App\Imports\TempVid as ImportsTempVid;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
@@ -479,9 +480,9 @@ class VideoController extends Controller
         return view('video.excel');
     }
 
-    public function downloadExcel(Request $request)
+    public function downloadExcel()
     {
-        return new ExportsTempVid();
+        return (new ExportsTempVid)->download('videolist.xlsx');
     }
 
     public function saveExcel(Request $request)
@@ -492,45 +493,49 @@ class VideoController extends Controller
             'xcl' => 'required|mimes:xls,xlsx'
         ]);
         try {
+            TempVid::truncate();
             $file = $request->file('xcl');
 
             $imp = (new ImportsTempVid);
             $imp->import($file);
-
-            $temp = TempVid::all();
             
+            $temp = TempVid::all();
+            $totrow = TempVid::count();
+            $save = 0;
+
             foreach ($temp as $vid) {
                 $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
                 
                 $video = new Video;
                 $video->filename = $filename;
-                $video->filetype = $vid->filetype;
+                $video->filetype = $vid->tipe_file;
                 
-                $op = 'public/temp/video/'."$vid->filename.$vid->filetype";
+                $op = 'public/temp/video/'."$vid->nama_file.$vid->tipe_file";
                 $np = 'public/video/'."$filename.$video->filetype";
                 $path = storage_path('app/'.$op);
-                $opthumb = 'public/temp/video/'."$filename.jpg";
-                $npthumb = 'public/thumb/video/'."$filename.jpg";
+                $thumb = "$filename.jpg";
+                $opthumb = 'public/temp/video/'.$thumb;
+                $npthumb = 'public/thumb/video/'.$thumb;
                 $path2 = storage_path('app/'.$opthumb);
                 
-                
-                if (file_exists("$vid->filename.$vid->filetype")) {
+                if (file_exists($path)) {
                     $ffmpeg = "ffmpeg -ss $vid->thumbnail -i $path -q:v 4 -frames:v 1 -s 192x108 $path2";
                     $exec = shell_exec($ffmpeg);
-
                     Storage::move($op,$np);
+                    $video->thumb = $thumb;
+                }
+                if (file_exists($path2)) {
                     Storage::move($opthumb,$npthumb);
                 }
-                
                 $edu = Education::where('edu_name','=',$vid->jenjang)->first();
                 $grade = Grade::where('grade_name','=',$vid->kelas)->first();
                 $mjr = Major::where('maj_name','=',$vid->jurusan)->first();
                 $sub = Subject::where('sbj_name','=',$vid->mapel)->first();
-
+                
                 if (empty($edu)) {
-                    $ed = $edu->id;
-                }else{
                     $ed = null;
+                }else{
+                    $ed = $edu->id;
                 }
                 if (empty($grade)) {
                     $gr = null;
@@ -556,9 +561,13 @@ class VideoController extends Controller
                 $video->sub_id= $su;
                 $video->creator = $vid->nama_pembuat;
                 $video->frame = $vid->thumbnail;
-                $save = $video->save();
+                $video->clicked_time = 0;
+                if($video->save()){
+                $save++;
+                };
             }
-            if ($save) {
+
+            if ($save == $totrow) {
                 TempVid::truncate();
                 
                 $res->status = 'success';
@@ -569,7 +578,7 @@ class VideoController extends Controller
             }else{
                 $res->status = 'error';
                 $res->title = 'Gagal';
-                $res->message = 'Gagal import video.';
+                $res->message = 'Gagal import video. Row terakhir '.$save;
         
                 return redirect()->route('video.index')->with($res->status, json_encode($res));
             }

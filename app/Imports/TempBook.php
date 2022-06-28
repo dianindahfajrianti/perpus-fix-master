@@ -26,11 +26,12 @@ class TempBook implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'th_terbit' => @$row['th_terbit'],
             'penerbit' => @$row['penerbit'],
             'pengarang' => @$row['pengarang'],
-            'thumbnail' => @$row['thumbnail'],
             'jenjang' => @$row['jenjang'],
             'kelas' => @$row['kelas'],
             'jurusan' => @$row['jurusan'],
-            'mapel' => @$row['mapel']
+            'mapel' => @$row['mapel'],
+            'nama_file' => @$row['nama_file'],
+            'tipe_file' => @$row['tipe_file']
         ]);
     }
     public function rules(): array
@@ -41,11 +42,12 @@ class TempBook implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'th_terbit' => 'required',
             'penerbit' => 'required',
             'pengarang' => 'required',
-            'thumbnail' => 'required',
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => ''
+            'mapel' => '',
+            'nama_file' => 'required',
+            'tipe_file' => 'required'
         ];
     }
 }

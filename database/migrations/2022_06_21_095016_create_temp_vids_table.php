@@ -23,9 +23,8 @@ class CreateTempVidsTable extends Migration
             $table->string('kelas',100)->nullable();
             $table->string('jurusan',100)->nullable();
             $table->string('mapel',100)->nullable();
-            $table->string('filename')->nullable();
-            $table->char('filetype',3)->nullable();
-            $table->timestamps();
+            $table->string('nama_file')->nullable();
+            $table->char('tipe_file',3)->nullable();
         });
     }
 

@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username', $user->username)}}">
+                                <input type="@if($user->role < 1){{ 'text' }}@else {{ 'number' }} @endif" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username', $user->username)}}">
                                 @error('username')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -153,7 +153,15 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            @if(Auth::user()->role < 2)
+                                <label class="form-label" for="pass">Password</label>
+                                <input tooltip="Kosongkan jika tidak diubah" placeholder="Kosongkan jika tidak diubah" type="password" name="pass" id="pass" class="form-control @error('pass'){{'is-invalid'}}@enderror" value="{{old('pass')}}">
+                                @error('pass')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            @endif
                         </div>
                         <!-- /.card-body -->
 

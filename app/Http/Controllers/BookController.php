@@ -93,7 +93,7 @@ class BookController extends Controller
         ]);
         $file = $request->file('filebook');
         if ($file != null) {
-            $filename = Str::slug("$request->judul-$request->pengarang-$request->tahun");
+            $filename = Str::slug($request->judul." ".$request->pengarang." ".$request->tahun,"-");
             $fixname = "$filename.".$file->getClientOriginalExtension();
             $thumbname = "$filename.png";
             $ss = $file->storeAs('public\pdf',$fixname);
@@ -373,9 +373,9 @@ class BookController extends Controller
             'status' => true
         ];
     }
-    public function downloadExcel(Request $request)
+    public function downloadExcel()
     {
-        return new ExportsTempBook();
+        return (new ExportsTempBook())->download('bukulist.xlsx');
     }
 
     public function saveExcel(Request $request)
@@ -386,30 +386,37 @@ class BookController extends Controller
             'xcl' => 'required|mimes:xls,xlsx'
         ]);
         try {
+            TempBook::truncate();
             $file = $request->file('xcl');
 
             $imp = (new ImportsTempBook);
             $imp->import($file);
-
+            // return $imp->toArray($file);
             $temp = TempBook::all();
+            $totbk = TempBook::count();
+            $save = 0;
+
 
             foreach ($temp as $bk) {
-                $filename = Str::slug($bk->judul." ".$bk->nama_pembuat." ".date('Y-m-d'),'-');
-                
+                $filename = Str::slug($bk->judul." ".$bk->pengarang." ".$bk->th_terbit,'-');
+            
                 $book = new Book;
                 $book->filename = $filename;
-                $book->filetype = $bk->filetype;
+                $book->filetype = $bk->tipe_file;
                 
-                $op = 'public/temp/pdf/'."$bk->filename.$bk->filetype";
+                $op = 'public/temp/pdf/'."$bk->nama_file.$bk->tipe_file";
                 $np = 'public/pdf/'."$filename.$book->filetype";
                 $path = storage_path('app/'.$op);
                 $opthumb = 'public/temp/pdf/'."$filename.jpg";
                 $npthumb = 'public/thumb/pdf/'."$filename.jpg";
-                $path2 = storage_path('app/'.$opthumb);
+                $path2 = storage_path('app/'.$npthumb);
                 
-                if (file_exists("$bk->filename.$bk->filetype")) {
+                if (file_exists($path)) {
+                    $pdf = new Pdf($path);
+                    $saved = $pdf->saveImage($path2);
+                    $imgman = new ImageManager(['driver'=> 'imagick']);
+                    $imgman->make($path2)->resize(144,208)->save();
                     Storage::move($op,$np);
-                    Storage::move($opthumb,$npthumb);
                 }
                 
                 $edu = Education::where('edu_name','=',$bk->jenjang)->first();
@@ -418,9 +425,9 @@ class BookController extends Controller
                 $sub = Subject::where('sbj_name','=',$bk->mapel)->first();
 
                 if (empty($edu)) {
-                    $ed = $edu->id;
-                }else{
                     $ed = null;
+                }else{
+                    $ed = $edu->id;
                 }
                 if (empty($grade)) {
                     $gr = null;
@@ -444,12 +451,16 @@ class BookController extends Controller
                 $book->grade_id= $gr;
                 $book->major_id= $mj;
                 $book->sub_id= $su;
-                $book->creator = $bk->nama_pembuat;
-                $book->frame = $bk->thumbnail;
+                $book->published_year = $bk->th_terbit;
+                $book->publisher = $bk->penerbit;
+                $book->author = $bk->pengarang;
                 $book->thumb = "$filename.jpg";
-                $save = $book->save();
+                $book->clicked_time = 0;
+                if ($book->save()) {
+                    $save++;
+                };
             }
-            if ($save) {
+            if ($save == $totbk) {
                 TempBook::truncate();
                 
                 $res->status = 'success';
@@ -460,7 +471,7 @@ class BookController extends Controller
             }else{
                 $res->status = 'error';
                 $res->title = 'Gagal';
-                $res->message = 'Gagal import buku.';
+                $res->message = 'Gagal import buku. Row terakhir '.$save;
         
                 return redirect()->route('buku.index')->with($res->status, json_encode($res));
             }

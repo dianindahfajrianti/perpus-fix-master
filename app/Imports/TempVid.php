@@ -25,10 +25,12 @@ class TempVid implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'deskripsi' => @$row['deskripsi'],
             'nama_pembuat' => @$row['nama_pembuat'],
             'thumbnail' => @$row['thumbnail'],
-            'sekolah' => @$row['sekolah'],
+            'jenjang' => @$row['jenjang'],
             'kelas' => @$row['kelas'],
             'jurusan' => @$row['jurusan'],
-            'mapel' => @$row['mapel']
+            'mapel' => @$row['mapel'],
+            'nama_file' => @$row['nama_file'],
+            'tipe_file' => @$row['tipe_file']
         ]);
     }
     public function rules(): array
@@ -38,10 +40,12 @@ class TempVid implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'deskripsi' => '',
             'nama_pembuat' => 'required',
             'thumbnail' => 'required',
-            'sekolah' => 'required',
+            'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => 'required'
+            'mapel' => 'required',
+            'nama_file' => 'required',
+            'tipe_file' => 'required'
         ];
     }
 }
