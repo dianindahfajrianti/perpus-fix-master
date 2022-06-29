@@ -83,9 +83,16 @@ class Admin extends Controller
         })->get();
         return $model;
     }
-    public function gr(School $school)
+    public function gr($id)
     {
-        $edu = Education::where('id',$school->edu_id)->first();
+        $url = request('url');
+
+        if ($url == 'user') {
+            $school = School::where('id',$id)->first();
+            $edu = Education::where('id',$school->edu_id)->first();
+        }else{
+            $edu = Education::where('id',$id)->first();
+        }
         $name = $edu->edu_name;
         if($name === 'SD' || $name === 'MI'){
             $kls = Grade::where('grade_name','<=',6)->get();

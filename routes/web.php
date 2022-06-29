@@ -26,8 +26,6 @@ Route::middleware('active')->group(function () {
 });
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
-Route::get('/history', 'HomeController@showhistory')->name('history');
-
 
 //Admin Back-End
 Route::prefix('admin')->middleware('admin')->group(function () {
@@ -42,7 +40,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::post('/mass','BookController@mass');
         Route::post('/exceldata','BookController@saveExcel')->name('buku.saveExcel');
         Route::post('/xcl-download','BookController@downloadExcel');
-        Route::get('/dtemp','BookController@dataTemp');
     });
 
     Route::resource('user', 'UserController');
@@ -90,7 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile', 'UserController@profile');
     Route::post('/reset', 'UserController@reset');
-    
+    Route::get('/history', 'HomeController@showhistory')->name('history');
     //DataTable Needs
     Route::get('/user/all', 'UserController@data');
     Route::get('/sekolah/all', 'SchoolController@data');
@@ -112,7 +109,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     //sekolah by jenjang
     Route::get('/sch/{edu}','Admin@sch');
     // kelas by jenjang sekolah
-    Route::get('/gr/{school}','Admin@gr');
+    Route::get('/gr/{id}','Admin@gr');
     // all jurusan || pakai if jika perlu
     Route::get('/maj','Admin@maj');
     // mapel per jurusan
@@ -130,8 +127,6 @@ Auth::routes([
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
-
-
 
 //Edge Server Needs
 
