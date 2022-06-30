@@ -54,7 +54,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/video" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('video.saveExcel') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -83,7 +83,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <a href="/admin/video" type="button" class="btn btn-dark">Save</a>
+                            <button type="submit" class="btn btn-secondary">Save</button>
                         </div>
                     </form>
                 </div>

@@ -80,7 +80,7 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <a href="/admin/video-excel" id="save-file" type="submit" class="btn btn-dark">Save</a>
+                        <a href="/admin/video-excel" id="save-file" class="btn btn-dark">Save</a>
                     </div>
                 </div>
 
