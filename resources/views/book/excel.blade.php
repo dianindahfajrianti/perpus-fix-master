@@ -54,7 +54,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/book" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('buku.saveExcel') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
