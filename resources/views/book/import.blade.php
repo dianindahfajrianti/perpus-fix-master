@@ -109,7 +109,7 @@
         let browseFile = $('#ct-file');
 
         let resumable = new Resumable({
-        target: '/mass'
+        target: '/admin/buku/mass'
         , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
         , query: {
             _token: '{{ csrf_token() }}',
@@ -170,6 +170,7 @@
         function hideProgress() {
             progress.hide();
         }
+
     });
 </script>
 @endsection
