@@ -26,24 +26,25 @@ class AdminMiddleware
             $res->message = 'Silahkan login untuk mengakses menu admin';
             
             return redirect('/')->with($res->status,json_encode($res));
-        }
-        $headers = [
-            'Access-Control-Allow-Origin'      => '*',
-            'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS',
-            'Access-Control-Allow-Credentials' => 'true',
-            'Access-Control-Max-Age'           => '86400',
-            'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With'
-        ];
-
-        App::setLocale('id');
-        if (Auth::user()->role <= 2) {
-            $response = $next($request);
-                foreach($headers as $key => $value) {
-                    $response->headers->set($key, $value);
-                }
-            return $response;
         }else {
-            return redirect('/');
+            $headers = [
+                'Access-Control-Allow-Origin'      => '*',
+                'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS',
+                'Access-Control-Allow-Credentials' => 'true',
+                'Access-Control-Max-Age'           => '86400',
+                'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-Requested-With'
+            ];
+    
+            App::setLocale('id');
+            if (Auth::user()->role <= 2) {
+                $response = $next($request);
+                    foreach($headers as $key => $value) {
+                        $response->headers->set($key, $value);
+                    }
+                return $response;
+            }else {
+                return redirect('/');
+            }
         }
     }
 }

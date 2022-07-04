@@ -449,8 +449,8 @@ class VideoController extends Controller
 
             unlink($file->getPathname());
             
-            $vid->filename = str_replace('.mp4','',$file->getClientOriginalName());
-            $vid->filetype = $extension;
+            $vid->nama_file = str_replace('.mp4','',$file->getClientOriginalName());
+            $vid->tipe_file = $extension;
 
             $vid->save();
 

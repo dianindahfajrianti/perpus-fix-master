@@ -7,17 +7,15 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\Video;
-use App\Export;
 use App\History;
 use App\Subject;
 use App\TempVid;
 use App\Education;
+use Illuminate\Support\Str;
 use App\Helpers\VideoStream;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class HomeController extends Controller
 {
@@ -156,13 +154,56 @@ class HomeController extends Controller
         $file = $file->concat($vids);
         return view('home.searchpage', compact('sub', 'edu','file'));
     }
-    public function tiket()
+    public function tiket(Request $request)
     {
-        return view('home.test');
-    }
+        set_time_limit(0);
+        $book = new Book;
+        // echo $request->url()."<br>";
+        $path = 'public/temp/pdf/';
+        $newpath = 'public/pdf/';
+        $dir = Storage::disk('local')->directories($path);
 
-    public function xcl()
-    {
-        return view('home');
+        //get each edu
+        foreach($dir as $d){
+            $edu_name = basename($d);
+            $edu = Education::where('edu_name','=',$edu_name)->first();
+            $edu_dir = Storage::disk('local')->directories("$path/$edu_name/");
+            // echo $edu_name." & $edu->id <br><br>";
+            
+            //get each grade
+            foreach ($edu_dir as $gr) {
+                $grade_name = basename($gr);
+                $grade_dir = Storage::disk('local')->directories("$path/$edu_name/$grade_name/");
+                $grade = Grade::where('grade_name','=',$grade_name)->first();
+                // echo $grade_name." & $grade->id <br>";
+
+                //get each major
+                foreach ($grade_dir as $mjr) {
+                    $major_name = basename($mjr);
+                    $majpath = "$path/$edu_name/$grade_name/$major_name/";
+                    $major_dir = Storage::disk('local')->directories($majpath);
+                    $major = Major::where('maj_name','=',$major_name)->first();
+                    // echo "$edu_name kelas $grade_name jurusan $major->maj_name & ID $major->id , file tertambah jika ada <br><br>";
+                    //get all files in this folder
+                    $files = File::allFiles(storage_path("app/$path/$edu_name/$grade_name/$major_name/"));
+                    foreach ($files as $f) {
+                        $file = basename($f);
+                        // Storage::move($majpath.$file,$newpath.$file);
+                    }
+                    // get each subject
+                    foreach ($major_dir as $sub) {
+                        $sub_name = basename($sub);
+                        $sbj = Subject::where('sbj_name','=',$sub_name)->first();
+                        // echo "$edu_name kelas $grade_name jurusan $major->maj_name mapel $sbj->sbj_name & ID $sbj->id, file tertambah jika ada <br><br>";
+                        //get all files in this folder
+                        $fs = File::allFiles(storage_path("app/$path/$edu_name/$grade_name/$major_name/"));
+                        foreach ($fs as $f) {
+                            $fl = basename($f);
+                            // Storage::move($majpath.$fl,$newpath.$fl);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

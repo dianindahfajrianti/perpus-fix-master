@@ -2,14 +2,14 @@
 
 namespace App\Exports;
 
-use App\TempBook as AppTempBook;
 use Maatwebsite\Excel\Excel;
+use App\TempBook as AppTempBook;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TempBook implements FromCollection, WithHeadingRow
+class TempBook implements FromCollection, WithHeadings
 {
     use Exportable;
 
@@ -18,6 +18,10 @@ class TempBook implements FromCollection, WithHeadingRow
     */
     public function collection()
     {
-        return AppTempBook::all();
+        return AppTempBook::select('nama_file','tipe_file')->get();
+    }
+    public function headings(): array
+    {
+        return ['nama_file','tipe_file'];
     }
 }

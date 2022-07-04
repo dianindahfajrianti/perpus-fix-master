@@ -76,14 +76,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <a href="" id="your-file"></a>
-                            </div>
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-secondary">Save</button>
+                            <button type="submit" class="btn btn-dark">Save</button>
                         </div>
                     </form>
                 </div>

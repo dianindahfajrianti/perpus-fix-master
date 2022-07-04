@@ -295,7 +295,7 @@ class BookController extends Controller
     {
         $res = new stdClass;
         $ex = file_exists(storage_path("public/pdf/")."$buku->filename.$buku->filetype");
-        $ex = file_exists(storage_path("public/thumb/pdf/")."$buku->thumb");
+        $et = file_exists(storage_path("public/thumb/pdf/")."$buku->thumb");
         if ($ex) {
             Storage::delete('public/pdf/'.$buku->filename);
         }
@@ -356,8 +356,8 @@ class BookController extends Controller
 
             unlink($file->getPathname());
             
-            $buku->filename = str_replace('.mp4','',$file->getClientOriginalName());
-            $buku->filetype = $extension;
+            $buku->nama_file = str_replace('.mp4','',$file->getClientOriginalName());
+            $buku->tipe_file = $extension;
 
             $buku->save();
 
