@@ -140,7 +140,6 @@
             $('#your-file').text(response.filename);
             $('#your-file').show();
             $('#save-file').removeClass('disabled');
-            $('#save-file').attr('href', '/admin/video');
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error
