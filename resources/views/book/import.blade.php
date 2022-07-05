@@ -114,7 +114,7 @@
         , query: {
             _token: '{{ csrf_token() }}',
         } // CSRF token
-        , fileType: ['.pdf','.doc','docx']
+        , fileType: ['pdf','doc','docx']
         , headers: {
             'Accept': 'application/json'
         }
@@ -140,7 +140,6 @@
             $('#your-file').text(response.filename);
             $('#your-file').show();
             $('#save-file').removeClass('disabled');
-            $('#save-file').attr('href', '/admin/buku');
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error

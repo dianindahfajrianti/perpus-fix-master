@@ -94,9 +94,9 @@
                                                 <div class="input-group">
                                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                                         <option value="">-- Pilih Kelas --</option>
-                                                        @foreach ($kls as $k )
+                                                        {{-- @foreach ($kls as $k )
                                                         <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('kelas')
                                                     <div class="invalid-feedback">
@@ -134,9 +134,9 @@
                                                 <div class="input-group">
                                                     <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
                                                         <option value="">-- Pilih Mata Pelajaran --</option>
-                                                        @foreach ($sub as $sbj )
+                                                        {{-- @foreach ($sub as $sbj )
                                                         <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('mapel')
                                                     <div class="invalid-feedback">
@@ -267,6 +267,53 @@
             dynamic: true,
             dropdown: true,
             scrollbar: true
+        });
+
+        $('#jurusan').on('change', function() {
+            var jurusanID = $(this).val();
+            console.log(jurusanID);
+            if(jurusanID) {
+                $.ajax({
+                    url: '/sub/'+jurusanID,
+                    type: "GET",
+                    data : {"_token":"{{ csrf_token() }}"},
+                    dataType: "json",
+                    success:function(data)
+                    {
+                        if(data){
+                        console.log(data);
+                        $('#mapel').empty();
+                        $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                        $.each(data, function(id, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                        });
+                    }else{
+                        $('#mapel').empty();
+                    }
+                    }
+                });
+            }else{
+                $('#mapel').empty();
+            }
+        });
+
+        $('#jenjang').change(function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            console.log(id);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(id, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
         });
     });
 

@@ -375,7 +375,7 @@ class BookController extends Controller
     }
     public function downloadExcel()
     {
-        return (new ExportsTempBook())->download('bukulist.xlsx');
+        return (new ExportsTempBook)->download('bukulist.xlsx');
     }
 
     public function saveExcel(Request $request)

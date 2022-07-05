@@ -116,8 +116,8 @@ Detail {{ $video->title }}
                                 <div class="input-group">
                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                         <option value="">-- Pilih Kelas --</option>
-                                        @for ($i = 1; $i < 13; $i++) <option @if(old('kelas',$video->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
-                                            @endfor
+                                        {{-- @for ($i = 1; $i < 13; $i++) <option @if(old('kelas',$video->grade_id)==$i){{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                            @endfor --}}
                                     </select>
                                     @error('kelas')
                                     <div class="invalid-feedback">
@@ -147,9 +147,9 @@ Detail {{ $video->title }}
                                 <div class="input-group">
                                     <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="">
                                         <option value="">-- Pilih Mata Pelajaran --</option>
-                                        @foreach ($sub as $sbj )
+                                        {{-- @foreach ($sub as $sbj )
                                         <option @if(old('mapel',$video->sub_id)==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                     @error('mapel')
                                     <div class="invalid-feedback">
@@ -218,5 +218,55 @@ Detail {{ $video->title }}
         if (i < 10) {i = "0" + i}
         return i;
     }
+
+    $(document).ready(function() {
+        $('#jurusan').on('change', function() {
+            var jurusanID = $(this).val();
+            console.log(jurusanID);
+            if(jurusanID) {
+                $.ajax({
+                    url: '/sub/'+jurusanID,
+                    type: "GET",
+                    data : {"_token":"{{ csrf_token() }}"},
+                    dataType: "json",
+                    success:function(data)
+                    {
+                        if(data){
+                        console.log(data);
+                        $('#mapel').empty();
+                        $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                        $.each(data, function(id, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                        });
+                    }else{
+                        $('#mapel').empty();
+                    }
+                    }
+                });
+            }else{
+                $('#mapel').empty();
+            }
+        });
+
+        
+        $('#jenjang').change(function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            console.log(id);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(id, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+        });
+    });
 </script>
 @endsection
