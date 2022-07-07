@@ -73,15 +73,26 @@ class Admin extends Controller
         return $id;
     }
 
-    public function sch(Education $edu)
+    public function sch(School $school)
     {
         $scale = [
-            'id' => $edu->id
+            'id' => $school->edu_id
         ];
-        $model = School::whereHas('hasEdu',function($query) use ($scale){
-            $query->where($scale);
-        })->get();
-        return $model;
+        $edu = Education::where($scale)->first();
+        $name = $edu->edu_name;
+        if($name === 'SD' || $name === 'MI'){
+            $kls = Grade::where('grade_name','<=',6)->get();
+        }
+        if($name === 'SMP' || $name === 'Mts'){
+            $kls = Grade::where('grade_name','>=',7)
+            ->where('grade_name','<=',9)->get();
+        }
+        if($name === 'SMA' || $name === 'SMK' || $name === 'MA'){
+            $kls = Grade::where('grade_name','>=',10)
+            ->where('grade_name','<=',12)
+            ->get();
+        };
+        return $kls;
     }
     public function gr($id)
     {

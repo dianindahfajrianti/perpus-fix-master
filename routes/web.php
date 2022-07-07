@@ -107,7 +107,7 @@ Route::middleware('auth')->group(function () {
 // return condition for ajax
 Route::middleware(['auth', 'admin'])->group(function () {
     //sekolah by jenjang
-    Route::get('/sch/{edu}','Admin@sch');
+    Route::get('/sch/{school}','Admin@sch');
     // kelas by jenjang sekolah
     Route::get('/gr/{id}','Admin@gr');
     // all jurusan || pakai if jika perlu

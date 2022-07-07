@@ -107,7 +107,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Jurusan</label>
                                 <div class="input-group">
-                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($maj as $m )
                                         <option @if(old('jurusan',$buku->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                 <div class="input-group">
-                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="">
                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                         {{-- @foreach ($sub as $sbj )
                                         <option @if(old('mapel',$buku->sub_id)==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>

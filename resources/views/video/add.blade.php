@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
-{{-- TimePicker --}}
-<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -112,7 +110,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="sekolah">Jurusan</label>
                                                 <div class="input-group">
-                                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                                         <option value="">-- Pilih Jurusan --</option>
                                                         @foreach ($maj as $m )
                                                         <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
@@ -132,7 +130,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                                 <div class="input-group">
-                                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="">
                                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                                         {{-- @foreach ($sub as $sbj )
                                                         <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
@@ -250,7 +248,6 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -260,16 +257,8 @@
         })
         bsCustomFileInput.init();
 
-        //Customize timepicker.js
-        $('#frame').timepicker({
-            timeFormat: 'HH:mm:ss',
-            maxHour: 2,
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
-
-        $('#jurusan').on('change', function() {
+        $('#jurusan').on('change', function(e) {
+            e.preventDefault();
             var jurusanID = $(this).val();
             console.log(jurusanID);
             if(jurusanID) {
@@ -297,11 +286,12 @@
             }
         });
 
-        $('#jenjang').change(function(e) {
+        $('#jenjang').on('change',function(e) {
             e.preventDefault();
             var id = $(this).val();
             console.log(id);
-            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            var url = "{{ Request :: segment(2) }}";
+            console.log(url);
             $.ajax({
                 type: "get",
                 url: "/gr/"+id+"?url="+url,

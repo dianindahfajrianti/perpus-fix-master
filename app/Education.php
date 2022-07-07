@@ -8,15 +8,15 @@ class Education extends Model
 {
     public function onBook()
     {
-        return $this->belongsTo(Education::class,'edu_id','id');
+        return $this->belongsTo(Education::class,'id','edu_id');
     }
     public function onMedia()
     {
-        return $this->belongsTo(Video::class,'edu_id','id');
+        return $this->belongsTo(Video::class,'id','edu_id');
     }
     public function onSchool()
     {
-        return $this->belongsTo(School::class,'edu_id','id');
+        return $this->belongsTo(School::class,'id','edu_id');
     }
 // tambahan
     protected $fillable = ['grade_name', 'edu_name', 'sbj_name', 'title'];

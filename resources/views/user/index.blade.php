@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
+@section('csrf-ajax')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 @section('container')
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -110,7 +113,7 @@
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
                             <div class="input-group">
-                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id="sekolah" aria-label="">
+                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror" id="sekolah" aria-label="">
                                     <option value="">-- Pilih Sekolah --</option>
                                     @foreach ($sch as $s )
                                     <option @if(old('sekolah')==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>
@@ -128,9 +131,9 @@
                             <div class="input-group">
                                 <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                     <option value="">-- Pilih Kelas --</option>
-                                    @foreach ($grade as $k )
+                                    {{-- @foreach ($grade as $k )
                                     <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                                 @error('kelas')
                                 <div class="invalid-feedback">
@@ -345,6 +348,32 @@
                     });
                 }
             });
+        });
+
+        $('#sekolah').on('change', function() {
+            var sekolahID = $(this).val();
+            console.log(sekolahID);
+            if(sekolahID) {
+                $.ajax({
+                    url: '/sch/'+sekolahID,
+                    type: "GET",
+                    success:function(data)
+                    {
+                        if(data){
+                        console.log(data);
+                        $('#kelas').empty();
+                        $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                        $.each(data, function(id, kelas){
+                            $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                        });
+                    }else{
+                        $('#kelas').empty();
+                    }
+                    }
+                });
+            }else{
+                $('#kelas').empty();
+            }
         });
 
     });

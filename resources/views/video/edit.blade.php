@@ -129,7 +129,7 @@ Detail {{ $video->title }}
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Jurusan</label>
                                 <div class="input-group">
-                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="">
+                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($maj as $m )
                                         <option @if(old('jurusan',$video->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
@@ -145,7 +145,7 @@ Detail {{ $video->title }}
                             <div class="form-group">
                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                 <div class="input-group">
-                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id="mapel" aria-label="">
+                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="">
                                         <option value="">-- Pilih Mata Pelajaran --</option>
                                         {{-- @foreach ($sub as $sbj )
                                         <option @if(old('mapel',$video->sub_id)==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
@@ -220,7 +220,8 @@ Detail {{ $video->title }}
     }
 
     $(document).ready(function() {
-        $('#jurusan').on('change', function() {
+        $('#jurusan').on('change', function(e) {
+            e.preventDefault();
             var jurusanID = $(this).val();
             console.log(jurusanID);
             if(jurusanID) {
@@ -248,12 +249,12 @@ Detail {{ $video->title }}
             }
         });
 
-        
-        $('#jenjang').change(function(e) {
+        $('#jenjang').on('change',function(e) {
             e.preventDefault();
             var id = $(this).val();
             console.log(id);
-            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            var url = "{{ Request :: segment(2) }}";
+            console.log(url);
             $.ajax({
                 type: "get",
                 url: "/gr/"+id+"?url="+url,
