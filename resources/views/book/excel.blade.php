@@ -68,6 +68,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="">Contoh Input Excel</label>
+                                <div class="input-group">
+                                    <img src="/assets/perpus/assets/img/contohexcelbuku.png" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="xcl">Import Excel File</label>
                                 <div class="input-group">
                                     <div class="custom-file">
