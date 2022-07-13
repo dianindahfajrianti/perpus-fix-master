@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4 fixed">
     <!-- Brand Logo -->
-    <a href="'/admin'" class="brand-link">
+    <a href="/" class="brand-link">
         <img src="\assets\perpus\assets\img\logoperpus.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
         <span class="brand-text font-weight-light">{{-- Auth::user()->username --}}Admin</span>
     </a>
