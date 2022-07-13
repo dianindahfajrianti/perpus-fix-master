@@ -90,8 +90,9 @@ class HomeController extends Controller
 
         return view('home.history', compact('riwayat'));
     }
-    public function viewer(Book $buku)
+    public function viewer(Request $request,Book $buku)
     {
+        $request->session()->forget('book');
         $buku->clicked_time = $buku->clicked_time + 1;
         $buku->save();
         $his = new History;
@@ -100,12 +101,14 @@ class HomeController extends Controller
         $his->type = $buku->filetype;
         $his->save();
         // return compact('buku');
-        return redirect('/pdf#toolbar=0')->with('book',$buku);
+        $request->session()->put('book',$buku);
+        return redirect('/pdf#toolbar=0');
     }
-    public function tempPdfView()
+    public function tempPdfView(Request $request)
     {
-        if (session('book')) {
-            $book = session('book');
+        if ($request->session()->has('book')) {
+            $ses = $request->session()->get('book');
+            $book = $ses;
             $path = storage_path('app/public/pdf/'.$book->filename);
             return response()->file($path);
         }else{
@@ -155,6 +158,28 @@ class HomeController extends Controller
         return view('home.searchpage', compact('sub', 'edu','file'));
     }
     public function tiket(Request $request)
+    {
+        $screenwidth = $request->width;
+        $screenheight = $request->height;
+        $page = $request->page;
+        $id = $request->id;
+
+        if ($screenwidth < 1080) {
+            
+        }elseif($screenwidth < 720){
+
+        }elseif($screenwidth < 540){
+
+        }
+        
+        $book = Book::where('id','=',$id)->first();
+        $path = 'public/pdf/'.$book->filename;
+        $im = new imagick(storage_path('app/'.$path));
+        $im->setImageFormat('jpg');
+
+    }
+
+    public function readFolder()
     {
         set_time_limit(0);
         $book = new Book;

@@ -345,8 +345,8 @@ class VideoController extends Controller
     public function destroy(Video $video)
     {
         $res = new stdClass;
-        $ex = file_exists(storage_path('public/video/')."$video->filename.$video->filetype");
-        $et = file_exists(storage_path('public/thumb/video/').$video->thumb);
+        $ex = file_exists(storage_path('app/public/video/')."$video->filename.$video->filetype");
+        $et = file_exists(storage_path('app/public/thumb/video/').$video->thumb);
         if ($ex) {
             Storage::delete('public/video/'."$video->filename.$video->filetype");
         }
@@ -387,10 +387,10 @@ class VideoController extends Controller
             $path = storage_path('app/public/video/'.$filename);
             $path2 = storage_path('app/public/thumb/video/'.$video->thumb);
             if ($last == 'upload') {
-                $ffmpeg = "ffmpeg -ss $frame -i $path -q:v 4 -frames:v 1 -s 192x108 $path2";
+                $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2'";
                 // return dd($last,$ffmpeg);
             }else{
-                $ffmpeg = "ffmpeg -ss $frame -i $path -q:v 4 -frames:v 1 -s 192x108 $path2 -y";
+                $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2' -y";
                 // return dd($last,$ffmpeg);
             }
             $exec = shell_exec($ffmpeg);
@@ -439,7 +439,7 @@ class VideoController extends Controller
 
             
             $vid = new TempVid;
-            $fileName = $file->getClientOriginalName().".".$extension; // a unique file name
+            $fileName = $file->getClientOriginalName(); // a unique file name
             
             $path = "public/temp/video/";
 
@@ -487,7 +487,6 @@ class VideoController extends Controller
 
     public function saveExcel(Request $request)
     {
-        set_time_limit(0);
         $res = new stdClass;
         $request->validate([
             'xcl' => 'required|mimes:xls,xlsx'
@@ -499,89 +498,9 @@ class VideoController extends Controller
             $imp = (new ImportsTempVid);
             $imp->import($file);
             
-            $temp = TempVid::all();
-            $totrow = TempVid::count();
-            $save = 0;
-
-            foreach ($temp as $vid) {
-                $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
-                
-                $video = new Video;
-                $video->filename = $filename;
-                $video->filetype = $vid->tipe_file;
-                
-                $op = 'public/temp/video/'."$vid->nama_file.$vid->tipe_file";
-                $np = 'public/video/'."$filename.$video->filetype";
-                $path = storage_path('app/'.$op);
-                $thumb = "$filename.jpg";
-                $opthumb = 'public/temp/video/'.$thumb;
-                $npthumb = 'public/thumb/video/'.$thumb;
-                $path2 = storage_path('app/'.$opthumb);
-                
-                if (file_exists($path)) {
-                    $ffmpeg = "ffmpeg -ss $vid->thumbnail -i $path -q:v 4 -frames:v 1 -s 192x108 $path2";
-                    $exec = shell_exec($ffmpeg);
-                    Storage::move($op,$np);
-                    $video->thumb = $thumb;
-                }
-                if (file_exists($path2)) {
-                    Storage::move($opthumb,$npthumb);
-                }
-                $edu = Education::where('edu_name','=',$vid->jenjang)->first();
-                $grade = Grade::where('grade_name','=',$vid->kelas)->first();
-                $mjr = Major::where('maj_name','=',$vid->jurusan)->first();
-                $sub = Subject::where('sbj_name','=',$vid->mapel)->first();
-                
-                if (empty($edu)) {
-                    $ed = null;
-                }else{
-                    $ed = $edu->id;
-                }
-                if (empty($grade)) {
-                    $gr = null;
-                }else{
-                    $gr = $grade->id;
-                }
-                if (empty($mjr)) {
-                    $mj = null;
-                }else {
-                    $mj = $mjr->id;
-                }
-                if (empty($sub)) {
-                    $su = null;
-                }else {
-                    $su = $sub->id;
-                }
-
-                $video->title = $vid->judul;
-                $video->desc = $vid->deskripsi;
-                $video->edu_id = $ed;
-                $video->grade_id= $gr;
-                $video->major_id= $mj;
-                $video->sub_id= $su;
-                $video->creator = $vid->nama_pembuat;
-                $video->frame = $vid->thumbnail;
-                $video->clicked_time = 0;
-                if($video->save()){
-                $save++;
-                };
-            }
-
-            if ($save == $totrow) {
-                TempVid::truncate();
-                
-                $res->status = 'success';
-                $res->title = 'Berhasil';
-                $res->message = 'Video berhasil di import.';
-                
-                return redirect()->route('video.index')->with($res->status, json_encode($res));
-            }else{
-                $res->status = 'error';
-                $res->title = 'Gagal';
-                $res->message = 'Gagal import video. Row terakhir '.$save;
-        
-                return redirect()->route('video.index')->with($res->status, json_encode($res));
-            }
+            // if (TempVid::count() > 0) {
+            return redirect()->route('video.generate');
+            // }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
             
@@ -595,6 +514,105 @@ class VideoController extends Controller
             }
             $res->status = 'error';
 
+            return redirect()->route('video.index')->with($res->status, json_encode($res));
+        }
+    }
+    public function generate()
+    {
+        set_time_limit(0);
+        $res = new stdClass;
+        $temp = TempVid::all();
+        $totrow = TempVid::count();
+        $save = 0;
+
+        foreach ($temp as $key => $vid) {
+            $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
+            
+            $video = new Video;
+            $video->filename = $filename;
+            $video->filetype = $vid->tipe_file;
+            
+            $op = 'public/temp/video/'."$vid->nama_file.$vid->tipe_file";
+            $np = 'public/video/'."$filename.$video->filetype";
+            $outpath = "public";
+            $path = storage_path('app/'.$op);
+            $thumb = "$filename.jpg";
+            $opthumb = 'public/temp/video/'.$thumb;
+            $npthumb = 'public/thumb/video/'.$thumb;
+            $path2 = storage_path('app/'.$npthumb);
+
+            if (file_exists($path)) {
+                // echo $path."<br>";
+                // clear existing same files
+                if (file_exists($path2)) {
+                    Storage::delete($npthumb);
+                }
+                if (file_exists(storage_path("app/$np"))) {
+                    Storage::delete($np);
+                }
+                //generate thumbnail
+                $ffmpeg = "ffmpeg -ss $vid->thumbnail -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2'";
+                $exec = shell_exec($ffmpeg);
+                $fh = fopen(storage_path("logs/ffmpeg-".$key),'w');
+                fwrite($fh,$exec);
+                fclose($fh);
+                Storage::move($op,$np);
+                $video->thumb = $thumb;
+                // return "wohoo";
+            }
+            $edu = Education::where('edu_name','=',$vid->jenjang)->first();
+            $grade = Grade::where('grade_name','=',$vid->kelas)->first();
+            $mjr = Major::where('maj_name','=',$vid->jurusan)->first();
+            $sub = Subject::where('sbj_name','=',$vid->mapel)->first();
+            
+            if (empty($edu)) {
+                $ed = null;
+            }else{
+                $ed = $edu->id;
+            }
+            if (empty($grade)) {
+                $gr = null;
+            }else{
+                $gr = $grade->id;
+            }
+            if (empty($mjr)) {
+                $mj = null;
+            }else {
+                $mj = $mjr->id;
+            }
+            if (empty($sub)) {
+                $su = null;
+            }else {
+                $su = $sub->id;
+            }
+
+            $video->title = $vid->judul;
+            $video->desc = $vid->deskripsi;
+            $video->edu_id = $ed;
+            $video->grade_id= $gr;
+            $video->major_id= $mj;
+            $video->sub_id= $su;
+            $video->creator = $vid->nama_pembuat;
+            $video->frame = $vid->thumbnail;
+            $video->clicked_time = 0;
+            if($video->save()){
+            $save++;
+            };
+        }
+
+        if ($save == $totrow) {
+            TempVid::truncate();
+            
+            $res->status = 'success';
+            $res->title = 'Berhasil';
+            $res->message = 'Video berhasil di import.';
+            
+            return redirect()->route('video.index')->with($res->status, json_encode($res));
+        }else{
+            $res->status = 'error';
+            $res->title = 'Gagal';
+            $res->message = 'Gagal import video. Row terakhir '.$save;
+    
             return redirect()->route('video.index')->with($res->status, json_encode($res));
         }
     }

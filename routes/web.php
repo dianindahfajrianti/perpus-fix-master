@@ -32,16 +32,17 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', 'Admin@index');
     Route::get('gid', 'Admin@getID');
     // CMS
-    Route::resource('buku', 'BookController');
-    Route::get('/buku-import','BookController@imports')->name('buku.imports');
-    Route::get('/buku-excel','BookController@excel')->name('buku.excel');
-
     Route::prefix('buku')->group(function () {
         Route::post('/mass','BookController@mass');
         Route::post('/exceldata','BookController@saveExcel')->name('buku.saveExcel');
-        Route::post('/xcl-download','BookController@downloadExcel');
+        Route::get('/xcl-download', 'BookController@downloadExcel');
+        Route::get('/generate', 'BookController@generate')->name('buku.generate');
+        Route::get('/dtemp','BookController@dataTemp');
     });
-
+    Route::resource('buku', 'BookController');
+    Route::get('/buku-import','BookController@imports')->name('buku.imports');
+    Route::get('/buku-excel','BookController@excel')->name('buku.excel');
+    
     Route::resource('user', 'UserController');
     Route::post('user-store', 'UserController@storeOne')->name('user-store');
     Route::resource('grade', 'GradeController');
@@ -58,6 +59,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::post('/mass','VideoController@mass');
         Route::post('/exceldata','VideoController@saveExcel')->name('video.saveExcel');
         Route::get('/xcl-download','VideoController@downloadExcel');
+        Route::get('/generate', 'VideoController@generate')->name('video.generate');
         Route::get('/dtemp','VideoController@dataTemp');
     });
     Route::resource('video', 'VideoController');

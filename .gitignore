@@ -14,3 +14,5 @@ yarn-error.log
 
 all.sql
 edu_grade_users.sql
+bootstrap/cache/packages.php
+bootstrap/cache/services.php
