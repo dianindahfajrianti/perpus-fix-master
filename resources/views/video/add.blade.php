@@ -194,7 +194,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('jam'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Jam</span></div>
-                                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="2" name="jam" id="jam" value="{{ old('jam', 0) }}"/>
                                                         </div>
                                                         @error('jam')
                                                         <div class="invalid-feedback">
@@ -205,7 +205,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('menit'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Menit</span></div>
-                                                            <input class="form-control" type="number" min="00" max="59" name="menit" id="menit" value="{{ old('menit') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="59" name="menit" id="menit" value="{{ old('menit', 0) }}"/>
                                                         </div>
                                                         @error('menit')
                                                         <div class="invalid-feedback">
@@ -216,7 +216,7 @@
                                                     <div class="col-4">
                                                         <div class="input-group @error('detik'){{ 'is-invalid' }}@enderror">
                                                             <div class="input-group-prepend"><span class="input-group-text">Detik</span></div>
-                                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik') }}"/>
+                                                            <input class="form-control" type="number" min="00" max="59" name="detik" id="detik" value="{{ old('detik', 0) }}"/>
                                                         </div>
                                                         @error('detik')
                                                         <div class="invalid-feedback">
@@ -257,8 +257,7 @@
         })
         bsCustomFileInput.init();
 
-        $('#jurusan').on('change', function(e) {
-            e.preventDefault();
+        $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);
             if(jurusanID) {
@@ -273,8 +272,8 @@
                         console.log(data);
                         $('#mapel').empty();
                         $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
-                        $.each(data, function(id, mapel){
-                            $('select[name="mapel"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                        $.each(data, function(index, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                         });
                     }else{
                         $('#mapel').empty();
@@ -286,12 +285,11 @@
             }
         });
 
-        $('#jenjang').on('change',function(e) {
+        $('#jenjang').change(function(e) {
             e.preventDefault();
             var id = $(this).val();
             console.log(id);
-            var url = "{{ Request :: segment(2) }}";
-            console.log(url);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
             $.ajax({
                 type: "get",
                 url: "/gr/"+id+"?url="+url,
@@ -299,8 +297,8 @@
                     console.log(data);
                     $('#kelas').empty();
                     $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
-                    $.each(data, function(id, kelas){
-                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    $.each(data, function(index, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
                 }
             });

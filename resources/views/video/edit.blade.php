@@ -220,8 +220,7 @@ Detail {{ $video->title }}
     }
 
     $(document).ready(function() {
-        $('#jurusan').on('change', function(e) {
-            e.preventDefault();
+        $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);
             if(jurusanID) {
@@ -236,8 +235,8 @@ Detail {{ $video->title }}
                         console.log(data);
                         $('#mapel').empty();
                         $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
-                        $.each(data, function(id, mapel){
-                            $('select[name="mapel"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                        $.each(data, function(index, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                         });
                     }else{
                         $('#mapel').empty();
@@ -249,12 +248,11 @@ Detail {{ $video->title }}
             }
         });
 
-        $('#jenjang').on('change',function(e) {
+        $('#jenjang').change(function(e) {
             e.preventDefault();
             var id = $(this).val();
             console.log(id);
-            var url = "{{ Request :: segment(2) }}";
-            console.log(url);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
             $.ajax({
                 type: "get",
                 url: "/gr/"+id+"?url="+url,
@@ -262,8 +260,8 @@ Detail {{ $video->title }}
                     console.log(data);
                     $('#kelas').empty();
                     $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
-                    $.each(data, function(id, kelas){
-                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    $.each(data, function(index, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
                 }
             });

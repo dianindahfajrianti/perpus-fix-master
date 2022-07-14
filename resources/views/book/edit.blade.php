@@ -224,8 +224,8 @@
                         console.log(data);
                         $('#mapel').empty();
                         $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
-                        $.each(data, function(id, mapel){
-                            $('select[name="mapel"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                        $.each(data, function(index, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                         });
                     }else{
                         $('#mapel').empty();
@@ -249,8 +249,8 @@
                     console.log(data);
                     $('#kelas').empty();
                     $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
-                    $.each(data, function(id, kelas){
-                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    $.each(data, function(index, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
                 }
             });
