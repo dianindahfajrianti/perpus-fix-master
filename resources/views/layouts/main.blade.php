@@ -72,7 +72,7 @@
 <!-- ======= Isi ======= -->
 @yield('container')
 <!-- ============================================================================================================ -->
-    
+    <div class="paddingtop-footer"></div>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="container">

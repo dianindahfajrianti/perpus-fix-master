@@ -66,18 +66,6 @@
             </div>
         </div>
     </div>
-
-    <div class="container" data-aos="fade-up">
-        <h1>Umum</h1>
-        <div class="row">
-            <div class="col-lg-5 d-flex align-items-center justify-content-center">
-                <img src="/assets/perpus/assets/img/umum.png" alt="">
-            </div>
-            <div class="col-lg-7 d-flex align-items-center">
-                <p>Jika anda belum memiliki akun, anda tetap dapat mengakses buku dan multimedia dengan status umum.</p>
-            </div>
-        </div>
-    </div>
 </section><!-- End Buku Section -->
 
 <main id="main">
