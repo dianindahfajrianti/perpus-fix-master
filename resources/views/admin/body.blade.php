@@ -51,9 +51,9 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                AdminLTE <b>Version</b> 3.1.0
+                Perpus Admin <b>Version</b> 1.1
             </div>
-            <strong>Copyright &copy; 2021 <a href="#">Bootstrap, jQuery, AdminLTE & original developers</a>.</strong> All rights
+            <strong>Copyright &copy; 2022 <a href="#">PT Indo Mega Vision</a>.</strong> All rights
             reserved.
         </footer>
         <!-- /.control-sidebar -->
