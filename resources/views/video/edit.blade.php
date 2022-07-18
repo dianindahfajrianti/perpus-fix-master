@@ -220,6 +220,54 @@ Detail {{ $video->title }}
     }
 
     $(document).ready(function() {
+
+        var jurusanID = $('#jurusan').val();
+        var oldMapel = "{{ old('kelas') }}"
+        console.log(jurusanID);
+        if(jurusanID) {
+            $.ajax({
+                url: '/sub/'+jurusanID,
+                type: "GET",
+                data : {"_token":"{{ csrf_token() }}"},
+                dataType: "json",
+                success:function(data){
+                    console.log(data);
+                    $('#mapel').empty();
+                    $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $.each(data, function(index, mapel){
+                        if (oldMapel = mapel.id){
+                            $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                        } else{
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                        }
+                    });
+                }
+            });
+        }else{
+            $('#mapel').empty();
+        }
+        
+        var id = $('#jenjang').val();
+        var oldKelas = "{{ old('kelas') }}"
+        console.log(id);
+        var url = "{{ Request :: segment(count(Request :: segments())) }}";
+        $.ajax({
+            type: "get",
+            url: "/gr/"+id+"?url="+url,
+            success:function(data){
+                console.log(data);
+                $('#kelas').empty();
+                $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                $.each(data, function(index, kelas){
+                    if (oldKelas = kelas.id){
+                        $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    } else {
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
+
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);
@@ -229,18 +277,13 @@ Detail {{ $video->title }}
                     type: "GET",
                     data : {"_token":"{{ csrf_token() }}"},
                     dataType: "json",
-                    success:function(data)
-                    {
-                        if(data){
+                    success:function(data){
                         console.log(data);
                         $('#mapel').empty();
                         $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
                         $.each(data, function(index, mapel){
                             $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                         });
-                    }else{
-                        $('#mapel').empty();
-                    }
                     }
                 });
             }else{
@@ -248,7 +291,7 @@ Detail {{ $video->title }}
             }
         });
 
-        $('#jenjang').change(function(e) {
+        $('#jenjang').change(function (e) {
             e.preventDefault();
             var id = $(this).val();
             console.log(id);
@@ -266,6 +309,7 @@ Detail {{ $video->title }}
                 }
             });
         });
+        
     });
 </script>
 @endsection
