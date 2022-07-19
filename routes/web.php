@@ -131,12 +131,14 @@ Auth::routes([
 ]);
 
 //Edge Server Needs
-
+Route::prefix('export')->group(function() {
 //Export Files & Data
 Route::get('/user/{school}','ExportController@user')->name('export.user');
 Route::get('/buku/{school}','ExportController@book')->name('export.book');
 Route::get('/video/{school}','ExportController@video')->name('export.video');
 Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
+
+});
 //Sync Files & Data
 Route::get('/sync/book/{school}','ExportController@syncBook')->name('sync.book');
 Route::get('/sync/book/{school}/zip','ExportController@syncBookzip')->name('sync.bookzip');

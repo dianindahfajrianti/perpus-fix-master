@@ -22,8 +22,10 @@ class ExportController extends Controller
     public function user(School $school)
     {
         $id = $school->id;
-        $user = User::where('school_id',$id)->get()->makeVisible('password');
-        $super = User::where('role',0)->get()->makeVisible(['password']);
+        $user = User::with(['getSchool','getGrade','getMajor'])
+                ->where('school_id',$id)->get()->makeVisible('password');
+        $super = User::with(['getSchool','getGrade','getMajor'])
+                ->where('role',0)->get()->makeVisible(['password']);
         $users = $user->concat($super);
         if (empty($user)|| empty($super)) {
             return response()->json([],404);
@@ -32,7 +34,7 @@ class ExportController extends Controller
             $ex->type = "user";
             $ex->sch_id = $id;
             $ex->save();
-            
+
             return response()->json($users,200);
         }
     }
@@ -46,12 +48,14 @@ class ExportController extends Controller
             $eduname = DB::table('education')->where('id',$id)->value('edu_name');
             if ($eduname == 'SD') {
                 $gr = Grade::where('grade_name','<','7')->get();
-            }elseif ($eduname == 'SMP') {
+            }
+            if ($eduname == 'SMP') {
                 $gr = Grade::
                         where('grade_name','>=','7')
                         ->where('grade_name','<=','9')
                         ->get();
-            }elseif ($eduname == 'SMA') {
+            }
+            if ($eduname == 'SMA') {
                 $gr = Grade::
                       where('grade_name','>=','10')
                       ->where('grade_name','<=','12')
