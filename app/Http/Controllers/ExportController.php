@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\User;
+use stdClass;
 use App\Grade;
 use App\Major;
 use App\Video;
@@ -46,18 +47,17 @@ class ExportController extends Controller
             $sid = $school->id;
             $edu = Education::where('id',$id)->get();
             $eduname = DB::table('education')->where('id',$id)->value('edu_name');
-            if ($eduname == 'SD') {
+            $gr = new stdClass;
+            if ($eduname == 'SD' || $eduname == 'MI') {
                 $gr = Grade::where('grade_name','<','7')->get();
             }
-            if ($eduname == 'SMP') {
-                $gr = Grade::
-                        where('grade_name','>=','7')
+            if ($eduname == 'SMP' || $eduname == 'Mts') {
+                $gr = Grade::where('grade_name','>=','7')
                         ->where('grade_name','<=','9')
                         ->get();
             }
-            if ($eduname == 'SMA') {
-                $gr = Grade::
-                      where('grade_name','>=','10')
+            if ($eduname == 'SMA' || $eduname == 'SMK' || $eduname == 'MA') {
+                $gr = Grade::where('grade_name','>=','10')
                       ->where('grade_name','<=','12')
                       ->get();
             }

@@ -39,24 +39,42 @@
 </section><!-- End Hero -->
 <main id="main">
     <section class="jenjang">
-        <form action="" method="post" class="form" enctype="multipart/form-data">
+        <form action="/tiket" method="post" class="form" enctype="multipart/form-data">
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-6 cl">
                     <div class="form-group my-3">
-                        <input name="file[]" class="form-control" type="file" id="FileUpload" multiple accept="video/*"/>
-                    </div>
-                    <div class="form-group my-3">
-                        <button name="btnsubmit" id="btnsubmit" class="btn btn-dark">Upload</button>
+                        <input name="file" class="form-control" type="file" id="FileUpload" accept=".pdf,.doc,.docx"/>
                     </div>
                     <div class="form-group my-3">
                         {{-- <a href="" class="form-control" id="your-file"></a> --}}
-                        <div class="progress">
+                        {{-- <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <button class="btn btn-dark" type="submit">Show</button>
+                </div>
+            </div>
         </form>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                {{-- <table class="table table-striped" id="tbtemp">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama File</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table> --}}
+            </div>
+            <div class="col-6">
+                
+            </div>
+        </div>
     </section>
 </main>
 @endsection
@@ -67,69 +85,116 @@
 <script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $('#your-file').hide();
         let browseFile = $('#FileUpload');
 
-        let resumable = new Resumable({
-        target: '/mass'
-        , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
-        , query: {
-            _token: '{{ csrf_token() }}',
-        } // CSRF token
-        , fileType: ['mp4','webm','ogm']
-        , headers: {
-            'Accept': 'application/json'
-        }
-        , testChunks: false
-        , throttleProgressCallbacks: 1
-        , });
+        var wd = window.screen.width;
+        var hg = window.screen.height;
+
+        console.log(wd);
+        console.log(hg);
+        let fg = '<div class="form-group fg1"></div>';
+        let fg2 = '<div class="form-group fg2"></div>';
+        let fw = '<input hidden type="number" min=0 name="width" value="'+wd+'" />';
+        let fh = '<input hidden type="number" min=0 name="height" value="'+hg+'" />';
+        $('.cl').append(fg);
+        $('.fg1').append(fw);
+        $('.cl').append(fg2);
+        $('.fg2').append(fh);
+
+        // let resumable = new Resumable({
+        // target: '/admin/buku/'
+        // , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+        // , query: {
+        //     _token: '{{ csrf_token() }}',
+        // } // CSRF token
+        // , fileType: ['pdf','doc','docx']
+        // , headers: {
+        //     'Accept': 'application/json'
+        // }
+        // , testChunks: false
+        // , throttleProgressCallbacks: 1
+        // , });
         
-        resumable.assignBrowse(browseFile);
+        // resumable.assignBrowse(browseFile);
 
-        resumable.on('fileAdded', function(file, event) { // trigger when file picked
-            showProgress();
-            // let fSize = file.size / 1000000;
-            resumable.upload() // to actually start uploading.
-        });
+        // resumable.on('fileAdded', function(file, event) { // trigger when file picked
+        //     showProgress();
+        //     // let fSize = file.size / 1000000;
+        //     resumable.upload() // to actually start uploading.
+        // });
         
-        resumable.on('fileProgress', function(file) { // trigger when file progress update
-        updateProgress(Math.floor(file.progress() * 100));
-        });
+        // resumable.on('fileProgress', function(file) { // trigger when file progress update
+        // updateProgress(Math.floor(file.progress() * 100));
+        // });
 
-        resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
-            response = JSON.parse(response)
-            $('#your-file').attr('href', response.path);
-            $('#your-file').text(response.filename);
-            $('#your-file').show();
-        });
+        // resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
+        //     response = JSON.parse(response);
+        //     filename = response.filename;
+        //     ext = response.extension
+        //     $("#btnExtract").show();
+        // });
 
-        resumable.on('fileError', function(file, response) { // trigger when there is any error
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: response,
-                timer: 1800
-            });
-        });
+        // resumable.on('fileError', function(file, response) { // trigger when there is any error
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Error',
+        //         text: response,
+        //         timer: 1800
+        //     });
+        // });
 
-        let progress = $('.progress');
+        // let progress = $('.progress');
 
-        function showProgress() {
-            progress.find('.progress-bar').css('width', '0%');
-            progress.find('.progress-bar').html('0%');
-            progress.find('.progress-bar').removeClass('bg-success');
-            progress.show();
-        }
+        // function showProgress() {
+        //     progress.find('.progress-bar').css('width', '0%');
+        //     progress.find('.progress-bar').html('0%');
+        //     progress.find('.progress-bar').removeClass('bg-success');
+        //     progress.show();
+        // }
 
-        function updateProgress(value) {
-            progress.find('.progress-bar').css('width', `${value}%`)
-            progress.find('.progress-bar').html(`${value}%`)
-        }
+        // function updateProgress(value) {
+        //     progress.find('.progress-bar').css('width', `${value}%`)
+        //     progress.find('.progress-bar').html(`${value}%`)
+        // }
 
-        function hideProgress() {
-            progress.hide();
-        }
+        // function hideProgress() {
+        //     progress.hide();
+        // }
+
+
+        // $("#btnExtract").on('click', function (e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         type: "post",
+        //         url: "/extract",
+        //         data: {
+        //             _token:"{{ csrf_token() }}",
+        //             type: "pdf",
+        //             filename: filename,
+        //             ext: ext
+        //         },
+        //         dataType: "json",
+        //         success: function (data) {
+        //             $("#btnNext").show();
+        //             $("#btnNext").attr('href',data.url);
+
+        //             Swal.fire({
+        //                 icon: data.status,
+        //                 title: data.title,
+        //                 text: data.message,
+        //                 timer: 1800
+        //             });
+        //         },
+        //         error:function (data) {
+        //             Swal.fire({
+        //                 icon: data.status,
+        //                 title: data.title,
+        //                 text: data.message,
+        //                 timer: 1800
+        //             });
+        //         }
+        //     });
+        // });
     });
 </script>
 @if (session('error'))

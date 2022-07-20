@@ -45,7 +45,7 @@ class TempBook implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'nama_file' => 'required',
             'tipe_file' => 'required'
         ];

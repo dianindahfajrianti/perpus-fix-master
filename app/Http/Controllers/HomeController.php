@@ -11,11 +11,14 @@ use App\History;
 use App\Subject;
 use App\TempVid;
 use App\Education;
+use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use App\Helpers\VideoStream;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class HomeController extends Controller
 {
@@ -34,8 +37,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $request->session()->forget('book');
         $rel = ['getEdu','getGrade'];
         $book = Book::latest()->with($rel)->limit('6')->get();
         $video = Video::latest()->with($rel)->limit('6')->get();
@@ -45,8 +49,9 @@ class HomeController extends Controller
     {
         return phpinfo();
     }
-    public function book()
+    public function book(Request $request)
     {
+        $request->session()->forget('book');
         $req = request('search');
         $res = ['getGrade','getEdu'];
         $file = Book::latest();
@@ -101,14 +106,15 @@ class HomeController extends Controller
         $his->type = $buku->filetype;
         $his->save();
         // return compact('buku');
-        $request->session()->put('book',$buku);
-        return redirect('/pdf#toolbar=0');
+        return redirect("/pdf/$buku->title-$buku->id#toolbar=0");
     }
-    public function tempPdfView(Request $request)
+    public function tempPdfView(Request $request, $name)
     {
-        if ($request->session()->has('book')) {
-            $ses = $request->session()->get('book');
-            $book = $ses;
+
+        $id = explode("-",$name);
+        $idB = end($id);
+        if ($idB) {
+            $book = Book::where('id',$idB)->first();
             $path = storage_path('app/public/pdf/'.$book->filename);
             return response()->file($path);
         }else{
@@ -157,26 +163,64 @@ class HomeController extends Controller
         $file = $file->concat($vids);
         return view('home.searchpage', compact('sub', 'edu','file'));
     }
+
+    public function downloadVid(Video $video)
+    {
+        $path = "public/video";
+        return Storage::file("$path/$video->filename.$video->filetype");
+    }
+
+    public function downloadBook(Book $buku)
+    {
+        $path = "public/pdf";
+        return Storage::file("$path/$buku->filename");
+    }
+
     public function tiket(Request $request)
     {
+        $file = $request->file('file');
         $screenwidth = $request->width;
         $screenheight = $request->height;
-        $page = $request->page;
-        $id = $request->id;
-
+        // $page = $request->page;
+        // $id = $request->id;
+        
+        // $book = Book::where('id','=',$id)->first();
+        // $path = 'public/pdf/'.$book->filename;
+        $im = new \Imagick($path);
+        return $im;
+        // $im->setPage($page);
+        $im->setImageFormat('jpg');
+        $wd = $im->getImageWidth();
+        $hg = $im->getImageHeight();
+        // echo $;
         if ($screenwidth < 1080) {
-            
         }elseif($screenwidth < 720){
 
         }elseif($screenwidth < 540){
 
-        }
+        }else{
+
+        };
         
+        
+    }
+
+    public function coba($id)
+    {
         $book = Book::where('id','=',$id)->first();
         $path = 'public/pdf/'.$book->filename;
-        $im = new imagick(storage_path('app/'.$path));
-        $im->setImageFormat('jpg');
+        // $pdf = new Pdf(storage_path("app/$path"));
+        $thumb = storage_path('app/public/pdf/tmp/pdf.jpg');
+        // $saved = $pdf->saveImage($thumb);
 
+        $im = new \Imagick($thumb);
+        $wd = $im->getImageWidth() / 2;
+        $hg = $im->getImageHeight();
+        
+        $manager = new ImageManager(['driver'=> 'imagick']);
+        $manager->make($thumb)->crop()->resize();
+        return $wd;
+        // return view('home.test');
     }
 
     public function readFolder()

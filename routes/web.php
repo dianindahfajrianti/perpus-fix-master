@@ -19,9 +19,11 @@ Route::get('/video', 'HomeController@video')->name('video');
 
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::middleware('active')->group(function () {
+    Route::get('/buku/{buku}/download', 'HomeController@downloadBook');
     Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
-    Route::get('/pdf','HomeController@tempPdfView');
+    Route::get('/pdf/{name}','HomeController@tempPdfView');
     Route::get('/video/{video}', 'HomeController@showvideo');
+    Route::get('/video/{video}/download', 'HomeController@downloadVid');
     Route::get('/stream/{video}', 'HomeController@stream');
 });
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
@@ -40,7 +42,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/dtemp','BookController@dataTemp');
     });
     Route::resource('buku', 'BookController');
-    Route::get('/buku-import','BookController@imports')->name('buku.imports');
+    Route::get('/buku-import','BookController@imports')->name('buku.import');
     Route::get('/buku-excel','BookController@excel')->name('buku.excel');
     
     Route::resource('user', 'UserController');
@@ -62,16 +64,18 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/generate', 'VideoController@generate')->name('video.generate');
         Route::get('/dtemp','VideoController@dataTemp');
     });
-    Route::resource('video', 'VideoController');
+    
     // -- video Upload File --
+    Route::get('/video-import','VideoController@import')->name('video.import');
+    Route::get('/video-excel','VideoController@excel')->name('video.excel');
     Route::get('/video/{video}/upload','VideoController@upload')->name('video.upload');
     Route::post('/video/{video}/uploadFile','VideoController@uploadFile')->name('video.uploads');
     Route::get('/video/{video}/edit-file','VideoController@editFile')->name('video.editfile');
     Route::post('/video/{video}/update','VideoController@updateFile')->name('video.updatefile');
-    Route::get('/video-import','VideoController@import')->name('video.import');
-    Route::get('/video-excel','VideoController@excel')->name('video.excel');
     // -- exec FFMPEG --
     Route::get('/video/{video}/thumb','VideoController@thumb');
+    // -- Resource Video --
+    Route::resource('video', 'VideoController');
     // Akses || Permissions
     Route::get('/akses','PermissionController@index');
     // Pilih Sekolah
@@ -147,4 +151,5 @@ Route::get('/sync/video/{school}','ExportController@syncVideo')->name('sync.vid'
 Route::get('/sync/video/{school}/zip','ExportController@syncVideozip')->name('sync.videozip');
 Route::get('/sync/video/{school}/part','ExportController@syncVideopart')->name('sync.videopart');
 
-Route::get('/tiket','HomeController@tiket');
+Route::post('/tiket','HomeController@tiket');
+Route::get('/coba/{id}','HomeController@coba');

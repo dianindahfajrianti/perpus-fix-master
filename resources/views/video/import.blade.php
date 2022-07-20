@@ -107,7 +107,7 @@
         $('#save-file').addClass('disabled');
 
         let browseFile = $('#ct-file');
-
+        
         let resumable = new Resumable({
         target: '/admin/video/mass'
         , chunkSize: 10*1024*1024 // default is 1*1024*1024, this should be less than your maximum limit in php.ini
@@ -123,15 +123,24 @@
         , });
         
         resumable.assignBrowse(browseFile);
+        var files;
 
         resumable.on('fileAdded', function(file, event) { // trigger when file picked
+
             showProgress();
-            // let fSize = file.size / 1000000;
+            let fSize = file.size / 1000000;
+            alert(fSize);
+            console.log(file);
             resumable.upload() // to actually start uploading.
         });
         
         resumable.on('fileProgress', function(file) { // trigger when file progress update
-        updateProgress(Math.floor(file.progress() * 100));
+            files = resumable.files.length;
+            if(files > 1){
+                updateProgress(Math.floor((file.progress() * 100) / files));
+            }else{
+                updateProgress(Math.floor(file.progress() * 100));
+            }
         });
 
         resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete

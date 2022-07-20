@@ -131,7 +131,13 @@
         });
         
         resumable.on('fileProgress', function(file) { // trigger when file progress update
-        updateProgress(Math.floor(file.progress() * 100));
+            var files;
+            files = resumable.files.length;
+            if(files > 1){
+                updateProgress(Math.floor((file.progress() * 100) / files));
+            }else{
+                updateProgress(Math.floor(file.progress() * 100));
+            }
         });
 
         resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete

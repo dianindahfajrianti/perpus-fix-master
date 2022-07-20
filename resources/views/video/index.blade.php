@@ -49,7 +49,7 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="{{ route('video.create') }}" class="btn btn-dark">Tambah Video</a>
-                        <a href="video-import" class="btn btn-dark">Import Video</a>
+                        <button class="btn btn-dark ask">Import Video</button>
                     </div>
                     <div class="card-body">
                         <table id="tb-video" class="table table-bordered table-striped">
@@ -183,6 +183,17 @@
                         }
                     });
                 }
+            });
+        });
+        $(".ask").on('click',function (e) { 
+            e.preventDefault();
+            Swal.fire({
+                title: 'Sudah import file?',
+                html: "<a href='video-import' class='btn btn-dark'>Belum</a> <a href='video-excel' class='btn btn-dark'>Sudah</a>",
+                icon: 'question',
+                showConfirmButton:false,
+                showCancelButton: true,
+                cancelButtonColor: '#d33'
             });
         });
     });

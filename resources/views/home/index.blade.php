@@ -121,7 +121,7 @@
                             </center>
                         </div>
                         <div class="social">
-                            <a href="{{ Storage::url('public/pdf/').$b->filename }}" download><i class="ri-file-download-fill"></i></a>
+                            <a href="/buku/{{ $b->id }}/download" download><i class="ri-file-download-fill"></i></a>
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
@@ -228,6 +228,9 @@
 <script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        var wd = window.screen.width;
+        var hg = window.screen.height;
+
         // Swal.fire({
         //     icon: 'success',
         //     title: 'Berhasil',

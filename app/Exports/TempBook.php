@@ -18,10 +18,28 @@ class TempBook implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return AppTempBook::select('nama_file','tipe_file')->get();
+        return AppTempBook::select('judul',
+        'deskripsi',
+        'th_terbit',
+        'penerbit',
+        'pengarang',
+        'jenjang',
+        'kelas',
+        'jurusan',
+        'mapel',
+        'nama_file','tipe_file')->get();
     }
     public function headings(): array
     {
-        return ['nama_file','tipe_file'];
+        return ['judul',
+        'deskripsi',
+        'th_terbit',
+        'penerbit',
+        'pengarang',
+        'jenjang',
+        'kelas',
+        'jurusan',
+        'mapel',
+            'nama_file','tipe_file'];
     }
 }

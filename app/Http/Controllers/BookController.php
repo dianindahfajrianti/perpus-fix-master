@@ -6,11 +6,10 @@ use App\Book;
 use stdClass;
 use App\Grade;
 use App\Major;
+use App\History;
 use App\Subject;
 use App\TempBook;
 use App\Education;
-use App\Exports\TempBook as ExportsTempBook;
-use App\Imports\TempBook as ImportsTempBook;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -19,6 +18,8 @@ use Intervention\Image\ImageManager;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\TempBook as ExportsTempBook;
+use App\Imports\TempBook as ImportsTempBook;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
@@ -84,7 +85,7 @@ class BookController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'desc' => '',
             'tahun' => 'required',
@@ -95,7 +96,7 @@ class BookController extends Controller
         if ($file != null) {
             $filename = Str::slug($request->judul." ".$request->pengarang." ".$request->tahun,"-");
             $fixname = "$filename.".$file->getClientOriginalExtension();
-            $thumbname = "$filename.png";
+            $thumbname = "$filename.jpg";
             $ss = $file->storeAs('public\pdf',$fixname);
             if ($ss) {
                 // if (str_contains(PHP_OS, 'WIN')) {
@@ -188,7 +189,7 @@ class BookController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'desc' => '',
             'tahun' => 'required',
@@ -205,7 +206,7 @@ class BookController extends Controller
         
         if ($file != null) {
             $fixname = "$filename.".$file->getClientOriginalExtension();
-            $thumbname = $filename.".png";
+            $thumbname = $filename.".jpg";
             
             $opfile = 'public/pdf/'.$buku->filename;
             $op = 'public/thumb/pdf/'.$buku->thumb;
@@ -255,7 +256,7 @@ class BookController extends Controller
             $fixname = $filename.".pdf";
             $opfile = 'public/pdf/'.$buku->filename;
             $op = 'public/thumb/pdf/'.$buku->thumb;
-            $thumbname = $filename.".png";
+            $thumbname = $filename.".jpg";
             $npfile = 'public/pdf/'.$fixname;
             $np = 'public/thumb/pdf/'.$thumbname;
             if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
@@ -298,6 +299,7 @@ class BookController extends Controller
         $et = file_exists(storage_path("app/public/thumb/pdf/")."$buku->thumb");
         if ($ex) {
             Storage::delete('public/pdf/'.$buku->filename);
+            History::where('file_id','=',$buku->id)->where('type','=','pdf')->delete();
         }
         if ($et) {
             Storage::delete('public/thumb/pdf/'.$buku->thumb);
@@ -408,7 +410,7 @@ class BookController extends Controller
             }
             $res->status = 'error';
 
-            return redirect()->route('video.index')->with($res->status, json_encode($res));
+            return redirect()->back()->with($res->status, json_encode($res));
         }
     }
 
@@ -505,7 +507,7 @@ class BookController extends Controller
             $res->title = 'Gagal';
             $res->message = 'Gagal import buku. Row terakhir '.$save;
     
-            return redirect()->route('buku.index')->with($res->status, json_encode($res));
+            return redirect()->route('buku.excel')->with($res->status, json_encode($res));
         }
     }
 }

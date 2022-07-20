@@ -434,7 +434,7 @@ class UserController extends Controller
         }
         // return $user;
         $riwayat = History::where('userid','=',$uid)->types()->limit(6)->get();
-        
+        // return $riwayat;
         return view('home.profile',compact('user','riwayat'));
     }
 

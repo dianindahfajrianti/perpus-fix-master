@@ -53,7 +53,7 @@
                 <div class="card">
                     <div class="card-header">
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah buku</button>
-                        <a href="buku-import" class="btn btn-dark">Import Buku</a>
+                        <button class="btn btn-dark ask">Import Buku</button>
                     </div>
                     <div class="card-body">
                         {{-- <div class="table-responsive"> --}}
@@ -415,6 +415,18 @@
                         }
                     });
                 }
+            });
+        });
+
+        $(".ask").on('click',function (e) { 
+            e.preventDefault();
+            Swal.fire({
+                title: 'Sudah import file?',
+                html: "<a href='buku-import' class='btn btn-dark'>Belum</a> <a href='buku-excel' class='btn btn-dark'>Sudah</a>",
+                icon: 'question',
+                showConfirmButton:false,
+                showCancelButton: true,
+                cancelButtonColor: '#d33'
             });
         });
 

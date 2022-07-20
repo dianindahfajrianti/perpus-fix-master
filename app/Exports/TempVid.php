@@ -18,10 +18,25 @@ class TempVid implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return AppTempVid::select('nama_file','tipe_file')->get();
+        return AppTempVid::select('judul',
+        'deskripsi',
+        'nama_pembuat',
+        'thumbnail',
+        'jenjang',
+        'kelas',
+        'jurusan',
+        'mapel',
+            'nama_file','tipe_file')->get();
     }
     public function headings(): array
     {
-        return ['nama_file','tipe_file'];
+        return ['judul',
+        'deskripsi',
+        'nama_pembuat',
+        'thumbnail',
+        'jenjang',
+        'kelas',
+        'jurusan',
+        'mapel','nama_file','tipe_file'];
     }
 }

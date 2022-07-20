@@ -7,6 +7,7 @@ use App\Grade;
 use App\Major;
 use App\Video;
 use App\School;
+use App\History;
 use App\Subject;
 use App\TempVid;
 use App\Education;
@@ -85,7 +86,7 @@ class VideoController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'deskripsi' => '',
             'nama_pembuat' => 'required',
@@ -162,7 +163,7 @@ class VideoController extends Controller
             unlink($file->getPathname());
             
 
-            $video->thumb = $video->filename.".png";
+            $video->thumb = $video->filename.".jpg";
             $video->filetype = $extension;
 
             $video->save();
@@ -208,9 +209,9 @@ class VideoController extends Controller
     {
         $edu = Education::all();
         $maj = Major::all();
-        $sub = Subject::all();
 
         $time = $video->frame;
+        if($time == null) $time = '0:00:00';
         $tArr = explode(':',$time);
         $tObj = new stdClass;
         $tObj->jam = $tArr[0];
@@ -218,7 +219,7 @@ class VideoController extends Controller
         $tObj->detik = $tArr[2];
 
         $video->with('getEdu','getGrade')->get();
-        return view('video.edit',compact('edu','maj','sub','video','tObj'));
+        return view('video.edit',compact('edu','maj','video','tObj'));
     }
     public function editFile(Video $video)
     {
@@ -239,7 +240,7 @@ class VideoController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'deskripsi' => '',
             'nama_pembuat' => 'required',
@@ -251,17 +252,28 @@ class VideoController extends Controller
         $time = $video->created_at;
         $title = $request->judul;
         $creator = $request->nama_pembuat;
-        $file = $request->file('thumbnail');
+
+        $of = $video->frame;
+        $nef = "$request->jam:$request->menit:$request->detik";
+        if($of == null) $of = '0:00:00';
+        $tArr = explode(':',$of);
+        $tObj = new stdClass;
+        
+        $tObj->jam = $tArr[0];
+
+        $tObj->menit = $tArr[1];
+        
+        $tObj->detik = $tArr[2];
         
         $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
 
         $op = 'public/video/'."$video->filename.$video->filetype";
         $np = 'public/video/'."$filename.$video->filetype";
         $opthumb = 'public/thumb/video/'.$video->thumb;
-        $npthumb = 'public/thumb/video/'."$filename.png";
+        $npthumb = 'public/thumb/video/'."$filename.jpg";
         if (($title != $video->title) || ($creator != $video->creator)) {
             $video->filename = $filename;
-            $video->thumb = $filename.".png";
+            $video->thumb = $filename.".jpg";
             Storage::move($opthumb,$npthumb);
             Storage::move($op,$np);
         }
@@ -272,15 +284,18 @@ class VideoController extends Controller
         $video->major_id= $request->jurusan;
         $video->sub_id= $request->mapel;
         $video->creator = $request->nama_pembuat;
-        $video->frame = "$request->jam:$request->menit:$request->detik";
+        $video->frame = $nef;
         $video->save();
 
         $res->stats = 'Berhasil';
 
         $res->message = 'Berhasil mengedit video info';
 
-        return redirect('admin/video')->with($res->stats, json_encode($res));
-        
+        if ($tObj->jam != $request->jam || $tObj->menit != $request->menit || $tObj->detik != $request->detik) {
+            return redirect("/admin/video/$video->id/thumb");
+        }else{
+            return redirect('/admin/video')->with($res->stats, json_encode($res));
+        };
     }
 
     public function updateFile(Request $request, Video $video)
@@ -349,6 +364,7 @@ class VideoController extends Controller
         $et = file_exists(storage_path('app/public/thumb/video/').$video->thumb);
         if ($ex) {
             Storage::delete('public/video/'."$video->filename.$video->filetype");
+            History::where('file_id','=',$video->id)->where('type','=','mp4')->delete();
         }
         if ($et) {
             Storage::delete('public/thumb/video/'.$video->thumb);
@@ -386,18 +402,20 @@ class VideoController extends Controller
             $filename = "$video->filename.$video->filetype";
             $path = storage_path('app/public/video/'.$filename);
             $path2 = storage_path('app/public/thumb/video/'.$video->thumb);
+            $res->message= '';
             if ($last == 'upload') {
                 $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2'";
-                // return dd($last,$ffmpeg);
+                $res->message= 'Upload video berhasil, generate thumbnail sukses';
+                
             }else{
                 $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2' -y";
-                // return dd($last,$ffmpeg);
+                $res->message= 'Edit video berhasil, generate thumbnail sukses';
+                
             }
             $exec = shell_exec($ffmpeg);
             
             $res->status = 'success';
             $res->title = 'Berhasil';
-            $res->message= 'Upload video berhasil, generate thumbnail sukses';
             return redirect($req)->with($res->status,json_encode($res));
         } catch (\Throwable $th) {
             $res->status = 'error';
@@ -497,7 +515,9 @@ class VideoController extends Controller
 
             $imp = (new ImportsTempVid);
             $imp->import($file);
-            
+            \Log::channel('proc')->info("Uploaded file output :");
+            \Log::channel('proc')
+                ->info($imp->toArray($file));
             // if (TempVid::count() > 0) {
             return redirect()->route('video.generate');
             // }
@@ -514,7 +534,7 @@ class VideoController extends Controller
             }
             $res->status = 'error';
 
-            return redirect()->route('video.index')->with($res->status, json_encode($res));
+            return redirect()->back()->with($res->status, json_encode($res));
         }
     }
     public function generate()
@@ -525,6 +545,9 @@ class VideoController extends Controller
         $totrow = TempVid::count();
         $save = 0;
 
+        $log = [$temp,$totrow,$save];
+        \Log::channel('generate')->info($log);
+
         foreach ($temp as $key => $vid) {
             $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
             
@@ -534,31 +557,34 @@ class VideoController extends Controller
             
             $op = 'public/temp/video/'."$vid->nama_file.$vid->tipe_file";
             $np = 'public/video/'."$filename.$video->filetype";
-            $outpath = "public";
             $path = storage_path('app/'.$op);
+            $newpath = storage_path("app/$np");
             $thumb = "$filename.jpg";
-            $opthumb = 'public/temp/video/'.$thumb;
             $npthumb = 'public/thumb/video/'.$thumb;
             $path2 = storage_path('app/'.$npthumb);
 
+            // echo "$key $path<br>";
             if (file_exists($path)) {
                 // echo $path."<br>";
                 // clear existing same files
                 if (file_exists($path2)) {
-                    Storage::delete($npthumb);
+                    unlink($path2);
+                    // Storage::delete($npthumb);
                 }
-                if (file_exists(storage_path("app/$np"))) {
-                    Storage::delete($np);
+                if (file_exists($newpath)) {
+                    unlink($newpath);
+                    // Storage::delete($np);
                 }
                 //generate thumbnail
                 $ffmpeg = "ffmpeg -ss $vid->thumbnail -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2'";
                 $exec = shell_exec($ffmpeg);
-                $fh = fopen(storage_path("logs/ffmpeg-".$key),'w');
-                fwrite($fh,$exec);
-                fclose($fh);
-                Storage::move($op,$np);
+                // $fh = fopen(storage_path("logs/ffmpeg-$key.log"),'w');
+                // fwrite($fh,$exec);
+                // fclose($fh);
+                \Log::channel('generate')->info($exec);
+                rename($path,$newpath);
+                // Storage::move($op,$np);
                 $video->thumb = $thumb;
-                // return "wohoo";
             }
             $edu = Education::where('edu_name','=',$vid->jenjang)->first();
             $grade = Grade::where('grade_name','=',$vid->kelas)->first();
@@ -595,11 +621,14 @@ class VideoController extends Controller
             $video->creator = $vid->nama_pembuat;
             $video->frame = $vid->thumbnail;
             $video->clicked_time = 0;
+
             if($video->save()){
             $save++;
             };
+            // echo var_dump($video);
+            // echo "<br>";
         }
-
+        // echo "<br> $save <br>";
         if ($save == $totrow) {
             TempVid::truncate();
             
@@ -613,7 +642,7 @@ class VideoController extends Controller
             $res->title = 'Gagal';
             $res->message = 'Gagal import video. Row terakhir '.$save;
     
-            return redirect()->route('video.index')->with($res->status, json_encode($res));
+            return redirect()->route('video.excel')->with($res->status, json_encode($res));
         }
     }
 }
