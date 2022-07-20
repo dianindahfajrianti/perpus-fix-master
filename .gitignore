@@ -1,10 +1,13 @@
 /bootstrap/cache
 /node_modules
 /public/hot
+/public/storage/interactive/*
 /public/storage/pdf/*
 /public/storage/video/*
 /public/storage/thumb/pdf/*
+/public/storage/temp/pdf/*
 /public/storage/thumb/video/*
+/public/storage/temp/video/*
 
 /vendor
 .env
