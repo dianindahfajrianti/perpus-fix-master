@@ -151,7 +151,11 @@
                     searchable:false
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
             ,"ajax" : "/mapel/all"
@@ -159,12 +163,12 @@
 
         $('#tb-subject tbody').on('click','.edit-subject',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "mapel/"+id+"/edit";
         });
         $('#tb-subject tbody').on('click','.del-subject',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

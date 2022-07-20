@@ -133,18 +133,22 @@
                     name: "creator"
                 },
                 {
-                    defaultContent: '<button type="button" class="show-video btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="show-video btn btn-info"><i class="fas fa-eye"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
         });
         $('#tb-video tbody').on('click', '.show-video', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "video/"+id;
         });
         $('#tb-video tbody').on('click', '.del-video', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

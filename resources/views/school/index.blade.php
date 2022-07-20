@@ -179,19 +179,23 @@
                     name: "phone"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
         });
         
         $('#tb-school tbody').on('click','.edit-school',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "sekolah/"+id+"/edit";
         });
         $('#tb-school tbody').on('click','.del-school',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

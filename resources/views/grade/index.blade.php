@@ -150,19 +150,23 @@
                     name: "grade_name"
                 },
                 {
-                    defaultContent: '<button type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-grade btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-grade btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ],
             "ajax": "/kelas/all"
         });
         $('#tb-grade tbody').on('click', '.edit-grade', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "/admin/grade/" + id + "/edit";
         });
         $('#tb-grade tbody').on('click', '.del-grade', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

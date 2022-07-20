@@ -128,19 +128,23 @@
                 name: "maj_name"
                 },
                 {
-                defaultContent: '<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
+                data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
             ,"ajax" : "/jurusan/all"
         });
         $('#tb-major tbody').on('click','.edit-major',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "jurusan/"+id+"/edit";
         });
         $('#tb-major tbody').on('click','.del-major',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

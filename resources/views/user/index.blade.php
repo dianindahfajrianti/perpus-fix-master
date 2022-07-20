@@ -294,23 +294,27 @@
                     return rl;
                 }
             }, {
-                defaultContent: '<button type="button" class="d-inline v-user btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>'
+                data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" class="d-inline v-user btn btn-info"><i class="fas fa-eye"></i></button> <button data-id="'+data+'" type="button" class="edit-user btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-user btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
             }],
             "ajax": "/user/all"
         });
         $('#tb-user tbody').on('click', '.edit-user', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "user/" + id + "/edit";
         });
         $('#tb-user tbody').on('click', '.v-user', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "user/" + id;
         });
         $('#tb-user tbody').on('click', '.del-user', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",
