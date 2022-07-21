@@ -44,6 +44,15 @@
                 <div class="icon"><i class="fas fa-film"></i></div>
                 </a>
             </div>
+            <div class="col-lg-2 col-6">
+                <a href="/permission/jurusan" class="small-box bg-gradient-olive">
+                <div class="inner">
+                    {{-- <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3> --}}
+                    <p>Jurusan</p>
+                </div>
+                <div class="icon"><i class="fas fa-flask"></i></div>
+                </a>
+            </div>
         </div>
     </div>
 </section>

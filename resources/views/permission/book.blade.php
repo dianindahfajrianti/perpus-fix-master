@@ -61,7 +61,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Tambah sekolah</h1>
+                    <h1>Tambah Buku</h1>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

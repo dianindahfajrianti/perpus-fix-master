@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 @extends('/admin/body')
-@section('title', 'Akses video - Admin Perpus')
+@section('title', 'Akses Jurusan - Admin Perpus')
 @section('ext-css')
 <!-- Select2 -->
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
@@ -16,12 +16,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar video</h3>
+                <h3 class="display-4">Daftar Jurusan</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">video</li>
+                    <li class="breadcrumb-item active">Jurusan</li>
                 </ol>
             </div>
         </div>
@@ -34,15 +34,15 @@
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah video</button>
+                        <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Jurusan</button>
                     </div>
+                    <h3 class="display-5 ml-3 mt-4">Nama Sekolah</h3>
                     <div class="card-body">
-                        <table id="tb-video" class="table table-bordered table-striped">
+                        <table id="tb-jurusan" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama video</th>
-                                    <th>Pembuat</th>
+                                    <th>Nama Jurusan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -59,7 +59,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Tambah Video</h1>
+                    <h1>Tambah Jurusan</h1>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -67,8 +67,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Video</th>
-                                    <th>Pembuat</th>
+                                    <th>Nama Jurusan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -117,7 +116,7 @@
         bsCustomFileInput.init();
         var idschool = "{{ Request::segment(3) }}";
 
-        var table = $('#tb-video').DataTable({
+        var table = $('#tb-jurusan').DataTable({
             "paging": true,
             "lengthChange": false,
             "searching": true,
@@ -144,14 +143,14 @@
             },{
                 data: 'DT_RowId',
                 render: function (data) { 
-                    return '<button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    return '<button data-id="'+data+'" type="button" class="d-inline del-jurusan btn btn-danger"><i class="fas fa-trash"></i></button>';
                  },
                 searchable:false
             }],
-            "ajax": {url : "/sekolah/"+idschool+"/video",}
+            "ajax": {url : "/sekolah/"+idschool+"/jurusan",}
         });
 
-        $('#tb-video tbody').on('click', '.del-video', function(e) {
+        $('#tb-jurusan tbody').on('click', '.del-jurusan', function(e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             Swal.fire({
@@ -166,10 +165,10 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "delete",
-                        url: "/admin/akses/" + idschool+"/video",
+                        url: "/admin/akses/" + idschool+"/jurusan",
                         data: {
                             _token: "{{ csrf_token() }}",
-                            id_video: id
+                            id_jurusan: id
                         },
                         success: function(data) {
                             Swal.fire({
@@ -224,11 +223,11 @@
                 },{
                     data: 'DT_RowId',
                     render: function (data) { 
-                        return '<button data-id="'+data+'" type="button" class="d-inline add-video btn btn-success"><i class="fas fa-plus"></i></button>';
+                        return '<button data-id="'+data+'" type="button" class="d-inline add-jurusan btn btn-success"><i class="fas fa-plus"></i></button>';
                     },
                     searchable:false
                 }],
-                "ajax": {url : "/akses/video/"+idschool,}
+                "ajax": {url : "/akses/jurusan/"+idschool,}
             });
         });
         $('#modal-add').on('hidden.bs.modal', function (e) {
@@ -236,7 +235,7 @@
             tb.dataTable().fnClearTable();
             tb.dataTable().fnDestroy();
         });
-        $('#tb-add tbody').on('click', '.add-video', function(e) {
+        $('#tb-add tbody').on('click', '.add-jurusan', function(e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
             Swal.fire({
@@ -251,10 +250,10 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "post",
-                        url: "/admin/akses/" + idschool+"/video",
+                        url: "/admin/akses/" + idschool+"/jurusan",
                         data: {
                             _token: "{{ csrf_token() }}",
-                            id_video: id
+                            id_jurusan: id
                         },
                         success: function(data) {
                             Swal.fire({
