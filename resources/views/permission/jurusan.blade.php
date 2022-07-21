@@ -134,8 +134,8 @@
                 orderable: false,
                 searchable: false
             }, {
-                data: "edu_name",
-                name: "edu_name"
+                data: "maj_name",
+                name: "maj_name"
             },{
                 data: 'DT_RowId',
                 render: function (data) { 
@@ -211,11 +211,8 @@
                     orderable: false,
                     searchable: false
                 }, {
-                    data: "title",
-                    name: "title"
-                },{
-                    data: "creator",
-                    name: "creator"
+                    data: "maj_name",
+                    name: "maj_name"
                 },{
                     data: 'DT_RowId',
                     render: function (data) { 
