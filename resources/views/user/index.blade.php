@@ -166,7 +166,6 @@
                                     @php
                                     $rl = [
                                     'Super Admin',
-                                    'Client',
                                     'Admin Sekolah',
                                     'Guru',
                                     'Murid'

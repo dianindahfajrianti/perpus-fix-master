@@ -105,8 +105,14 @@
 
         $('#your-file').hide();
         $('#save-file').addClass('disabled');
-
+        var totalFiles = 0;
+        var counter = 0;
         let browseFile = $('#ct-file');
+        browseFile.on('change',function(e){
+            e.preventDefault();
+            var file = $(this)[0].files;
+            totalFiles = file.length;
+        });
         
         let resumable = new Resumable({
         target: '/admin/video/mass'
@@ -128,19 +134,19 @@
         resumable.on('fileAdded', function(file, event) { // trigger when file picked
 
             showProgress();
-            let fSize = file.size / 1000000;
-            alert(fSize);
-            console.log(file);
+            // let fSize = file.size / 1000000;
+            // alert(fSize);
+            // console.log(file);
             resumable.upload() // to actually start uploading.
         });
         
         resumable.on('fileProgress', function(file) { // trigger when file progress update
             files = resumable.files.length;
-            if(files > 1){
-                updateProgress(Math.floor((file.progress() * 100) / files));
-            }else{
+            // if(files > 1){
+            //     updateProgress(Math.floor((file.progress() * 100) / files));
+            // }else{
                 updateProgress(Math.floor(file.progress() * 100));
-            }
+            // }
         });
 
         resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
@@ -148,7 +154,12 @@
             $('#your-file').attr('href', response.path);
             $('#your-file').text(response.filename);
             $('#your-file').show();
-            $('#save-file').removeClass('disabled');
+            counter++;
+            
+            if (counter == totalFiles) {
+                $('#save-file').removeClass('disabled');
+            }
+            console.log(counter);
         });
 
         resumable.on('fileError', function(file, response) { // trigger when there is any error

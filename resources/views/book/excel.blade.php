@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
-{{-- TimePicker --}}
-<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -99,7 +97,6 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -108,15 +105,6 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
-
-        //Customize timepicker.js
-        $('#frame').timepicker({
-            timeFormat: 'HH:mm:ss',
-            maxHour: 2,
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
 
     });
 
