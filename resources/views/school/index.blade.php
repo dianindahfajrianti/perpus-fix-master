@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="notelp">Nomor Telephone</label>
-                            <input type="tel" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp') }}">
+                            <input type="number" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp') }}">
                             @error('notelp')
                                 <div class="invalid-feedback">
                                     {{$message}}
