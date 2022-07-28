@@ -181,13 +181,18 @@
                 {
                     data: 'DT_RowId',
                     render: function (data) { 
-                        return '<button data-id="'+data+'" type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>';
+                        return '<button data-id="'+data+'" type="button" class="akses-school btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Akses Sekolah"><i class="nav-icon fas fa-igloo"></i></button> <button data-id="'+data+'" type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>';
                     },
                     searchable:false
                 }
             ]
         });
         
+        $('#tb-school tbody').on('click','.akses-school',function(e){
+            e.preventDefault;
+            var id = $(this).attr('data-id');
+            window.location.href = "/admin/akses/"+id;
+        });
         $('#tb-school tbody').on('click','.edit-school',function(e){
             e.preventDefault;
             var id = $(this).attr('data-id');
