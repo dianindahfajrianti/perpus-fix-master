@@ -54,7 +54,7 @@ class EducationController extends Controller
     {
         $res = new stdClass();
         $request->validate([
-            'edu_name' => 'required|max:3'
+            'edu_name' => 'required|max:3|unique:education,edu_name'
         ]);
         try {
             $edu = new Education;

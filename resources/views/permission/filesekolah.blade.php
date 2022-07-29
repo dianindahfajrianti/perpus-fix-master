@@ -30,7 +30,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/akses/{{ $school->id }}/buku" class="small-box bg-gradient-navy">
                     <div class="inner">
-                        <h3>@foreach($book as $b){{$b->totidb}}@endforeach</h3>
+                        <h3>{{ $book }}</h3>
                         <p>Buku</p>
                     </div>
                     <div class="icon"><i class="fas fa-book"></i></div>
@@ -39,16 +39,16 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/akses/{{ $school->id }}/video" class="small-box bg-gradient-lightblue">
                 <div class="inner">
-                    <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3>
+                    <h3>{{ $vid }}</h3>
                     <p>Video</p>
                 </div>
                 <div class="icon"><i class="fas fa-film"></i></div>
                 </a>
             </div>
             <div class="col-lg-2 col-6">
-                <a href="/permission/jurusan" class="small-box bg-gradient-olive">
+                <a href="/admin/akses/{{ $school->id }}/jurusan" class="small-box bg-gradient-olive">
                 <div class="inner">
-                    {{-- <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3> --}}
+                    <h3>{{ $jur }}</h3>
                     <p>Jurusan</p>
                 </div>
                 <div class="icon"><i class="fas fa-flask"></i></div>

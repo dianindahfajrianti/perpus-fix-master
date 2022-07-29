@@ -15,11 +15,11 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/buku', 'HomeController@book')->name('buku');
+Route::get('/buku/{buku}/download', 'HomeController@downloadBook');
 Route::get('/video', 'HomeController@video')->name('video');
 
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::middleware('active')->group(function () {
-    Route::get('/buku/{buku}/download', 'HomeController@downloadBook');
     Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
     Route::get('/pdf/{name}','HomeController@tempPdfView');
     Route::get('/video/{video}', 'HomeController@showvideo');
@@ -60,6 +60,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::prefix('video')->group(function () {
         Route::post('/mass','VideoController@mass');
         Route::post('/exceldata','VideoController@saveExcel')->name('video.saveExcel');
+        Route::post('/sxcl','VideoController@oneExcel')->name('video.sxcl');
+        Route::post('/sgen/{bk}', 'VideoController@singleGenerate')->name('video.sgen');
         Route::get('/xcl-download','VideoController@downloadExcel');
         Route::get('/generate', 'VideoController@generate')->name('video.generate');
         Route::get('/dtemp','VideoController@dataTemp');
@@ -88,6 +90,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/akses/{school}/video','PermissionController@showVideo');
     Route::post('/akses/{school}/video','PermissionController@storeVideo');
     Route::delete('/akses/{school}/video','PermissionController@destroyVideo');
+    //Jurusan
+    Route::get('/akses/{school}/jurusan','PermissionController@showMajor');
+    Route::post('/akses/{school}/jurusan','PermissionController@storeMajor');
+    Route::delete('/akses/{school}/jurusan','PermissionController@destroyMajor');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/riwayat/{user}', 'HistoryController@show');
@@ -105,10 +111,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/getvid/all', 'VideoController@data');
     Route::get('/akses/buku/{school}','PermissionController@dataBook');
     Route::get('/akses/video/{school}','PermissionController@dataVideo');
+    Route::get('/akses/video/{school}','PermissionController@dataVideo');
+    Route::get('/akses/jurusan/{school}','PermissionController@dataMajor');
 
     // Datatable Akses
     Route::get('/sekolah/{school}/buku','PermissionController@books');
     Route::get('/sekolah/{school}/video','PermissionController@videos');
+    Route::get('/sekolah/{school}/jurusan','PermissionController@majors');
 });
 // return condition for ajax
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -152,4 +161,6 @@ Route::get('/sync/video/{school}/zip','ExportController@syncVideozip')->name('sy
 Route::get('/sync/video/{school}/part','ExportController@syncVideopart')->name('sync.videopart');
 
 Route::post('/tiket','HomeController@tiket');
+
+Route::get('/info','HomeController@info');
 Route::get('/coba/{id}','HomeController@coba');

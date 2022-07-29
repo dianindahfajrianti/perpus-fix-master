@@ -24,14 +24,14 @@ class ActiveMiddleware
             $res->title = 'Anda belum login';
             $res->message = 'Silahkan login untuk melihat isi';
             
-            return redirect('/')->with($res->status,json_encode($res));
+            return redirect()->back()->with($res->status,json_encode($res));
         }else{
             $user = new User;
             $stat = $user->where('log_status','=',1)->get();
             $statCount = $stat->count();
             if ($statCount > 20) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/login');
             }
             return $next($request);
         }

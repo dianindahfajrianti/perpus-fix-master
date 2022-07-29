@@ -54,7 +54,7 @@ class SubjectController extends Controller
         $res = new stdClass;
         $request->validate([
             'jurusan' => 'required',
-            'mapel' => 'required|min:3'
+            'mapel' => 'required|min:3|unique:subjects,sbj_name'
         ]);
 
         try {

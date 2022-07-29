@@ -406,7 +406,6 @@ class VideoController extends Controller
             if ($last == 'upload') {
                 $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2'";
                 $res->message= 'Upload video berhasil, generate thumbnail sukses';
-                
             }else{
                 $ffmpeg = "ffmpeg -ss $frame -i '$path' -q:v 4 -frames:v 1 -s 192x108 '$path2' -y";
                 $res->message= 'Edit video berhasil, generate thumbnail sukses';
@@ -514,13 +513,11 @@ class VideoController extends Controller
             $file = $request->file('xcl');
 
             $imp = (new ImportsTempVid);
+
+            \Log::channel('proc')->info("Uploaded video excel output :");
+            \Log::channel('proc')->info($imp->toArray($file));
             $imp->import($file);
-            \Log::channel('proc')->info("Uploaded file output :");
-            \Log::channel('proc')
-                ->info($imp->toArray($file));
-            // if (TempVid::count() > 0) {
             return redirect()->route('video.generate');
-            // }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
             
@@ -545,10 +542,8 @@ class VideoController extends Controller
         $totrow = TempVid::count();
         $save = 0;
 
-        $log = [$temp,$totrow,$save];
-        \Log::channel('generate')->info($log);
-
         foreach ($temp as $key => $vid) {
+            
             $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
             
             $video = new Video;

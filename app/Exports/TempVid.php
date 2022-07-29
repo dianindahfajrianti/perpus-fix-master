@@ -26,7 +26,7 @@ class TempVid implements FromCollection, WithHeadings
         'kelas',
         'jurusan',
         'mapel',
-            'nama_file','tipe_file')->get();
+        'nama_file','tipe_file')->get();
     }
     public function headings(): array
     {

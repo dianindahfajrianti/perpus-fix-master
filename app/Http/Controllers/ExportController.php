@@ -61,7 +61,12 @@ class ExportController extends Controller
                       ->where('grade_name','<=','12')
                       ->get();
             }
-            $maj = Major::where('maj_name','Umum')->get();
+            $scope = ['id' => $sid];
+            $maj = Major::where('maj_name','Umum')
+                    ->whereHas('schools',function($query) use ($scope){
+                        $query->where('id',$scope);
+                    })->get();
+                    
             $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
             
             $sub = Subject::where('parent_id',$maj_id)->with('hasMajor')->get();

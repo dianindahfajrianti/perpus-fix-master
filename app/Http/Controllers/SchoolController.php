@@ -57,7 +57,7 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|max:100',
+            'nama' => 'required|max:100|unique:schools,sch_name',
             'jenjang' => 'required',
             'alamat' => 'required|min:10',
             'notelp' => 'required'

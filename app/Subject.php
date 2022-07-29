@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+    
     public function hasMajor()
     {
         return $this->hasOne(Major::class,'id','parent_id');

@@ -370,13 +370,16 @@ class UserController extends Controller
             $stat = "success";
             $msg = "User $request->nama berhasil diubah!";
 
+            $res->status = $stat;
+            $res->message= $msg;
+            return redirect()->route('user.index')->with($stat,json_encode($res));
         } catch (\Exception $th) {
             $stat = "error";
             $msg = $th;
+            $res->status = $stat;
+            $res->message= $msg;
+            return redirect()->back()->with($stat,json_encode($res));
         }
-        $res->status = $stat;
-        $res->message= $msg;
-        return redirect()->route('user.index')->with($stat,json_encode($res));
     }
 
     /**

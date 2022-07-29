@@ -32,6 +32,12 @@ class School extends Model
         ->withTimestamps();
     }
 
+    public function majors()
+    {
+        return $this->belongsToMany(Major::class,'major_school','school_id','major_id','id','maj_code')
+        ->withTimestamps();
+    }
+
     public function getUploadDateAttribute()
     {
         $date = new DateTime($this->created_at);

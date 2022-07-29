@@ -53,20 +53,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        $res = new stdClass;
-        $res->status = 'error';
-        $res->title = 'Gagal';
-        if ($exception instanceof ModelNotFoundException) {
-            $res->message = $exception->getMessage();
-            return redirect()->back()->with(json_encode($res));
-        }
-        if ($exception instanceof \Illuminate\Database\QueryException) {
-            $res->message = $exception->getMessage();
-            return redirect()->back()->with(json_encode($res));
-        } elseif ($exception instanceof \PDOException) {
-            $res->message = $exception->getMessage();
-            return redirect()->back()->with(json_encode($res));
-        }
+        // $res = new stdClass;
+        // $res->status = 'error';
+        // $res->title = 'Gagal';
+        // if ($exception instanceof ModelNotFoundException) {
+        //     $res->message = $exception->getMessage();
+        //     return redirect()->back()->with(json_encode($res));
+        // }
+        // if ($exception instanceof \Illuminate\Database\QueryException) {
+        //     $res->message = $exception->getMessage();
+        //     return redirect()->back()->with(json_encode($res));
+        // } elseif ($exception instanceof \PDOException) {
+        //     $res->message = $exception->getMessage();
+        //     return redirect()->back()->with(json_encode($res));
+        // }
         
         return parent::render($request, $exception);
     }

@@ -130,20 +130,19 @@ class HomeController extends Controller
     // }
     public function showvideo(Video $video)
     {
-        if (auth()->check()) {
-            $video->clicked_time = $video->clicked_time+1;
-            $video->save();
-            $his = new History;
-            $his->userid = auth()->user()->id;
-            $his->file_id = $video->id;
-            $his->type = $video->filetype;
-            $his->save();
-            return view('home.showvideo',compact('video'));}
+        $video->clicked_time = $video->clicked_time+1;
+        $video->save();
+        $his = new History;
+        $his->userid = auth()->user()->id;
+        $his->file_id = $video->id;
+        $his->type = $video->filetype;
+        $his->save();
+        return view('home.showvideo',compact('video'));
     }
     public function stream(Video $video)
     {
         $filename = $video->filename.".".$video->filetype;
-        $video_path = public_path('storage/video/'.$filename);
+        $video_path = storage_path('app/public/video/'.$filename);
         $stream = new VideoStream ($video_path);
         return $stream->start();
     }
@@ -166,14 +165,30 @@ class HomeController extends Controller
 
     public function downloadVid(Video $video)
     {
-        $path = "public/video";
-        return Storage::file("$path/$video->filename.$video->filetype");
+        if (!auth()->check()) {
+            $res = new stdClass;
+            $res->status = "error";
+            $res->message = "Anda harus login untuk mendownload file!";
+
+            return redirect('/')->with($res->status,json_encode($res));
+        }else{
+            $path = "public/video";
+            return Storage::download("$path/$video->filename.$video->filetype");
+        }
     }
 
     public function downloadBook(Book $buku)
     {
-        $path = "public/pdf";
-        return Storage::file("$path/$buku->filename");
+        if (!auth()->check()) {
+            $res = new stdClass;
+            $res->status = "error";
+            $res->message = "Anda harus login untuk mendownload file!";
+
+            return redirect('/')->with($res->status,json_encode($res));
+        }else{
+            $path = "public/pdf";
+            return Storage::download("$path/$buku->filename");
+        }
     }
 
     public function tiket(Request $request)
@@ -208,18 +223,34 @@ class HomeController extends Controller
     public function coba($id)
     {
         $book = Book::where('id','=',$id)->first();
-        $path = 'public/pdf/'.$book->filename;
+        $file = "public/pdf/$book->filename[0]";
         // $pdf = new Pdf(storage_path("app/$path"));
         $thumb = storage_path('app/public/pdf/tmp/pdf.jpg');
+        $thumb1 = storage_path('app/public/pdf/tmp/pdf-2.jpg');
+        $path = storage_path('app/'.$file);
         // $saved = $pdf->saveImage($thumb);
+        // $pdf = new Pdf($path);
+        // $save = $pdf->saveImage($thumb);
 
-        $im = new \Imagick($thumb);
-        $wd = $im->getImageWidth() / 2;
+        $im = new \Imagick();
+        $im->readImage($path);
+        $im->setImageFormat('jpeg');
+        $wd = $im->getImageWidth();
         $hg = $im->getImageHeight();
-        
-        $manager = new ImageManager(['driver'=> 'imagick']);
-        $manager->make($thumb)->crop()->resize();
-        return $wd;
+        $pg = $im->getImagePage();
+        if ($wd > 720) {
+            echo "wow width = $wd<br>";
+            echo var_dump($pg);
+            $hwd = $wd/2;
+            $im->cropImage($hwd,$hg,$hwd,0);
+            $im->thumbnailImage(144,208,true);
+        }else{
+            echo "smol width $wd";
+            echo var_dump($pg);
+        }
+        $im->writeImage($thumb1);
+        // $imgmam = new ImageManager(['driver'=> 'imagick']);
+        // $imgman->make($thumb)->crop()->resize();
         // return view('home.test');
     }
 
@@ -275,4 +306,5 @@ class HomeController extends Controller
             }
         }
     }
+
 }

@@ -18,4 +18,9 @@ class Major extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    public function schools()
+    {
+        return $this->belongsToMany(School::class,'major_school','major_id','school_id','maj_code','id')
+        ->withTimestamps();
+    }
 }

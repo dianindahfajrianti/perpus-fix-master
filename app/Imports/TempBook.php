@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Illuminate\Validation\Rule;
 use App\TempBook as AppTempBook;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;

@@ -234,8 +234,8 @@
             e.preventDefault();
             var id = $(this).attr('data-id');
             Swal.fire({
-                title: 'Yakin tambah akses buku?',
-                text: "Sekolah akan dapat akses buku tersebut!",
+                title: 'Yakin tambah akses jurusan?',
+                text: "Sekolah akan dapat akses jurusan tersebut!",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#4CAF50',
