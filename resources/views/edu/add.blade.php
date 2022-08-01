@@ -40,7 +40,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="edu_name">Nama Jenjang</label>
-                                <input type="text" name="edu_name" id="edu_name" class="form-control @error('edu_name'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{old('edu_name')}}">
+                                <input type="text" name="edu_name" id="edu_name" class="form-control @error('edu_name'){{'is-invalid'}}@enderror" placeholder="Nama Jenjang" value="{{old('edu_name')}}">
                                 @error('edu_name')
                                 <div class="invalid-feedback">
                                     {{$message}}

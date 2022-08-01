@@ -39,6 +39,22 @@
                         @csrf
                         @method('put')
                         <div class="card-body">
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="jenjang">Jenjang</label>
+                                <div class="input-group">
+                                    <select name="jenjang" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="">
+                                        <option value="">-- Pilih Jenjang --</option>
+                                        @foreach ($edu as $e )
+                                        <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('jenjang')
+                                    <div class="invalid-feedback">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="jurusan">Nama Jurusan</label>
                                 <input type="text" name="jurusan" id="jurusan" class="form-control @error('jurusan'){{'is-invalid'}}@enderror" placeholder="Document Name" value="{{ old('jurusan',$jurusan->maj_name) }}">
@@ -48,7 +64,6 @@
                                 </div>
                                 @enderror
                             </div>
-
                         </div>
                         <!-- /.card-body -->
 

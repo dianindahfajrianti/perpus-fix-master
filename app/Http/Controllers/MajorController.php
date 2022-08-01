@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Education;
 use App\Major;
 use App\User;
 use App\Video;
@@ -20,7 +21,8 @@ class MajorController extends Controller
 
     public function index()
     {
-        return view('major.index');
+        $edu = Education::all();
+        return view('major.index', compact('edu'));
     }
     public function data()
     {
@@ -93,7 +95,8 @@ class MajorController extends Controller
      */
     public function edit(Major $jurusan)
     {
-        return view('major.edit',compact('jurusan'));
+        $edu = Education::all();
+        return view('major.edit',compact('jurusan','edu'));
     }
 
     /**
