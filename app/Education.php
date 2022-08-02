@@ -10,7 +10,7 @@ class Education extends Model
     {
         return $this->belongsTo(Education::class,'id','edu_id');
     }
-    public function onMedia()
+    public function onVideo()
     {
         return $this->belongsTo(Video::class,'id','edu_id');
     }
@@ -18,11 +18,16 @@ class Education extends Model
     {
         return $this->belongsTo(School::class,'id','edu_id');
     }
-// tambahan
+    // tambahan
     protected $fillable = ['grade_name', 'edu_name', 'sbj_name', 'title'];
     
     public function files()
     {
         return $this->hasMany(Files::class);
+    }
+
+    public function majors()
+    {
+        return $this->belongsTo(Majors::class,'edu_id','id');
     }
 }

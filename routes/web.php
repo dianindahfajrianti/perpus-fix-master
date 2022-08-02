@@ -40,6 +40,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/xcl-download', 'BookController@downloadExcel');
         Route::get('/generate', 'BookController@generate')->name('buku.generate');
         Route::get('/dtemp','BookController@dataTemp');
+        Route::delete('/temp/{buku}','BookController@delTemp');
     });
     Route::resource('buku', 'BookController');
     Route::get('/buku-import','BookController@imports')->name('buku.import');
@@ -65,6 +66,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/xcl-download','VideoController@downloadExcel');
         Route::get('/generate', 'VideoController@generate')->name('video.generate');
         Route::get('/dtemp','VideoController@dataTemp');
+        Route::delete('/temp/{video}','VideoController@delTemp');
     });
     
     // -- video Upload File --

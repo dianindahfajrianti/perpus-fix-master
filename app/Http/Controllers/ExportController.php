@@ -48,28 +48,39 @@ class ExportController extends Controller
             $edu = Education::where('id',$id)->get();
             $eduname = DB::table('education')->where('id',$id)->value('edu_name');
             $gr = new stdClass;
-            if ($eduname == 'SD' || $eduname == 'MI') {
+            $sd = str_contains($eduname,'SD');
+            $smp = str_contains($eduname,'SMP');
+            $sma = str_contains($eduname,'SMA');
+            $smk = str_contains($eduname,'SMK');
+            $mi = str_contains($eduname,'MI');
+            $mts = str_contains($eduname,'Mts');
+            $ma = str_contains($eduname,'MA');
+            if ($sd || $mi) {
                 $gr = Grade::where('grade_name','<','7')->get();
             }
-            if ($eduname == 'SMP' || $eduname == 'Mts') {
+            if ($smp || $mts) {
                 $gr = Grade::where('grade_name','>=','7')
                         ->where('grade_name','<=','9')
                         ->get();
             }
-            if ($eduname == 'SMA' || $eduname == 'SMK' || $eduname == 'MA') {
+            if ($sma || $smk || $ma) {
                 $gr = Grade::where('grade_name','>=','10')
                       ->where('grade_name','<=','12')
                       ->get();
             }
             $scope = ['id' => $sid];
-            $maj = Major::where('maj_name','Umum')
-                    ->whereHas('schools',function($query) use ($scope){
-                        $query->where('id',$scope);
-                    })->get();
-                    
-            $maj_id = DB::table('majors')->where('maj_name','Umum')->value('id');
-            
-            $sub = Subject::where('parent_id',$maj_id)->with('hasMajor')->get();
+            $scopeEdu = ['id' => $id];
+            $maj = Major::whereHas('educations',function($query) use ($scopeEdu){
+                        $query->where('id',$scopeEdu);
+                    })
+                    ->get();
+            $mj = Major::where('maj_name','Umum')
+                    ->whereHas('educations',function($query) use ($scopeEdu){
+                        $query->where('id',$scopeEdu);
+                    })
+                    ->first();
+            $maj_id = $mj->id;
+            $sub = Subject::where('parent_id',$maj_id)->get();
             $sch = School::where('id',$sid)->get();
             $filters = [
                 'edu' => $edu,
@@ -84,8 +95,8 @@ class ExportController extends Controller
             $ex->save();
 
             return response()->json($filters);   
-        } catch (\Throwable $th) {
-            throw $th;
+        } catch (\Exception $ex) {
+            throw $ex;
         }
     }
 

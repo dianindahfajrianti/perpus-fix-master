@@ -503,13 +503,16 @@ class BookController extends Controller
             
             $edu = Education::where('edu_name','=',$bk->jenjang)->first();
             $grade = Grade::where('grade_name','=',$bk->kelas)->first();
-            $mjr = Major::where('maj_name','=',$bk->jurusan)->first();
             $sub = Subject::where('sbj_name','=',$bk->mapel)->first();
 
             if (empty($edu)) {
                 $ed = null;
+                $mjr = null;
             }else{
                 $ed = $edu->id;
+                $mjr = Major::where('maj_name','=',$bk->jurusan)
+                        ->where('edu_id',$ed)
+                        ->first();
             }
             if (empty($grade)) {
                 $gr = null;
@@ -562,133 +565,23 @@ class BookController extends Controller
         }
     }
 
-    public function oneExcel(Request $request)
+    public function delTemp(TempBook $buku)
     {
+        $thumbname = str_replace(".pdf",".jpg",$buku->nama_file);
+        $path = storage_path("app/public/temp/pdf/");
+        $path1 = $path.$buku->nama_file; // pdf path
+        $path2 = $path.$thumbname; // image path
+
+        if (file_exists($path1)) unset($path1);
+        if (file_exists($path2)) unset($path2);
+
+        $buku->delete();
+
         $res = new stdClass;
-        $request->validate([
-            'xcl' => 'required|mimes:xls,xlsx'
-        ]);
-        try {
-            //clear db hanya "nama_file"
-            TempBook::truncate();
-            //Import excel
-            $file = $request->file('xcl');
-
-            $imp = (new ImportsTempBook);
-            $imp->import($file);
-            $res->status = 'success';
-            $res->title = 'Berhasil';
-            $res->message = 'Data excel berhasil di import.';
-            $res->total = TempBook::count();
-            return response()->json($res);
-
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            $failures = $e->failures();
-            
-            foreach ($failures as $key => $val) {
-                $val->row(); // row that went wrong
-                $val->attribute(); // either heading key (if using heading row concern) or column index
-                $val->errors(); // Actual error messages from Laravel validator
-                $val->values(); // The values of the row that has failed.
-                
-                $res->message[$key] = $val->errors();
-            }
-            $res->status = 'error';
-
-            return response()->json($res);
-        }
-    }
-
-    public function singleGenerate(Request $request,TempBook $bk)
-    {
-        $totbk = $request->total;
-        //ambil data dari excel
-        set_time_limit(0);
-        $save  = 0;
-        $res = new stdClass;
-        
-        // format filename
-        $filename = Str::slug($bk->judul." ".$bk->pengarang." ".$bk->th_terbit,'-');
-            
-        $book = new Book;
-        $book->filetype = $bk->tipe_file;
-        $book->filename = "$filename.$book->filetype";
-        $thumbname = str_replace($bk->tipe_file,"",$bk->nama_file);
-        $op = 'public/temp/pdf/'."$bk->nama_file";
-        $np = 'public/pdf/'.$book->filename;
-        $path = storage_path('app/'.$op);
-        $opthumb = 'public/temp/pdf/'."$thumbname.jpg";
-        $npthumb = 'public/thumb/pdf/'."$filename.jpg";
-        $path2 = storage_path('app/'.$npthumb);
-        
-
-        if (file_exists($path)) {
-            //remove old file if same
-            if (file_exists(storage_path("app/$np"))) {
-                unlink(storage_path("app/$np"));
-            }
-            rename(storage_path("app/$op"),storage_path("app/$np"));
-        }
-
-        if(file_exists($opthumb)) rename(storage_path("app/$opthumb"),storage_path("app/$$npthumb"));
-        
-        $edu = Education::where('edu_name','=',$bk->jenjang)->first();
-        $grade = Grade::where('grade_name','=',$bk->kelas)->first();
-        $mjr = Major::where('maj_name','=',$bk->jurusan)->first();
-        $sub = Subject::where('sbj_name','=',$bk->mapel)->first();
-
-        if (empty($edu)) {
-            $ed = null;
-        }else{
-            $ed = $edu->id;
-        }
-        if (empty($grade)) {
-            $gr = null;
-        }else{
-            $gr = $grade->id;
-        }
-        if (empty($mjr)) {
-            $mj = null;
-        }else {
-            $mj = $mjr->id;
-        }
-        if (empty($sub)) {
-            $su = null;
-        }else {
-            $su = $sub->id;
-        }
-
-        $book->title = $bk->judul;
-        $book->desc = $bk->deskripsi;
-        $book->edu_id = $ed;
-        $book->grade_id= $gr;
-        $book->major_id= $mj;
-        $book->sub_id= $su;
-        $book->published_year = $bk->th_terbit;
-        $book->publisher = $bk->penerbit;
-        $book->author = $bk->pengarang;
-        $book->thumb = "$filename.jpg";
-        $book->clicked_time = 0;
-        
         $res->status = 'success';
         $res->title = 'Berhasil';
-        if ($save == $totbk) {
-            TempBook::truncate();
-            $res->message = 'Seluruh berhasil di import.';
-        }
+        $res->message = "Hapus file $buku->nama_file berhasil";
 
-        if ($book->save()) {
-            $save++;
-            $res->message = 'Buku berhasil di import.';
-            
-            return response()->json($res);
-        }else{
-            $res->status = 'error';
-            $res->title = 'Gagal';
-            $res->message = 'Gagal import buku. Row terakhir '.$save;
-            
-            return response()->json($res);
-        };
+        return response()->json($res);
     }
-
 }

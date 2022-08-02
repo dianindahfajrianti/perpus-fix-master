@@ -151,7 +151,7 @@ class EducationController extends Controller
         $exist1 = School::where('edu_id','=',$pendidikan->id)->first();
         $exist2 = Book::where('edu_id','=',$pendidikan->id)->first();
         
-        if (($exist1||$exist2) != null) {
+        if ($exist1 != null || $exist2 != null) {
             $stat = "error";
             $msg = "Tingkat pendidikan $pendidikan->name Tidak Boleh Dihapus!";
             $res->status = $stat;

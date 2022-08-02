@@ -502,6 +502,26 @@ class VideoController extends Controller
         return (new ExportsTempVid)->download('videolist.xlsx');
     }
 
+    public function delTemp(TempVid $video)
+    {
+        $thumbname = "$video->nama_file.jpg";
+        $path = storage_path("app/public/temp/video/");
+        $path1 = $path."$video->nama_file.$video->tipe_file"; // pdf path
+        $path2 = $path.$thumbname; // image path
+
+        if (file_exists($path1)) unset($path1);
+        if (file_exists($path2)) unset($path2);
+
+        $video->delete();
+
+        $res = new stdClass;
+        $res->status = 'success';
+        $res->title = 'Berhasil';
+        $res->message = "Hapus file $video->nama_file berhasil";
+
+        return response()->json($res);
+    }
+
     public function saveExcel(Request $request)
     {
         $res = new stdClass;
@@ -583,13 +603,16 @@ class VideoController extends Controller
             }
             $edu = Education::where('edu_name','=',$vid->jenjang)->first();
             $grade = Grade::where('grade_name','=',$vid->kelas)->first();
-            $mjr = Major::where('maj_name','=',$vid->jurusan)->first();
             $sub = Subject::where('sbj_name','=',$vid->mapel)->first();
             
             if (empty($edu)) {
                 $ed = null;
+                $mjr = null;
             }else{
                 $ed = $edu->id;
+                $mjr = Major::where('maj_name','=',$vid->jurusan)
+                        ->where('edu_id',$ed)
+                        ->first();
             }
             if (empty($grade)) {
                 $gr = null;
