@@ -26,7 +26,7 @@ class MajorController extends Controller
     }
     public function data()
     {
-        $model = Major::all();
+        $model = Major::with('educations')->get();
         return DataTables::of($model)
                ->addIndexColumn()
                ->setRowId('id')
