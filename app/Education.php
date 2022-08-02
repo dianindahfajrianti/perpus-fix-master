@@ -8,7 +8,7 @@ class Education extends Model
 {
     public function onBook()
     {
-        return $this->belongsTo(Education::class,'id','edu_id');
+        return $this->belongsTo(Book::class,'id','edu_id');
     }
     public function onVideo()
     {
@@ -28,6 +28,6 @@ class Education extends Model
 
     public function majors()
     {
-        return $this->belongsTo(Majors::class,'edu_id','id');
+        return $this->belongsTo(Major::class,'edu_id','id');
     }
 }
