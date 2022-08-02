@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar video</h3>
+                <h2 style="font-size: 45px" class="display-3">Daftar Video {{ $school->sch_name }}</h2>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">

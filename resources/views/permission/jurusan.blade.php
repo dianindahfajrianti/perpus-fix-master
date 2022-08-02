@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar Jurusan</h3>
+                <h2 style="font-size: 45px" class="display-3">Daftar Jurusan {{ $school->sch_name }}</h2>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -38,7 +38,7 @@
                     <div class="card-header">
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah Jurusan</button>
                     </div>
-                    <h3 class="display-5 ml-3 mt-4">Nama Sekolah</h3>
+                    {{-- <h3 class="display-5 ml-3 mt-4">{{ $school->sch_name }}</h3> --}}
                     <div class="card-body">
                         <table id="tb-jurusan" class="table table-bordered table-striped">
                             <thead>

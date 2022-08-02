@@ -145,8 +145,8 @@
                 name: "maj_name"
                 },
                 {
-                data: "edu_name",
-                name: "edu_name"
+                data: "educations.edu_name",
+                name: "educations.edu_name"
                 },
                 {
                 data: 'DT_RowId',

@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar buku</h3>
+                <h2 style="font-size: 45px" class="display-3">Daftar Buku {{ $school->sch_name }}</h2>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -187,7 +187,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "delete",
-                        url: "/admin/akses/" + id+"/buku",
+                        url: "/admin/akses/" + idschool +"/buku",
                         data: {
                             _token: "{{ csrf_token() }}",
                             id_buku: id
@@ -199,7 +199,9 @@
                                 text: data.message,
                                 timer: 1200
                             });
+                            $('#modal-add').modal('hide');
                             table.draw();
+                            $('#modal-add').modal('show');
                         },
                         error: function(data) {
                             var js = data.responseJSON;
@@ -293,7 +295,9 @@
                                 text: data.message,
                                 timer: 1200
                             });
+                            $('#modal-add').modal('hide');
                             table.draw();
+                            $('#modal-add').modal('show');
                         },
                         error: function(data) {
                             var js = data.responseJSON;
