@@ -471,8 +471,11 @@ class VideoController extends Controller
 
             $vid->save();
 
+            $temp = public_path("storage/temp/video/");
             return [
-                'path' => 'video/temp'
+                'path' => $temp,
+                'filename' => $fileName,
+                'id' => $vid->id
             ];
 
         }

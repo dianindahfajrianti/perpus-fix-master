@@ -406,8 +406,11 @@ class BookController extends Controller
 
             $buku->save();
 
+            $temp = public_path("storage/temp/video/");
             return [
-                'path' => 'pdf/temp'
+                'path' => $temp,
+                'filename' => $fileName,
+                'id' => $buku->id
             ];
 
         }
