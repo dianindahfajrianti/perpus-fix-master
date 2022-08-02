@@ -25,6 +25,6 @@ class Major extends Model
     }
     public function educations()
     {
-        return $this->belongsToMany(Education::class);
+        return $this->hasOne(Education::class,'id','edu_id');
     }
 }
