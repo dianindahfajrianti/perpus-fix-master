@@ -222,9 +222,9 @@ Detail {{ $video->title }}
     $(document).ready(function() {
 
         var jurusanID = $('#jurusan').val();
-        var oldMapel = "{{ old('kelas') }}"
+        var oldMapel = "{{ old('kelas', $video->sub_id) }}"
+        console.log(oldKelas);
         console.log(jurusanID);
-        if(jurusanID) {
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",
@@ -235,7 +235,7 @@ Detail {{ $video->title }}
                     $('#mapel').empty();
                     $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
                     $.each(data, function(index, mapel){
-                        if (oldMapel = mapel.id){
+                        if (oldMapel == mapel.id){
                             $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                         } else{
                             $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
@@ -243,12 +243,10 @@ Detail {{ $video->title }}
                     });
                 }
             });
-        }else{
-            $('#mapel').empty();
-        }
         
         var id = $('#jenjang').val();
-        var oldKelas = "{{ old('kelas') }}"
+        var oldKelas = "{{ old('kelas', $video->grade_id) }}"
+        console.log(oldKelas);
         console.log(id);
         var url = "{{ Request :: segment(count(Request :: segments())) }}";
         $.ajax({
@@ -259,8 +257,9 @@ Detail {{ $video->title }}
                 $('#kelas').empty();
                 $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
                 $.each(data, function(index, kelas){
-                    if (oldKelas = kelas.id){
+                    if (oldKelas == kelas.id){
                         $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+
                     } else {
                         $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     }
@@ -271,7 +270,6 @@ Detail {{ $video->title }}
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);
-            if(jurusanID) {
                 $.ajax({
                     url: '/sub/'+jurusanID,
                     type: "GET",
@@ -286,9 +284,6 @@ Detail {{ $video->title }}
                         });
                     }
                 });
-            }else{
-                $('#mapel').empty();
-            }
         });
 
         $('#jenjang').change(function (e) {

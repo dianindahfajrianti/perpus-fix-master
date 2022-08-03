@@ -193,53 +193,44 @@
     $(document).ready(function() {
 
         var sekolahID = $('#sekolah').val();
-        var oldKelas = "{{ old('kelas') }}"
+        var oldKelas = "{{ old('kelas',$user->grade_id) }}";
+        console.log(oldKelas);
         console.log(sekolahID);
-        if(sekolahID) {
-            $.ajax({
-                url: '/sch/'+sekolahID,
-                type: "GET",
-                success:function(data){
-                    console.log(data);
-                    $('#kelas').empty();
-                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
-                    $.each(data, function(id, kelas){
-                        if (oldKelas = kelas.id){
-                            $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
-                        }else{
-                            $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
-                        }
-                    });
-                }
-            });
-        }else{
-            $('#kelas').empty();
-        }
+        $.ajax({
+            url: '/sch/'+sekolahID,
+            type: "GET",
+            success:function(data){
+                console.log('data : ', data);
+                $('#kelas').empty();
+                $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                $.each(data, function(id, kelas){
+                    if (oldKelas == kelas.id){
+                        $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        console.log('Kelas ID selected : ', kelas.id, ' - ', oldKelas);
+                    }else{
+                        console.log('Kelas ID : ',kelas.id)
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
 
         $('#sekolah').on('change', function() {
             var sekolahID = $(this).val();
             console.log(sekolahID);
-            if(sekolahID) {
-                $.ajax({
-                    url: '/sch/'+sekolahID,
-                    type: "GET",
-                    success:function(data)
-                    {
-                        if(data){
-                        console.log(data);
-                        $('#kelas').empty();
-                        $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
-                        $.each(data, function(id, kelas){
-                            $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
-                        });
-                    }else{
-                        $('#kelas').empty();
-                    }
-                    }
-                });
-            }else{
-                $('#kelas').empty();
-            }
+            $.ajax({
+                url: '/sch/'+sekolahID,
+                type: "GET",
+                success:function(data)
+                {
+                    console.log('on change data : ',data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(id, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
         });
 
     });
