@@ -356,7 +356,6 @@
         var sekolahID = $('#sekolah').val();
         var oldKelas = "{{ old('kelas') }}"
         console.log(sekolahID);
-        if(sekolahID) {
             $.ajax({
                 url: '/sch/'+sekolahID,
                 type: "GET",
@@ -373,34 +372,24 @@
                     });
                 }
             });
-        }else{
-            $('#kelas').empty();
-        }
 
-        $('#sekolah').on('change', function() {
+        $('#sekolah').on('change', function(e) {
+            e.preventDefault();
             var sekolahID = $(this).val();
             console.log(sekolahID);
-            if(sekolahID) {
                 $.ajax({
                     url: '/sch/'+sekolahID,
                     type: "GET",
                     success:function(data)
                     {
-                        if(data){
                         console.log(data);
                         $('#kelas').empty();
                         $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
                         $.each(data, function(id, kelas){
                             $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
                         });
-                    }else{
-                        $('#kelas').empty();
-                    }
                     }
                 });
-            }else{
-                $('#kelas').empty();
-            }
         });
 
     });

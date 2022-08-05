@@ -260,29 +260,21 @@
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);
-            if(jurusanID) {
-                $.ajax({
-                    url: '/sub/'+jurusanID,
-                    type: "GET",
-                    data : {"_token":"{{ csrf_token() }}"},
-                    dataType: "json",
-                    success:function(data)
-                    {
-                        if(data){
-                        console.log(data);
-                        $('#mapel').empty();
-                        $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
-                        $.each(data, function(index, mapel){
-                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
-                        });
-                    }else{
-                        $('#mapel').empty();
-                    }
-                    }
-                });
-            }else{
-                $('#mapel').empty();
-            }
+            $.ajax({
+                url: '/sub/'+jurusanID,
+                type: "GET",
+                data : {"_token":"{{ csrf_token() }}"},
+                dataType: "json",
+                success:function(data)
+                {
+                    console.log(data);
+                    $('#mapel').empty();
+                    $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $.each(data, function(index, mapel){
+                        $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    });
+                }
+            });
         });
 
         $('#jenjang').change(function(e) {
