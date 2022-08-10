@@ -26,9 +26,15 @@ class SubjectController extends Controller
     }
     public function data()
     {
+        
         $model = Subject::with('hasMajor');
+        
         return DataTables::of($model)
                ->addIndexColumn()
+               ->editColumn('has_major',function($subject){
+                    $maj = Major::with('educations')->where('id',$subject->parent_id)->first();
+                    return $maj;
+               })
                ->setRowId('id')
                ->make(true);
     }

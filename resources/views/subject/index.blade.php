@@ -145,8 +145,12 @@
                     name: "sbj_name"
                 },
                 {
-                    data: "has_major.maj_name",
-                    name: "has_major.maj_name",
+                    data: "has_major",
+                    render: function (full,data,type,row) {
+                        var ed = JSON.parse(full);
+                        console.log(ed);
+                        return ed.maj_name+" - "+ ed.educations.edu_name;
+                    },
                     searchable:false
                 },
                 {
