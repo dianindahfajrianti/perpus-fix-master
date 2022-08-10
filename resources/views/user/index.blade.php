@@ -362,7 +362,7 @@
                 success:function(data){
                     console.log(data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
                         if (oldKelas = kelas.id){
                             $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
@@ -384,7 +384,7 @@
                     {
                         console.log(data);
                         $('#kelas').empty();
-                        $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                        $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
                         $.each(data, function(id, kelas){
                             $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
                         });

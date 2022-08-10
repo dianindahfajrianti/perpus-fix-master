@@ -120,9 +120,16 @@ class Admin extends Controller
         return $kls;
     }
 
-    public function maj()
+    public function maj(Education $edu)
     {
-        return Major::all();
+        $scope = [
+            'id' => $edu->id
+        ];
+        return Major::with('educations')
+                ->whereHas('educations',function($query) use ($scope){
+                    $query->where('id',$scope);
+                })
+                ->get();
     }
     public function sub(Major $major)
     {

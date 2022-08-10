@@ -112,9 +112,9 @@
                                                 <div class="input-group">
                                                     <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                                         <option value="">-- Pilih Jurusan --</option>
-                                                        @foreach ($maj as $m )
+                                                        {{-- @foreach ($maj as $m )
                                                         <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('jurusan')
                                                     <div class="invalid-feedback">
@@ -263,13 +263,11 @@
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",
-                data : {"_token":"{{ csrf_token() }}"},
-                dataType: "json",
                 success:function(data)
                 {
                     console.log(data);
                     $('#mapel').empty();
-                    $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
                     $.each(data, function(index, mapel){
                         $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                     });
@@ -288,9 +286,21 @@
                 success:function(data){
                     console.log(data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
                     $.each(data, function(index, kelas){
                         $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/maj/"+id,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log(jurusan);
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
                     });
                 }
             });

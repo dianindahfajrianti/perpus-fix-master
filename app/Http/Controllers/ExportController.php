@@ -105,8 +105,8 @@ class ExportController extends Controller
         set_time_limit(0);
         //get data
         $id = $school->id;
-        $path = public_path("storage/pdf/");
-        $thumbpath = public_path("storage/thumb/pdf/");
+        $path = storage_path("app/public/pdf/");
+        $thumbpath = storage_path("app/public/thumb/pdf/");
         $tempFolder = $path."tmp/$id/";
         $tempThumb = $thumbpath."tmp/$id/";
         

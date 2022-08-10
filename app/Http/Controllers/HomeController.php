@@ -105,9 +105,8 @@ class HomeController extends Controller
         // return compact('buku');
         return redirect("/pdf/$buku->title-$buku->id");
     }
-    public function tempPdfView(Request $request, $name)
+    public function tempPdfView($name)
     {
-
         $id = explode("-",$name);
         $idB = end($id);
         if ($idB) {
@@ -170,7 +169,7 @@ class HomeController extends Controller
             return redirect('/')->with($res->status,json_encode($res));
         }else{
             $path = "public/video";
-            return Storage::download("$path/$video->filename.$video->filetype");
+            return response()->download("$path/$video->filename.$video->filetype");
         }
     }
 
@@ -184,7 +183,7 @@ class HomeController extends Controller
             return redirect('/')->with($res->status,json_encode($res));
         }else{
             $path = "public/pdf";
-            return Storage::download("$path/$buku->filename");
+            return response()->download("$path/$buku->filename");
         }
     }
 
@@ -301,6 +300,31 @@ class HomeController extends Controller
                     }
                 }
             }
+        }
+    }
+
+    public function pdfPage($name)
+    {
+        $page = request('page') - 1;
+        $id = explode("-",$name);
+        $idB = end($id);
+        if ($idB) {
+            $book = Book::where('id',$idB)->first();
+            $path = storage_path('app/public/pdf/'."$book->filename[$page]");
+
+            $res = new stdClass;
+            $res->status = "success";
+            $res->page = $page;
+            $res->message = "File $book->title halaman $page";
+
+            $img = new \Imagick();
+            $img->readImage($path);
+            
+
+            return view('home.test',compact('img'));
+        }else{
+            $html = "<p>File session expired</p><a href='/'>Home</a>";
+            return $html;
         }
     }
 

@@ -15,7 +15,7 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/buku', 'HomeController@book')->name('buku');
-Route::get('/buku/{buku}/download', 'HomeController@downloadBook');
+
 Route::get('/video', 'HomeController@video')->name('video');
 
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
@@ -23,8 +23,10 @@ Route::middleware('active')->group(function () {
     Route::get('/pdfViewer/{buku}', 'HomeController@viewer');
     Route::get('/pdf/{name}','HomeController@tempPdfView');
     Route::get('/video/{video}', 'HomeController@showvideo');
+    Route::get('/buku/{buku}/download', 'HomeController@downloadBook');
     Route::get('/video/{video}/download', 'HomeController@downloadVid');
     Route::get('/stream/{video}', 'HomeController@stream');
+    Route::get('/show/{name}','HomeController@pdfPage');
 });
 Route::get('/pagination', 'HomeController@pagination')->name('pagination');
 Route::get('/search', 'HomeController@search')->name('search');
@@ -42,6 +44,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/dtemp','BookController@dataTemp');
         Route::delete('/temp/{buku}','BookController@delTemp');
     });
+
     Route::resource('buku', 'BookController');
     Route::get('/buku-import','BookController@imports')->name('buku.import');
     Route::get('/buku-excel','BookController@excel')->name('buku.excel');
@@ -93,9 +96,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/akses/{school}/video','PermissionController@storeVideo');
     Route::delete('/akses/{school}/video','PermissionController@destroyVideo');
     //Jurusan
-    Route::get('/akses/{school}/jurusan','PermissionController@showMajor');
-    Route::post('/akses/{school}/jurusan','PermissionController@storeMajor');
-    Route::delete('/akses/{school}/jurusan','PermissionController@destroyMajor');
+    // Route::get('/akses/{school}/jurusan','PermissionController@showMajor');
+    // Route::post('/akses/{school}/jurusan','PermissionController@storeMajor');
+    // Route::delete('/akses/{school}/jurusan','PermissionController@destroyMajor');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/riwayat/{user}', 'HistoryController@show');
@@ -128,16 +131,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // kelas by jenjang sekolah
     Route::get('/gr/{id}','Admin@gr');
     // all jurusan || pakai if jika perlu
-    Route::get('/maj','Admin@maj');
+    Route::get('/maj/{edu}','Admin@maj');
     // mapel per jurusan
     Route::get('/sub/{major}','Admin@sub');
 });
 
-if (\App\User::count() > 0) {
+// if (\App\User::count() > 0) {
     $param = false;
-}else{
-    $param = true;
-};
+// }else{
+//     $param = true;
+// };
 
 Auth::routes([
     'register' => $param, // Registration Routes...

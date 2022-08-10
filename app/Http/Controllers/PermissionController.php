@@ -132,45 +132,45 @@ class PermissionController extends Controller
             ->toJson();
     }
 
-    public function majors(School $school, Request $request)
-    {
-        $id = $school->id;
-        $scope = ['id' => "$id"];
-        $model = Major::latest()
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
+    // public function majors(School $school, Request $request)
+    // {
+    //     $id = $school->id;
+    //     $scope = ['id' => "$id"];
+    //     $model = Major::latest()
+    //             ->whereHas('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
 
-        // return response()->json($model);
-        return DataTables::of($model)
-            ->addIndexColumn()
-            ->setRowId('id')
-            ->toJson();
-    }
+    //     // return response()->json($model);
+    //     return DataTables::of($model)
+    //         ->addIndexColumn()
+    //         ->setRowId('id')
+    //         ->toJson();
+    // }
 
-    public function dataMajor(School $school, Request $request)
-    {
-        $id = $school->id;
-        $scope = ['id' => "$id"];
-        $ajax = ['ajax' => "$request->ajax()"];
-        if (empty($ajax)) {
-            $model = Major::latest()
-                // ->school($scope)
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Major::latest()
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        }
+    // public function dataMajor(School $school, Request $request)
+    // {
+    //     $id = $school->id;
+    //     $scope = ['id' => "$id"];
+    //     $ajax = ['ajax' => "$request->ajax()"];
+    //     if (empty($ajax)) {
+    //         $model = Major::latest()
+    //             // ->school($scope)
+    //             ->whereDoesntHave('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
+    //     } else {
+    //         $model = Major::latest()
+    //             ->whereDoesntHave('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
+    //     }
 
-        return DataTables::of($model)
-            ->addIndexColumn()
-            ->setRowId('id')
-            ->toJson();
-    }
+    //     return DataTables::of($model)
+    //         ->addIndexColumn()
+    //         ->setRowId('id')
+    //         ->toJson();
+    // }
 
     //View Books per School
     public function showBook(School $school,Request $request)
@@ -224,22 +224,22 @@ class PermissionController extends Controller
         return response()->json($res);
     }
     
-    public function storeMajor(School $school,Request $request)
-    {
-        $res = new stdClass;
-        $result = $school->majors()->attach($request->id_jurusan);
+    // public function storeMajor(School $school,Request $request)
+    // {
+    //     $res = new stdClass;
+    //     $result = $school->majors()->attach($request->id_jurusan);
 
-        if ($result != 0) {
-            $res->status = "success";
-            $res->title = "Berhasil";
-            $res->message = "Akses video gagal diberikan!";
-        }else{
-            $res->status = "success";
-            $res->title = "Gagal";
-            $res->message = "Akses video berhasil diberikan!";
-        }
-        return response()->json($res);
-    }
+    //     if ($result != 0) {
+    //         $res->status = "success";
+    //         $res->title = "Berhasil";
+    //         $res->message = "Akses video gagal diberikan!";
+    //     }else{
+    //         $res->status = "success";
+    //         $res->title = "Gagal";
+    //         $res->message = "Akses video berhasil diberikan!";
+    //     }
+    //     return response()->json($res);
+    // }
 
     public function showfilesekolah(School $school)
     {
@@ -255,11 +255,11 @@ class PermissionController extends Controller
             })
             ->count();
 
-        $jur = Major::whereHas('schools',function($query) use ($id){
-                $query->where('id',$id);
-                })
-                ->count();
-        return view('permission.filesekolah', compact('book', 'vid','jur', 'school'));
+        // $jur = Major::whereHas('schools',function($query) use ($id){
+        //         $query->where('id',$id);
+        //         })
+        //         ->count();
+        return view('permission.filesekolah', compact('book', 'vid', 'school'));
     }
 
     /**

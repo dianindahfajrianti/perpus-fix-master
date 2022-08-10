@@ -472,14 +472,10 @@ class BookController extends Controller
         $temp = TempBook::all();
         $totbk = TempBook::count();
         $save = 0;
-        $a = 0;
 
         \Log::channel('proc')->info($temp);
 
         foreach ($temp as $bk) {
-            $a++;
-            \Log::channel('proc')->info('Counter :');
-            \Log::channel('proc')->info($a);
             // format filename
             $filename = Str::slug($bk->judul." ".$bk->pengarang." ".$bk->th_terbit,'-');
             
@@ -547,13 +543,12 @@ class BookController extends Controller
             \Log::channel('proc')->info('File attributes :');
             \Log::channel('proc')->info($book);
             if ($book->save()) {
+                $bk->delete();
                 $save++;
             };
         }
 
         if ($save == $totbk) {
-            TempBook::truncate();
-            
             $res->status = 'success';
             $res->title = 'Berhasil';
             $res->message = 'Buku berhasil di import.';
