@@ -39,7 +39,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $request->session()->forget('book');
         $rel = ['getEdu','getGrade'];
         $book = Book::latest()->with($rel)->limit('6')->get();
         $video = Video::latest()->with($rel)->limit('6')->get();
@@ -51,7 +50,6 @@ class HomeController extends Controller
     }
     public function book(Request $request)
     {
-        $request->session()->forget('book');
         $req = request('search');
         $res = ['getGrade','getEdu'];
         $file = Book::latest();
@@ -97,7 +95,6 @@ class HomeController extends Controller
     }
     public function viewer(Request $request,Book $buku)
     {
-        $request->session()->forget('book');
         $buku->clicked_time = $buku->clicked_time + 1;
         $buku->save();
         $his = new History;
@@ -106,7 +103,7 @@ class HomeController extends Controller
         $his->type = $buku->filetype;
         $his->save();
         // return compact('buku');
-        return redirect("/pdf/$buku->title-$buku->id#toolbar=0");
+        return redirect("/pdf/$buku->title-$buku->id");
     }
     public function tempPdfView(Request $request, $name)
     {

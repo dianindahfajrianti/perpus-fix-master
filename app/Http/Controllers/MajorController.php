@@ -55,7 +55,7 @@ class MajorController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'jurusan' => 'required|unique:majors,maj_name',
+            'jurusan' => 'required',
             'jenjang' => 'required'
         ]);
 

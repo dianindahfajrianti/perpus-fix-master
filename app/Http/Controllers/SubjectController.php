@@ -20,7 +20,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $maj = Major::all();
+        $maj = Major::with('educations')->get();
+        // return response()->json($maj);
         return view('subject.index',compact('maj'));
     }
     public function data()

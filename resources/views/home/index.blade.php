@@ -129,7 +129,7 @@
                                 {{ $b->title }}
                             </h5>
                             <h6>
-                                @if(($b->getGrade || $b->getEdu) !== null)
+                                @if($b->getGrade !== null || $b->getEdu !== null)
                                 {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
                                 @endif
                             </h6>
