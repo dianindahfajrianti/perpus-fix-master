@@ -158,25 +158,26 @@
             $('.totalFiles').text(totalFiles);
             $('#totalFiles').show();
             
-            let fsize = file.size;
-            if (fsize / 1024 > 1)
-            {
-                if (((fsize / 1024) / 1024) > 1)
-                {
-                    fsize = (Math.round(((fsize / 1024) / 1024) * 100) / 100);
-                    var actual_fileSize = fsize + " GB";
-                }
-                else
-                {
-                    fsize = (Math.round((fsize / 1024) * 100) / 100)
-                    var actual_fileSize = fsize + " MB";
-                }
-            }
-            else
-            {
-                fsize = (Math.round(fsize * 100) / 100)
-                var actual_fileSize = fsize  + " KB";
-            }
+            let fsize = file.size / 1000000;
+            // let fsize = file.size;
+            // if (fsize / 1024 > 1)
+            // {
+            //     if (((fsize / 1024) / 1024) > 1)
+            //     {
+            //         fsize = (Math.round(((fsize / 1024) / 1024) * 100) / 100);
+            //         var actual_fileSize = fsize + " GB";
+            //     }
+            //     else
+            //     {
+            //         fsize = (Math.round((fsize / 1024) * 100) / 100)
+            //         var actual_fileSize = fsize + " MB";
+            //     }
+            // }
+            // else
+            // {
+            //     fsize = (Math.round(fsize * 100) / 100)
+            //     var actual_fileSize = fsize  + " KB";
+            // }
 
             // console.log('Total File Size : ', total_filesize)
             // alert(fsize);
@@ -185,7 +186,7 @@
             console.log(file);
             let list = $('#list-file');
             
-            let li = '<li class="list-group-item"><div class="row justify-content-center align-items-center"><div class="col-7">'+fname+'</div><div class="col-2 text-center">'+actual_fileSize+'</div><div class="col-3"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="pb'+file.uniqueIdentifier+'"></div></div></div></div></li>';
+            let li = '<li class="list-group-item"><div class="row justify-content-center align-items-center"><div class="col-7">'+fname+'</div><div class="col-2 text-center">'+fsize+' KB</div><div class="col-3"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="pb'+file.uniqueIdentifier+'"></div></div></div></div></li>';
             list.show();
             list.append(li);
             // $('#fname').text(fname);

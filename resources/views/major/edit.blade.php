@@ -45,7 +45,7 @@
                                     <select name="jenjang" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="">
                                         <option value="">-- Pilih Jenjang --</option>
                                         @foreach ($edu as $e )
-                                        <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                        <option @if(old('jenjang',$jurusan->edu_id)== $e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
                                         @endforeach
                                     </select>
                                     @error('jenjang')
