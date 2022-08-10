@@ -151,14 +151,16 @@
                         console.log(ed);
                         return ed.maj_name+" - "+ ed.educations.edu_name;
                     },
-                    searchable:false
+                    searchable:false,
+                    orderable:false
                 },
                 {
                     data: 'DT_RowId',
                     render: function (data) { 
                         return '<button data-id="'+data+'" type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>';
                     },
-                    searchable:false
+                    searchable:false,
+                    orderable:false
                 }
             ]
             ,"ajax" : "/mapel/all"
