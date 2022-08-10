@@ -26,7 +26,7 @@
                 <img src="/assets/perpus/assets/img/super-admin.png" alt="">
             </div>
             <div class="col-lg-7 d-flex align-items-center">
-                <p>Super Admin untuk Dinas Profinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah dengan username nomor pokok sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
+                <p>Super Admin untuk Dinas Provinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah dengan username nomor pokok sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
             </div>
         </div>
     </div>
