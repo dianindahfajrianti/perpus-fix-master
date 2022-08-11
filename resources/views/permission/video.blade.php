@@ -265,7 +265,9 @@
                                 text: data.message,
                                 timer: 1200
                             });
+                            $('#modal-add').modal('hide');
                             table.draw();
+                            $('#modal-add').modal('show');
                         },
                         error: function(data) {
                             var js = data.responseJSON;
