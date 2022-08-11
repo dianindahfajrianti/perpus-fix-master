@@ -43,6 +43,12 @@ class Book extends Model
                 $query->where('sbj_name', $mapel);
             });
         });
+
+        $query->when($filters['jurusan'] ?? false, function($query, $mapel) {
+            return $query->whereHas('getMajor', function($query) use ($mapel) {
+                $query->where('sbj_name', $mapel);
+            });
+        });
     }
 
     public function schools()
