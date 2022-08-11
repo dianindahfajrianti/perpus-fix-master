@@ -148,7 +148,6 @@
                     data: "has_major",
                     render: function (full,data,type,row) {
                         var ed = JSON.parse(full);
-                        console.log(ed);
                         return ed.maj_name+" - "+ ed.educations.edu_name;
                     },
                     searchable:false,

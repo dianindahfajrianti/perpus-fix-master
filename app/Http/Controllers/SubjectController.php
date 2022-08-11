@@ -61,7 +61,7 @@ class SubjectController extends Controller
         $res = new stdClass;
         $request->validate([
             'jurusan' => 'required',
-            'mapel' => 'required|min:3|unique:subjects,sbj_name'
+            'mapel' => 'required|min:3'
         ]);
 
         try {
@@ -100,7 +100,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $mapel)
     {
-        $maj = Major::all();
+        $maj = Major::with('educations')->get();
         return view('subject.edit',compact('mapel','maj'));
     }
 
