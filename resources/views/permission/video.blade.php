@@ -134,7 +134,6 @@
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
-                orderable: false,
                 searchable: false
             }, {
                 data: "title",
@@ -142,15 +141,15 @@
             },{
                 data: "creator",
                 name: "creator"
-
             },{
                 data: 'DT_RowId',
                 render: function (data) { 
                     return '<button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
                  },
+                orderable : false,
                 searchable:false
             }],
-            "ajax": {url : "/sekolah/"+idschool+"/video",}
+            "ajax": "/sekolah/"+idschool+"/video"
         });
 
         $('#tb-video tbody').on('click', '.del-video', function(e) {
@@ -230,7 +229,7 @@
                     },
                     searchable:false
                 }],
-                "ajax": {url : "/akses/video/"+idschool,}
+                "ajax": {url : "/akses/video/"+idschool}
             });
         });
         $('#modal-add').on('hidden.bs.modal', function (e) {

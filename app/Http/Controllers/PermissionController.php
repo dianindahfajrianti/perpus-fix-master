@@ -31,7 +31,7 @@ class PermissionController extends Controller
         $id = $school->id;
         $scope = ['id' => "$id"];
         $ajax = ['ajax' => $request->ajax()];
-        if (empty($ajax)) {
+        if (empty($request->ajax())) {
             $model = Book::latest()
                 // ->school($scope)
                 ->whereHas('schools', function ($query) use ($scope) {
@@ -54,8 +54,9 @@ class PermissionController extends Controller
     public function dataBook(School $school,Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
-        $ajax = ['ajax' => "$request->ajax()"];
+        $scope = ['id' => $id];
+        $ajax = ['ajax' => $request->ajax()];
+
         if (empty($ajax)) {
             $model = Book::latest()
                 // ->school($scope)
@@ -80,24 +81,21 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $scope = ['id' => "$id"];
-        $model = Video::latest();
+        $ajax = ['ajax' => $request->ajax()];
         if (empty($request->ajax())) {
-            $model
+            $model = Video::latest()
                 // ->school($scope)
                 ->whereHas('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                })->get();
+                    $query->where('id', $scope);
+                });
         } else {
-            $model
+            $model = Video::latest()
                 ->whereHas('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
+                    $query->where('id', $scope);
                 })
-                ->orWhere('title', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('desc', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('creator', 'like', '%' . $request->ajax() . '%')
-                ->get();
+                ->filter($ajax);
         }
-
+        // return $model;
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
@@ -108,22 +106,19 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $scope = ['id' => "$id"];
-        $model = Video::latest();
+        
         if (empty($request->ajax())) {
-            $model
+            $model = Video::latest()
                 // ->school($scope)
                 ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                })->get();
+                    $query->where('id', $scope);
+                });
         } else {
-            $model
+            $model = Video::latest()
                 ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
+                    $query->where('id', $scope);
                 })
-                ->orWhere('title', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('desc', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('creator', 'like', '%' . $request->ajax() . '%')
-                ->get();
+                ->filter(request(['ajax']));
         }
 
         return DataTables::of($model)
@@ -183,10 +178,10 @@ class PermissionController extends Controller
         return view('permission.video', compact('school'));
     }
 
-    public function showMajor(School $school,Request $request)
-    {
-        return view('permission.jurusan', compact('school'));
-    }
+    // public function showMajor(School $school,Request $request)
+    // {
+    //     return view('permission.jurusan', compact('school'));
+    // }
 
     public function storeBook(School $school, Request $request)
     {

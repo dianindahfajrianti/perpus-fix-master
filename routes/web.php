@@ -34,6 +34,8 @@ Route::get('/search', 'HomeController@search')->name('search');
 //Admin Back-End
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', 'Admin@index');
+    Route::get('/storage','StorageController@index');
+    Route::delete('/storage/{name}','StorageController@destroy');
     Route::get('gid', 'Admin@getID');
     // CMS
     Route::prefix('buku')->group(function () {
@@ -122,7 +124,6 @@ Route::middleware('auth')->group(function () {
     // Datatable Akses
     Route::get('/sekolah/{school}/buku','PermissionController@books');
     Route::get('/sekolah/{school}/video','PermissionController@videos');
-    Route::get('/sekolah/{school}/jurusan','PermissionController@majors');
 });
 // return condition for ajax
 Route::middleware(['auth', 'admin'])->group(function () {
