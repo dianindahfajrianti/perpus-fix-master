@@ -15,7 +15,6 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/buku', 'HomeController@book')->name('buku');
-
 Route::get('/video', 'HomeController@video')->name('video');
 
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
