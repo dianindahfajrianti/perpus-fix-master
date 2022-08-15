@@ -167,6 +167,7 @@
                 render: function (data) { 
                     return '<button data-id="'+data+'" type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>';
                  },
+                 orderable : false,
                  searchable: false
             }],
             "ajax": {url : "/sekolah/"+idschool+"/buku",}

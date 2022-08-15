@@ -134,6 +134,7 @@
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
+                orderable : false,
                 searchable: false
             }, {
                 data: "title",
@@ -149,7 +150,7 @@
                 orderable : false,
                 searchable:false
             }],
-            "ajax": "/sekolah/"+idschool+"/video"
+            "ajax": {url : "/sekolah/"+idschool+"/video",}
         });
 
         $('#tb-video tbody').on('click', '.del-video', function(e) {

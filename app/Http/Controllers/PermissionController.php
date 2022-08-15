@@ -80,7 +80,7 @@ class PermissionController extends Controller
     public function videos(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
+        $scope = ['id' => $id];
         $ajax = ['ajax' => $request->ajax()];
         if (empty($request->ajax())) {
             $model = Video::latest()
