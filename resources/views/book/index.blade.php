@@ -436,7 +436,6 @@
 
         var jurusanID = $('#jurusan').val();
         var oldMapel = "{{ old('kelas') }}"
-        console.log(jurusanID);
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",
@@ -453,6 +452,7 @@
                     });
                 }
             });
+            
         
         var id = $('#jenjang').val();
         var oldKelas = "{{ old('kelas') }}"
@@ -477,7 +477,7 @@
         
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
-            console.log(jurusanID);
+            console.log('Jurusan ID : ',jurusanID);
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",
@@ -496,6 +496,7 @@
         $('#jenjang').change(function(e) {
             e.preventDefault();
             var id = $(this).val();
+            console.log('Jenjang ID : ',id);
             var url = "{{ Request :: segment(count(Request :: segments())) }}";
             $.ajax({
                 type: "get",
@@ -508,11 +509,11 @@
                     });
                 }
             });
-
             $.ajax({
                 type: "get",
                 url: "/maj/"+id,
                 success: function (data) {
+                    console.log('Data Jurusan :' ,data);
                     $('#jurusan').empty();
                     $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
                     $.each(data, function(index, jurusan){

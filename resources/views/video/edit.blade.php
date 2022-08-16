@@ -131,9 +131,9 @@ Detail {{ $video->title }}
                                 <div class="input-group">
                                     <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
-                                        {{-- @foreach ($maj as $m )
-                                        <option @if(old('jurusan',$video->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                        @endforeach --}}
+                                        @foreach ($maj as $m )
+                                        <option @if(old('jurusan',$video->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }} - {{ $m->educations->edu_name }}</option>
+                                        @endforeach
                                     </select>
                                     @error('jurusan')
                                     <div class="invalid-feedback">
@@ -222,28 +222,29 @@ Detail {{ $video->title }}
     $(document).ready(function() {
 
         var jurusanID = $('#jurusan').val();
-        var oldMapel = "{{ old('kelas', $video->sub_id) }}"
-        console.log(oldKelas);
+        var oldMapel = "{{ old('mapel', $video->sub_id) }}"
+        console.log(oldMapel);
         console.log(jurusanID);
-            $.ajax({
-                url: '/sub/'+jurusanID,
-                type: "GET",
-                success:function(data){
-                    console.log(data);
-                    $('#mapel').empty();
-                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
-                    $.each(data, function(index, mapel){
-                        if (oldMapel == mapel.id){
-                            $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
-                        } else{
-                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
-                        }
-                    });
-                }
-            });
+        $.ajax({
+            url: '/sub/'+jurusanID,
+            type: "GET",
+            success:function(data){
+                console.log(data);
+                $('#mapel').empty();
+                $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                $.each(data, function(index, mapel){
+                    if (oldMapel == mapel.id){
+                        $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    } else{
+                        $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    }
+                });
+            }
+        });
         
         var id = $('#jenjang').val();
         var oldKelas = "{{ old('kelas', $video->grade_id) }}"
+        var oldJurusan = "{{ old('jurusan',$video->major_id) }}";
         console.log(oldKelas);
         console.log(id);
         var url = "{{ Request :: segment(count(Request :: segments())) }}";
@@ -260,6 +261,22 @@ Detail {{ $video->title }}
 
                     } else {
                         $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "get",
+            url: "/maj/"+id,
+            success: function (data) {
+                $('#jurusan').empty();
+                $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                $.each(data, function(index, jurusan){
+                    console.log(jurusan);
+                    if (oldJurusan = jurusan.id){
+                        $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }else{
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
                     }
                 });
             }

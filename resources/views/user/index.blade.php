@@ -147,9 +147,9 @@
                             <div class="input-group">
                                 <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                     <option value="">-- Pilih Jurusan --</option>
-                                    @foreach ($maj as $m )
+                                    {{-- @foreach ($maj as $m )
                                     <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }} - {{ $m->educations->edu_name }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                                 @error('jurusan')
                                 <div class="invalid-feedback">
@@ -161,7 +161,7 @@
                         <div class="form-group mt-3">
                             <label class="form-label" for="role">Role</label>
                             <div class="input-group">
-                                <select name="role" class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror"" id=" role" aria-label="">
+                                <select name="role" class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror" id=" role" aria-label="">
                                     <option selected>-- Pilih Role --</option>
                                     @php
                                     $rl = [
@@ -355,14 +355,13 @@
 
         var sekolahID = $('#sekolah').val();
         var oldKelas = "{{ old('kelas') }}"
-        console.log(sekolahID);
             $.ajax({
                 url: '/sch/'+sekolahID,
                 type: "GET",
                 success:function(data){
                     console.log(data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option hidden="">-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
                         if (oldKelas = kelas.id){
                             $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
@@ -372,24 +371,39 @@
                     });
                 }
             });
+            
 
         $('#sekolah').on('change', function(e) {
             e.preventDefault();
             var sekolahID = $(this).val();
-            console.log(sekolahID);
-                $.ajax({
-                    url: '/sch/'+sekolahID,
-                    type: "GET",
-                    success:function(data)
-                    {
-                        console.log(data);
-                        $('#kelas').empty();
-                        $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
-                        $.each(data, function(id, kelas){
-                            $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
-                        });
-                    }
-                });
+            var eduID = "{{ $sch->edu_id }}"
+            console.log('Edu ID : ',eduID);
+            console.log('Sekolah ID : ',sekolahID);
+            $.ajax({
+                url: '/sch/'+sekolahID,
+                type: "GET",
+                success:function(data)
+                {
+                    console.log('Data Kelas :',data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
+                    $.each(data, function(id, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/maj/"+eduID,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log('Data Jurusan : ',jurusan);
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    });
+                }
+            });
         });
 
     });
