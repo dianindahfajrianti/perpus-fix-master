@@ -28,15 +28,15 @@ class School extends Model
     }
     public function videos()
     {
-        return $this->belongsToMany(Video::class,'school_video','school_id','video_id','id','id')
+        return $this->belongsToMany(Video::class,'school_video','school_id','video_id')
         ->withTimestamps();
     }
 
-    public function majors()
-    {
-        return $this->belongsToMany(Major::class,'major_school','school_id','major_id','id','maj_code')
-        ->withTimestamps();
-    }
+    // public function majors()
+    // {
+    //     return $this->belongsToMany(Major::class,'major_school','school_id','major_id','id','maj_code')
+    //     ->withTimestamps();
+    // }
 
     public function getUploadDateAttribute()
     {
