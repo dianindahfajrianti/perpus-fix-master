@@ -131,7 +131,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // kelas by jenjang sekolah
     Route::get('/gr/{id}','Admin@gr');
     // all jurusan || pakai if jika perlu
-    Route::get('/maj/{edu}','Admin@maj');
+    Route::get('/maj/{id}','Admin@maj');
     // mapel per jurusan
     Route::get('/sub/{major}','Admin@sub');
 });

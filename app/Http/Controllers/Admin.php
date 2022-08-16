@@ -120,8 +120,16 @@ class Admin extends Controller
         return $kls;
     }
 
-    public function maj(Education $edu)
+    public function maj($id)
     {
+        $url = request('url');
+
+        if ($url == 'user') {
+            $school = School::where('id',$id)->first();
+            $edu = Education::where('id',$school->edu_id)->first();
+        }else{
+            $edu = Education::where('id',$id)->first();
+        }
         $scope = [
             'id' => $edu->id
         ];
