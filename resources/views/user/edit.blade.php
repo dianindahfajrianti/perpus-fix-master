@@ -199,7 +199,7 @@
         // console.log(oldKelas);
         console.log('Sekolah ID : ',sekolahID);
         $.ajax({
-            url: '/sch/'+sekolahID+"?url="+url,
+            url: '/sch/'+sekolahID,
             type: "GET",
             success:function(data){
                 console.log('Data Kelas : ', data);
@@ -218,14 +218,14 @@
         });
         $.ajax({
             type: "get",
-            url: '/maj/'+sekolahID,
+            url: '/maj/'+sekolahID+"?url="+url,
             success: function (data) {
                 console.log('Data Jurusan : ', data);
                 $('#jurusan').empty();
                 $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
                 $.each(data, function(index, jurusan){
                     console.log(jurusan);
-                    if (oldJurusan = jurusan.id){
+                    if (oldJurusan == jurusan.id){
                         $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
                         console.log('Jurusan ID selected : ', jurusan.id, ' - ', oldJurusan);
                     }else{
