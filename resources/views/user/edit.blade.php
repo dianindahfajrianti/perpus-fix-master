@@ -193,58 +193,63 @@
     $(document).ready(function() {
 
         var sekolahID = $('#sekolah').val();
-        var url = "{{ Request :: segment(count(Request :: segments())) }}";
-        var oldKelas = "{{ old('kelas') }}"
-        var oldJurusan = "{{ old('jurusan') }}"
-            $.ajax({
-                url: '/sch/'+sekolahID,
-                type: "GET",
-                success:function(data){
-                    console.log(data);
-                    $('#kelas').empty();
-                    $('#kelas').append('<option hidden="">-- Pilih Kelas --</option>'); 
-                    $.each(data, function(id, kelas){
-                        if (oldKelas = kelas.id){
-                            $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
-                        }else{
-                            $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
-                        }
-                    });
-                }
-            });
-            $.ajax({
-                type: "get",
-                url: "/maj/"+sekolahID+"?url="+url,
-                success: function (data) {
-                    $('#jurusan').empty();
-                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
-                    $.each(data, function(id, jurusan){
-                        console.log('Data Jurusan : ',jurusan);
-                        if (oldJurusan = jurusan.id){
-                            $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
-                        }else{
-                            $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
-                        }
-                    });
-                }
-            });
-            
+        var oldKelas = "{{ old('kelas',$user->grade_id) }}";
+        var oldJurusan = "{{ old('jurusan',$user->major_id) }}";
+        var url = "{{ Request :: segment(2) }}";
+        // console.log(oldKelas);
+        console.log('Sekolah ID : ',sekolahID);
+        $.ajax({
+            url: '/sch/'+sekolahID+"?url="+url,
+            type: "GET",
+            success:function(data){
+                console.log('Data Kelas : ', data);
+                $('#kelas').empty();
+                $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                $.each(data, function(id, kelas){
+                    if (oldKelas == kelas.id){
+                        $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        // console.log('Kelas ID selected : ', kelas.id, ' - ', oldKelas);
+                    }else{
+                        // console.log('Kelas ID : ',kelas.id)
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "get",
+            url: '/maj/'+sekolahID,
+            success: function (data) {
+                console.log('Data Jurusan : ', data);
+                $('#jurusan').empty();
+                $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                $.each(data, function(index, jurusan){
+                    console.log(jurusan);
+                    if (oldJurusan = jurusan.id){
+                        $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        console.log('Jurusan ID selected : ', jurusan.id, ' - ', oldJurusan);
+                    }else{
+                        console.log('Jurusan ID : ',jurusan.id)
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }
+                });
+            }
+        });
 
-        $('#sekolah').on('change', function(e) {
-            e.preventDefault();
+        $('#sekolah').on('change', function() {
             var sekolahID = $(this).val();
-            console.log('Sekolah ID : ',sekolahID);
-            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            console.log(sekolahID);
+            var url = "{{ Request :: segment(2) }}";
             $.ajax({
                 url: '/sch/'+sekolahID,
                 type: "GET",
                 success:function(data)
                 {
-                    console.log('Data Kelas :',data);
+                    console.log('on change data : ',data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
-                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
                 }
             });
@@ -252,10 +257,10 @@
                 type: "get",
                 url: "/maj/"+sekolahID+"?url="+url,
                 success: function (data) {
+                    console.log('on chang data jurusan :', data);
                     $('#jurusan').empty();
                     $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
-                    $.each(data, function(id, jurusan){
-                        console.log('Data Jurusan : ',jurusan);
+                    $.each(data, function(index, jurusan){
                         $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
                     });
                 }

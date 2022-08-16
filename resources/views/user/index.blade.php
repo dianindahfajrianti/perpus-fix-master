@@ -172,6 +172,7 @@
                                     ];
                                     @endphp
                                     @for($i = 0; $i < count($rl); $i++)
+                                    {{-- <option @if (old('role') == $i) {{'selected'}}@endif value="{{ $i }}">{{ $rl[$i] }}</option> --}}
                                     <option value="{{ $i }}">{{ $rl[$i] }}</option>
 
                                     @endfor
@@ -354,9 +355,12 @@
         });
 
         var sekolahID = $('#sekolah').val();
+        console.log(sekolahID);
         var url = "{{ Request :: segment(count(Request :: segments())) }}";
         var oldKelas = "{{ old('kelas') }}"
         var oldJurusan = "{{ old('jurusan') }}"
+        
+        if (oldKelas){
             $.ajax({
                 url: '/sch/'+sekolahID,
                 type: "GET",
@@ -365,14 +369,17 @@
                     $('#kelas').empty();
                     $('#kelas').append('<option hidden="">-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
-                        if (oldKelas = kelas.id){
+                        if (oldKelas == kelas.id){
                             $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                         }else{
                             $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                         }
-                    });
-                }
+                        });
+                    }
             });
+            console.log(oldKelas);
+        }
+        if(oldJurusan){
             $.ajax({
                 type: "get",
                 url: "/maj/"+sekolahID+"?url="+url,
@@ -380,8 +387,7 @@
                     $('#jurusan').empty();
                     $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
                     $.each(data, function(id, jurusan){
-                        console.log('Data Jurusan : ',jurusan);
-                        if (oldJurusan = jurusan.id){
+                        if (oldJurusan == jurusan.id){
                             $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
                         }else{
                             $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
@@ -389,7 +395,7 @@
                     });
                 }
             });
-            
+        }
 
         $('#sekolah').on('change', function(e) {
             e.preventDefault();
@@ -405,7 +411,7 @@
                     $('#kelas').empty();
                     $('#kelas').append('<option value="">-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
-                        $('select[name="kelas"]').append('<option value="'+ id +'">' + kelas.grade_name+ '</option>');
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
                 }
             });
