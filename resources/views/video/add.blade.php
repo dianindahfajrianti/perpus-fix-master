@@ -257,6 +257,67 @@
         })
         bsCustomFileInput.init();
 
+        var jurusanID = $('#jurusan').val();
+        var oldMapel = "{{ old('mapel') }}"
+        console.log(oldMapel);
+        console.log(jurusanID);
+        $.ajax({
+            url: '/sub/'+jurusanID,
+            type: "GET",
+            success:function(data){
+                console.log(data);
+                $('#mapel').empty();
+                $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                $.each(data, function(index, mapel){
+                    if (oldMapel == mapel.id){
+                        $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    } else{
+                        $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    }
+                });
+            }
+        });
+        
+        var id = $('#jenjang').val();
+        var oldKelas = "{{ old('kelas') }}"
+        var oldJurusan = "{{ old('jurusan') }}";
+        console.log(oldKelas);
+        console.log(id);
+        var url = "{{ Request :: segment(count(Request :: segments())) }}";
+        $.ajax({
+            type: "get",
+            url: "/gr/"+id+"?url="+url,
+            success:function(data){
+                console.log(data);
+                $('#kelas').empty();
+                $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                $.each(data, function(index, kelas){
+                    if (oldKelas == kelas.id){
+                        $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+
+                    } else {
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "get",
+            url: "/maj/"+id,
+            success: function (data) {
+                $('#jurusan').empty();
+                $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                $.each(data, function(index, jurusan){
+                    console.log(jurusan);
+                    if (oldJurusan = jurusan.id){
+                        $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }else{
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }
+                });
+            }
+        });
+
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
             console.log(jurusanID);

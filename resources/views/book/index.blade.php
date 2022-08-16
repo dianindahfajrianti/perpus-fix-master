@@ -456,6 +456,7 @@
         
         var id = $('#jenjang').val();
         var oldKelas = "{{ old('kelas') }}"
+        var oldJurusan = "{{ old('jurusan') }}"
         // console.log(id);
         var url = "{{ Request :: segment(count(Request :: segments())) }}";
         $.ajax({
@@ -483,7 +484,11 @@
                 $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
                 $.each(data, function(index, jurusan){
                     // console.log(jurusan);
-                    $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    if (oldJurusan == jurusan.id){
+                        $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    } else {
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }
                 });
             }
         });
