@@ -48,7 +48,7 @@ class PermissionController extends Controller
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function dataBook(School $school,Request $request)
@@ -74,13 +74,13 @@ class PermissionController extends Controller
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function videos(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => $id];
+        $scope = ['id' => "$id"];
         $ajax = ['ajax' => $request->ajax()];
         if (empty($request->ajax())) {
             $model = Video::latest()
@@ -95,11 +95,11 @@ class PermissionController extends Controller
                 })
                 ->filter($ajax);
         }
-        // return $model;
+        // return $model->get();
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function dataVideo(School $school, Request $request)
@@ -124,7 +124,7 @@ class PermissionController extends Controller
         return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     // public function majors(School $school, Request $request)
@@ -189,13 +189,13 @@ class PermissionController extends Controller
         $result = $school->books()->attach($request->id_buku);
 
         if ($result != 0) {
-            $res->status = "success";
-            $res->title = "Berhasil";
+            $res->status = "error";
+            $res->title = "Gagal";
             $res->message = "Akses buku gagal diberikan!";
             
         }else{
             $res->status = "success";
-            $res->title = "Gagal";
+            $res->title = "Berhasil";
             $res->message = "Akses buku berhasil diberikan!";
         }
         return response()->json($res);
@@ -207,13 +207,13 @@ class PermissionController extends Controller
         $result = $school->videos()->attach($request->id_video);
 
         if ($result != 0) {
-            $res->status = "success";
-            $res->title = "Berhasil";
+            $res->status = "error";
+            $res->title = "Gagal";
             $res->message = "Akses video gagal diberikan!";
             
         }else{
             $res->status = "success";
-            $res->title = "Gagal";
+            $res->title = "Berhasil";
             $res->message = "Akses video berhasil diberikan!";
         }
         return response()->json($res);
@@ -314,23 +314,23 @@ class PermissionController extends Controller
         return response()->json($res);
     }
     
-    public function destroyMajor(School $school, Request $request)
-    {
-        $major = $request->id_jurusan;
-        $res = new stdClass;
-        $del = $school->majors()->detach($major);
-        if ($del == 0) {
-            $status = 'error';
-            $title = 'Gagal';
-            $msg = 'Hapus akses jurusan gagal.';
-        }else{
-            $status = 'success';
-            $title = 'Berhasil';
-            $msg = 'Hapus akses jurusan berhasil.';
-        }
-        $res->status = $status;
-        $res->title = $title;
-        $res->message = $msg;
-        return response()->json($res);
-    }
+    // public function destroyMajor(School $school, Request $request)
+    // {
+    //     $major = $request->id_jurusan;
+    //     $res = new stdClass;
+    //     $del = $school->majors()->detach($major);
+    //     if ($del == 0) {
+    //         $status = 'error';
+    //         $title = 'Gagal';
+    //         $msg = 'Hapus akses jurusan gagal.';
+    //     }else{
+    //         $status = 'success';
+    //         $title = 'Berhasil';
+    //         $msg = 'Hapus akses jurusan berhasil.';
+    //     }
+    //     $res->status = $status;
+    //     $res->title = $title;
+    //     $res->message = $msg;
+    //     return response()->json($res);
+    // }
 }
