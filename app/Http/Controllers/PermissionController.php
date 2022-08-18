@@ -80,23 +80,13 @@ class PermissionController extends Controller
     public function videos(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
-        $ajax = ['ajax' => $request->ajax()];
-        if (empty($request->ajax())) {
-            $model = Video::latest()
-                // ->school($scope)
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
+        //get model
+        $model = Video::latest()
+                ->whereHas('schools', function ($query) use ($id) {
+                    $query->where('id', $id);
                 });
-        } else {
-            $model = Video::latest()
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                })
-                ->filter($ajax);
-        }
         // return $model->get();
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->make(true);
@@ -105,21 +95,17 @@ class PermissionController extends Controller
     public function dataVideo(School $school, Request $request)
     {
         $id = $school->id;
+        $eid = $school->edu_id;
         $scope = ['id' => "$id"];
         
-        if (empty($request->ajax())) {
-            $model = Video::latest()
-                // ->school($scope)
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Video::latest()
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                })
-                ->filter(request(['ajax']));
-        }
+        $model = Video::latest()
+            ->whereDoesntHave('schools', function ($query) use ($scope) {
+                $query->where('id', $scope);
+            })
+            ->whereHas('getEdu', function ($query) use ($eid) {
+                $query->where('id', $eid);
+            })
+            ->filter(request(['ajax']));
 
         return DataTables::of($model)
             ->addIndexColumn()
@@ -186,13 +172,20 @@ class PermissionController extends Controller
     public function storeBook(School $school, Request $request)
     {
         $res = new stdClass;
-        $result = $school->books()->attach($request->id_buku);
-
+        $edu = $school->edu_id;
+        $book = Book::where('id',$request->id_buku)->first();
+        if ($book->edu_id !== $edu) {
+            $res->status = "error";
+            $res->title = "Gagal";
+            $res->message = "Akses buku gagal diberikan!";
+        }
+        else{
+            $result = $school->books()->attach($request->id_buku);
+        }
         if ($result != 0) {
             $res->status = "error";
             $res->title = "Gagal";
             $res->message = "Akses buku gagal diberikan!";
-            
         }else{
             $res->status = "success";
             $res->title = "Berhasil";
