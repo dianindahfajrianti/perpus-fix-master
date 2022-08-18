@@ -104,7 +104,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/riwayat/{user}', 'HistoryController@show');
     Route::get('/profile', 'UserController@profile');
-    Route::post('/reset', 'UserController@reset');
+    Route::post('/change', 'UserController@changePass');
     Route::get('/history', 'HomeController@showhistory')->name('history');
     //DataTable Needs
     Route::get('/user/all', 'UserController@data');
@@ -116,7 +116,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/buku/all', 'BookController@data');
     Route::get('/getvid/all', 'VideoController@data');
     Route::get('/akses/buku/{school}','PermissionController@dataBook');
-    Route::get('/akses/video/{school}','PermissionController@dataVideo');
     Route::get('/akses/video/{school}','PermissionController@dataVideo');
     Route::get('/akses/jurusan/{school}','PermissionController@dataMajor');
 

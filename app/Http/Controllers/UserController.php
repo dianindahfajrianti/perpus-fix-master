@@ -363,8 +363,8 @@ class UserController extends Controller
             $user->grade_id = $request->kelas;
             $user->major_id = $request->jurusan;
             $user->role = $request->role;
-            if (!empty($request->password)) {
-                $user->password = Hash::make($request->password);
+            if (!empty($request->pass)) {
+                $user->password = Hash::make($request->pass);
             };
             $user->save();
             $stat = "success";
@@ -379,6 +379,9 @@ class UserController extends Controller
             $res->status = $stat;
             $res->message= $msg;
             return redirect()->back()->with($stat,json_encode($res));
+        }
+        if (!empty($request->password)) {
+            # code...
         }
     }
 
@@ -441,7 +444,7 @@ class UserController extends Controller
         return view('home.profile',compact('user','riwayat'));
     }
 
-    public function reset(Request $request)
+    public function changePass(Request $request)
     {
         $res = new stdClass;
         $uid= Auth::user()->id;
