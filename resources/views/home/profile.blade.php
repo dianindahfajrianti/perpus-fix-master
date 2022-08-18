@@ -107,7 +107,7 @@
               </fieldset>
               <br>
               <h3>Ganti Password</h3>
-              <form action="/reset" method="post">
+              <form action="/cache" method="post">
                 <div class="form-group">
                   <label for="oldpass">Password Lama</label>
                   @csrf
