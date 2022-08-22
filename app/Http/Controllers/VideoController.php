@@ -457,16 +457,16 @@ class VideoController extends Controller
             
             $vid = new TempVid;
             $fileName = $this->clean($file->getClientOriginalName()); // a unique file name
-            
+            $fixname = "$fileName.".$extension;
             $path = "public/temp/video/";
 
             $disk = Storage::disk(config('filesystems.default'));
 
-            $disk->putFileAs($path,$file,$fileName);
+            $disk->putFileAs($path,$file,$fixname);
 
             unlink($file->getPathname());
             
-            $vid->nama_file = str_replace('.mp4','',$fileName);
+            $vid->nama_file = str_replace('mp4','',$fileName);
             $vid->tipe_file = $extension;
 
             $vid->save();
@@ -492,8 +492,8 @@ class VideoController extends Controller
 
     function clean($string) {
         $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-     
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        $string2 = str_replace('pdf','',$string);
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string2); // Removes special chars.
     }
 
     public function import()

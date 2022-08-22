@@ -373,14 +373,15 @@ class BookController extends Controller
             
             $buku = new TempBook;
             $fileName = $this->clean($file->getClientOriginalName()); // a unique file name
-            $thumbname = str_replace(".$extension","",$fileName);
+            $fixname = "$fileName.".$extension;
+            $thumbname = str_replace(".$extension","",$fixname);
             $path = "public/temp/pdf/";
-            $filepath = storage_path("app/$path".$fileName);
+            $filepath = storage_path("app/$path".$fixname);
             $path2 = storage_path("app/$path"."$thumbname.jpg");
 
             $disk = Storage::disk(config('filesystems.default'));
 
-            $disk->putFileAs($path,$file,$fileName);
+            $disk->putFileAs($path,$file,$fixname);
 
             unlink($file->getPathname());
 
@@ -423,9 +424,9 @@ class BookController extends Controller
     }
     function clean($string) {
         $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-     
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-     }
+        $string2 = str_replace('pdf','',$string);
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string2); // Removes special chars.
+    }
     public function downloadExcel()
     {
         return (new ExportsTempBook)->download('bukulist.xlsx');
