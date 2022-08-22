@@ -221,7 +221,7 @@
                 success:function(data){
                     console.log(data);
                     $('#mapel').empty();
-                    $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
                     $.each(data, function(index, mapel){
                         if (oldMapel == mapel.id){
                             $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
@@ -242,7 +242,7 @@
             success:function(data){
                 console.log(data);
                 $('#kelas').empty();
-                $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
                 $.each(data, function(index, kelas){
                     if (oldKelas == kelas.id){
                         $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
@@ -281,7 +281,7 @@
                 {
                     console.log(data);
                     $('#mapel').empty();
-                    $('#mapel').append('<option hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
                     $.each(data, function(index, mapel){
                         $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
                     });

@@ -325,7 +325,7 @@
                             if(data){
                             console.log(data);
                             $('#mapel1').empty();
-                            $('#mapel1').append('<option hidden>-- Pilih Mata Pelajaran -</option>'); 
+                            $('#mapel1').append('<option value="" hidden>-- Pilih Mata Pelajaran -</option>'); 
                             $.each(data, function(id, mapel){
                                 $('select[name="mapel1"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
                             });

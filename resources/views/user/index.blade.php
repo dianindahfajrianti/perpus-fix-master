@@ -367,7 +367,7 @@
                 success:function(data){
                     console.log(data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option hidden="">-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option value="" hidden="">-- Pilih Kelas --</option>'); 
                     $.each(data, function(id, kelas){
                         if (oldKelas == kelas.id){
                             $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
