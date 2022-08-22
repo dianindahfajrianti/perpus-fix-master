@@ -372,7 +372,7 @@ class BookController extends Controller
 
             
             $buku = new TempBook;
-            $fileName = $file->getClientOriginalName(); // a unique file name
+            $fileName = $this->clean($file->getClientOriginalName()); // a unique file name
             $thumbname = str_replace(".$extension","",$fileName);
             $path = "public/temp/pdf/";
             $filepath = storage_path("app/$path".$fileName);
@@ -421,6 +421,11 @@ class BookController extends Controller
             'status' => true
         ];
     }
+    function clean($string) {
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+     
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+     }
     public function downloadExcel()
     {
         return (new ExportsTempBook)->download('bukulist.xlsx');
