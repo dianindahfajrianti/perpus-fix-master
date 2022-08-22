@@ -300,7 +300,7 @@
                 success:function(data){
                     console.log(data);
                     $('#kelas').empty();
-                    $('#kelas').append('<option hidden>-- Pilih Kelas --</option>'); 
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
                     $.each(data, function(index, kelas){
                         $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
                     });
