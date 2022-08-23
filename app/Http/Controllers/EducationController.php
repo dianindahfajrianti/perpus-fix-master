@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Education;
-use App\School;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use stdClass;
+use App\School;
+use App\Education;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables as DTB;
 
 class EducationController extends Controller
@@ -118,7 +119,7 @@ class EducationController extends Controller
     public function update(Request $request, Education $pendidikan)
     {
         $request->validate([
-            'edu_name' => 'required|max:3'
+            'edu_name' => ['required|max:3',Rule::unique('education', 'edu_name')->ignore($pendidikan->id)]
         ]);
         $education = $pendidikan;
         $education->edu_name =  $request->edu_name;
