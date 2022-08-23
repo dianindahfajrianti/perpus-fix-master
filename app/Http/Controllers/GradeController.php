@@ -56,7 +56,7 @@ class GradeController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'kelas' => 'required|unique:grades,grade_name|numeric|max:12',
+            'kelas' => 'required|unique:grades,grade_name|numeric|min:1|max:12',
         ]);
         try {
             $gr->grade_name = $request->kelas;
@@ -106,7 +106,7 @@ class GradeController extends Controller
     public function update(Request $request, Grade $grade)
     {
         $request->validate([
-            'kelas' => ['required|numeric|max:12', Rule::unique('grades', 'grade_name')->ignore($grade->id),],
+            'kelas' => ['required|numeric|min:1|max:12', Rule::unique('grades', 'grade_name')->ignore($grade->id),],
         ]);
         $res = new stdClass();
         try {
