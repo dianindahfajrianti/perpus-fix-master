@@ -56,7 +56,7 @@ class GradeController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'kelas' => 'required|unique:grades,grade_name',
+            'kelas' => 'required|unique:grades,grade_name|numeric|max:12',
         ]);
         try {
             $gr->grade_name = $request->kelas;
