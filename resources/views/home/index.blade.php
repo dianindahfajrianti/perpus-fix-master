@@ -186,7 +186,7 @@
                             </center>
                         </div>
                         <div class="social">
-                            <a href="{{Storage::url('public/video/').$v->filename.".".$v->filetype}}" download><i class="ri-video-download-fill"></i></a>
+                            <a href="/video/ {{ $v->id }}" download><i class="ri-video-download-fill"></i></a>
                             <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
