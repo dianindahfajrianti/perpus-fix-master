@@ -105,7 +105,7 @@ class GradeController extends Controller
     public function update(Request $request, Grade $grade)
     {
         $request->validate([
-            'kelas' => 'required',
+            'kelas' => 'required|unique:grades,grade_name',
         ]);
         $res = new stdClass();
         try {
