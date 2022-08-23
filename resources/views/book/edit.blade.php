@@ -211,8 +211,9 @@
     $(document).ready(function() {
 
         var jurusanID = $('#jurusan').val();
-        var oldMapel = "{{ old('kelas', $buku->sub_id) }}"
-        console.log(jurusanID);
+        var oldMapel = "{{ old('mapel', $buku->sub_id) }}"
+        // console.log('ID Jurusan :' ,jurusanID);
+
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",
