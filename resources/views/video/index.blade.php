@@ -56,6 +56,8 @@
                             <thead>
                                 <th>No</th>
                                 <th>Judul Video</th>
+                                <th>Jenjang</th>
+                                <th>Kelas</th>
                                 <th>Deskripsi</th>
                                 <th>Creator</th>
                                 <th>Aksi</th>
@@ -123,6 +125,20 @@
                 {
                     data: "title",
                     name: "title"
+                },
+                {
+                    data: "get_edu",
+                    name: "get_edu",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                },
+                {
+                    data: "get_grade",
+                    name: "get_grade",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
                 },
                 {
                     data: "desc",

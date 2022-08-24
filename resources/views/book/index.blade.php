@@ -62,6 +62,8 @@
                                 <th>No</th>
                                 <th>ID</th>
                                 <th>Judul Buku</th>
+                                <th>Jenjang</th>
+                                <th>Kelas</th>
                                 <th>Tahun Terbit</th>
                                 <th>Penerbit</th>
                                 <th>Pengarang</th>
@@ -350,6 +352,20 @@
                 {
                     data: "title",
                     name: "title"
+                },
+                {
+                    data: "get_edu",
+                    name: "get_edu",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                },
+                {
+                    data: "get_grade",
+                    name: "get_grade",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
                 },
                 {
                     data: "published_year",
