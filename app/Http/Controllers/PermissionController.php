@@ -54,22 +54,16 @@ class PermissionController extends Controller
     public function dataBook(School $school,Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => $id];
-        $ajax = ['ajax' => $request->ajax()];
-
-        if (empty($ajax)) {
-            $model = Book::latest()
-                // ->school($scope)
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Book::latest()
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                })
-                ->filter(request(['ajax']));
-        }
+        $eid = $school->edu_id;
+        $model = Book::latest()
+            // ->school($scope)
+            ->whereDoesntHave('schools', function ($query) use ($id) {
+                $query->where('id', $id);
+            })
+            ->whereHas('getEdu',function($query) use ($eid){
+                $query->where('id',$eid);
+            })
+            ->filter(request(['ajax']));
 
         return DataTables::of($model)
             ->addIndexColumn()
@@ -96,11 +90,10 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $eid = $school->edu_id;
-        $scope = ['id' => "$id"];
         
         $model = Video::latest()
-            ->whereDoesntHave('schools', function ($query) use ($scope) {
-                $query->where('id', $scope);
+            ->whereDoesntHave('schools', function ($query) use ($id) {
+                $query->where('id', $id);
             })
             ->whereHas('getEdu', function ($query) use ($eid) {
                 $query->where('id', $eid);
