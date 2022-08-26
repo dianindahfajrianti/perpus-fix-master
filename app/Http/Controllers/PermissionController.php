@@ -34,11 +34,13 @@ class PermissionController extends Controller
         if (empty($request->ajax())) {
             $model = Book::latest()
                 // ->school($scope)
+            ->with('getEdu','getGrade')
                 ->whereHas('schools', function ($query) use ($scope) {
                     $query->where('id', $scope);
                 });
         } else {
             $model = Book::latest()
+            ->with('getEdu','getGrade')
                 ->whereHas('schools', function ($query) use ($scope) {
                     $query->where('id', $scope);
                 })
@@ -60,9 +62,11 @@ class PermissionController extends Controller
             ->whereDoesntHave('schools', function ($query) use ($id) {
                 $query->where('id', $id);
             })
+            ->with('getEdu','getGrade')
             ->whereHas('getEdu',function($query) use ($eid){
                 $query->where('id',$eid);
             })
+
             ->filter(request(['ajax']));
 
         return DataTables::of($model)
@@ -76,6 +80,7 @@ class PermissionController extends Controller
         $id = $school->id;
         //get model
         $model = Video::latest()
+                ->with('getEdu','getGrade')
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
                 });
@@ -92,6 +97,7 @@ class PermissionController extends Controller
         $eid = $school->edu_id;
         
         $model = Video::latest()
+            ->with('getEdu','getGrade')
             ->whereDoesntHave('schools', function ($query) use ($id) {
                 $query->where('id', $id);
             })
