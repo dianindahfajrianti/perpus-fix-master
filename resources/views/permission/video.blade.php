@@ -43,7 +43,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama video</th>
+                                    <th>Judul Video</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Pembuat</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -69,7 +71,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Video</th>
+                                    <th>Judul Video</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Pembuat</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -136,9 +140,21 @@
                 name: 'DT_RowIndex',
                 orderable : false,
                 searchable: false
-            }, {
+            },{
                 data: "title",
                 name: "title"
+            },{
+                data: "get_edu",
+                name: "get_edu",
+                render: function(data) {
+                    return data.edu_name;
+                },
+            },{
+                data: "get_grade",
+                name: "get_grade",
+                render: function(data) {
+                    return data.grade_name;
+                },
             },{
                 data: "creator",
                 name: "creator"
@@ -220,6 +236,18 @@
                 }, {
                     data: "title",
                     name: "title"
+                },{
+                    data: "get_edu",
+                    name: "get_edu",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                },{
+                    data: "get_grade",
+                    name: "get_grade",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
                 },{
                     data: "creator",
                     name: "creator"

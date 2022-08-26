@@ -43,7 +43,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Buku</th>
+                                    <th>Judul Buku</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Tahun</th>
                                     <th>Penerbit</th>
                                     <th>Pengarang</th>
@@ -71,7 +73,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Buku</th>
+                                    <th>Judul Buku</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Tahun</th>
                                     <th>Penerbit</th>
                                     <th>Pengarang</th>
@@ -144,6 +148,18 @@
                 data: "title",
                 name: "title"
             }, {
+                data: "get_edu",
+                name: "get_edu",
+                render: function(data) {
+                    return data.edu_name;
+                },
+            },{
+                data: "get_grade",
+                name: "get_grade",
+                render: function(data) {
+                    return data.grade_name;
+                },
+            },{
                 data: "published_year",
                 name: "published_year"
                 
@@ -238,9 +254,22 @@
                     orderable: false,
                     searchable: false
                 }, {
-                    data: "title",
-                    name: "title"
+                data: "title",
+                name: "title"
                 }, {
+                    data: "get_edu",
+                    name: "get_edu",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                },
+                {
+                    data: "get_grade",
+                    name: "get_grade",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
+                },{
                     data: "published_year",
                     name: "published_year"
                     
