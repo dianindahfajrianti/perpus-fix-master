@@ -129,6 +129,8 @@
                 {
                     data: "get_edu",
                     name: "get_edu",
+                    orderable: false,
+                    searchable: false,
                     render: function(data) {
                         return data.edu_name;
                     },
@@ -136,6 +138,8 @@
                 {
                     data: "get_grade",
                     name: "get_grade",
+                    orderable: false,
+                    searchable: false,
                     render: function(data) {
                         return data.grade_name;
                     },
