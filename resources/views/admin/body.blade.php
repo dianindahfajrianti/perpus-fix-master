@@ -38,7 +38,7 @@
         @if(request()->segment(count(request()->segments())) !== 'admin')
         @else
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="/assets/perpus/assets/img/logo-perpus.png" alt="" height="60" width="60">
         </div>
         @endif
 

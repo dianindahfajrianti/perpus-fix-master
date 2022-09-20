@@ -262,6 +262,8 @@
                     render: function(data) {
                         return data.edu_name;
                     },
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: "get_grade",
@@ -269,6 +271,8 @@
                     render: function(data) {
                         return data.grade_name;
                     },
+                    orderable: false,
+                    searchable: false
                 },{
                     data: "published_year",
                     name: "published_year"
