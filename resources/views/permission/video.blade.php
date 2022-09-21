@@ -246,12 +246,16 @@
                     render: function(data) {
                         return data.edu_name;
                     },
+                    orderable: false,
+                    searchable: false
                 },{
                     data: "get_grade",
                     name: "get_grade",
                     render: function(data) {
                         return data.grade_name;
                     },
+                    orderable: false,
+                    searchable: false
                 },{
                     data: "creator",
                     name: "creator"
