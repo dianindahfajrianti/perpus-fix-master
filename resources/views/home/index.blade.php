@@ -129,8 +129,8 @@
                                 {{ $b->title }}
                             </h5>
                             <h6>
-                                @if($b->getGrade !== null || $b->getEdu !== null)
-                                {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
+                                @if($b->grades !== null || $b->education !== null)
+                                {{ "Kelas ".$b->grades->grade_name." ".$b->education->edu_name}}
                                 @endif
                             </h6>
                             <div class="btn-file">
@@ -194,8 +194,8 @@
                                 {{ $v->title }}
                             </h5>
                             <h6>
-                                @if(($v->getGrade || $v->getEdu) !== null)
-                                {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}
+                                @if(($v->grades || $v->education) !== null)
+                                {{ "Kelas ".$v->grades->grade_name." ".$v->education->edu_name}}
                                 @endif
                             </h6>
                             <div class="btn-file">

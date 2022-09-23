@@ -209,10 +209,10 @@
                                             {{ $b->title }}
                                         </h1>
                                         <h6>
-                                            @empty ($b->getGrade || $b->getEdu)
+                                            @empty ($b->grades || $b->education)
                                             
                                             @else
-                                            {{ 'Kelas ' . $b->getGrade->grade_name . ' ' . $b->getEdu->edu_name }}
+                                            {{ 'Kelas ' . $b->grades->grade_name . ' ' . $b->edcation->edu_name }}
                                             @endif
                                         </h6>
                                         <div class="btn-file">

@@ -93,15 +93,15 @@
                 @if ($user->edu_id !== null)
                 <div class="form-group">
                   <label for="disabledTextInput">Asal Sekolah</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getSchool->sch_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->schools->sch_name }}">
                 </div>
                 <div class="form-group">
                   <label for="disabledTextInput">Jenjang</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getGrade->grade_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->grades->grade_name }}">
                 </div>
                 <div class="form-group">
                   <label for="disabledTextInput">Tingkatan</label>
-                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->getMajor->maj_name }}">
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ $user->majors->maj_name }}">
                 </div>
                 @endif
               </fieldset>

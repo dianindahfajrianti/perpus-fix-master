@@ -49,8 +49,8 @@
                             <div class="card-info">
                                 <h5>{{substr($f->title,0,16)."..."}}</h5>
                                 <h6>
-                                    @if(($f->getGrade || $f->getEdu) !== null)
-                                    {{ "Kelas ".$f->getGrade->grade_name." ".$f->getEdu->edu_name}}
+                                    @if(($f->grades || $f->education) !== null)
+                                    {{ "Kelas ".$f->grades->grade_name." ".$f->education->edu_name}}
                                     @endif
                                 </h6>
                                 <div class="btn-file">
@@ -92,8 +92,8 @@
                             <div class="card-info">
                                 <h5>{{substr($f->title,0,16)."..."}}</h5>
                                 <h6>
-                                    @if(($f->getGrade || $f->getEdu) !== null)
-                                    {{ "Kelas ".$f->getGrade->grade_name." ".$f->getEdu->edu_name}}
+                                    @if(($f->grades || $f->education) !== null)
+                                    {{ "Kelas ".$f->grades->grade_name." ".$f->education->edu_name}}
                                     @endif
                                 </h6>
                                 <div class="btn-file">
