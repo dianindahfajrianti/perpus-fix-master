@@ -144,16 +144,16 @@
                 data: "title",
                 name: "title"
             },{
-                data: "get_edu",
-                name: "get_edu",
+                data: "education",
+                name: "education.edu_name",
                 render: function(data) {
                     return data.edu_name;
                 },
                 orderable: false,
                 searchable: false
             },{
-                data: "get_grade",
-                name: "get_grade",
+                data: "grades",
+                name: "grades.grade_name",
                 render: function(data) {
                     return data.grade_name;
                 },
@@ -241,21 +241,17 @@
                     data: "title",
                     name: "title"
                 },{
-                    data: "get_edu",
-                    name: "get_edu",
+                    data: "education",
+                    name: "education.edu_name",
                     render: function(data) {
                         return data.edu_name;
-                    },
-                    orderable: false,
-                    searchable: false
+                    }
                 },{
-                    data: "get_grade",
-                    name: "get_grade",
+                    data: "grades",
+                    name: "grades.grade_name",
                     render: function(data) {
                         return data.grade_name;
-                    },
-                    orderable: false,
-                    searchable: false
+                    }
                 },{
                     data: "creator",
                     name: "creator"

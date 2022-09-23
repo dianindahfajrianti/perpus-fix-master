@@ -127,19 +127,15 @@
                     name: "title"
                 },
                 {
-                    data: "get_edu",
-                    name: "get_edu",
-                    orderable: false,
-                    searchable: false,
+                    data: "education",
+                    name: "education.edu_name",
                     render: function(data) {
                         return data.edu_name;
                     },
                 },
                 {
-                    data: "get_grade",
-                    name: "get_grade",
-                    orderable: false,
-                    searchable: false,
+                    data: "grades",
+                    name: "grades.grade_name",
                     render: function(data) {
                         return data.grade_name;
                     },
