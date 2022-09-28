@@ -48,19 +48,19 @@ class Video extends Model
     }
 
     //
-    public function getEdu()
+    public function education()
     {
         return $this->hasOne(Education::class,'id','edu_id');
     }
-    public function getGrade()
+    public function grades()
     {
         return $this->hasOne(Grade::class,'id','grade_id');
     }
-    public function getMajor()
+    public function majors()
     {
         return $this->hasOne(Major::class,'id','major_id');
     }
-    public function getSubject()
+    public function subjects()
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
