@@ -27,11 +27,11 @@ class SubjectController extends Controller
     public function data()
     {
         
-        $model = Subject::with('hasMajor');
+        $model = Subject::with('major');
         
         return DataTables::of($model)
                ->addIndexColumn()
-               ->editColumn('has_major',function($subject){
+               ->editColumn('major',function($subject){
                     $maj = Major::with('educations')->where('id',$subject->parent_id)->first();
                     return $maj;
                })

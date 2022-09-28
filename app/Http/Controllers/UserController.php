@@ -300,7 +300,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $rel = ['getGrade','getMajor','getSchool'];
+        $rel = ['grades','majors','schools'];
         $user = $user->with($rel)
                 ->where('id','=',$user->id)
                 ->first();
@@ -429,8 +429,8 @@ class UserController extends Controller
     public function profile()
     {
         $uid = auth()->user()->id;
-        $attr = ['getSchool','getGrade','getMajor'];
-        $nosch = ['getGrade','getMajor'];
+        $attr = ['schools','grades','majors'];
+        $nosch = ['grades','majors'];
         $us = User::with($attr)->findOrFail($uid);
         
         if ($us !== null ) {

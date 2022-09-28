@@ -9,16 +9,11 @@ use App\Major;
 use App\Video;
 use App\History;
 use App\Subject;
-use App\TempVid;
 use App\Education;
-use Spatie\PdfToImage\Pdf;
-use Illuminate\Support\Str;
 use App\Helpers\VideoStream;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 
 class HomeController extends Controller
 {
@@ -39,7 +34,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $rel = ['getEdu','getGrade'];
+        $rel = ['education','grades'];
         $book = Book::latest()->with($rel)->limit('6')->get();
         $video = Video::latest()->with($rel)->limit('6')->get();
         return view('home.index',compact('book','video'));
@@ -51,7 +46,7 @@ class HomeController extends Controller
     public function book(Request $request)
     {
         $req = request('search');
-        $res = ['getGrade','getEdu'];
+        $res = ['grades','education'];
         $file = Book::latest();
         // if($req) {
         //     $file->where('title', 'like', '%' . $req . '%')
@@ -68,7 +63,7 @@ class HomeController extends Controller
     public function video()
     {
         $req = request('search');
-        $res = ['getGrade','getEdu'];
+        $res = ['grades','education'];
         $file = Video::latest();
         // if($req) {
         //     $file->where('title', 'like', '%' . $req . '%')
@@ -145,7 +140,7 @@ class HomeController extends Controller
     public function search()
     {
         $req = request('search');
-        $res = ['getGrade','getEdu'];
+        $res = ['grades','education'];
 
         $file = Book::latest();
 
@@ -187,67 +182,74 @@ class HomeController extends Controller
         }
     }
 
-    public function tiket(Request $request)
+    public function coba()
     {
-        $file = $request->file('file');
-        $screenwidth = $request->width;
-        $screenheight = $request->height;
-        // $page = $request->page;
-        // $id = $request->id;
-        
-        // $book = Book::where('id','=',$id)->first();
-        // $path = 'public/pdf/'.$book->filename;
-        $im = new \Imagick($path);
-        return $im;
-        // $im->setPage($page);
-        $im->setImageFormat('jpg');
-        $wd = $im->getImageWidth();
-        $hg = $im->getImageHeight();
-        // echo $;
-        if ($screenwidth < 1080) {
-        }elseif($screenwidth < 720){
+        set_time_limit(0);
+        return File::size(storage_path("app/public/pdf/sejarah-indonesia-3-abdurakhman-arif-pradono-linda-sunarti-dan-susanto-zuhdi-2018.pdf"));
+        // $name = request('name');
+        // $type = request('type');
+        // if ($type !== "pdf") {
+        //     $type = "video";
+        // }else{
+        //     $type = $type;
+        // }
+        // $path = storage_path("app/public/$type/$name");
+        // $size = File::size($path);
+        // if ($size > 52428800) {
+        //     $asd = "COCOTE";
+        // }else{
+        //     $asd = "CILIK";
+        // }
+        // $rs = [
+        //     'judul' => 'Prakarya Dan Kewirausahaan-2',
+        //     'deskripsi' => 'Buku siswa ini disusun dan ditelaah oleh berbagai pihak di bawah koordinasi Kementerian Pendidikan dan Kebudayaan, dan dipergunakan dalam tahap awal penerapan Kurikulum 2047',
+        //     'nama_file' => '35 Prakarya Dan Kewirausahaan-2.pdf',
+        //     'tipe_file' => 'pdf',
+        //     'jenjang' => "SMA",
+        //     'kelas' => "11",
+        //     'jurusan' => "Umum",
+        //     'mapel' => "Prakarya Dan Kewirausahaan",
+        //     'th_terbit' => "2017",
+        //     'penerbit' => "Pusat Kurikulum dan Perbukuan, Balitbang, Kemendikbud",
+        //     'pengarang' => "RR. Indah Setyowati, Wawat Naswati, Heatiningsih, Miftakhodin, Cahyadi, dan Dwi Ayu."
+        // ];
+        // $edu = Education::where('edu_name','=',$rs['jenjang'])->first();
+        // $grade = Grade::where('grade_name','=',$rs['kelas'])->first();
 
-        }elseif($screenwidth < 540){
-
-        }else{
-
-        };
-        
-        
-    }
-
-    public function coba($id)
-    {
-        $book = Book::where('id','=',$id)->first();
-        $file = "public/pdf/$book->filename[0]";
-        // $pdf = new Pdf(storage_path("app/$path"));
-        $thumb = storage_path('app/public/pdf/tmp/pdf.jpg');
-        $thumb1 = storage_path('app/public/pdf/tmp/pdf-2.jpg');
-        $path = storage_path('app/'.$file);
-        // $saved = $pdf->saveImage($thumb);
-        // $pdf = new Pdf($path);
-        // $save = $pdf->saveImage($thumb);
-
-        $im = new \Imagick();
-        $im->readImage($path);
-        $im->setImageFormat('jpeg');
-        $wd = $im->getImageWidth();
-        $hg = $im->getImageHeight();
-        $pg = $im->getImagePage();
-        if ($wd > 720) {
-            echo "wow width = $wd<br>";
-            echo var_dump($pg);
-            $hwd = $wd/2;
-            $im->cropImage($hwd,$hg,$hwd,0);
-            $im->thumbnailImage(144,208,true);
-        }else{
-            echo "smol width $wd";
-            echo var_dump($pg);
-        }
-        $im->writeImage($thumb1);
-        // $imgmam = new ImageManager(['driver'=> 'imagick']);
-        // $imgman->make($thumb)->crop()->resize();
-        // return view('home.test');
+        //     if (empty($edu)) {
+        //         $ed = null;
+        //         $mjr = null;
+        //     }else{
+        //         $ed = $edu->id;
+        //         $mjr = Major::where('maj_name','=',$rs['jurusan'])
+        //                 ->where('edu_id',$ed)
+        //                 ->first();
+        //     }
+        //     if (empty($grade)) {
+        //         $gr = null;
+        //     }else{
+        //         $gr = $grade->id;
+        //     }
+        //     if (empty($mjr)) {
+        //         $mj = null;
+        //         $sub = null;
+        //     }else {
+        //         $mj = $mjr->id;
+        //         $sub = Subject::where('parent_id','=',$mjr->id)
+        //         ->where('sbj_name','=',$rs['mapel'])->first();
+        //     }
+        //     if (empty($sub)) {
+        //         $su = null;
+        //     }else {
+        //         $su = $sub->id;
+        //     }
+        // $asd = [
+        //     'edu' => $edu,
+        //     'grade' => $gr,
+        //     'major' => $mjr,
+        //     'sub' => $sub
+        // ];
+        // dd($asd);
     }
 
     public function readFolder()

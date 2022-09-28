@@ -1,8 +1,8 @@
 <?php
 
-use Doctrine\DBAL\Schema\Index;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as SRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,9 @@ use Illuminate\Routing\Route;
 //     return $request->user();
 // });
 
-// Route::get('grades', 'GradeController@index');
-// Route::get('files', 'HomeController@files');
-// Route::get('subjects', 'SubjectController@index');
-// Route::get('edus', 'EducationController@Index');
+SRoute::apiResource('books',Api\V1\BookController::class)->only(['index','show']);
+SRoute::apiResource('videos',Api\V1\VideoController::class)->only(['index','show']);
+// SRoute::prefix('sync')->group(function(){
+SRoute::get('syncbook/{school}', 'Api\V1\BookController@sync');
+SRoute::get('syncvid/{school}', 'Api\V1\VideoController@sync');
+// });

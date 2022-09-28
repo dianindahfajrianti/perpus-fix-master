@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
 
-    public function hasEdu()
+    public function education()
     {
         return $this->hasOne(Education::class,'id','edu_id');
     }
-    public function onBook()
+    public function book()
     {
         return $this->belongsTo(Book::class,'school_id','id');
     }
-    public function onVideo()
+    public function video()
     {
         return $this->belongsTo(Video::class,'school_id','id');
     }

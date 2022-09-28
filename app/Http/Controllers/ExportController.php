@@ -17,15 +17,16 @@ use MultipartCompress;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Request;
 
 class ExportController extends Controller
 {
     public function user(School $school)
     {
         $id = $school->id;
-        $user = User::with(['getSchool','getGrade','getMajor'])
+        $user = User::with(['schools','grades','majors'])
                 ->where('school_id',$id)->get()->makeVisible('password');
-        $super = User::with(['getSchool','getGrade','getMajor'])
+        $super = User::with(['schools','grades','majors'])
                 ->where('role',0)->get()->makeVisible(['password']);
         $users = $user->concat($super);
         if (empty($user)|| empty($super)) {
@@ -131,7 +132,7 @@ class ExportController extends Controller
         $fil->cleanDirectory($tempThumb);
 
         $book = Book::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
                 })->get();
@@ -226,7 +227,7 @@ class ExportController extends Controller
         $fileThumb2 = 'part-'.$id.".zip";
 
         $video = Video::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
                 })->get();
@@ -296,7 +297,7 @@ class ExportController extends Controller
         $id = $school->id;
 
         $book = Book::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id)
                     ->whereDate('book_school.updated_at','>',$import);
@@ -393,7 +394,7 @@ class ExportController extends Controller
         $fileThumb2 = 'part-'.$id.".zip";
 
         $book = Book::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id)
                     ->whereDate('book_school.updated_at','>',$import);
@@ -434,7 +435,7 @@ class ExportController extends Controller
         $import = request('date');
         $id = $school->id;
         $video = Video::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id)
                     ->whereDate('school_video.updated_at','>',$import);
@@ -520,7 +521,7 @@ class ExportController extends Controller
         $id = $school->id;
         $import = request('date');
         $video = Video::latest()
-                ->with('getEdu','getGrade','getMajor','getSubject')
+                ->with('education','grades','majors','subjects')
                 ->whereHas('schools', function ($query) use ($id,$import) {
                     $query->where('id', $id)
                     ->whereDate('school_video.updated_at','>',$import);
@@ -566,5 +567,116 @@ class ExportController extends Controller
             ->latest()->first();
         $ex->touch();
         return response()->json($rs);
+    }
+
+    public function sbook(School $school, Request $request)
+    {
+        set_time_limit(0);
+        //get data
+        $import = request('date');
+        $json = request('json');
+        
+        $id = $school->id;
+        $book = Book::latest()
+                ->with('education','grades','majors','subjects','getSize')
+                ->whereHas('schools', function ($query) use ($id,$import) {
+                    $query->where('id', $id)
+                    ->whereDate('school_video.updated_at','>',$import);
+                })
+                ->whereNotIn('filename', $json)
+                ->get();
+        $books = $book->concat();
+        if (!$book->isEmpty()) {
+            $res = new stdClass;
+            $res->book = $books;
+            $res->behave = TRUE;
+            return response()->json($res);
+        }else{
+            $rs = [
+                'behave' => FALSE,
+                'message' => "Nothing to sync on master's bookshelves"
+            ];
+            return response()->json($rs);
+        }
+    }
+    public function syncFile(School $school)
+    {
+        set_time_limit(0);
+        //declare var
+        $id = $school->id;
+        $type = request('type');
+        $size = request('size');
+        $name = str_replace(".$type","",request('name')); // don't have dot
+        $cur = request('cur');
+        $tot = request('tot');
+        //declare file name
+        $fileName = "$name-".$id.".zip";
+        $fileName2 = "part-$name-".$id.".zip";
+        //specify file type & path
+        if ($type == "pdf") {
+            // file pdf
+            $type = $type;
+            $tipe = "buku";
+            $name = $name.$type;
+            $path = storage_path("app/public/$type/");
+            $temp = storage_path("app/public/$type/tmp/$id");
+        }elseif($type == "video"){
+            // file video
+            $type = $type;
+            $tipe = "mp4";
+            $name = $name.$tipe;
+            $path = storage_path("app/public/$type/");
+            $temp = storage_path("app/public/$type/tmp/$id");
+        }elseif($type == "thumbvid"){
+            // thumb video
+            $type = "video";
+            $tipe = "jpg";
+            $name = $name.$tipe;
+            $path = storage_path("app/public/thumb/$type/");
+            $temp = storage_path("app/public/thumb/$type/tmp/$id");
+        }else{
+            // thumb pdf
+            $type = "pdf";
+            $tipe = "jpg";
+            $name = $name.$tipe;
+            $path = storage_path("app/public/thumb/$type/");
+            $temp = storage_path("app/public/thumb/$type/tmp/$id");
+        }
+
+        if ($size > 157286400) {
+            // Multipart
+            //copy file to temp
+            $old = "$path/$name";
+            $new = "$temp/$name";
+            $zipFile = "$temp/$fileName";
+            $zipPartFile = "$temp/$fileName2";
+            copy($old,$new);
+            //zip all pdf file
+            $zip = new ZipArchive;
+            if ($zip->open($zipFile, ZipArchive::CREATE) === TRUE)
+            {
+                $files = File::files($temp);
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    $zip->addFile($value, $relativeNameInZipFile);
+                }
+                $zip->close();
+            }
+            //split zip file
+            $s = 50 * 1024 * 1024;
+            $partZip = MultipartCompress::zip($zipFile,$temp,$zipPartFile,$s);
+            // delete original file & zip
+            File::delete($new);
+            File::delete($zipFile);
+            $videos = [
+                request('type') => $partZip,
+            ];
+        }else{
+            $videos = [
+                request('type') => request('name')
+            ];
+        }
+        
+        return response()->json($videos);
     }
 }

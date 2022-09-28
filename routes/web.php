@@ -158,6 +158,7 @@ Route::get('/filter/{school}','ExportController@filter')->name('export.filter');
 });
 //Sync Files & Data
 Route::get('/sync/book/{school}','ExportController@syncBook')->name('sync.book');
+Route::post('/sync/bk/{school}','ExportController@sbook')->name('sync.sb');
 Route::get('/sync/book/{school}/zip','ExportController@syncBookzip')->name('sync.bookzip');
 Route::get('/sync/book/{school}/part','ExportController@syncBookpart')->name('sync.bookpart');
 Route::get('/sync/video/{school}','ExportController@syncVideo')->name('sync.vid');
@@ -167,4 +168,4 @@ Route::get('/sync/video/{school}/part','ExportController@syncVideopart')->name('
 Route::post('/tiket','HomeController@tiket');
 
 Route::get('/info','HomeController@info');
-Route::get('/coba/{id}','HomeController@coba');
+Route::get('/coba','HomeController@coba');

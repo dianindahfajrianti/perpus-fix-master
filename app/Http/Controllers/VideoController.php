@@ -37,7 +37,7 @@ class VideoController extends Controller
 
     public function data()
     {
-        $rel = ['getEdu','getGrade'];
+        $rel = ['education','grades'];
         $id = [
             'id' => Auth::user()->school_id
         ];
@@ -89,7 +89,7 @@ class VideoController extends Controller
             'mapel' => 'required',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required',
+            'nama_pembuat' => 'required|unique:videos,creator',
             'jam' => 'required|numeric|max:2',
             'menit' => 'required|numeric|max:59',
             'detik' => 'required|numeric|max:59',
@@ -98,7 +98,7 @@ class VideoController extends Controller
         // $file = $request->file('thumb');
         
         $res = new stdClass;
-        $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".date('Y-m-d'),'-');
+        $filename = Str::slug($request->judul." ".$request->nama_pembuat,'-');
         $vid = new Video;
         $vid->title = $request->judul;
         $vid->desc = $request->deskripsi;
@@ -194,7 +194,7 @@ class VideoController extends Controller
 
     public function show(Video $video)
     {
-        $video->with('getEdu','getGrade')->get();
+        $video->with('education','grades')->get();
         return view('video.showvideo',compact('video'));
     }
 
@@ -218,7 +218,7 @@ class VideoController extends Controller
         $tObj->menit = $tArr[1];
         $tObj->detik = $tArr[2];
 
-        $video->with('getEdu','getGrade')->get();
+        $video->with('education','grades')->get();
         return view('video.edit',compact('edu','maj','video','tObj'));
     }
     public function editFile(Video $video)
@@ -243,7 +243,7 @@ class VideoController extends Controller
             'mapel' => 'required',
             'judul' => 'required',
             'deskripsi' => '',
-            'nama_pembuat' => 'required',
+            'nama_pembuat' => 'required|unique:videos,creator',
             'jam' => 'required|numeric|max:2',
             'menit' => 'required|numeric|max:59',
             'detik' => 'required|numeric|max:59'
@@ -265,7 +265,7 @@ class VideoController extends Controller
         
         $tObj->detik = $tArr[2];
         
-        $filename = Str::slug($request->judul." ".$request->nama_pembuat." ".$time,'-');
+        $filename = Str::slug($request->judul." ".$request->nama_pembuat,'-');
 
         $op = 'public/video/'."$video->filename.$video->filetype";
         $np = 'public/video/'."$filename.$video->filetype";
@@ -567,7 +567,7 @@ class VideoController extends Controller
 
         foreach ($temp as $key => $vid) {
             
-            $filename = Str::slug($vid->judul." ".$vid->nama_pembuat." ".date('Y-m-d'),'-');
+            $filename = Str::slug($vid->judul." ".$vid->nama_pembuat,'-');
             
             $video = new Video;
             $video->filename = $filename;

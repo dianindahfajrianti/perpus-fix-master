@@ -27,7 +27,7 @@ class GradeController extends Controller
     }
     public function data()
     {
-        $rel = ['getEdu'];
+        $rel = ['education'];
         $model = Grade::all();
         return DataTables::of($model)
             ->addIndexColumn()

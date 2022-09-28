@@ -21,7 +21,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $school = School::with('hasEdu')->get();
+        $school = School::with('education')->get();
 
         return view('permission.index', compact('school'));
     }
@@ -29,25 +29,21 @@ class PermissionController extends Controller
     public function books(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
+        $eid = $school->edu_id;
+        $scopeSc = ['id' => "$id"];
+        $scopeEd = ['id' => "$eid"];
+        // dd($eid);
         $ajax = ['ajax' => $request->ajax()];
-        if (empty($request->ajax())) {
-            $model = Book::latest()
-                // ->school($scope)
-            ->with('getEdu','getGrade')
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Book::latest()
-            ->with('getEdu','getGrade')
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
+        $model = Book::latest()
+            ->with('education','grades')
+                ->whereHas('schools', function ($query) use ($scopeSc) {
+                    $query->where('id', $scopeSc);
                 })
-                ->filter($ajax);
-        }
-
-        return DataTables::of($model)
+            ->whereHas('education',function($query) use ($scopeEd) {
+                $query->where('id',$scopeEd);
+            })
+            ->filter($ajax);
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->make(true);
@@ -57,19 +53,18 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $eid = $school->edu_id;
+        $ajax = ['ajax' => $request->ajax()];
         $model = Book::latest()
             // ->school($scope)
             ->whereDoesntHave('schools', function ($query) use ($id) {
                 $query->where('id', $id);
             })
-            ->with('getEdu','getGrade')
-            ->whereHas('getEdu',function($query) use ($eid){
+            ->with('education','grades')
+            ->whereHas('education',function($query) use ($eid){
                 $query->where('id',$eid);
-            })
+            });
 
-            ->filter(request(['ajax']));
-
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->make(true);
@@ -78,11 +73,15 @@ class PermissionController extends Controller
     public function videos(School $school, Request $request)
     {
         $id = $school->id;
+        $eid = $school->edu_id;
         //get model
         $model = Video::latest()
-                ->with('getEdu','getGrade')
+                ->with('education','grades')
                 ->whereHas('schools', function ($query) use ($id) {
                     $query->where('id', $id);
+                })
+                ->whereHas('education',function($query) use ($eid){
+                $query->where('id',$eid);
                 });
         // return $model->get();
         return DataTables::eloquent($model)
@@ -95,18 +94,18 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $eid = $school->edu_id;
-        
+        $ajax = ['ajax' => $request->ajax()];
         $model = Video::latest()
-            ->with('getEdu','getGrade')
+            ->with('education','grades')
             ->whereDoesntHave('schools', function ($query) use ($id) {
                 $query->where('id', $id);
             })
-            ->whereHas('getEdu', function ($query) use ($eid) {
+            ->whereHas('education', function ($query) use ($eid) {
                 $query->where('id', $eid);
             })
-            ->filter(request(['ajax']));
+            ->filter($ajax);
 
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->make(true);

@@ -34,6 +34,10 @@ class LoginController extends Controller
     }
     protected function showLoginForm()
     {
+        if(!session()->has('url.intended'))
+        {
+            session(['url.intended' => url()->previous()]);
+        }
         return view('home.login');
     }
     protected function redirectTo()
@@ -72,5 +76,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->redirectTo = url()->previous();
     }
 }

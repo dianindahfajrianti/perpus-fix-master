@@ -51,19 +51,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getSchool()
+    public function schools()
     {
         return $this->hasOne(School::class,'id','school_id');
     }
-    public function getGrade()
+    public function grades()
     {
         return $this->hasOne(Grade::class,'id','grade_id');
     }
-    public function getMajor()
+    public function majors()
     {
         return $this->hasOne(Major::class,'id','major_id');
     }
-    public function onHistory()
+    public function histories()
     {
         return $this->belongsTo(History::class,'userid','id');
     }

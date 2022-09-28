@@ -53,13 +53,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // $res = new stdClass;
-        // $res->status = 'error';
-        // $res->title = 'Gagal';
-        // if ($exception instanceof ModelNotFoundException) {
-        //     $res->message = $exception->getMessage();
-        //     return redirect()->back()->with(json_encode($res));
-        // }
+        $res = new stdClass;
+        $res->status = 'error';
+        $res->title = 'Gagal';
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+            $res->message = $exception->getMessage();
+            return response()->json(['message' => 'Not Found!','result'=> $res], 404);
+        }
         // if ($exception instanceof \Illuminate\Database\QueryException) {
         //     $res->message = $exception->getMessage();
         //     return redirect()->back()->with(json_encode($res));

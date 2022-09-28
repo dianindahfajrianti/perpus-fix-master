@@ -29,7 +29,7 @@ class SchoolController extends Controller
         if (empty($request->ajax())) {
             $model = School::all();
         } else {
-            $rel = ['hasEdu'];
+            $rel = ['education'];
             $model = School::with($rel);
         }
         return DataTables::of($model)

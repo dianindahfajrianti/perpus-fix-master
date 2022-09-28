@@ -46,10 +46,10 @@ class BookController extends Controller
             'id' => Auth::user()->school_id
         ];
         if ($rl < 1) {
-            $model = Book::with(['getEdu', 'getGrade'])
+            $model = Book::with(['education', 'grades'])
             ->orderBy('updated_at','desc');
         }else{
-            $model = Book::with(['getEdu', 'getGrade'])
+            $model = Book::with(['education', 'grades'])
             ->whereHas('schools',function($query) use ($scale){
                 $query->where($scale);
             })
@@ -498,11 +498,11 @@ class BookController extends Controller
             if (file_exists($oldpath)) {
                 rename($oldpath,$newpath);
                 rename($oldpath2,$newpath2);
-            }
+            };
             
+
             $edu = Education::where('edu_name','=',$bk->jenjang)->first();
             $grade = Grade::where('grade_name','=',$bk->kelas)->first();
-            $sub = Subject::where('sbj_name','=',$bk->mapel)->first();
 
             if (empty($edu)) {
                 $ed = null;
@@ -522,6 +522,8 @@ class BookController extends Controller
                 $mj = null;
             }else {
                 $mj = $mjr->id;
+                $sub = Subject::where('parent_id',$mjr->id)
+                ->where('sbj_name','=',$bk->mapel)->first();
             }
             if (empty($sub)) {
                 $su = null;
