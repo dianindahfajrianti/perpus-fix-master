@@ -145,7 +145,8 @@
                     name: "sbj_name"
                 },
                 {
-                    data: "has_major",
+                    data: "major",
+                    name: "major.maj_name",
                     render: function (full,data,type,row) {
                         var ed = JSON.parse(full);
                         return ed.maj_name+" - "+ ed.educations.edu_name;
