@@ -153,16 +153,14 @@
                 render: function(data) {
                     return data.edu_name;
                 },
-                orderable: false,
-                searchable: false
+                orderable: false
             },{
                 data: "grades",
                 name: "grades.grade_name",
                 render: function(data) {
                     return data.grade_name;
                 },
-                orderable: false,
-                searchable: false
+                orderable: false
             },{
                 data: "published_year",
                 name: "published_year"

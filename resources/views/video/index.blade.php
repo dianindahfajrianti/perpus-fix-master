@@ -132,6 +132,7 @@
                     render: function(data) {
                         return data.edu_name;
                     },
+                    orderable: false
                 },
                 {
                     data: "grades",
@@ -139,6 +140,7 @@
                     render: function(data) {
                         return data.grade_name;
                     },
+                    orderable: false
                 },
                 {
                     data: "desc",

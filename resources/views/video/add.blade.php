@@ -359,7 +359,7 @@
 
         $('#jurusan').on('change', function() {
             var jurusanID = $(this).val();
-            console.log(jurusanID);
+            console.log('JURUSAN ID :' ,jurusanID);
             $.ajax({
                 url: '/sub/'+jurusanID,
                 type: "GET",

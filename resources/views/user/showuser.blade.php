@@ -63,10 +63,10 @@
                                         <td>Sekolah</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($user->getSchool->sch_name))
+                                            @if(empty($user->schools->sch_name))
                                             -
                                             @else
-                                            {{ $user->getSchool->sch_name }}
+                                            {{ $user->schools->sch_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -74,10 +74,10 @@
                                         <td>Kelas</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($user->getGrade->grade_name))
+                                            @if(empty($user->grades->grade_name))
                                             -
                                             @else
-                                            {{ $user->getGrade->grade_name }}
+                                            {{ $user->grades->grade_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -85,10 +85,10 @@
                                         <td>Jurusan</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($user->getMajor->maj_name))
+                                            @if(empty($user->majors->maj_name))
                                             -
                                             @else
-                                            {{ $user->getMajor->maj_name }}
+                                            {{ $user->majors->maj_name }}
                                             @endif
                                         </td>
                                     </tr>
