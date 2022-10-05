@@ -144,7 +144,7 @@ class Admin extends Controller
         $scale = [
             'id' => $major->id
         ];
-        $model = Subject::whereHas('hasMajor',function($query) use ($scale){
+        $model = Subject::whereHas('major',function($query) use ($scale){
             $query->where($scale);
         })->get();
         return $model;
