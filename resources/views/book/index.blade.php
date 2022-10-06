@@ -240,7 +240,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="tahun">Tahun Terbit</label>
-                                            <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
+                                            <input type="number" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
                                             @error('tahun')
                                             <div class="invalid-feedback">
                                                 {{$message}}

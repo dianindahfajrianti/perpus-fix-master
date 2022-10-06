@@ -242,13 +242,15 @@
                     name: "education.edu_name",
                     render: function(data) {
                         return data.edu_name;
-                    }
+                    },
+                    orderable: false
                 },{
                     data: "grades",
                     name: "grades.grade_name",
                     render: function(data) {
                         return data.grade_name;
-                    }
+                    },
+                    orderable: false
                 },{
                     data: "creator",
                     name: "creator"
@@ -257,7 +259,8 @@
                     render: function (data) { 
                         return '<button data-id="'+data+'" type="button" class="d-inline add-video btn btn-success"><i class="fas fa-plus"></i></button>';
                     },
-                    searchable:false
+                    orderable: false,
+                    searchable: false
                 }],
                 "ajax": {url : "/akses/video/"+idschool}
             });
