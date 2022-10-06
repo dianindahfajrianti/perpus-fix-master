@@ -149,16 +149,14 @@
                 render: function(data) {
                     return data.edu_name;
                 },
-                orderable: false,
-                searchable: false
+                orderable: false
             },{
                 data: "grades",
                 name: "grades.grade_name",
                 render: function(data) {
                     return data.grade_name;
                 },
-                orderable: false,
-                searchable: false
+                orderable: false
             },{
                 data: "creator",
                 name: "creator"
@@ -167,7 +165,6 @@
                 render: function (data) { 
                     return '<button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
                  },
-                orderable : false,
                 searchable:false
             }],
             "ajax": {url : "/sekolah/"+idschool+"/video",}

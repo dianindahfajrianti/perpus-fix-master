@@ -151,7 +151,7 @@
                         var ed = JSON.parse(full);
                         return ed.maj_name+" - "+ ed.educations.edu_name;
                     },
-                    searchable:false,
+                    // searchable:false,
                     orderable:false
                 },
                 {

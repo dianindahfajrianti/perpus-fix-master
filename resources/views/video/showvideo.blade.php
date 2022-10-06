@@ -69,10 +69,10 @@ Detail {{ $video->title }} - Admin Perpus
                                         <td>Jenjang</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($video->getEdu->edu_name))
+                                            @if(empty($video->education->edu_name))
                                             -
                                             @else
-                                            {{ $video->getEdu->edu_name }}
+                                            {{ $video->education->edu_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -80,10 +80,10 @@ Detail {{ $video->title }} - Admin Perpus
                                         <td>Kelas</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($video->getGrade->grade_name))
+                                            @if(empty($video->grades->grade_name))
                                             -
                                             @else
-                                            {{ $video->getGrade->grade_name }}
+                                            {{ $video->grades->grade_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -91,10 +91,10 @@ Detail {{ $video->title }} - Admin Perpus
                                         <td>Jurusan</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($video->getMajor->maj_name))
+                                            @if(empty($video->majors->maj_name))
                                             -
                                             @else
-                                            {{ $video->getMajor->maj_name }}
+                                            {{ $video->majors->maj_name }}
                                             @endif
                                         </td>
                                     </tr>
@@ -102,10 +102,10 @@ Detail {{ $video->title }} - Admin Perpus
                                         <td>Mata Pelajaran</td>
                                         <td>:</td>
                                         <td>
-                                            @if(empty($video->getSubject->sbj_name))
+                                            @if(empty($video->subjects->sbj_name))
                                             -
                                             @else
-                                            {{ $video->getSubject->sbj_name }}
+                                            {{ $video->subjects->sbj_name }}
                                             @endif
                                         </td>
                                     </tr>

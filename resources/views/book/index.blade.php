@@ -360,6 +360,7 @@
                         console.log();
                         return data.edu_name;
                     },
+                    orderable: false
                 },
                 {
                     data: "grades",
@@ -367,6 +368,7 @@
                     render: function(data) {
                         return data.grade_name;
                     },
+                    orderable: false
                 },
                 {
                     data: "published_year",
