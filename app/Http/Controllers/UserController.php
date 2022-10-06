@@ -240,7 +240,7 @@ class UserController extends Controller
             'sekolah' => $sch,
             'kelas' => $murid,
             'jurusan' => $murid,
-            'role' => 'required'
+            'role' => 'required|digits_between:0,3'
         ]);
         
         try {
@@ -353,7 +353,7 @@ class UserController extends Controller
             'sekolah' => $sch,
             'kelas' => $murid,
             'jurusan' => $murid,
-            'role' => 'required'
+            'role' => 'required|digits_between:0,3'
         ]);
         try {
             $user->name = $request->nama ;

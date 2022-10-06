@@ -13,6 +13,7 @@ use App\TempVid;
 use App\Education;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -87,9 +88,9 @@ class VideoController extends Controller
             'kelas' => 'required',
             'jurusan' => 'required',
             'mapel' => 'required',
-            'judul' => 'required',
+            'judul' => 'required|unique:videos,title',
             'deskripsi' => '',
-            'nama_pembuat' => 'required|unique:videos,creator',
+            'nama_pembuat' => 'required',
             'jam' => 'required|numeric|max:2',
             'menit' => 'required|numeric|max:59',
             'detik' => 'required|numeric|max:59',
@@ -241,9 +242,9 @@ class VideoController extends Controller
             'kelas' => 'required',
             'jurusan' => 'required',
             'mapel' => 'required',
-            'judul' => 'required',
+            'judul' => ['required',Rule::unique('videos', 'title')->ignore($video->id)],
             'deskripsi' => '',
-            'nama_pembuat' => 'required|unique:videos,creator',
+            'nama_pembuat' => ['required',Rule::unique('videos', 'creator')->ignore($video->id)],
             'jam' => 'required|numeric|max:2',
             'menit' => 'required|numeric|max:59',
             'detik' => 'required|numeric|max:59'

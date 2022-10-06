@@ -41,8 +41,7 @@ class PermissionController extends Controller
                 })
             ->whereHas('education',function($query) use ($scopeEd) {
                 $query->where('id',$scopeEd);
-            })
-            ->filter($ajax);
+            });
         return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
@@ -74,14 +73,17 @@ class PermissionController extends Controller
     {
         $id = $school->id;
         $eid = $school->edu_id;
+        $scopeSc = ['id' => "$id"];
+        $scopeEd = ['id' => "$eid"];
+        $ajax = ['ajax' => $request->ajax()];
         //get model
         $model = Video::latest()
                 ->with('education','grades')
-                ->whereHas('schools', function ($query) use ($id) {
-                    $query->where('id', $id);
+                ->whereHas('schools', function ($query) use ($scopeSc) {
+                    $query->where('id', $scopeSc);
                 })
-                ->whereHas('education',function($query) use ($eid){
-                $query->where('id',$eid);
+                ->whereHas('education',function($query) use ($scopeEd){
+                $query->where('id',$scopeEd);
                 });
         // return $model->get();
         return DataTables::eloquent($model)
@@ -96,14 +98,13 @@ class PermissionController extends Controller
         $eid = $school->edu_id;
         $ajax = ['ajax' => $request->ajax()];
         $model = Video::latest()
-            ->with('education','grades')
             ->whereDoesntHave('schools', function ($query) use ($id) {
                 $query->where('id', $id);
             })
+            ->with('education','grades')
             ->whereHas('education', function ($query) use ($eid) {
                 $query->where('id', $eid);
-            })
-            ->filter($ajax);
+            });
 
         return DataTables::eloquent($model)
             ->addIndexColumn()

@@ -55,7 +55,7 @@ class EducationController extends Controller
     {
         $res = new stdClass();
         $request->validate([
-            'edu_name' => 'required|max:3|unique:education,edu_name'
+            'edu_name' => 'required|string|max:3|unique:education,edu_name'
         ]);
         try {
             $edu = new Education;
@@ -119,7 +119,7 @@ class EducationController extends Controller
     public function update(Request $request, Education $pendidikan)
     {
         $request->validate([
-            'edu_name' => ['required|max:3',Rule::unique('education', 'edu_name')->ignore($pendidikan->id)]
+            'edu_name' => ['required','string','max:3',Rule::unique('education', 'edu_name')->ignore($pendidikan->id)]
         ]);
         $education = $pendidikan;
         $education->edu_name =  $request->edu_name;
