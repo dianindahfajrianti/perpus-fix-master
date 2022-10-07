@@ -46,7 +46,7 @@ class UserController extends Controller
             }
         }
         if (Auth::user()->role < 1) {
-            $model = User::with($rel)->all();
+            $model = User::with($rel);
         } else {
             $model = User::with($rel)->where('role', '>=', 1)->where('school_id','=',$sch);
         }
