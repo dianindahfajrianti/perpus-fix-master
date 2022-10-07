@@ -46,12 +46,12 @@ class UserController extends Controller
             }
         }
         if (Auth::user()->role < 1) {
-            $model = User::all();
+            $model = User::with('schools')->all();
         } else {
             $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
         }
         
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
