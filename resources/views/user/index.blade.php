@@ -46,6 +46,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Username</th>
+                                <th>Sekolah</th>
                                 <th>Role</th>
                                 <th>Aksi</th>
                             </thead>
@@ -161,7 +162,7 @@
                         <div class="form-group mt-3">
                             <label class="form-label" for="role">Role</label>
                             <div class="input-group">
-                                <select name="role" class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror" id=" role" aria-label="">
+                                <select name="role" required class="form-control select2bs4 @error('role'){{ 'is-invalid' }}@enderror" id=" role" aria-label="">
                                     <option selected>-- Pilih Role --</option>
                                     @php
                                     $rl = [
@@ -277,6 +278,18 @@
             }, {
                 data: "username",
                 name: "username"
+            }, {
+                data: "schools",
+                name: "schools",
+                render: function(data, type, full, mime) {
+                    if (data == null) {
+                        return "-";
+                    }else{
+                        console.log(data);
+                        return data.sch_name;
+                    }
+                },
+                orderable: false
             }, {
                 data: "role",
                 name: "role",
