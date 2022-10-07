@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function data()
     {
-        $rel = "school";
+        $rel = "schools";
         if (Auth::check()) {
             $sch = Auth::user()->school_id;
         }else{
@@ -46,9 +46,9 @@ class UserController extends Controller
             }
         }
         if (Auth::user()->role < 1) {
-            $model = User::with('schools')->all();
+            $model = User::with($rel)->all();
         } else {
-            $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
+            $model = User::with($rel)->where('role', '>=', 1)->where('school_id','=',$sch);
         }
         
         return DataTables::eloquent($model)
