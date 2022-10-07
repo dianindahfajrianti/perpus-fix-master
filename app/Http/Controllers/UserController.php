@@ -33,25 +33,22 @@ class UserController extends Controller
         return view('user.index', compact('sch','grade','maj'));
     }
 
-    public function data(Request $request)
+    public function data()
     {
-        if (empty($request->ajax())) {
-            $model = User::all();
+        $rel = "school";
+        if (Auth::check()) {
+            $sch = Auth::user()->school_id;
         }else{
-            if (Auth::check()) {
-                $sch = Auth::user()->school_id;
+            if (empty(env('SCHOOL_ID'))) {
+                return redirect('login');
             }else{
-                if (empty(env('SCHOOL_ID'))) {
-                    return redirect('login');
-                }else{
-                    $sch = env('SCHOOL_ID');
-                }
+                $sch = env('SCHOOL_ID');
             }
-            if (Auth::user()->role < 1) {
-                $model = User::all();
-            } else {
-                $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
-            }
+        }
+        if (Auth::user()->role < 1) {
+            $model = User::all();
+        } else {
+            $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
         }
         
         return DataTables::of($model)
@@ -379,9 +376,6 @@ class UserController extends Controller
             $res->status = $stat;
             $res->message= $msg;
             return redirect()->back()->with($stat,json_encode($res));
-        }
-        if (!empty($request->password)) {
-            # code...
         }
     }
 

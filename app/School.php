@@ -32,6 +32,11 @@ class School extends Model
         ->withTimestamps();
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'school_id','id');
+    }
+
     // public function majors()
     // {
     //     return $this->belongsToMany(Major::class,'major_school','school_id','major_id','id','maj_code')
