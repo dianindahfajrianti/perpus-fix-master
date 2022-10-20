@@ -15,19 +15,19 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('title',100);
+            $table->char('title');
             $table->text('desc')->nullable();
             $table->string('filename');
             $table->char('filetype',3);
             $table->string('thumb')->nullable();
             $table->bigInteger('clicked_time');
-            $table->integer('edu_id');
-            $table->integer('grade_id');
-            $table->integer('major_id');
-            $table->integer('sub_id');
+            $table->integer('edu_id')->nullable(false)->default(0);
+            $table->integer('grade_id')->nullable(false)->default(0);
+            $table->integer('major_id')->nullable(false)->default(0);
+            $table->integer('sub_id')->nullable(false)->default(0);
             $table->integer('published_year');
-            $table->string('publisher',100);
-            $table->string('author',100);
+            $table->string('publisher');
+            $table->string('author');
             $table->timestamps();
             $table->softDeletes();
         });

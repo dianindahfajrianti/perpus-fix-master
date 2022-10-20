@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use stdClass;
 use Exception;
+use App\Traits\GlobalWarn as Warn;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -51,10 +53,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // if ($exception instanceof ModelNotFoundException) {
-        //     return response()->json(['error'=>'Data not found']);
+        $res = new stdClass;
+        $res->status = 'error';
+        $res->title = 'Gagal';
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+            $res->message = $exception->getMessage();
+            return response()->json(['message' => 'Not Found!','result'=> $res], 404);
+        }
+        // if ($exception instanceof \Illuminate\Database\QueryException) {
+        //     $res->message = $exception->getMessage();
+        //     return redirect()->back()->with(json_encode($res));
+        // } elseif ($exception instanceof \PDOException) {
+        //     $res->message = $exception->getMessage();
+        //     return redirect()->back()->with(json_encode($res));
         // }
-
+        
         return parent::render($request, $exception);
     }
 }

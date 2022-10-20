@@ -17,7 +17,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                    <li class="breadcrumb-item active">Pendidikan</li>
+                    <li class="breadcrumb-item"><a href="/admin/sekolah">Sekolah</a></li>
+                    <li class="breadcrumb-item active">Akses</li>
                 </ol>
             </div>
         </div>
@@ -29,7 +30,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/akses/{{ $school->id }}/buku" class="small-box bg-gradient-navy">
                     <div class="inner">
-                        <h3>@foreach($book as $b){{$b->totidb}}@endforeach</h3>
+                        <h3>{{ $book }}</h3>
                         <p>Buku</p>
                     </div>
                     <div class="icon"><i class="fas fa-book"></i></div>
@@ -38,12 +39,21 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/akses/{{ $school->id }}/video" class="small-box bg-gradient-lightblue">
                 <div class="inner">
-                    <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3>
+                    <h3>{{ $vid }}</h3>
                     <p>Video</p>
                 </div>
                 <div class="icon"><i class="fas fa-film"></i></div>
                 </a>
             </div>
+            {{-- <div class="col-lg-2 col-6">
+                <a href="/admin/akses/{{ $school->id }}/jurusan" class="small-box bg-gradient-olive">
+                <div class="inner">
+                    <h3>{{ $jur }}</h3>
+                    <p>Jurusan</p>
+                </div>
+                <div class="icon"><i class="fas fa-flask"></i></div>
+                </a>
+            </div> --}}
         </div>
     </div>
 </section>

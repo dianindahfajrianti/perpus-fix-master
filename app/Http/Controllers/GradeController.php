@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Education;
-use App\Grade;
 use App\User;
-use App\Video;
-use Illuminate\Http\Request;
 use stdClass;
+use App\Grade;
+use App\Video;
+use App\Education;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class GradeController extends Controller
@@ -26,7 +27,7 @@ class GradeController extends Controller
     }
     public function data()
     {
-        $rel = ['getEdu'];
+        $rel = ['education'];
         $model = Grade::all();
         return DataTables::of($model)
             ->addIndexColumn()
@@ -55,7 +56,7 @@ class GradeController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'kelas' => 'required',
+            'kelas' => 'required|digits_between:1,12|unique:grades,grade_name',
         ]);
         try {
             $gr->grade_name = $request->kelas;
@@ -105,7 +106,7 @@ class GradeController extends Controller
     public function update(Request $request, Grade $grade)
     {
         $request->validate([
-            'kelas' => 'required',
+            'kelas' => ['required','digits_between:1,12', Rule::unique('grades', 'grade_name')->ignore($grade->id),],
         ]);
         $res = new stdClass();
         try {
@@ -113,7 +114,7 @@ class GradeController extends Controller
             $grade->save();
 
             $stat = "success";
-            $msg = "Kelas $request->grade_name berhasil diubah!";
+            $msg = "Kelas $grade->grade_name berhasil diubah!";
 
         } catch (\Exception $ex) {
             $stat = "error";

@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
-{{-- TimePicker --}}
-<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -54,15 +52,23 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="post" action="/admin/video" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('video.saveExcel') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="">Download Nama File</label>
                                 <div class="input-group">
-                                    <button type="button" class="btn btn-primary">
-                                        <i class="fas fa-download" download></i>
-                                    </button>
+                                    <a href="/admin/video/xcl-download">
+                                        <button type="button" class="btn btn-primary">
+                                            <i class="fas fa-download" download></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Contoh Input Excel</label>
+                                <div class="input-group">
+                                    <img src="/assets/perpus/assets/img/contohexcelvideo.png" alt="" class="img-fluid">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -74,14 +80,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <a href="" id="your-file"></a>
-                            </div>
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <a href="/admin/video" type="button" class="btn btn-dark">Save</a>
+                            <button type="submit" class="btn btn-dark">Save</button>
                         </div>
                     </form>
                 </div>
@@ -94,7 +97,6 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -103,16 +105,8 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
-
-        //Customize timepicker.js
-        $('#frame').timepicker({
-            timeFormat: 'HH:mm:ss',
-            maxHour: 2,
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
-        });
     });
 
 </script>
+@include('admin.validator')
 @endsection

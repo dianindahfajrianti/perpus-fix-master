@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Grade extends Model
 {
-    public function onBook()
+    public function book()
     {
         return $this->belongsTo(Book::class,'grade_id','id');
     }
-    public function onVideo()
+    public function video()
     {
         return $this->belongsTo(Video::class,'grade_id','id');
     }
-    public function onUser()
+    public function user()
     {
         return $this->belongsTo(User::class,'grade_id','id');
     }

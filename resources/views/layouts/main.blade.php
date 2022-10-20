@@ -72,7 +72,7 @@
 <!-- ======= Isi ======= -->
 @yield('container')
 <!-- ============================================================================================================ -->
-    
+    <div class="paddingtop-footer"></div>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="container">
@@ -80,7 +80,7 @@
                 &copy; Copyright <strong><span>Perpustakaan Online</span></strong>. All Rights Reserved
             </div>
             <div class="credits">
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                Designed by <a href=" ">Indo Mega Vision</a>
             </div>
         </div>
     </footer><!-- End Footer -->

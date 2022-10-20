@@ -37,6 +37,7 @@
                             <thead>
                                 <th>No</th>
                                 <th>Jurusan</th>
+                                <th>Jenjang</th>
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
@@ -57,6 +58,22 @@
                         <h1>Tambah Jurusan</h1>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group mt-3">
+                            <label class="form-label" for="jenjang">Jenjang</label>
+                            <div class="input-group">
+                                <select name="jenjang" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jenjang" aria-label="">
+                                    <option value="">-- Pilih Jenjang --</option>
+                                    @foreach ($edu as $e )
+                                    <option @if(old('jenjang')==$e->id){{ 'selected' }}@endif value="{{ $e->id }}">{{ $e->edu_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('jenjang')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="form-group mt-3">
                             <label for="jurusan">Nama Jurusan</label>
                             <input type="text" name="jurusan" id="jurusan" class="form-control @error('jurusan'){{'is-invalid'}}@enderror" value="{{old('jurusan')}}">
@@ -128,19 +145,27 @@
                 name: "maj_name"
                 },
                 {
-                defaultContent: '<button type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>'
+                data: "educations.edu_name",
+                name: "educations.edu_name"
+                },
+                {
+                data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-major btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-major btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
             ,"ajax" : "/jurusan/all"
         });
         $('#tb-major tbody').on('click','.edit-major',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "jurusan/"+id+"/edit";
         });
         $('#tb-major tbody').on('click','.del-major',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

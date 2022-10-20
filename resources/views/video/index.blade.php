@@ -49,13 +49,15 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="{{ route('video.create') }}" class="btn btn-dark">Tambah Video</a>
-                        <a href="video-import" class="btn btn-dark">Import Video</a>
+                        <button class="btn btn-dark ask">Import Video</button>
                     </div>
                     <div class="card-body">
                         <table id="tb-video" class="table table-bordered table-striped">
                             <thead>
                                 <th>No</th>
                                 <th>Judul Video</th>
+                                <th>Jenjang</th>
+                                <th>Kelas</th>
                                 <th>Deskripsi</th>
                                 <th>Creator</th>
                                 <th>Aksi</th>
@@ -125,6 +127,22 @@
                     name: "title"
                 },
                 {
+                    data: "education",
+                    name: "education.edu_name",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                    orderable: false
+                },
+                {
+                    data: "grades",
+                    name: "grades.grade_name",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
+                    orderable: false
+                },
+                {
                     data: "desc",
                     name: "desc"
                 },
@@ -133,18 +151,22 @@
                     name: "creator"
                 },
                 {
-                    defaultContent: '<button type="button" class="show-video btn btn-info"><i class="fas fa-eye"></i></button> <button type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="show-video btn btn-info"><i class="fas fa-eye"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-video btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
         });
         $('#tb-video tbody').on('click', '.show-video', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "video/"+id;
         });
         $('#tb-video tbody').on('click', '.del-video', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",
@@ -183,6 +205,17 @@
                         }
                     });
                 }
+            });
+        });
+        $(".ask").on('click',function (e) { 
+            e.preventDefault();
+            Swal.fire({
+                title: 'Sudah import file?',
+                html: "<a href='video-import' class='btn btn-dark'>Belum</a> <a href='video-excel' class='btn btn-dark'>Sudah</a>",
+                icon: 'question',
+                showConfirmButton:false,
+                showCancelButton: true,
+                cancelButtonColor: '#d33'
             });
         });
     });

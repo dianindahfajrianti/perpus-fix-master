@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Favicons -->
+    <link href="/assets/perpus/assets/img/perpus.png" rel="icon">
+    <link href="/assets/perpus/assets/img/perpus.png" rel="apple-touch-icon">
+    
     @yield('csrf-ajax')
     @yield('seo')
     <!-- Meta -->
@@ -38,7 +43,7 @@
         @if(request()->segment(count(request()->segments())) !== 'admin')
         @else
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="/assets/perpus/assets/img/logo-perpus.png" alt="" height="60" width="250">
         </div>
         @endif
 
@@ -51,9 +56,9 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                AdminLTE <b>Version</b> 3.1.0
+                Perpus Admin <b>Version</b> 1.1
             </div>
-            <strong>Copyright &copy; 2021 <a href="#">Bootstrap, jQuery, AdminLTE & original developers</a>.</strong> All rights
+            <strong>Copyright &copy; 2022 <a href="#">PT Indo Mega Vision</a>.</strong> All rights
             reserved.
         </footer>
         <!-- /.control-sidebar -->

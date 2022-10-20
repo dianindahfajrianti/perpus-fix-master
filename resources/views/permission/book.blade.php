@@ -16,11 +16,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar buku</h3>
+                <h2 style="font-size: 45px" class="display-3">Daftar Buku {{ $school->sch_name }}</h2>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/sekolah">Sekolah</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/akses/{{ $school->id }}">Akses</a></li>
                     <li class="breadcrumb-item active">buku</li>
                 </ol>
             </div>
@@ -41,7 +43,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Buku</th>
+                                    <th>Judul Buku</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Tahun</th>
                                     <th>Penerbit</th>
                                     <th>Pengarang</th>
@@ -61,7 +65,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Tambah sekolah</h1>
+                    <h1>Tambah Buku</h1>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -69,7 +73,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Buku</th>
+                                    <th>Judul Buku</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Tahun</th>
                                     <th>Penerbit</th>
                                     <th>Pengarang</th>
@@ -134,14 +140,28 @@
             "processing": true,
             "serverSide": true,
             "columns": [{
-                data: 'id',
-                name: 'id',
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
             }, {
                 data: "title",
                 name: "title"
             }, {
+                data: "education",
+                name: "education.edu_name",
+                render: function(data) {
+                    return data.edu_name;
+                },
+                orderable: false
+            },{
+                data: "grades",
+                name: "grades.grade_name",
+                render: function(data) {
+                    return data.grade_name;
+                },
+                orderable: false
+            },{
                 data: "published_year",
                 name: "published_year"
                 
@@ -165,6 +185,7 @@
                 render: function (data) { 
                     return '<button data-id="'+data+'" type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>';
                  },
+                 orderable : false,
                  searchable: false
             }],
             "ajax": {url : "/sekolah/"+idschool+"/buku",}
@@ -185,7 +206,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "delete",
-                        url: "/admin/akses/" + id+"/buku",
+                        url: "/admin/akses/" + idschool +"/buku",
                         data: {
                             _token: "{{ csrf_token() }}",
                             id_buku: id
@@ -238,6 +259,23 @@
                     data: "title",
                     name: "title"
                 }, {
+                    data: "education",
+                    name: "education.edu_name",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "grades",
+                    name: "grades.grade_name",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
+                    orderable: false,
+                    searchable: false
+                },{
                     data: "published_year",
                     name: "published_year"
                     
@@ -256,7 +294,7 @@
                     },
                     searchable:false
                 }],
-                "ajax": {url : "/akses/buku/"+idschool,}
+                "ajax": {url : "/akses/buku/"+idschool}
             });
         });
         $('#modal-add').on('hidden.bs.modal', function (e) {
@@ -291,7 +329,9 @@
                                 text: data.message,
                                 timer: 1200
                             });
+                            $('#modal-add').modal('hide');
                             table.draw();
+                            $('#modal-add').modal('show');
                         },
                         error: function(data) {
                             var js = data.responseJSON;

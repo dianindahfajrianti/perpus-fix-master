@@ -39,7 +39,7 @@ class TempImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnErro
             'username' => 'required|digits_between:6,15|unique:users,username',
             'email' => 'required|unique:users,email|email',
             'role' => 'required',
-            'sekolah' => 'required',
+            'sekolah' => 'required|exists:schools,sch_name',
             'kelas' => '',
             'jurusan' => '',
         ];

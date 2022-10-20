@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
 
-    public function hasEdu()
+    public function education()
     {
         return $this->hasOne(Education::class,'id','edu_id');
     }
-    public function onBook()
+    public function book()
     {
         return $this->belongsTo(Book::class,'school_id','id');
     }
-    public function onVideo()
+    public function video()
     {
         return $this->belongsTo(Video::class,'school_id','id');
     }
@@ -28,9 +28,20 @@ class School extends Model
     }
     public function videos()
     {
-        return $this->belongsToMany(Video::class,'school_video','school_id','video_id','id','id')
+        return $this->belongsToMany(Video::class,'school_video','school_id','video_id')
         ->withTimestamps();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'school_id','id');
+    }
+
+    // public function majors()
+    // {
+    //     return $this->belongsToMany(Major::class,'major_school','school_id','major_id','id','maj_code')
+    //     ->withTimestamps();
+    // }
 
     public function getUploadDateAttribute()
     {

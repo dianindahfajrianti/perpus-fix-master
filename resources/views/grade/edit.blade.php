@@ -33,6 +33,22 @@
                     <div class="card-header">
                         <h3 class="card-title">Edit Kelas</h3>
                     </div>
+                    @php
+                    function numberToRomanRepresentation($number) {
+                    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+                    $returnValue = '';
+                    while ($number > 0) {
+                    foreach ($map as $roman => $int) {
+                    if($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                    }
+                    }
+                    }
+                    return $returnValue;
+                    }
+                    @endphp
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form method="post" action="{{ route("grade.update",$grade->id) }}" enctype="multipart/form-data">
@@ -41,19 +57,27 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="kelas">Kelas</label>
-                                <input type="text" name="kelas" id="kelas" class="form-control @error('kelas'){{'is-invalid'}}@enderror" value="{{$grade->grade_name}}">
+                                {{-- <input type="text" name="kelas" id="kelas" class="form-control @error('kelas'){{'is-invalid'}}@enderror" value="{{$grade->grade_name}}"> --}}
+                                <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }} @enderror" id="kelas" aria-label="Example select with button addon">
+                                    <option value="">-- Pilih Kelas </option>
+                                    @for ($i = 1; $i < 13; $i++) <option @if(old('kelas', $grade->grade_name)==$i) {{ 'selected' }}@endif value="{{ $i }}">{{ numberToRomanRepresentation($i) }}</option>
+                                    @endfor
+                                </select>
+
                                 @error('kelas')
                                 <div class="invalid-feedback">
                                     {{$message}}
                                 </div>
                                 @enderror
                             </div>
-
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
                             <button type="submit" class="btn btn-dark">Save</button>
+                            <a href="/admin/grade">
+                                <button type="button" class="btn btn-secondary">Cancel</button>
+                            </a>
                         </div>
                     </form>
                 </div>

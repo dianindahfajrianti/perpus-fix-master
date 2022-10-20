@@ -26,7 +26,7 @@
                 <img src="/assets/perpus/assets/img/super-admin.png" alt="">
             </div>
             <div class="col-lg-7 d-flex align-items-center">
-                <p>Super Admin untuk Dinas Profinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah dengan username nomor pokok sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
+                <p>Super Admin untuk Dinas Provinsi/Dinas Kota, dimana super admin dapat menambahkan sekolah dengan username nomor pokok sekolah, menambahkan buku dan menambahkan multimedia tiap sekolah.</p>
             </div>
         </div>
     </div>
@@ -63,18 +63,6 @@
             </div>
             <div class="col-lg-5 d-flex align-items-center justify-content-center">
                 <img src="/assets/perpus/assets/img/murid.png" alt="">
-            </div>
-        </div>
-    </div>
-
-    <div class="container" data-aos="fade-up">
-        <h1>Umum</h1>
-        <div class="row">
-            <div class="col-lg-5 d-flex align-items-center justify-content-center">
-                <img src="/assets/perpus/assets/img/umum.png" alt="">
-            </div>
-            <div class="col-lg-7 d-flex align-items-center">
-                <p>Jika anda belum memiliki akun, anda tetap dapat mengakses buku dan multimedia dengan status umum.</p>
             </div>
         </div>
     </div>

@@ -99,6 +99,16 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'generate' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/ffmpeg.log'),
+            'level' => 'debug',
+        ],
+        'proc' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/proccess.log'),
+            'level' => 'debug',
+        ],
     ],
 
 ];

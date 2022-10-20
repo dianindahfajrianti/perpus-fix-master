@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/css/admin.css">
-{{-- TimePicker --}}
-<link rel="stylesheet" href="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.css">
 @endsection
 @section('container')
 <!-- Content Header (Page header) -->
@@ -94,9 +92,9 @@
                                                 <div class="input-group">
                                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                                         <option value="">-- Pilih Kelas --</option>
-                                                        @foreach ($kls as $k )
+                                                        {{-- @foreach ($kls as $k )
                                                         <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('kelas')
                                                     <div class="invalid-feedback">
@@ -112,11 +110,11 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="sekolah">Jurusan</label>
                                                 <div class="input-group">
-                                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
+                                                    <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                                         <option value="">-- Pilih Jurusan --</option>
-                                                        @foreach ($maj as $m )
+                                                        {{-- @foreach ($maj as $m )
                                                         <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('jurusan')
                                                     <div class="invalid-feedback">
@@ -132,11 +130,11 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="mapel">Mata Pelajaran</label>
                                                 <div class="input-group">
-                                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                                    <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="">
                                                         <option value="">-- Pilih Mata Pelajaran --</option>
-                                                        @foreach ($sub as $sbj )
+                                                        {{-- @foreach ($sub as $sbj )
                                                         <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @error('mapel')
                                                     <div class="invalid-feedback">
@@ -250,7 +248,6 @@
 <!-- bs-custom-file-input -->
 <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/adminlte/plugins/timepicker/jquery.timepicker.min.js"></script>
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
@@ -259,14 +256,123 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
+        
+        var id = $('#jenjang').val();
+        var oldKelas = "{{ old('kelas') }}"
+        var oldJurusan = "{{ old('jurusan') }}";
+        // console.log('Old Kelas :' ,oldKelas);
+        // console.log('Old Jurusan :' ,oldJurusan);
+        console.log(id);
+        var url = "{{ Request :: segment(count(Request :: segments())) }}";
+        if(oldKelas){
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(index, kelas){
+                        if (oldKelas == kelas.id){
+                            $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
 
-        //Customize timepicker.js
-        $('#frame').timepicker({
-            timeFormat: 'HH:mm:ss',
-            maxHour: 2,
-            dynamic: true,
-            dropdown: true,
-            scrollbar: true
+                        } else {
+                            $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        }
+                    });
+                }
+            });
+        }
+        
+        if(oldJurusan){
+            $.ajax({
+                type: "get",
+                url: "/maj/"+id,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log(jurusan);
+                        if (oldJurusan = jurusan.id){
+                            $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        }else{
+                            $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        }
+                    });
+                }
+            });
+        }
+
+        // var jurusanID = $('#jurusan').val();
+        var oldMapel = "{{ old('mapel') }}"
+        // console.log('Old Mapel :',oldMapel);
+        // console.log('Jurusan ID :',oldJurusan);
+        if(oldMapel){
+            $.ajax({
+                url: '/sub/'+oldJurusan,
+                type: "GET",
+                success:function(data){
+                    console.log(data);
+                    $('#mapel').empty();
+                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $.each(data, function(index, mapel){
+                        if (oldMapel == mapel.id){
+                            $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                        } else{
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                        }
+                    });
+                }
+            });
+        } 
+
+        $('#jenjang').change(function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            console.log(id);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(index, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/maj/"+id,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log(jurusan);
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    });
+                }
+            });
+        });
+
+        $('#jurusan').on('change', function() {
+            var jurusanID = $(this).val();
+            console.log('JURUSAN ID :' ,jurusanID);
+            $.ajax({
+                url: '/sub/'+jurusanID,
+                type: "GET",
+                success:function(data)
+                {
+                    console.log(data);
+                    $('#mapel').empty();
+                    $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                    $.each(data, function(index, mapel){
+                        $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                    });
+                }
+            });
         });
     });
 

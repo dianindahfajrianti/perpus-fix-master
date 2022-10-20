@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Counter;
-use App\School;
 use App\User;
+use App\Grade;
+use App\Major;
 use App\Video;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\School;
+use App\Education;
+use App\Subject;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use stdClass;
 
 class Admin extends Controller
 {
@@ -22,19 +25,29 @@ class Admin extends Controller
 
     public function index()
     {
-
+        $res = new stdClass;
         if (Auth::user()->role < 1) {
-            $book = Book::select(DB::raw('COUNT(id) as totidb'))->get();
-            $vid = Video::select(DB::raw('COUNT(id) as totidv'))->get();
-            $school = School::select(DB::raw('COUNT(id) as totids'))->get();
+            $book = Book::count();
+            $vid = Video::count();
+            $school = School::count();
             $user = User::select(DB::raw('COUNT(id) as totidu'))->get();
             // $view = compact('book','vid','user','school');
             $view = view('admin.index',compact('book','vid','user','school'));
         }else {
+            //get edu_id
+            $edu = DB::table('schools')->where('id','=',Auth::user()->school_id)->value('edu_id');
+            $sch = Auth::user()->school_id;
+            $scale = [
+                'id' => $sch
+            ];
+            $book = Book::whereHas('schools',function($query) use ($scale){
+                $query->where('id',$scale);
+            })->count();
+            $vid = Video::whereHas('schools',function($query) use ($scale){
+                $query->where('id',$scale);
+            })->count();
+            $user = User::select(DB::raw('COUNT(id) as totidu'))->where('school_id','=',Auth::user()->school_id)->get();
 
-            $book = Book::select(DB::raw('COUNT(id) as totidb'))->where('school_id','=',env('SCHOOL_ID'))->get();
-            $vid = Video::select(DB::raw('COUNT(id) as totidv'))->where('school_id','=',env('SCHOOL_ID'))->get();
-            $user = User::select(DB::raw('COUNT(id) as totidu'))->where('school_id','=',env('SCHOOL_ID'))->get();
             // $view = compact('book','vid','user');
             $view = view('admin.index',compact('book','vid','user'));
         }
@@ -58,5 +71,82 @@ class Admin extends Controller
         
         $id = $wordID . sprintf('%05s', $last);
         return $id;
+    }
+
+    public function sch(School $school)
+    {
+        $scale = [
+            'id' => $school->edu_id
+        ];
+        $edu = Education::where($scale)->first();
+        $name = $edu->edu_name;
+        if($name === 'SD' || $name === 'MI'){
+            $kls = Grade::where('grade_name','<=',6)->get();
+        }
+        if($name === 'SMP' || $name === 'Mts'){
+            $kls = Grade::where('grade_name','>=',7)
+            ->where('grade_name','<=',9)->get();
+        }
+        if($name === 'SMA' || $name === 'SMK' || $name === 'MA'){
+            $kls = Grade::where('grade_name','>=',10)
+            ->where('grade_name','<=',12)
+            ->get();
+        };
+        return $kls;
+    }
+    public function gr($id)
+    {
+        $url = request('url');
+
+        if ($url == 'user') {
+            $school = School::where('id',$id)->first();
+            $edu = Education::where('id',$school->edu_id)->first();
+        }else{
+            $edu = Education::where('id',$id)->first();
+        }
+        $name = $edu->edu_name;
+        if($name === 'SD' || $name === 'MI'){
+            $kls = Grade::where('grade_name','<=',6)->get();
+        }
+        if($name === 'SMP' || $name === 'Mts'){
+            $kls = Grade::where('grade_name','>=',7)
+            ->where('grade_name','<=',9)->get();
+        }
+        if($name === 'SMA' || $name === 'SMK' || $name === 'MA'){
+            $kls = Grade::where('grade_name','>=',10)
+            ->where('grade_name','<=',12)
+            ->get();
+        };
+        return $kls;
+    }
+
+    public function maj($id)
+    {
+        $url = request('url');
+
+        if ($url == 'user') {
+            $school = School::where('id',$id)->first();
+            $edu = Education::where('id',$school->edu_id)->first();
+        }else{
+            $edu = Education::where('id',$id)->first();
+        }
+        $scope = [
+            'id' => $edu->id
+        ];
+        return Major::with('educations')
+                ->whereHas('educations',function($query) use ($scope){
+                    $query->where('id',$scope);
+                })
+                ->get();
+    }
+    public function sub(Major $major)
+    {
+        $scale = [
+            'id' => $major->id
+        ];
+        $model = Subject::whereHas('major',function($query) use ($scale){
+            $query->where($scale);
+        })->get();
+        return $model;
     }
 }

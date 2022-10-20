@@ -6,15 +6,22 @@ use App\Book;
 use stdClass;
 use App\Grade;
 use App\Major;
+use App\History;
 use App\Subject;
+use App\TempBook;
 use App\Education;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
-use Org_Heigl\Ghostscript\Ghostscript;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\TempBook as ExportsTempBook;
+use App\Imports\TempBook as ImportsTempBook;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class BookController extends Controller
 {
@@ -34,12 +41,21 @@ class BookController extends Controller
 
     public function data()
     {
-        
-        return DataTables::of(
-            Book::with(['getEdu', 'getGrade'])
-            ->select('id', 'title', 'desc', 'clicked_time', 'published_year', 'publisher', 'author')
-            ->orderBy('updated_at','desc')
-        )
+        $rl = Auth::user()->role;
+        $scale = [
+            'id' => Auth::user()->school_id
+        ];
+        if ($rl < 1) {
+            $model = Book::with(['education', 'grades'])
+            ->orderBy('updated_at','desc');
+        }else{
+            $model = Book::with(['education', 'grades'])
+            ->whereHas('schools',function($query) use ($scale){
+                $query->where($scale);
+            })
+            ->orderBy('updated_at','desc');
+        }
+        return DataTables::of($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
@@ -68,7 +84,7 @@ class BookController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'desc' => '',
             'tahun' => 'required',
@@ -77,45 +93,56 @@ class BookController extends Controller
         ]);
         $file = $request->file('filebook');
         if ($file != null) {
-            $filename = Str::slug("$request->judul-$request->pengarang-$request->tahun");
+            $filename = Str::slug($request->judul." ".$request->pengarang." ".$request->tahun,"-");
             $fixname = "$filename.".$file->getClientOriginalExtension();
-            $thumbname = "$filename.png";
-            $ss = $file->storeAs('public\pdf',$fixname);
+            $thumbname = "$filename.jpg";
+            $path = storage_path('app/public/pdf/'.$fixname);
+            $page = $path."[0]";
+            $ss = $file->storeAs('public/pdf',$fixname);
             if ($ss) {
                 // if (str_contains(PHP_OS, 'WIN')) {
                 //     Ghostscript::setGsPath(public_path('gs/win/bin/gswin64c.exe'));
                 // }else{
                 //     Ghostscript::setGsPath(public_path('gs/lin/gs-9561-linux-x86_64'));
-                // }   
-                $pdf = new Pdf(storage_path('app/public/pdf/'.$fixname));
-                $saved = $pdf->saveImage(storage_path('app/public/thumb/pdf/').$thumbname);
-                if ($saved) {
-                    $imgman = new ImageManager(['driver'=> 'imagick']);
-                    $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
-                    $book = new Book;
-                    $book->title = $request->judul;
-                    $book->desc = $request->desc;
-                    $book->filename = $fixname;
-                    $book->thumb = $thumbname;
-                    $book->filetype = $file->getClientOriginalExtension();
-                    $book->clicked_time = 0;
-                    $book->edu_id= $request->jenjang;
-                    $book->grade_id= $request->kelas;
-                    $book->major_id= $request->jurusan;
-                    $book->sub_id= $request->mapel;
-                    $book->published_year = $request->tahun;
-                    $book->publisher = $request->penerbit;
-                    $book->author = $request->pengarang;
-                    $book->save();
-                    
-                    $res->status = "success";
-                    $res->title = "Berhasil";
-                    $res->message = "Buku berhasil ditambahkan";
-                }else {
-                    $res->status = "error";
-                    $res->title = "Gagal";
-                    $res->message = "Buku gagal ditambah";
+                // }
+                $path2 = storage_path('app/public/thumb/pdf/').$thumbname;
+
+                $im = new \Imagick();
+                $im->readImage($page);
+                $im->setImageFormat('jpeg');
+                $wd = $im->getImageWidth();
+                $hg = $im->getImageHeight();
+
+                if ($wd > 900) {
+                    $hwd = $wd/2;
+                    $im->cropImage($hwd,$hg,$hwd,0);
                 }
+            
+                $im->thumbnailImage(144,208,true);
+                $im->writeImage($path2);
+                
+                $im->clear(); 
+                $im->destroy();
+
+                $book = new Book;
+                $book->title = $request->judul;
+                $book->desc = $request->desc;
+                $book->filename = $fixname;
+                $book->thumb = $thumbname;
+                $book->filetype = $file->getClientOriginalExtension();
+                $book->clicked_time = 0;
+                $book->edu_id= $request->jenjang;
+                $book->grade_id= $request->kelas;
+                $book->major_id= $request->jurusan;
+                $book->sub_id= $request->mapel;
+                $book->published_year = $request->tahun;
+                $book->publisher = $request->penerbit;
+                $book->author = $request->pengarang;
+                $book->save();
+                
+                $res->status = "success";
+                $res->title = "Berhasil";
+                $res->message = "Buku berhasil ditambahkan";
                 return redirect()->route('buku.index')->with($res->status,json_encode($res));
             } else {
                 $res->status = "error";
@@ -172,7 +199,7 @@ class BookController extends Controller
             'jenjang' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'mapel' => '',
+            'mapel' => 'required',
             'judul' => 'required',
             'desc' => '',
             'tahun' => 'required',
@@ -189,29 +216,43 @@ class BookController extends Controller
         
         if ($file != null) {
             $fixname = "$filename.".$file->getClientOriginalExtension();
-            $thumbname = $filename.".png";
+            $thumbname = $filename.".jpg";
             
             $opfile = 'public/pdf/'.$buku->filename;
             $op = 'public/thumb/pdf/'.$buku->thumb;
             
             $npfile = 'public/pdf/'.$fixname;
             $np = 'public/thumb/pdf/'.$thumbname;
-            $statepdf = file_exists(storage_path($opfile));
-            $statethumb = file_exists(storage_path($op));
+            
 
             if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
                 Storage::delete($opfile);
                 Storage::delete($op);
             }
             
-            $sv = $file->storeAs('public\pdf',$fixname);
+            $sv = $file->storeAs('public/pdf',$fixname);
             if ($sv) {
-                $pdf = new Pdf(public_path('storage/pdf/'.$fixname));
-                $pdfdir = storage_path('app/public/thumb/pdf/').$thumbname;
-                $pdf->saveImage($pdfdir);
+                $path = storage_path("app/public/pdf/$fixname");
+                $page = $path."[0]";
+                $path2 = storage_path('app/public/thumb/pdf/').$thumbname;
+                
+                $im = new \Imagick();
+                $im->readImage($page);
+                $im->setImageFormat('jpeg');
+                $wd = $im->getImageWidth();
+                $hg = $im->getImageHeight();
+                if ($wd > 900) {
+                    $hwd = $wd/2;
+                    $im->cropImage($hwd,$hg,$hwd,0);
+                    $im->thumbnailImage(144,208,true);
+                    $im->writeImage($path2);
+                }else{
+                    $im->thumbnailImage(144,208,true);
+                    $im->writeImage($path2);
+                }
+                $im->clear(); 
+                $im->destroy();
 
-                $imgman = new ImageManager(['driver'=> 'imagick']);
-                $img = $imgman->make(storage_path('app/public/thumb/pdf/').$thumbname)->resize(144,208)->save();
                 $buku->title = $request->judul;
                 $buku->desc = $request->desc;
                 $buku->filename = $fixname;
@@ -239,7 +280,7 @@ class BookController extends Controller
             $fixname = $filename.".pdf";
             $opfile = 'public/pdf/'.$buku->filename;
             $op = 'public/thumb/pdf/'.$buku->thumb;
-            $thumbname = $filename.".png";
+            $thumbname = $filename.".jpg";
             $npfile = 'public/pdf/'.$fixname;
             $np = 'public/thumb/pdf/'.$thumbname;
             if (($title != $buku->title) || ($author != $buku->author) || ($year != $buku->published_year)) {
@@ -278,19 +319,21 @@ class BookController extends Controller
     public function destroy(Book $buku)
     {
         $res = new stdClass;
-        $del = Storage::delete('public/pdf/'.$buku->filename);
-        if ($del) {
-            Storage::delete('public/thumb/pdf/'.$buku->thumb);
-            
-            $buku->delete();
-            $status = 'success';
-            $title = 'Berhasil';
-            $msg = 'Hapus buku berhasil.';
-        }else{
-            $status = 'error';
-            $title = 'Gagal';
-            $msg = 'Hapus buku gagal.';
+        $ex = file_exists(storage_path("app/public/pdf/")."$buku->filename.$buku->filetype");
+        $et = file_exists(storage_path("app/public/thumb/pdf/")."$buku->thumb");
+        if ($ex) {
+            Storage::delete('public/pdf/'.$buku->filename);
+            History::where('file_id','=',$buku->id)->where('type','=','pdf')->delete();
         }
+        if ($et) {
+            Storage::delete('public/thumb/pdf/'.$buku->thumb);
+        }
+        $buku->delete();
+        
+        $status = 'success';
+        $title = 'Berhasil';
+        $msg = 'Hapus buku berhasil.';
+        
         $res->status = $status;
         $res->title = $title;
         $res->message = $msg;
@@ -304,5 +347,241 @@ class BookController extends Controller
     public function excel()
     {
         return view('book.excel');
+    }
+
+    public function mass(Request $request)
+    {
+        
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+        
+        if (!$receiver->isUploaded()) {
+
+            // file not uploaded
+
+            throw new UploadMissingFileException();
+
+        }
+
+        $fileReceived = $receiver->receive(); // receive file
+
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+
+            $file = $fileReceived->getFile(); // get file
+
+            $extension = $file->getClientOriginalExtension();
+
+            
+            $buku = new TempBook;
+            $fileName = $file->getClientOriginalName(); // a unique file name
+            $thumbname = str_replace(".$extension","",$fileName);
+            $path = "public/temp/pdf/";
+            $filepath = storage_path("app/$path".$fileName);
+            $path2 = storage_path("app/$path"."$thumbname.jpg");
+
+            $disk = Storage::disk(config('filesystems.default'));
+
+            $disk->putFileAs($path,$file,$fileName);
+
+            unlink($file->getPathname());
+
+            $im = new \Imagick();
+            $im->readImage($filepath."[0]");
+            $im->setImageFormat('jpeg');
+            $wd = $im->getImageWidth();
+            $hg = $im->getImageHeight();
+
+            if ($wd > 900) {
+                $hwd = $wd/2;
+                $im->cropImage($hwd,$hg,$hwd,0);
+            }
+        
+            $im->thumbnailImage(144,208,true);
+            $im->writeImage($path2);
+            
+            $im->clear(); 
+            $im->destroy();
+            
+            $buku->nama_file = $fileName;
+            $buku->tipe_file = $extension;
+
+            $buku->save();
+
+            $temp = public_path("storage/temp/video/");
+            return [
+                'path' => $temp,
+                'filename' => $fileName,
+                'id' => $buku->id
+            ];
+
+        }
+        // otherwise return percentage information
+        $handler = $fileReceived->handler();
+        return [
+            'done' => $handler->getPercentageDone(),
+            'status' => true
+        ];
+    }
+    public function downloadExcel()
+    {
+        return (new ExportsTempBook)->download('bukulist.xlsx');
+    }
+
+    public function saveExcel(Request $request)
+    {
+        
+        $res = new stdClass;
+        $request->validate([
+            'xcl' => 'required|mimes:xls,xlsx'
+        ]);
+        try {
+            //clear db hanya "nama_file"
+            TempBook::truncate();
+            //Import excel
+            $file = $request->file('xcl');
+
+            $imp = (new ImportsTempBook);
+            $imp->import($file);
+            
+            \Log::channel('proc')->info('Excel data :');
+            \Log::channel('proc')->info($imp->toArray($file));
+
+            return redirect()->route('buku.generate');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            
+            foreach ($failures as $key => $val) {
+                $val->row(); // row that went wrong
+                $val->attribute(); // either heading key (if using heading row concern) or column index
+                $val->errors(); // Actual error messages from Laravel validator
+                $val->values(); // The values of the row that has failed.
+                
+                $res->message[$key] = $val->errors();
+            }
+            $res->status = 'error';
+
+            return redirect()->back()->with($res->status, json_encode($res));
+        }
+    }
+
+    public function generate()
+    {
+        //ambil data dari excel
+        set_time_limit(0);
+
+        $res = new stdClass;
+        $temp = TempBook::all();
+        $totbk = TempBook::count();
+        $save = 0;
+
+        \Log::channel('proc')->info($temp);
+
+        foreach ($temp as $bk) {
+            // format filename
+            $filename = Str::slug($bk->judul." ".$bk->pengarang." ".$bk->th_terbit,'-');
+            
+            $book = new Book;
+            $book->filetype = $bk->tipe_file;
+            $book->filename = "$filename.$book->filetype";
+            $thumbname = str_replace(".$bk->tipe_file","",$bk->nama_file);
+            $op = 'public/temp/pdf/'."$bk->nama_file";
+            $np = 'public/pdf/'.$book->filename;
+            $oldpath = storage_path('app/'.$op);
+            $newpath = storage_path("app/$np");
+
+            $opthumb = 'public/temp/pdf/'."$thumbname.jpg";
+            $npthumb = 'public/thumb/pdf/'."$filename.jpg";
+            $oldpath2 = storage_path('app/'.$opthumb);
+            $newpath2 = storage_path("app/$npthumb");
+            \Log::channel('proc')->info('check file exist :');
+            \Log::channel('proc')->info($oldpath);
+
+            if (file_exists($oldpath)) {
+                rename($oldpath,$newpath);
+                rename($oldpath2,$newpath2);
+            };
+            
+
+            $edu = Education::where('edu_name','=',$bk->jenjang)->first();
+            $grade = Grade::where('grade_name','=',$bk->kelas)->first();
+
+            if (empty($edu)) {
+                $ed = null;
+                $mjr = null;
+            }else{
+                $ed = $edu->id;
+                $mjr = Major::where('maj_name','=',$bk->jurusan)
+                        ->where('edu_id',$ed)
+                        ->first();
+            }
+            if (empty($grade)) {
+                $gr = null;
+            }else{
+                $gr = $grade->id;
+            }
+            if (empty($mjr)) {
+                $mj = null;
+            }else {
+                $mj = $mjr->id;
+                $sub = Subject::where('parent_id',$mjr->id)
+                ->where('sbj_name','=',$bk->mapel)->first();
+            }
+            if (empty($sub)) {
+                $su = null;
+            }else {
+                $su = $sub->id;
+            }
+
+            $book->title = $bk->judul;
+            $book->desc = $bk->deskripsi;
+            $book->edu_id = $ed;
+            $book->grade_id= $gr;
+            $book->major_id= $mj;
+            $book->sub_id= $su;
+            $book->published_year = $bk->th_terbit;
+            $book->publisher = $bk->penerbit;
+            $book->author = $bk->pengarang;
+            $book->thumb = "$filename.jpg";
+            $book->clicked_time = 0;
+            \Log::channel('proc')->info('File attributes :');
+            \Log::channel('proc')->info($book);
+            if ($book->save()) {
+                $bk->delete();
+                $save++;
+            };
+        }
+
+        if ($save == $totbk) {
+            $res->status = 'success';
+            $res->title = 'Berhasil';
+            $res->message = 'Buku berhasil di import.';
+            
+            return redirect()->route('buku.index')->with($res->status, json_encode($res));
+        }else{
+            $res->status = 'error';
+            $res->title = 'Gagal';
+            $res->message = 'Gagal import buku. Row terakhir '.$save;
+    
+            return redirect()->route('buku.excel')->with($res->status, json_encode($res));
+        }
+    }
+
+    public function delTemp(TempBook $buku)
+    {
+        $thumbname = str_replace(".pdf",".jpg",$buku->nama_file);
+        $path = storage_path("app/public/temp/pdf/");
+        $path1 = $path.$buku->nama_file; // pdf path
+        $path2 = $path.$thumbname; // image path
+
+        if (file_exists($path1)) unset($path1);
+        if (file_exists($path2)) unset($path2);
+
+        $buku->delete();
+
+        $res = new stdClass;
+        $res->status = 'success';
+        $res->title = 'Berhasil';
+        $res->message = "Hapus file $buku->nama_file berhasil";
+
+        return response()->json($res);
     }
 }

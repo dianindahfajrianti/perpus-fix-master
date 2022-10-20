@@ -64,7 +64,7 @@
                                 <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id="jurusan" aria-label="">
                                     <option value="">-- Pilih Jurusan --</option>
                                     @foreach ($maj as $m )
-                                    <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
+                                    <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name." - ".$m->educations->edu_name }}</option>
                                     @endforeach
                                 </select>
                                 @error('jurusan')
@@ -83,7 +83,6 @@
                             </div>
                             @enderror
                         </div>
-                        
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -146,12 +145,22 @@
                     name: "sbj_name"
                 },
                 {
-                    data: "has_major.maj_name",
-                    name: "has_major.maj_name",
-                    searchable:false
+                    data: "major",
+                    name: "major.maj_name",
+                    render: function (full,data,type,row) {
+                        var ed = JSON.parse(full);
+                        return ed.maj_name+" - "+ ed.educations.edu_name;
+                    },
+                    // searchable:false,
+                    orderable:false
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-subject btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-subject btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false,
+                    orderable:false
                 }
             ]
             ,"ajax" : "/mapel/all"
@@ -159,12 +168,12 @@
 
         $('#tb-subject tbody').on('click','.edit-subject',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "mapel/"+id+"/edit";
         });
         $('#tb-subject tbody').on('click','.del-subject',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

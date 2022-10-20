@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use stdClass;
+use App\Major;
 use App\Video;
 use App\School;
 use App\Permission;
@@ -20,7 +21,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $school = School::with('hasEdu')->get();
+        $school = School::with('education')->get();
 
         return view('permission.index', compact('school'));
     }
@@ -28,171 +29,165 @@ class PermissionController extends Controller
     public function books(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
+        $eid = $school->edu_id;
+        $scopeSc = ['id' => "$id"];
+        $scopeEd = ['id' => "$eid"];
+        // dd($eid);
         $ajax = ['ajax' => $request->ajax()];
-        if (empty($ajax)) {
-            $model = Book::latest()
-                // ->school($scope)
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                }])
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Book::latest()
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
+        $model = Book::latest()
+            ->with('education','grades')
+                ->whereHas('schools', function ($query) use ($scopeSc) {
+                    $query->where('id', $scopeSc);
                 })
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                }])
-                ->filter($ajax);
-        }
-
-        return DataTables::of($model)
+            ->whereHas('education',function($query) use ($scopeEd) {
+                $query->where('id',$scopeEd);
+            });
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function dataBook(School $school,Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
-        $ajax = ['ajax' => "$request->ajax()"];
-        if (empty($ajax)) {
-            $model = Book::latest()
-                // ->school($scope)
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                }])
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                });
-        } else {
-            $model = Book::latest()
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                })
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->where('id', $scope);
-                }])->filter(request(['ajax']));
-        }
+        $eid = $school->edu_id;
+        $ajax = ['ajax' => $request->ajax()];
+        $model = Book::latest()
+            // ->school($scope)
+            ->whereDoesntHave('schools', function ($query) use ($id) {
+                $query->where('id', $id);
+            })
+            ->with('education','grades')
+            ->whereHas('education',function($query) use ($eid){
+                $query->where('id',$eid);
+            });
 
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function videos(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
-        $model = Video::latest();
-        if (empty($request->ajax())) {
-            $model
-                // ->school($scope)
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                }])
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                })->get();
-        } else {
-            $model
-                ->whereHas('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
+        $eid = $school->edu_id;
+        $scopeSc = ['id' => "$id"];
+        $scopeEd = ['id' => "$eid"];
+        $ajax = ['ajax' => $request->ajax()];
+        //get model
+        $model = Video::latest()
+                ->with('education','grades')
+                ->whereHas('schools', function ($query) use ($scopeSc) {
+                    $query->where('id', $scopeSc);
                 })
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                }])
-                ->orWhere('title', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('desc', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('creator', 'like', '%' . $request->ajax() . '%')
-                ->get();
-        }
-
-        return DataTables::of($model)
+                ->whereHas('education',function($query) use ($scopeEd){
+                $query->where('id',$scopeEd);
+                });
+        // return $model->get();
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
 
     public function dataVideo(School $school, Request $request)
     {
         $id = $school->id;
-        $scope = ['id' => "$id"];
-        $model = Video::latest();
-        if (empty($request->ajax())) {
-            $model
-                // ->school($scope)
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                }])
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                })->get();
-        } else {
-            $model
-                ->whereDoesntHave('schools', function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                })
-                ->with(['schools' => function ($query) use ($scope) {
-                    $query->whereIn('id', $scope);
-                }])
-                ->orWhere('title', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('desc', 'like', '%' . $request->ajax() . '%')
-                ->orWhere('creator', 'like', '%' . $request->ajax() . '%')
-                ->get();
-        }
+        $eid = $school->edu_id;
+        $ajax = ['ajax' => $request->ajax()];
+        $model = Video::latest()
+            ->whereDoesntHave('schools', function ($query) use ($id) {
+                $query->where('id', $id);
+            })
+            ->with('education','grades')
+            ->whereHas('education', function ($query) use ($eid) {
+                $query->where('id', $eid);
+            });
 
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
-            ->toJson();
+            ->make(true);
     }
+
+    // public function majors(School $school, Request $request)
+    // {
+    //     $id = $school->id;
+    //     $scope = ['id' => "$id"];
+    //     $model = Major::latest()
+    //             ->whereHas('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
+
+    //     // return response()->json($model);
+    //     return DataTables::of($model)
+    //         ->addIndexColumn()
+    //         ->setRowId('id')
+    //         ->toJson();
+    // }
+
+    // public function dataMajor(School $school, Request $request)
+    // {
+    //     $id = $school->id;
+    //     $scope = ['id' => "$id"];
+    //     $ajax = ['ajax' => "$request->ajax()"];
+    //     if (empty($ajax)) {
+    //         $model = Major::latest()
+    //             // ->school($scope)
+    //             ->whereDoesntHave('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
+    //     } else {
+    //         $model = Major::latest()
+    //             ->whereDoesntHave('schools', function ($query) use ($scope) {
+    //                 $query->where('id', $scope);
+    //             });
+    //     }
+
+    //     return DataTables::of($model)
+    //         ->addIndexColumn()
+    //         ->setRowId('id')
+    //         ->toJson();
+    // }
 
     //View Books per School
     public function showBook(School $school,Request $request)
     {
-        $id = $school->id;
-        if (empty($request->ajax())) {
-            $book = Book::latest()->limit(3)->get();
-        }else {
-            $filter = ['search' => $request->ajax()];
-            $book = Book::latest()->filter($filter)->get();
-        }
-        return view('permission.book', compact('school', 'book'));
+        return view('permission.book', compact('school'));
     }
     
     public function showVideo(School $school, Request $request)
     {
-        $id = $school->id;
-        if (empty($request->ajax())) {
-            $video = Video::latest()->limit(3)->get();
-        }else {
-            $filter = ['search' => $request->ajax()];
-            $video = Video::latest()->filter($filter)->get();
-        }
-        $video = Video::latest()->filter(request(['search']))->get();
-        return view('permission.video', compact('school', 'video'));
+        return view('permission.video', compact('school'));
     }
+
+    // public function showMajor(School $school,Request $request)
+    // {
+    //     return view('permission.jurusan', compact('school'));
+    // }
 
     public function storeBook(School $school, Request $request)
     {
         $res = new stdClass;
-        $result = $school->books()->attach($request->id_buku);
-
-        if ($result != 0) {
-            $res->status = "success";
-            $res->title = "Berhasil";
+        $edu = $school->edu_id;
+        $book = Book::where('id',$request->id_buku)->first();
+        if ($book->edu_id !== $edu) {
+            $res->status = "error";
+            $res->title = "Gagal";
             $res->message = "Akses buku gagal diberikan!";
-            
+        }
+        else{
+            $result = $school->books()->attach($request->id_buku);
+        }
+        if ($result != 0) {
+            $res->status = "error";
+            $res->title = "Gagal";
+            $res->message = "Akses buku gagal diberikan!";
         }else{
             $res->status = "success";
-            $res->title = "Gagal";
+            $res->title = "Berhasil";
             $res->message = "Akses buku berhasil diberikan!";
         }
         return response()->json($res);
@@ -204,39 +199,53 @@ class PermissionController extends Controller
         $result = $school->videos()->attach($request->id_video);
 
         if ($result != 0) {
-            $res->status = "success";
-            $res->title = "Berhasil";
+            $res->status = "error";
+            $res->title = "Gagal";
             $res->message = "Akses video gagal diberikan!";
             
         }else{
             $res->status = "success";
-            $res->title = "Gagal";
+            $res->title = "Berhasil";
             $res->message = "Akses video berhasil diberikan!";
         }
         return response()->json($res);
     }
+    
+    // public function storeMajor(School $school,Request $request)
+    // {
+    //     $res = new stdClass;
+    //     $result = $school->majors()->attach($request->id_jurusan);
 
-    public function video()
-    {
-        $video = Video::all();
-    }
+    //     if ($result != 0) {
+    //         $res->status = "success";
+    //         $res->title = "Berhasil";
+    //         $res->message = "Akses video gagal diberikan!";
+    //     }else{
+    //         $res->status = "success";
+    //         $res->title = "Gagal";
+    //         $res->message = "Akses video berhasil diberikan!";
+    //     }
+    //     return response()->json($res);
+    // }
 
     public function showfilesekolah(School $school)
     {
         $id = $school->id;
-        $book = Book::select(DB::raw('COUNT(id) as totidb'))
-            ->whereHas('schools', function ($query) use ($id) {
+        $book = Book::whereHas('schools', function ($query) use ($id) {
                 $query
                     ->where('id', $id);
             })
-            ->get();
-        $vid = Video::select(DB::raw('COUNT(id) as totidv'))
-            ->whereHas('schools', function ($query) use ($id) {
+            ->count();
+        $vid = Video::whereHas('schools', function ($query) use ($id) {
                 $query
                     ->where('id', $id);
             })
-            ->get();
+            ->count();
 
+        // $jur = Major::whereHas('schools',function($query) use ($id){
+        //         $query->where('id',$id);
+        //         })
+        //         ->count();
         return view('permission.filesekolah', compact('book', 'vid', 'school'));
     }
 
@@ -296,4 +305,24 @@ class PermissionController extends Controller
         $res->message = $msg;
         return response()->json($res);
     }
+    
+    // public function destroyMajor(School $school, Request $request)
+    // {
+    //     $major = $request->id_jurusan;
+    //     $res = new stdClass;
+    //     $del = $school->majors()->detach($major);
+    //     if ($del == 0) {
+    //         $status = 'error';
+    //         $title = 'Gagal';
+    //         $msg = 'Hapus akses jurusan gagal.';
+    //     }else{
+    //         $status = 'success';
+    //         $title = 'Berhasil';
+    //         $msg = 'Hapus akses jurusan berhasil.';
+    //     }
+    //     $res->status = $status;
+    //     $res->title = $title;
+    //     $res->message = $msg;
+    //     return response()->json($res);
+    // }
 }

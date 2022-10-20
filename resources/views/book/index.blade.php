@@ -53,7 +53,7 @@
                 <div class="card">
                     <div class="card-header">
                         <button data-target="#modal-add" data-toggle="modal" class="btn btn-dark">Tambah buku</button>
-                        <a href="buku-import" class="btn btn-dark">Import Buku</a>
+                        <button class="btn btn-dark ask">Import Buku</button>
                     </div>
                     <div class="card-body">
                         {{-- <div class="table-responsive"> --}}
@@ -62,6 +62,8 @@
                                 <th>No</th>
                                 <th>ID</th>
                                 <th>Judul Buku</th>
+                                <th>Jenjang</th>
+                                <th>Kelas</th>
                                 <th>Tahun Terbit</th>
                                 <th>Penerbit</th>
                                 <th>Pengarang</th>
@@ -153,9 +155,9 @@
                                             <div class="input-group">
                                                 <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                                     <option value="">-- Pilih Kelas --</option>
-                                                    @foreach ($kls as $k )
+                                                    {{-- @foreach ($kls as $k )
                                                     <option @if(old('kelas')==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('kelas')
                                                 <div class="invalid-feedback">
@@ -171,11 +173,11 @@
                                         <div class="form-group">
                                             <label class="form-label" for="sekolah">Jurusan</label>
                                             <div class="input-group">
-                                                <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror"" id=" jurusan" aria-label="">
-                                                    <option value="">-- Pilih Jurusan --</option>
-                                                    @foreach ($maj as $m )
+                                                <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
+                                                    <option hidden value="">-- Pilih Jurusan --</option>
+                                                    {{-- @foreach ($maj as $m )
                                                     <option @if(old('jurusan')==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('jurusan')
                                                 <div class="invalid-feedback">
@@ -191,11 +193,11 @@
                                         <div class="form-group">
                                             <label class="form-label" for="mapel">Mata Pelajaran</label>
                                             <div class="input-group">
-                                                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror"" id=" mapel" aria-label="">
+                                                <select name="mapel" class="form-control select2bs4 @error('mapel'){{ 'is-invalid' }}@enderror" id="mapel" aria-label="">
                                                     <option value="">-- Pilih Mata Pelajaran --</option>
-                                                    @foreach ($sub as $sbj )
+                                                    {{-- @foreach ($sub as $sbj )
                                                     <option @if(old('mapel')==$sbj->id){{ 'selected' }}@endif value="{{ $sbj->id }}">{{ $sbj->sbj_name }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('mapel')
                                                 <div class="invalid-feedback">
@@ -238,7 +240,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="tahun">Tahun Terbit</label>
-                                            <input type="text" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
+                                            <input type="number" name="tahun" id="tahun" class="form-control @error('tahun'){{'is-invalid'}}@enderror" value="{{old('tahun')}}">
                                             @error('tahun')
                                             <div class="invalid-feedback">
                                                 {{$message}}
@@ -352,6 +354,23 @@
                     name: "title"
                 },
                 {
+                    data: "education",
+                    name: "education.edu_name",
+                    render: function(data) {
+                        console.log();
+                        return data.edu_name;
+                    },
+                    orderable: false
+                },
+                {
+                    data: "grades",
+                    name: "grades.grade_name",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
+                    orderable: false
+                },
+                {
                     data: "published_year",
                     name: "published_year"
                 },
@@ -364,19 +383,23 @@
                     name: "author"
                 },
                 {
-                    defaultContent: '<button type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-book btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-book btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ],
             "ajax": "/buku/all"
         });
         $('#tb-book tbody').on('click', '.edit-book', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "buku/" + id + "/edit";
         });
         $('#tb-book tbody').on('click', '.del-book', function(e) {
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",
@@ -416,6 +439,141 @@
                     });
                 }
             });
+        });
+
+        $(".ask").on('click',function (e) { 
+            e.preventDefault();
+            Swal.fire({
+                title: 'Sudah import file?',
+                html: "<a href='buku-import' class='btn btn-dark'>Belum</a> <a href='buku-excel' class='btn btn-dark'>Sudah</a>",
+                icon: 'question',
+                showConfirmButton:false,
+                showCancelButton: true,
+                cancelButtonColor: '#d33'
+            });
+        });
+    
+        var id = $('#jenjang').val();
+        // console.log('ID Jenjang :' ,id);
+        var url = "{{ Request :: segment(count(Request :: segments())) }}";
+        var oldKelas = "{{ old('kelas') }}"
+        var oldJurusan = "{{ old('jurusan') }}"
+
+        if (oldKelas){
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(index, kelas){
+                        if (oldKelas == kelas.id){
+                            $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        } else {
+                            $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        }
+                    });
+                }
+            });
+            // console.log('Old Kelas :' ,oldKelas);
+        }
+        
+        if(oldJurusan){
+            $.ajax({
+                type: "get",
+                url: "/maj/"+id,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log(jurusan);
+                        if (oldJurusan = jurusan.id){
+                            $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        }else{
+                            $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        }
+                    });
+                }
+            });
+            // console.log('Old Jurusan :' ,oldJurusan);
+        }
+        
+        // var jurusanID = $('#jurusan').val();
+        var oldMapel = "{{ old('mapel') }}"
+        // console.log('ID Jurusan :' ,oldJurusan);
+
+        if(oldJurusan){
+            if(oldMapel) {
+                $.ajax({
+                    url: '/sub/'+oldJurusan,
+                    type: "GET",
+                    success:function(data){
+                        console.log(data);
+                        $('#mapel').empty();
+                        $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                        $.each(data, function(index, mapel){
+                            if (oldMapel == mapel.id){
+                                $('select[name="mapel"]').append('<option selected value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                            } else{
+                                $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        
+        $('#jenjang').change(function(e) {
+            e.preventDefault();
+            var id = $(this).val();
+            console.log(id);
+            var url = "{{ Request :: segment(count(Request :: segments())) }}";
+            $.ajax({
+                type: "get",
+                url: "/gr/"+id+"?url="+url,
+                success:function(data){
+                    console.log(data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(index, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/maj/"+id,
+                success: function (data) {
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        console.log(jurusan);
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    });
+                }
+            });
+        });
+
+        $('#jurusan').on('change', function() {
+            var jurusanID = $(this).val();
+            console.log(jurusanID);
+            if(jurusanID) {
+                    $.ajax({
+                    url: '/sub/'+jurusanID,
+                    type: "GET",
+                    success:function(data)
+                    {
+                        console.log(data);
+                        $('#mapel').empty();
+                        $('#mapel').append('<option value="" hidden>-- Pilih Mata Pelajaran --</option>'); 
+                        $.each(data, function(index, mapel){
+                            $('select[name="mapel"]').append('<option value="'+ mapel.id +'">' + mapel.sbj_name+ '</option>');
+                        });
+                    }
+                });
+            }
+            
         });
 
     });

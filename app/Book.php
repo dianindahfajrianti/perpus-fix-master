@@ -4,6 +4,7 @@ namespace App;
 
 use DateTime;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -27,19 +28,25 @@ class Book extends Model
         });
 
         $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
-            return $query->whereHas('getEdu', function($query) use ($jenjang) {
+            return $query->whereHas('education', function($query) use ($jenjang) {
                 $query->where('edu_name', $jenjang);
             });
         });
 
         $query->when($filters['kelas'] ?? false, function($query, $kelas) {
-            return $query->whereHas('getGrade', function($query) use ($kelas) {
+            return $query->whereHas('grades', function($query) use ($kelas) {
                 $query->where('grade_name', $kelas);
             });
         });
 
         $query->when($filters['mapel'] ?? false, function($query, $mapel) {
-            return $query->whereHas('getSubject', function($query) use ($mapel) {
+            return $query->whereHas('subjects', function($query) use ($mapel) {
+                $query->where('sbj_name', $mapel);
+            });
+        });
+
+        $query->when($filters['jurusan'] ?? false, function($query, $mapel) {
+            return $query->whereHas('majors', function($query) use ($mapel) {
                 $query->where('sbj_name', $mapel);
             });
         });
@@ -52,19 +59,19 @@ class Book extends Model
     }
     
     //
-    public function getEdu()
+    public function education()
     {
         return $this->hasOne(Education::class,'id','edu_id');
     }
-    public function getGrade()
+    public function grades()
     {
         return $this->hasOne(Grade::class,'id','grade_id');
     }
-    public function getMajor()
+    public function majors()
     {
         return $this->hasOne(Major::class,'id','major_id');
     }
-    public function getSubject()
+    public function subjects()
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
@@ -72,13 +79,18 @@ class Book extends Model
     {
         return $this->belongsTo(History::class,'file_id','id');
     }
+    public function getSizeAttribute()
+    {
+        $file = $this->filename;
+        $path = storage_path("app/public/pdf");
+        return File::size("$path/$file");
+    }
     protected $fillable = [
         'title',
         'desc',
         'filename',
         'filetype',
         'clicked_time',
-        'school_id',
         'edu_id',
         'grade_id',
         'major_id',

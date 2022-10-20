@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username', $user->username)}}">
+                                <input type="@if($user->role < 1){{ 'text' }}@else {{ 'number' }} @endif" name="username" id="username" class="form-control @error('username'){{'is-invalid'}}@enderror" value="{{old('username', $user->username)}}">
                                 @error('username')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -85,7 +85,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Sekolah</label>
                                 <div class="input-group">
-                                    <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror"" id=" sekolah" aria-label="">
+                                    <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror" id="sekolah" aria-label="">
                                         <option value="">-- Pilih Sekolah --</option>
                                         @foreach ($sch as $s )
                                         <option @if(old('sekolah', $user->school_id)==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>
@@ -103,9 +103,9 @@
                                 <div class="input-group">
                                     <select name="kelas" class="form-control select2bs4 @error('kelas'){{ 'is-invalid' }}@enderror" id="kelas" aria-label="">
                                         <option value="">-- Pilih Kelas --</option>
-                                        @foreach ($grade as $k )
+                                        {{-- @foreach ($grade as $k )
                                         <option @if(old('kelas', $user->grade_id)==$k->id){{ 'selected' }}@endif value="{{ $k->id }}">{{ $k->grade_name }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                     @error('kelas')
                                     <div class="invalid-feedback">
@@ -119,9 +119,9 @@
                                 <div class="input-group">
                                     <select name="jurusan" class="form-control select2bs4 @error('jurusan'){{ 'is-invalid' }}@enderror" id="jurusan" aria-label="">
                                         <option value="">-- Pilih Jurusan --</option>
-                                        @foreach ($maj as $m )
-                                        <option @if(old('jurusan', $user->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }}</option>
-                                        @endforeach
+                                        {{-- @foreach ($maj as $m )
+                                        <option @if(old('jurusan', $user->major_id)==$m->id){{ 'selected' }}@endif value="{{ $m->id }}">{{ $m->maj_name }} - {{ $m->educations->edu_name }}</option>
+                                        @endforeach --}}
                                     </select>
                                     @error('jurusan')
                                     <div class="invalid-feedback">
@@ -153,7 +153,15 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            @if(Auth::user()->role < 2)
+                                <label class="form-label" for="pass">Password</label>
+                                <input tooltip="Kosongkan jika tidak diubah" placeholder="Kosongkan jika tidak diubah" type="password" name="pass" id="pass" class="form-control @error('pass'){{'is-invalid'}}@enderror" value="{{old('pass')}}">
+                                @error('pass')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            @endif
                         </div>
                         <!-- /.card-body -->
 
@@ -180,6 +188,85 @@
             theme: 'bootstrap4'
         })
         bsCustomFileInput.init();
+    });
+
+    $(document).ready(function() {
+
+        var sekolahID = $('#sekolah').val();
+        var oldKelas = "{{ old('kelas',$user->grade_id) }}";
+        var oldJurusan = "{{ old('jurusan',$user->major_id) }}";
+        var url = "{{ Request :: segment(2) }}";
+        // console.log(oldKelas);
+        console.log('Sekolah ID : ',sekolahID);
+        $.ajax({
+            url: '/sch/'+sekolahID,
+            type: "GET",
+            success:function(data){
+                console.log('Data Kelas : ', data);
+                $('#kelas').empty();
+                $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                $.each(data, function(id, kelas){
+                    if (oldKelas == kelas.id){
+                        $('select[name="kelas"]').append('<option selected value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                        // console.log('Kelas ID selected : ', kelas.id, ' - ', oldKelas);
+                    }else{
+                        // console.log('Kelas ID : ',kelas.id)
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "get",
+            url: '/maj/'+sekolahID+"?url="+url,
+            success: function (data) {
+                console.log('Data Jurusan : ', data);
+                $('#jurusan').empty();
+                $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                $.each(data, function(index, jurusan){
+                    console.log(jurusan);
+                    if (oldJurusan == jurusan.id){
+                        $('select[name="jurusan"]').append('<option selected value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                        console.log('Jurusan ID selected : ', jurusan.id, ' - ', oldJurusan);
+                    }else{
+                        console.log('Jurusan ID : ',jurusan.id)
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    }
+                });
+            }
+        });
+
+        $('#sekolah').on('change', function() {
+            var sekolahID = $(this).val();
+            console.log(sekolahID);
+            var url = "{{ Request :: segment(2) }}";
+            $.ajax({
+                url: '/sch/'+sekolahID,
+                type: "GET",
+                success:function(data)
+                {
+                    console.log('on change data : ',data);
+                    $('#kelas').empty();
+                    $('#kelas').append('<option value="" hidden>-- Pilih Kelas --</option>'); 
+                    $.each(data, function(id, kelas){
+                        $('select[name="kelas"]').append('<option value="'+ kelas.id +'">' + kelas.grade_name+ '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/maj/"+sekolahID+"?url="+url,
+                success: function (data) {
+                    console.log('on chang data jurusan :', data);
+                    $('#jurusan').empty();
+                    $('#jurusan').append('<option value="" hidden>-- Pilih jurusan --</option>'); 
+                    $.each(data, function(index, jurusan){
+                        $('select[name="jurusan"]').append('<option value="'+ jurusan.id +'">' + jurusan.maj_name + " - "+jurusan.educations.edu_name+ '</option>');
+                    });
+                }
+            });
+        });
+
     });
 
 </script> 

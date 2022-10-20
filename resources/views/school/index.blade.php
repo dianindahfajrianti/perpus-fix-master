@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="notelp">Nomor Telephone</label>
-                            <input type="tel" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp') }}">
+                            <input type="number" name="notelp" id="notelp" class="form-control @error('notelp') {{'is-invalid'}} @enderror" value="{{ old('notelp') }}">
                             @error('notelp')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -166,9 +166,12 @@
                     name: "sch_name"
                 },
                 {
-                    data: "has_edu.edu_name",
-                    name: "has_edu.edu_name",
-                    searchable: false
+                    data: "education",
+                    name: "education.edu_name",
+                    render: function(data) {
+                        console.log();
+                        return data.edu_name;
+                    },
                 },
                 {
                     data: "address",
@@ -179,19 +182,28 @@
                     name: "phone"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="akses-school btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Akses Sekolah"><i class="nav-icon fas fa-igloo"></i></button> <button data-id="'+data+'" type="button" class="edit-school btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-school btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ]
         });
         
+        $('#tb-school tbody').on('click','.akses-school',function(e){
+            e.preventDefault;
+            var id = $(this).attr('data-id');
+            window.location.href = "/admin/akses/"+id;
+        });
         $('#tb-school tbody').on('click','.edit-school',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "sekolah/"+id+"/edit";
         });
         $('#tb-school tbody').on('click','.del-school',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

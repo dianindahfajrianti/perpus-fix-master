@@ -3,6 +3,8 @@
 namespace App;
 
 use DateTime;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
@@ -22,50 +24,56 @@ class Video extends Model
         });
 
         $query->when($filters['jenjang'] ?? false, function($query, $jenjang) {
-            return $query->whereHas('getEdu', function($query) use ($jenjang) {
+            return $query->whereHas('education', function($query) use ($jenjang) {
                 $query->where('edu_name', $jenjang);
             });
         });
 
         $query->when($filters['kelas'] ?? false, function($query, $kelas) {
-            return $query->whereHas('getGrade', function($query) use ($kelas) {
+            return $query->whereHas('grades', function($query) use ($kelas) {
                 $query->where('grade_name', $kelas);
             });
         });
 
         $query->when($filters['mapel'] ?? false, function($query, $mapel) {
-            return $query->whereHas('getSubject', function($query) use ($mapel) {
+            return $query->whereHas('subjects', function($query) use ($mapel) {
                 $query->where('sbj_name', $mapel);
             });
         });
 
         $query->when($filters['jurusan'] ?? false, function($query, $mapel) {
-            return $query->whereHas('getMajor', function($query) use ($mapel) {
+            return $query->whereHas('majors', function($query) use ($mapel) {
                 $query->where('sbj_name', $mapel);
             });
         });
     }
 
     //
-    public function getEdu()
+    public function education()
     {
         return $this->hasOne(Education::class,'id','edu_id');
     }
-    public function getGrade()
+    public function grades()
     {
         return $this->hasOne(Grade::class,'id','grade_id');
     }
-    public function getMajor()
+    public function majors()
     {
         return $this->hasOne(Major::class,'id','major_id');
     }
-    public function getSubject()
+    public function subjects()
     {
         return $this->hasOne(Subject::class,'id','sub_id');
     }
+    public function getSizeAttribute()
+    {
+        $file = $this->filename.".".$this->filetype;
+        $path = storage_path("app/public/video");
+        return File::size("$path/$file");
+    }
     protected $fillable = [
         'title','desc','filename','filetype','thumb','clicked_time',
-        'school_id',
+        'frame',
         'edu_id',
         'grade_id',
         'major_id',
@@ -81,6 +89,11 @@ class Video extends Model
     public function histories()
     {
         return $this->belongsTo(History::class,'file_id','id');
+    }
+
+    public function getUploadedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 
     public function getUploadDateAttribute()

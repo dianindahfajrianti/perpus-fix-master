@@ -121,7 +121,7 @@
                             </center>
                         </div>
                         <div class="social">
-                            <a href="{{ Storage::url('public/pdf/').$b->filename }}" download><i class="ri-file-download-fill"></i></a>
+                            <a href="/buku/{{ $b->id }}/download" download><i class="ri-file-download-fill"></i></a>
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
@@ -129,8 +129,8 @@
                                 {{ $b->title }}
                             </h5>
                             <h6>
-                                @if(($b->getGrade || $b->getEdu) !== null)
-                                {{ "Kelas ".$b->getGrade->grade_name." ".$b->getEdu->edu_name}}
+                                @if($b->grades !== null || $b->education !== null)
+                                {{ "Kelas ".$b->grades->grade_name." ".$b->education->edu_name}}
                                 @endif
                             </h6>
                             <div class="btn-file">
@@ -186,7 +186,7 @@
                             </center>
                         </div>
                         <div class="social">
-                            <a href="{{Storage::url('public/video/').$v->filename.".".$v->filetype}}" download><i class="ri-video-download-fill"></i></a>
+                            <a href="/video/ {{ $v->id }}" download><i class="ri-video-download-fill"></i></a>
                             <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>
                         </div>
                         <div class="card-info">
@@ -194,8 +194,8 @@
                                 {{ $v->title }}
                             </h5>
                             <h6>
-                                @if(($v->getGrade || $v->getEdu) !== null)
-                                {{ "Kelas ".$v->getGrade->grade_name." ".$v->getEdu->edu_name}}
+                                @if(($v->grades || $v->education) !== null)
+                                {{ "Kelas ".$v->grades->grade_name." ".$v->education->edu_name}}
                                 @endif
                             </h6>
                             <div class="btn-file">
@@ -228,6 +228,9 @@
 <script src="/assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        var wd = window.screen.width;
+        var hg = window.screen.height;
+
         // Swal.fire({
         //     icon: 'success',
         //     title: 'Berhasil',

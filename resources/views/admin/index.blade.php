@@ -29,7 +29,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/buku" class="small-box bg-gradient-navy">
                     <div class="inner">
-                        <h3>@foreach($book as $b){{$b->totidb}}@endforeach</h3>
+                        <h3>@empty($book) {{ 0 }} @else {{$book}}@endempty</h3>
                         <p>Buku</p>
                     </div>
                     <div class="icon"><i class="fas fa-book"></i></div>
@@ -38,7 +38,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/video" class="small-box bg-gradient-lightblue">
                 <div class="inner">
-                    <h3>@foreach($vid as $b){{$b->totidv}}@endforeach</h3>
+                    <h3>@empty($vid) {{ 0 }} @else {{$vid}}@endempty</h3>
                     <p>Video</p>
                 </div>
                 <div class="icon"><i class="fas fa-film"></i></div>
@@ -48,7 +48,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/sekolah" class="small-box bg-gradient-olive">
                     <div class="inner">
-                        <h3>@foreach($school as $b){{$b->totids}}@endforeach</h3>
+                        <h3>@empty($school) {{ 0 }} @else {{$school}}@endempty</h3>
                         <p>Sekolah</p>
                     </div>
                     <div class="icon"><i class="fas fa-school"></i></div>
@@ -59,7 +59,7 @@
             <div class="col-lg-2 col-6">
                 <a href="/admin/user" class="small-box bg-gradient-secondary">
                     <div class="inner">
-                        <h3>@foreach($user as $b){{$b->totidu}}@endforeach</h3>
+                        <h3>@forelse($user as $b){{$b->totidu}}@empty {0}  @endforelse</h3>
                         <p>User</p>
                     </div>
                     <div class="icon"><i class="fas fa-user"></i></div>

@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4 fixed">
     <!-- Brand Logo -->
-    <a href="'/admin'" class="brand-link">
+    <a href="/" class="brand-link">
         <img src="\assets\perpus\assets\img\logoperpus.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
         <span class="brand-text font-weight-light">{{-- Auth::user()->username --}}Admin</span>
     </a>
@@ -116,6 +116,7 @@
                         </p>
                     </a>
                 </li>
+                {{-- @if (Auth::user()->role < 1)
                 <li class="nav-item">
                     <a href="/admin/akses" class="nav-link @if (Request::segment(2) == 'akses') {{'active'}} @endif">
                         <i class="nav-icon fas fa-igloo"></i>
@@ -124,6 +125,7 @@
                         </p>
                     </a>
                 </li>
+                @endif --}}
                 {{-- <li class="nav-item">
                     <a href="/admin/riwayat" class="nav-link @if (Request::segment(2) == 'riwayat') {{'active'}} @endif">
                         <i class="nav-icon fas fa-book-open"></i>

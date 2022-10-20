@@ -129,7 +129,11 @@
                     name: "edu_name"
                 },
                 {
-                    defaultContent:'<button type="button" class="edit-edu btn btn-success"><i class="fas fa-edit"></i></button> <button type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></button>'
+                    data: 'DT_RowId',
+                    render: function (data) { 
+                        return '<button data-id="'+data+'" type="button" class="edit-edu btn btn-success"><i class="fas fa-edit"></i></button> <button data-id="'+data+'" type="button" class="d-inline del-edu btn btn-danger"><i class="fas fa-trash"></i></button>';
+                    },
+                    searchable:false
                 }
             ],
             "ajax": "/pendidikan/all"
@@ -137,12 +141,12 @@
         
         $('#tb-edu tbody').on('click','.edit-edu',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             window.location.href = "pendidikan/"+id+"/edit";
         });
         $('#tb-edu tbody').on('click','.del-edu',function(e){
             e.preventDefault;
-            var id = $(this).closest('tr').attr('id');
+            var id = $(this).attr('data-id');
             Swal.fire({
                 title: 'Yakin hapus?',
                 text: "Anda tidak bisa kembalikan data!",

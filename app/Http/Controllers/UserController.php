@@ -33,28 +33,25 @@ class UserController extends Controller
         return view('user.index', compact('sch','grade','maj'));
     }
 
-    public function data(Request $request)
+    public function data()
     {
-        if (empty($request->ajax())) {
-            $model = User::all();
+        $rel = "schools";
+        if (Auth::check()) {
+            $sch = Auth::user()->school_id;
         }else{
-            if (Auth::check()) {
-                $sch = Auth::user()->school_id;
+            if (empty(env('SCHOOL_ID'))) {
+                return redirect('login');
             }else{
-                if (empty(env('SCHOOL_ID'))) {
-                    return redirect('login');
-                }else{
-                    $sch = env('SCHOOL_ID');
-                }
-            }
-            if (Auth::user()->role < 1) {
-                $model = User::all();
-            } else {
-                $model = User::where('role', '>=', 1)->where('school_id','=',$sch);
+                $sch = env('SCHOOL_ID');
             }
         }
+        if (Auth::user()->role < 1) {
+            $model = User::with($rel);
+        } else {
+            $model = User::with($rel)->where('role', '>=', 1)->where('school_id','=',$sch);
+        }
         
-        return DataTables::of($model)
+        return DataTables::eloquent($model)
             ->addIndexColumn()
             ->setRowId('id')
             ->toJson();
@@ -150,7 +147,7 @@ class UserController extends Controller
                 
                 $res->status = 'success';
                 $res->message = 'Users imported successfully.';
-        
+                
                 return redirect()->route('user.index')->with($res->status, json_encode($res));
             }else{
                 $res->status = 'error';
@@ -223,7 +220,7 @@ class UserController extends Controller
         if ($request->role < 1) {
             $sch = '';
             $murid ='';
-            $val = 'required|alpha_num|min:6|max:15';
+            $val = 'required|alpha_num|min:6|max:19';
         }else{
             if ($request->role == 3) {
                 $murid = 'required';
@@ -231,7 +228,7 @@ class UserController extends Controller
                 $murid ='';
             }
             $sch = 'required';
-            $val = "required|digits_between:6,15|unique:users,username";
+            $val = "required|digits_between:6,19|unique:users,username";
         };
         $request->validate([
             'nama' => 'required',
@@ -240,7 +237,7 @@ class UserController extends Controller
             'sekolah' => $sch,
             'kelas' => $murid,
             'jurusan' => $murid,
-            'role' => 'required'
+            'role' => 'required|digits_between:0,3'
         ]);
         
         try {
@@ -300,7 +297,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $rel = ['getGrade','getMajor','getSchool'];
+        $rel = ['grades','majors','schools'];
         $user = $user->with($rel)
                 ->where('id','=',$user->id)
                 ->first();
@@ -336,7 +333,7 @@ class UserController extends Controller
         if ($request->role < 1) {
             $sch = '';
             $murid ='';
-            $val = 'required|alpha_num|min:6|max:15';
+            $val = 'required|alpha_num|min:6|max:19';
         }else{
             if ($request->role == 3) {
                 $murid = 'required';
@@ -344,7 +341,7 @@ class UserController extends Controller
                 $murid ='';
             }
             $sch = 'required';
-            $val = "required|digits_between:6,15";
+            $val = "required|digits_between:6,19";
         }
         $request->validate([
             'nama' => 'required',
@@ -353,7 +350,7 @@ class UserController extends Controller
             'sekolah' => $sch,
             'kelas' => $murid,
             'jurusan' => $murid,
-            'role' => 'required'
+            'role' => 'required|digits_between:0,3'
         ]);
         try {
             $user->name = $request->nama ;
@@ -363,17 +360,23 @@ class UserController extends Controller
             $user->grade_id = $request->kelas;
             $user->major_id = $request->jurusan;
             $user->role = $request->role;
+            if (!empty($request->pass)) {
+                $user->password = Hash::make($request->pass);
+            };
             $user->save();
             $stat = "success";
             $msg = "User $request->nama berhasil diubah!";
 
+            $res->status = $stat;
+            $res->message= $msg;
+            return redirect()->route('user.index')->with($stat,json_encode($res));
         } catch (\Exception $th) {
             $stat = "error";
             $msg = $th;
+            $res->status = $stat;
+            $res->message= $msg;
+            return redirect()->back()->with($stat,json_encode($res));
         }
-        $res->status = $stat;
-        $res->message= $msg;
-        return redirect()->route('user.index')->with($stat,json_encode($res));
     }
 
     /**
@@ -420,8 +423,8 @@ class UserController extends Controller
     public function profile()
     {
         $uid = auth()->user()->id;
-        $attr = ['getSchool','getGrade','getMajor'];
-        $nosch = ['getGrade','getMajor'];
+        $attr = ['schools','grades','majors'];
+        $nosch = ['grades','majors'];
         $us = User::with($attr)->findOrFail($uid);
         
         if ($us !== null ) {
@@ -431,11 +434,11 @@ class UserController extends Controller
         }
         // return $user;
         $riwayat = History::where('userid','=',$uid)->types()->limit(6)->get();
-        
+        // return $riwayat;
         return view('home.profile',compact('user','riwayat'));
     }
 
-    public function reset(Request $request)
+    public function changePass(Request $request)
     {
         $res = new stdClass;
         $uid= Auth::user()->id;
@@ -456,13 +459,13 @@ class UserController extends Controller
             $res->status = 'success';
             $res->message = 'Password berhasil diubah';
             
-            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            return redirect('/profile')->with($res->status,json_encode($res));
             
         }else{
             $res->status = 'error';
             $res->message = 'Password Salah';
             
-            return redirect('/profile/'.$uid)->with($res->status,json_encode($res));
+            return redirect('/profile')->with($res->status,json_encode($res));
             
         }
     }

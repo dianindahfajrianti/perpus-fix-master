@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Major;
 use App\User;
-use App\Video;
-use Illuminate\Http\Request;
 use stdClass;
+use App\Major;
+use App\Video;
+use App\Education;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class MajorController extends Controller
@@ -20,11 +21,12 @@ class MajorController extends Controller
 
     public function index()
     {
-        return view('major.index');
+        $edu = Education::all();
+        return view('major.index', compact('edu'));
     }
     public function data()
     {
-        $model = Major::all();
+        $model = Major::with('educations')->get();
         return DataTables::of($model)
                ->addIndexColumn()
                ->setRowId('id')
@@ -53,12 +55,13 @@ class MajorController extends Controller
         $res = new stdClass();
 
         $request->validate([
-            'jurusan' => 'required'
+            'jurusan' => 'required',
+            'jenjang' => 'required'
         ]);
-
 
         try {
             $mj->maj_name = $request->jurusan;
+            $mj->edu_id = $request->jenjang;
             $mj->save();
 
             $stat = "success";
@@ -93,7 +96,8 @@ class MajorController extends Controller
      */
     public function edit(Major $jurusan)
     {
-        return view('major.edit',compact('jurusan'));
+        $edu = Education::all();
+        return view('major.edit',compact('jurusan','edu'));
     }
 
     /**
@@ -107,11 +111,13 @@ class MajorController extends Controller
     {
         $res = new stdClass();
         $request->validate([
-            'jurusan' => 'required'
+            'jurusan' => 'required',
+            'jenjang' => 'required'
         ]);
 
         try {
             $jurusan->maj_name = $request->jurusan;
+            $jurusan->edu_id = $request->jenjang;
             $jurusan->save();
 
             $stat = "success";

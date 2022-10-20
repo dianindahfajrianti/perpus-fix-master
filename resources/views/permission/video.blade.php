@@ -16,11 +16,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h3 class="display-4">Daftar video</h3>
+                <h2 style="font-size: 45px" class="display-3">Daftar Video {{ $school->sch_name }}</h2>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/sekolah">Sekolah</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/akses/{{ $school->id }}">Akses</a></li>
                     <li class="breadcrumb-item active">video</li>
                 </ol>
             </div>
@@ -41,7 +43,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama video</th>
+                                    <th>Judul Video</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Pembuat</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -59,7 +63,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Tambah sekolah</h1>
+                    <h1>Tambah Video</h1>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -67,7 +71,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Video</th>
+                                    <th>Judul Video</th>
+                                    <th>Jenjang</th>
+                                    <th>Kelas</th>
                                     <th>Pembuat</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -132,15 +138,28 @@
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
-                orderable: false,
+                orderable : false,
                 searchable: false
-            }, {
+            },{
                 data: "title",
                 name: "title"
             },{
+                data: "education",
+                name: "education.edu_name",
+                render: function(data) {
+                    return data.edu_name;
+                },
+                orderable: false
+            },{
+                data: "grades",
+                name: "grades.grade_name",
+                render: function(data) {
+                    return data.grade_name;
+                },
+                orderable: false
+            },{
                 data: "creator",
                 name: "creator"
-
             },{
                 data: 'DT_RowId',
                 render: function (data) { 
@@ -219,6 +238,20 @@
                     data: "title",
                     name: "title"
                 },{
+                    data: "education",
+                    name: "education.edu_name",
+                    render: function(data) {
+                        return data.edu_name;
+                    },
+                    orderable: false
+                },{
+                    data: "grades",
+                    name: "grades.grade_name",
+                    render: function(data) {
+                        return data.grade_name;
+                    },
+                    orderable: false
+                },{
                     data: "creator",
                     name: "creator"
                 },{
@@ -226,9 +259,10 @@
                     render: function (data) { 
                         return '<button data-id="'+data+'" type="button" class="d-inline add-video btn btn-success"><i class="fas fa-plus"></i></button>';
                     },
-                    searchable:false
+                    orderable: false,
+                    searchable: false
                 }],
-                "ajax": {url : "/akses/video/"+idschool,}
+                "ajax": {url : "/akses/video/"+idschool}
             });
         });
         $('#modal-add').on('hidden.bs.modal', function (e) {
@@ -263,7 +297,9 @@
                                 text: data.message,
                                 timer: 1200
                             });
+                            $('#modal-add').modal('hide');
                             table.draw();
+                            $('#modal-add').modal('show');
                         },
                         error: function(data) {
                             var js = data.responseJSON;

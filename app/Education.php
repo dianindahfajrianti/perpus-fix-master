@@ -6,23 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-    public function onBook()
+    public function book()
     {
-        return $this->belongsTo(Education::class,'edu_id','id');
+        return $this->belongsTo(Book::class,'id','edu_id');
     }
-    public function onMedia()
+    public function video()
     {
-        return $this->belongsTo(Video::class,'edu_id','id');
+        return $this->belongsTo(Video::class,'id','edu_id');
     }
-    public function onSchool()
+    public function school()
     {
-        return $this->belongsTo(School::class,'edu_id','id');
+        return $this->belongsTo(School::class,'id','edu_id');
     }
-// tambahan
+    // tambahan
     protected $fillable = ['grade_name', 'edu_name', 'sbj_name', 'title'];
     
     public function files()
     {
         return $this->hasMany(Files::class);
+    }
+
+    public function majors()
+    {
+        return $this->belongsTo(Major::class,'edu_id','id');
     }
 }

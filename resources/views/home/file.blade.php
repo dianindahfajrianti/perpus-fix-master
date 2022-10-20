@@ -67,40 +67,29 @@
                               <!-- jenjang -->
                               <h3 class="sidebar-title">Jenjang</h3>
                               <div class="sidebar-item filter">
-                                  @foreach ($edu as $e)
-                                      <div class="form-check">
-                                          <input value="{{ old('jenjang', $e->edu_name) }}" class="form-check-input"
-                                              type="radio" name="jenjang" id="jenjang" />
-                                          <label class="form-check-label" for="jenjang">
-                                              {{ $e->edu_name }}
-                                          </label>
-                                      </div>
-                                  @endforeach
+                                <div class="row">
+                                    <div class="col-12">
+                                        @foreach ($edu as $ed => $e)
+                                            <div class="form-check">
+                                                <input value="{{ old('jenjang', $e->id) }}" class="form-check-input d-inline" type="radio" name="jenjang1" id="jenjang1-{{ $ed }}"/>
+                                                <label class="form-check-label" for="jenjang1-{{ $ed }}">{{ $e->edu_name }}</label>
+                                            </div>
+                                        @endforeach
+                                        <input type="hidden" name="jenjang" id="jenjang" hidden />
+                                    </div>
+                                </div>
                               </div>
                               <!-- Kelas -->
                               <h3 class="sidebar-title">Kelas</h3>
                               <div class="sidebar-item filter">
                                   <div class="row">
-                                      <div class="col-6">
-                                          @for ($i = 1; $i < 7; $i++)
-                                              <div class="form-check">
-                                                  <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
-                                                  <label class="form-check-label" for="kelas">
-                                                      {{ numberToRomanRepresentation($i) }}
-                                                  </label>
-                                              </div>
-                                          @endfor
+                                      <div class="col-12 col-kelas">
+                                        <div class="form-check">
+                                            {{-- <input value="" class="form-check-input" type="radio" name="kelas1" id="kelas1" />
+                                            <label class="form-check-label" for="kelas1"></label> --}}
+                                        </div>
                                       </div>
-                                      <div class="col-6">
-                                          @for ($i = 7; $i < 13; $i++)
-                                              <div class="form-check">
-                                                  <input value="{{ $i }}" class="form-check-input" type="radio" name="kelas" id="kelas" />
-                                                  <label class="form-check-label" for="kelas">
-                                                      {{ numberToRomanRepresentation($i) }}
-                                                  </label>
-                                              </div>
-                                          @endfor
-                                      </div>
+                                    <input type="hidden" name="kelas" id="kelas" hidden />
                                   </div>
                               </div>    
                               {{-- <h3 class="sidebar-title">Kelas</h3>
@@ -116,19 +105,16 @@
                                     @endforeach
                               </div> --}}
                               <!-- Jurusan -->
-                              <h3 class="sidebar-title" for="jurusan">Jurusan</h3>
+                              <h3 class="sidebar-title" for="jurusan1">Jurusan</h3>
                               <div class="sidebar-item filter">
                                   <div class="row">
                                       <div class="col-12">
                                           <div class="form-group">
                                               <div class="input-group">
-                                                  <select name="jurusan" class="form-control select2bs4 @error('jurusan') {{ 'is-invalid' }} @enderror" id="jurusan" aria-label="">
+                                                  <select name="jurusan1" class="form-control select2bs4 @error('jurusan') {{ 'is-invalid' }} @enderror" id="jurusan1" aria-label="">
                                                       <option value="">-- Pilih Jurusan --</option>
                                                       @foreach ($maj as $mjr)
-                                                          <option
-                                                              @if (old('jurusan') == $mjr->maj_name) {{ 'selected' }} @endif
-                                                              value="{{ $mjr->maj_name }}">
-                                                              {{ $mjr->maj_name }}</option>
+                                                          <option @if (old('jurusan') == $mjr->maj_name) {{ 'selected' }} @endif value="{{ $mjr->id }}">{{ $mjr->maj_name }}</option>
                                                       @endforeach
                                                   </select>
                                                   @error('jurusan')
@@ -137,25 +123,23 @@
                                                       </div>
                                                   @enderror
                                               </div>
+                                            <input type="hidden" name="jurusan" id="jurusan" hidden>
                                           </div>
                                       </div>
                                   </div>
                               </div>   
                               <!-- Mapel -->
-                              <h3 class="sidebar-title" for="mapel">Mata Pelajaran</h3>
+                              <h3 class="sidebar-title" for="mapel1">Mata Pelajaran</h3>
                               <div class="sidebar-item filter">
                                   <div class="row">
                                       <div class="col-12">
                                           <div class="form-group">
                                               <div class="input-group">
-                                                  <select name="mapel" class="form-control select2bs4 @error('mapel') {{ 'is-invalid' }} @enderror" id="mapel" aria-label="">
-                                                      <option value="">-- Pilih Mata Pelajaran --</option>
-                                                      @foreach ($sub as $sbj)
-                                                          <option
-                                                              @if (old('mapel') == $sbj->sbj_name) {{ 'selected' }} @endif
-                                                              value="{{ $sbj->sbj_name }}">
-                                                              {{ $sbj->sbj_name }}</option>
-                                                      @endforeach
+                                                  <select name="mapel1" class="form-control select2bs4 @error('mapel') {{ 'is-invalid' }} @enderror" id="mapel1" aria-label="">
+                                                      <option value="">-- Pilih Mata Pelajaran -</option>
+                                                      {{-- @foreach ($sub as $sbj)
+                                                          <option @if (old('mapel') == $sbj->sbj_name) {{ 'selected' }} @endif value="{{ $sbj->sbj_name }}">{{ $sbj->sbj_name }}</option>
+                                                      @endforeach --}}
                                                   </select>
                                                   @error('mapel')
                                                       <div class="invalid-feedback">
@@ -163,6 +147,7 @@
                                                       </div>
                                                   @enderror
                                               </div>
+                                            <input type="hidden" name="mapel" id="mapel">
                                           </div>
                                       </div>
                                   </div>
@@ -215,7 +200,7 @@
                                         </center>
                                     </div>
                                     <div class="social">
-                                        <a href="{{ Storage::url('public/').$link.'/'.$name }}" download><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
+                                        <a href="/buku/{{ $b->id }}/download" download><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
                                         <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/video/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
                                     </div>
                                     <div class="card-info">
@@ -224,10 +209,8 @@
                                             {{ $b->title }}
                                         </h1>
                                         <h6>
-                                            @empty ($b->getGrade || $b->getEdu)
-                                            
-                                            @else
-                                            {{ 'Kelas ' . $b->getGrade->grade_name . ' ' . $b->getEdu->edu_name }}
+                                            @if($b->grades !== null || $b->education !== null)
+                                            {{ "Kelas ".$b->grades->grade_name." ".$b->education->edu_name}}
                                             @endif
                                         </h6>
                                         <div class="btn-file">
@@ -267,21 +250,97 @@
     <script src="/assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="/assets/adminlte/plugins/select2/js/select2.min.js"></script>
     <script type="text/javascript">
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        });
-        $("#mapel").select2({
-            dropdownCssClass: "myFont"
-        });
-        $("#jurusan").select2({
-            dropdownCssClass: "myFont"
-        });
-        $("#resetbtn").on('click', function(e) {
-            e.preventDefault();
-            $("#filters").trigger("reset");
-            $('#jurusan').select2('val','All');
-            $('#mapel').select2('val','All');
+        $(document).ready(function() {
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            $("#mapel1").select2({
+                dropdownCssClass: "myFont"
+            });
+            $("#jurusan1").select2({
+                dropdownCssClass: "myFont"
+            });
+            $("#resetbtn").on('click', function(e) {
+                e.preventDefault();
+                $("#filters").trigger("reset");
+                $('#jurusan').select2('val','All');
+                $('#mapel').select2('val','All');
+            });
+
+            $('input[name=jenjang1]').on('change',function(e) {
+                e.preventDefault();
+                var eduID = $(this).val();
+                var name = $('label[for="' + this.id + '"]').text();
+                $('#jenjang').val(name);
+                $.ajax({
+                    url: '/gr/'+eduID,
+                    type: "GET",
+                    // success:function(data){
+                    //     console.log(data);
+                    // },error:function(data){
+                    //     console.log(data);
+                    // }
+                    success:function(data)
+                    {
+                        if(data){
+                        console.log(data);
+                        $('.col-kelas').empty();
+                        $.each(data, function(id, kelas){
+                            var formCheck = $('<div></div>');
+                            formCheck.addClass('form-check');
+                            $('.col-kelas').append(formCheck);
+                            formCheck.append('<input value="'+ id +'" class="form-check-input" type="radio" name="kelas1" id="kelas1-'+id+'" />');
+                            formCheck.append('<label class="form-check-label" for="kelas1-'+id+'">' + kelas.grade_name+ '</label>');
+                        });
+                    }else{
+                        $('.col-kelas').empty();
+                    }
+                    }
+                });
+            });
+
+            $('input[name=kelas1]').on('change',function(e) {
+                e.preventDefault();
+                var name = $('label[for="' + this.id + '"]').text();
+                $('#kelas').val(name);
+            })
+
+            $('#jurusan1').on('change', function() {
+                var jurusanID = $(this).val();
+                var jurname = $('#jurusan1 option:selected').text();
+                $('#jurusan').val(jurname);
+
+                if(jurusanID) {
+                    console.log(jurname);
+                    $.ajax({
+                        url: '/sub/'+jurusanID,
+                        type: "GET",
+                        data : {"_token":"{{ csrf_token() }}"},
+                        dataType: "json",
+                        success:function(data)
+                        {
+                            if(data){
+                            console.log(data);
+                            $('#mapel1').empty();
+                            $('#mapel1').append('<option value="" hidden>-- Pilih Mata Pelajaran -</option>'); 
+                            $.each(data, function(id, mapel){
+                                $('select[name="mapel1"]').append('<option value="'+ id +'">' + mapel.sbj_name+ '</option>');
+                            });
+                        }else{
+                            $('#mapel').empty();
+                        }
+                        }
+                    });
+                }else{
+                    $('#mapel').empty();
+                }
+            });
+            $('input').change(function() {
+                if (this.checked) {
+                    var response = $('label[for="' + this.id + '"]').html();
+                }
+            });
         });
     </script>
 @endsection

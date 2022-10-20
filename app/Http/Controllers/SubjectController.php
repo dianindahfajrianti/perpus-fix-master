@@ -20,14 +20,21 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $maj = Major::all();
+        $maj = Major::with('educations')->get();
+        // return response()->json($maj);
         return view('subject.index',compact('maj'));
     }
     public function data()
     {
-        $model = Subject::with('hasMajor');
+        
+        $model = Subject::with('major');
+        
         return DataTables::of($model)
                ->addIndexColumn()
+               ->editColumn('major',function($subject){
+                    $maj = Major::with('educations')->where('id',$subject->parent_id)->first();
+                    return $maj;
+               })
                ->setRowId('id')
                ->make(true);
     }
@@ -93,7 +100,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $mapel)
     {
-        $maj = Major::all();
+        $maj = Major::with('educations')->get();
         return view('subject.edit',compact('mapel','maj'));
     }
 

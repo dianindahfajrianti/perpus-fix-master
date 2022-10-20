@@ -1,8 +1,14 @@
 /bootstrap/cache
 /node_modules
 /public/hot
-/public/storage
-/storage/*.key
+/public/storage/interactive/*
+/public/storage/pdf/*
+/public/storage/video/*
+/public/storage/thumb/pdf/*
+/public/storage/temp/pdf/*
+/public/storage/thumb/video/*
+/public/storage/temp/video/*
+
 /vendor
 .env
 .env.backup
@@ -14,3 +20,5 @@ yarn-error.log
 
 all.sql
 edu_grade_users.sql
+bootstrap/cache/packages.php
+bootstrap/cache/services.php
