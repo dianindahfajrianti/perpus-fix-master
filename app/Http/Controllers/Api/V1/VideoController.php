@@ -43,7 +43,7 @@ class VideoController extends Controller
         $video = Video::latest()
         ->whereHas('schools', function ($query) use ($id,$date) {
             $query->where('id', $id)
-            ->whereDate('school_video.updated_at','>',$date);
+            ->whereDate('school_video.updated_at','>=',$date);
         })
         ->whereNotIn('filename', $arr)
         ->get();

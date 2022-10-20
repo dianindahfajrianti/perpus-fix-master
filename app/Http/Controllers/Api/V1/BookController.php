@@ -45,7 +45,7 @@ class BookController extends Controller{
         $book = Book::latest()
         ->whereHas('schools', function ($query) use ($id,$date) {
             $query->where('id', $id)
-            ->whereDate('book_school.updated_at','>',$date);
+            ->whereDate('book_school.updated_at','>=',$date);
         })
         ->whereNotIn('filename', $arr)
         ->get();

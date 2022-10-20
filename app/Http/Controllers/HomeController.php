@@ -7,11 +7,13 @@ use stdClass;
 use App\Grade;
 use App\Major;
 use App\Video;
+use App\School;
 use App\History;
 use App\Subject;
 use App\Education;
 use App\Helpers\VideoStream;
 use Illuminate\Http\Request;
+use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -182,74 +184,17 @@ class HomeController extends Controller
         }
     }
 
-    public function coba()
+    public function coba(School $school)
     {
-        set_time_limit(0);
-        return File::size(storage_path("app/public/pdf/sejarah-indonesia-3-abdurakhman-arif-pradono-linda-sunarti-dan-susanto-zuhdi-2018.pdf"));
-        // $name = request('name');
-        // $type = request('type');
-        // if ($type !== "pdf") {
-        //     $type = "video";
-        // }else{
-        //     $type = $type;
-        // }
-        // $path = storage_path("app/public/$type/$name");
-        // $size = File::size($path);
-        // if ($size > 52428800) {
-        //     $asd = "COCOTE";
-        // }else{
-        //     $asd = "CILIK";
-        // }
-        // $rs = [
-        //     'judul' => 'Prakarya Dan Kewirausahaan-2',
-        //     'deskripsi' => 'Buku siswa ini disusun dan ditelaah oleh berbagai pihak di bawah koordinasi Kementerian Pendidikan dan Kebudayaan, dan dipergunakan dalam tahap awal penerapan Kurikulum 2047',
-        //     'nama_file' => '35 Prakarya Dan Kewirausahaan-2.pdf',
-        //     'tipe_file' => 'pdf',
-        //     'jenjang' => "SMA",
-        //     'kelas' => "11",
-        //     'jurusan' => "Umum",
-        //     'mapel' => "Prakarya Dan Kewirausahaan",
-        //     'th_terbit' => "2017",
-        //     'penerbit' => "Pusat Kurikulum dan Perbukuan, Balitbang, Kemendikbud",
-        //     'pengarang' => "RR. Indah Setyowati, Wawat Naswati, Heatiningsih, Miftakhodin, Cahyadi, dan Dwi Ayu."
-        // ];
-        // $edu = Education::where('edu_name','=',$rs['jenjang'])->first();
-        // $grade = Grade::where('grade_name','=',$rs['kelas'])->first();
-
-        //     if (empty($edu)) {
-        //         $ed = null;
-        //         $mjr = null;
-        //     }else{
-        //         $ed = $edu->id;
-        //         $mjr = Major::where('maj_name','=',$rs['jurusan'])
-        //                 ->where('edu_id',$ed)
-        //                 ->first();
-        //     }
-        //     if (empty($grade)) {
-        //         $gr = null;
-        //     }else{
-        //         $gr = $grade->id;
-        //     }
-        //     if (empty($mjr)) {
-        //         $mj = null;
-        //         $sub = null;
-        //     }else {
-        //         $mj = $mjr->id;
-        //         $sub = Subject::where('parent_id','=',$mjr->id)
-        //         ->where('sbj_name','=',$rs['mapel'])->first();
-        //     }
-        //     if (empty($sub)) {
-        //         $su = null;
-        //     }else {
-        //         $su = $sub->id;
-        //     }
-        // $asd = [
-        //     'edu' => $edu,
-        //     'grade' => $gr,
-        //     'major' => $mjr,
-        //     'sub' => $sub
-        // ];
-        // dd($asd);
+        $sID = $school->id;
+        $book = Book::whereHas('schools',function($query) use ($sID){
+            $query->where('id',$sID)
+            ->select('book_school.school_id')
+            ->oldest('book_school.created_at');
+        })
+        ->first();
+        dd($book);
+        // return new BookResource($book);
     }
 
     public function readFolder()

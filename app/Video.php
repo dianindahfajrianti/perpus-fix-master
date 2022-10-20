@@ -3,6 +3,7 @@
 namespace App;
 
 use DateTime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 
@@ -88,6 +89,11 @@ class Video extends Model
     public function histories()
     {
         return $this->belongsTo(History::class,'file_id','id');
+    }
+
+    public function getUploadedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 
     public function getUploadDateAttribute()

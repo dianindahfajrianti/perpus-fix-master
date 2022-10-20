@@ -25,3 +25,5 @@ SRoute::apiResource('videos',Api\V1\VideoController::class)->only(['index','show
 SRoute::get('syncbook/{school}', 'Api\V1\BookController@sync');
 SRoute::get('syncvid/{school}', 'Api\V1\VideoController@sync');
 // });
+SRoute::get('pb/{school}','Api\V1\PermissionApi@book');
+SRoute::get('pv/{school}','Api\V1\PermissionApi@video');
