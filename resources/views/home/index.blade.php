@@ -100,26 +100,28 @@
                 @forelse($book as $b)
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="card">
-                        <div class="card-img">
-                            {{-- <center>
-                                <img src="/storage/thumb/pdf/@empty($b->thumb){{ 'default.png' }}@else{{ $b->thumb }}@endempty" class="img-fluid" alt="">
-                            </center> --}}
-                            <center>
-                                @php
-                                $name = $b->thumb;
-                                $ori = public_path("storage/thumb/pdf/");
-                                $path = "/storage/thumb/pdf/";
-                                $path1 = $ori.$name;
-                                if ( !file_exists($path1) || empty($name) ) {
-                                    $path1 = $path."default.png";
-                                }else {
-                                    $path1 = $path.$name;
-                                };
-                                @endphp
-                                                                
-                                    <img src="{{ $path1 }}" class="img-fluid" alt="">
-                            </center>
-                        </div>
+                        <a href="/pdfViewer/{{ $b->id }}" target="_blank">
+                            <div class="card-img">
+                                {{-- <center>
+                                    <img src="/storage/thumb/pdf/@empty($b->thumb){{ 'default.png' }}@else{{ $b->thumb }}@endempty" class="img-fluid" alt="">
+                                </center> --}}
+                                <center>
+                                    @php
+                                    $name = $b->thumb;
+                                    $ori = public_path("storage/thumb/pdf/");
+                                    $path = "/storage/thumb/pdf/";
+                                    $path1 = $ori.$name;
+                                    if ( !file_exists($path1) || empty($name) ) {
+                                        $path1 = $path."default.png";
+                                    }else {
+                                        $path1 = $path.$name;
+                                    };
+                                    @endphp
+                                                                    
+                                        <img src="{{ $path1 }}" class="img-fluid" alt="">
+                                </center>
+                            </div>
+                        </a>
                         <div class="social">
                             <a href="/buku/{{ $b->id }}/download" download><i class="ri-file-download-fill"></i></a>
                             <a href="/pdfViewer/{{ $b->id }}"><i class="ri-eye-fill"></i></a>
@@ -168,23 +170,25 @@
                 @forelse($video as $v)
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="card">
-                        <div class="card-img">
-                            <center>
-                                @php
-                                $name = $v->thumb;
-                                $ori = public_path("storage/thumb/video/");
-                                $path = "/storage/thumb/video/";
-                                $path1 = $ori.$name;
-                                if ( !file_exists($path1) || empty($name) ) {
-                                    $path1 = $path."default.png";
-                                }else {
-                                    $path1 = $path.$name;
-                                };
-                                @endphp
-                                                                
-                                    <img src="{{ $path1 }}" class="img-fluid" alt="">
-                            </center>
-                        </div>
+                        <a href="/video/ {{ $v->id }}">
+                            <div class="card-img">
+                                <center>
+                                    @php
+                                    $name = $v->thumb;
+                                    $ori = public_path("storage/thumb/video/");
+                                    $path = "/storage/thumb/video/";
+                                    $path1 = $ori.$name;
+                                    if ( !file_exists($path1) || empty($name) ) {
+                                        $path1 = $path."default.png";
+                                    }else {
+                                        $path1 = $path.$name;
+                                    };
+                                    @endphp
+                                                                    
+                                        <img src="{{ $path1 }}" class="img-fluid" alt="">
+                                </center>
+                            </div>
+                        </a>
                         <div class="social">
                             <a href="/video/ {{ $v->id }}" download><i class="ri-video-download-fill"></i></a>
                             <a href="/video/ {{ $v->id }}"><i class="ri-eye-fill"></i></a>

@@ -60,6 +60,8 @@ class HomeController extends Controller
         $kls = Grade::all();
         $maj = Major::all();
 
+        // dd($file);
+
         return view('home.file', compact('sub', 'edu', 'file', 'kls', 'maj'));
     }
     public function video()
