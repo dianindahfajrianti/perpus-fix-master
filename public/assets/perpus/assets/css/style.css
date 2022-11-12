@@ -1822,7 +1822,7 @@ section {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   .paddingtop-footer{
     padding-top: 5%;
   }
@@ -1839,7 +1839,7 @@ section {
   .paddingtop-footer{
     padding-top: 15%;
   }
-}
+} */
 @media (max-width: 300px) {
   .paddingtop-footer{
     padding-top: 20%;
