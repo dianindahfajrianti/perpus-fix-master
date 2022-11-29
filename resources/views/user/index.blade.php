@@ -111,6 +111,27 @@
                             </div>
                             @enderror
                         </div>
+                        <select class="custom-select mb-3" name="maildisplay" id="id_maildisplay" data-initial-value="1">
+                            <option value="0">Sembunyikan alamat email saya dari pengguna yang tidak diizinkan</option>
+                            <option value="1" selected>Izinkan semua orang melihat alamat email saya</option>
+                            <option value="2">Izinkan hanya peserta kursus yang melihat alamat email saya</option>
+                        </select>
+                        <div class="form-group">
+                            <label class="form-label" for="sekolah">Sekolah</label>
+                            <div class="input-group">
+                                <select name="sekolah" class="form-control select2bs4 @error('sekolah'){{ 'is-invalid' }}@enderror" id="sekolah" aria-label="">
+                                    <option value="">-- Pilih Sekolah --</option>
+                                    @foreach ($sch as $s )
+                                    <option @if(old('sekolah')==$s->id){{ 'selected' }}@endif value="{{ $s->id }}">{{ $s->sch_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('sekolah')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="sekolah">Sekolah</label>
                             <div class="input-group">

@@ -277,4 +277,9 @@ class HomeController extends Controller
         }
     }
 
+    public function resetpassword()
+    {
+        return view('home.resetPass');
+    }
+
 }

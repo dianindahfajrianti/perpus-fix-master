@@ -16,6 +16,7 @@
 Route::get('/', 'HomeController@index');
 Route::get('/buku', 'HomeController@book')->name('buku');
 Route::get('/video', 'HomeController@video')->name('video');
+Route::get('/resetpassword', 'HomeController@resetpassword')->name('resetpassword');
 
 Route::get('/panduan', 'HomeController@showpanduan')->name('panduan');
 Route::middleware('active')->group(function () {

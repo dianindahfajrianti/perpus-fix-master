@@ -82,6 +82,11 @@
                                 </div>
                                 @enderror
                             </div>
+                            <select class="custom-select mb-3" name="maildisplay" id="id_maildisplay" data-initial-value="1">
+                                <option value="0">Sembunyikan alamat email saya dari pengguna yang tidak diprovokasi</option>
+                                <option value="1" selected>Izinkan semua orang melihat alamat email saya</option>
+                                <option value="2">Izinkan hanya peserta kursus lain yang melihat alamat email saya</option>
+                            </select>
                             <div class="form-group">
                                 <label class="form-label" for="sekolah">Sekolah</label>
                                 <div class="input-group">
