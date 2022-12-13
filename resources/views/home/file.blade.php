@@ -194,11 +194,13 @@
                                             $path1 = $path.$name1;
                                         };
                                     @endphp
-                                    <div class="card-img">
-                                        <center>
-                                                <img src="{{ $path1 }}" class="img-fluid" alt="">
-                                        </center>
-                                    </div>
+                                    <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/video/'.$b->id}}@endif">
+                                        <div class="card-img">
+                                            <center>
+                                                    <img src="{{ $path1 }}" class="img-fluid" alt="">
+                                            </center>
+                                        </div>
+                                    </a>
                                     <div class="social">
                                         <a href="/buku/{{ $b->id }}/download" download><i class="ri-@if(Request::segment(1) == 'buku'){{'file'}}@else{{'video'}}@endif-download-fill"></i></a>
                                         <a href="@if(Request::segment(1) == 'buku'){{ '/pdfViewer/'.$b->id }}@else{{'/video/'.$b->id}}@endif"><i class="ri-eye-fill"></i></a>
@@ -336,11 +338,28 @@
                     $('#mapel').empty();
                 }
             });
-            $('input').change(function() {
-                if (this.checked) {
-                    var response = $('label[for="' + this.id + '"]').html();
+            // $('input').change(function() {
+            //     if (this.checked) {
+            //         var response = $('label[for="' + this.id + '"]').html();
+            //     }
+            // });
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            if (params) {
+                let edu = $("input[name=jenjang1]:checked");
+                let eduv = edu.attr("value");
+                console.log(`${params.jenjang1}
+                ${eduv}`);
+                let grade = $("input[name=kelas1]:checked");
+                let gradev = grade.attr("value");
+                let maj = $("input[name=jurusan1]:checked");
+                let majval = maj.attr("value");
+                let sub = $("input[name=mapel1]:checked");
+                let subval= sub.attr("value");
+                if (params.jenjang1 = eduv) {
+                    edu.attr("checked",true);
                 }
-            });
+            }
         });
     </script>
 @endsection

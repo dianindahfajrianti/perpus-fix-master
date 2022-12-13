@@ -351,15 +351,16 @@
 @media (min-width: 1024px) {
   .video_example-dimensions {
     width: 1300px;
-    height: 713px;
+    /* height: 713px; */
+    height: 500px;
   }
 }
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
   .video_example-dimensions {
     width: 1300px;
     height: 500px;
   }
-}
+} */
 @media (max-width: 768px) {
   .video_example-dimensions {
     width: 1300px;

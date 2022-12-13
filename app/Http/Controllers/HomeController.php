@@ -60,6 +60,8 @@ class HomeController extends Controller
         $kls = Grade::all();
         $maj = Major::all();
 
+        // dd($file);
+
         return view('home.file', compact('sub', 'edu', 'file', 'kls', 'maj'));
     }
     public function video()
@@ -273,6 +275,11 @@ class HomeController extends Controller
             $html = "<p>File session expired</p><a href='/'>Home</a>";
             return $html;
         }
+    }
+
+    public function resetpassword()
+    {
+        return view('home.resetPass');
     }
 
 }

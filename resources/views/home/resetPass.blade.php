@@ -28,7 +28,7 @@
                     <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up"
                         data-aos-delay="200">
                         <div class="content">
-                            <h2>Masukan username dan Password</h2>
+                            <h2>Masukan username dan Email</h2>
                             <form action="{{ route('login') }}" method="post">
                                 @csrf
                                 <div class="form-group">
@@ -42,22 +42,19 @@
                                   <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                                 </div>
                                 <div class="form-group">
-                                  <label for="pass">Password</label>
-                                  <input type="password" name="password" class="form-control @error('password'){{ 'is-invalid' }}@enderror" id="pass" placeholder="masukan password">
-                                  @error('password')
+                                  <label for="email">Email</label>
+                                  <input type="email" name="email" class="form-control @error('email'){{ 'is-invalid' }}@enderror" id="email" placeholder="masukan email">
+                                  @error('email')
                                       {{ $message }}
                                   @enderror
                                 </div>
-                                <div class="forget-pass d-flex justify-content-end">
-                                    <a href="/resetpassword">Lupa Password ?</a>
-                                </div>
-                                <button type="submit" class="btn-login">Masuk</button>
+                                <button type="submit" class="btn-login">Reset</button>
                               </form>
                         </div>
                     </div>
 
                     <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="/assets/perpus/assets/img/login-img.jpg" class="img-fluid" alt="">
+                        <img src="/assets/perpus/assets/img/resetPass.png" class="img-fluid" alt="">
                     </div>
 
                 </div>
